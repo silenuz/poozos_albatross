@@ -7,6 +7,24 @@ Description:
 Some python scripts based off the Godot GDExtension cpp [template](https://github.com/godotengine/godot-cpp-template)
 structure and build system to generate Godot class documentation from Doxygen generated XML.
 
+While this project's source code is unlicensed, the doxygen.py module is not my work and is licensed
+under the GNU Lesser General Public License version 2.1.  A copy of said license has been provided in the support directory.
+This module can be used when using scons to build the Doxygen XML.  
+
+Before I forget I'll put this here, and fix it up later:
+Basic scons, add following to SConstruct
+
+```
+env = Environment(tools=["default", "doxygen"], toolpath="./relative/path/")
+env.Doxygen("relative/path/to/scons_doxy.cfg")
+```
+
+In terminal enter
+```
+scons doxygen
+```
+Docs should be built.  Also need to mention editing the configuration file first to set the paths.
+
 Current Status: ALPHA (if that)
 -------------------------------
 Currently, the python script is capable of exporting the content for methods, properties, and enum constants.
@@ -26,6 +44,7 @@ and running the scripts as part of a cmake target.
 The support files directory also contains Doxygen configuration file with
 all the aliases already in it.  This can then be used from the command line to generate the
 Doxygen XML so that the scripts can be used manually, or integrated into the scons build system.  
+
 
 To see an example project using cmake to generate documents see 
 [doxy_demo](https://github.com/silenuz/doxy_demo)
