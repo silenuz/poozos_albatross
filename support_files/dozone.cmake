@@ -1,9 +1,26 @@
 find_package(Doxygen)
 
+if(WIN32)
+    set(ENV_PATH_SEP ";")
+else()
+    set(ENV_PATH_SEP ":")
+endif()
+
 if(DOXYGEN_FOUND)
     ############################################################################################
     ###                                     Configure                                        ###
     ############################################################################################
+
+    # set the name of the directory that contains the python scripts
+    set(ALBATROSS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+    set(ENV{PYTHONPATH} "$ENV{PYTHONPATH}${ENV_PATH_SEP}${ALBATROSS_DIRECTORY}")
+
+    # set the output directory for the generated Godot class documentation
+    set(GODOT_GENERATED_DOCS_DIRECTORY  "${CMAKE_CURRENT_SOURCE_DIR}/doc_classes_generated")
+
+    # set directory to create the doxygen docs in
+    set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/doxygen")
 
     # set project settings
     set(DOXYGEN_PROJECT_NAME ${LIBNAME})
@@ -27,6 +44,8 @@ if(DOXYGEN_FOUND)
     Set(GODOT_LINK_START "<godotonly position=\\\"open\\\" content=\\\"[")
     set(GODOT_LINK_CLOSE "<godotonly position=\\\"close\\\" content=\\\"]\\\"></godotonly>")
     set(GODOT_OPERATOR_LINK_CLOSE "<godotonly position=\\\"close\\\" content=\\\" *]\\\"></godotonly>")
+    set(GODOT_NOTE_OPEN "<godotonly position=\\\"open\\\" content=\\\"[br][br][b]Note:[/b]\\\"></godotonly>")
+    set(GODOT_WARNING_OPEN "<godotonly position=\\\"open\\\" content=\\\"[br][br][b]Warning:[/b]\\\"></godotonly>")
 
     # create an alias so we can use @glnk{} or \glnk{} in comments to create output for Godot documentation only
     # so that doxygen xml output remains compatible with Breathe.
@@ -45,12 +64,11 @@ if(DOXYGEN_FOUND)
             "gdpar{1}=\"\\xmlonly${GODOT_LINK_START}param\\\"></godotonly>\\endxmlonly\\1\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
             # signal alias uses | pipes as a parameter seperator so that commas don't have to be escaped
             "signal{2|}=\"\\xrefitem signal \\\"Signal\\\" \\\"Signals\\\"\\xmlonly<godotonly reference=\\\"signal\\\" name=\\\"\\1\\\"/>\\endxmlonly@parblock<b>\\1:</b> ^^^^^^ \\2@endparblock\""
+            "gdwarn{1}=\"\\xmlonly${GODOT_WARNING_OPEN}\\1\\endxmlonly \\warning \\1 ^^^^^^\""
+            "gdnote{1}=\"\\xmlonly${GODOT_NOTE_OPEN}\\1\\endxmlonly \\note \\1 ^^^^^^\""
     )
 
-   set(DOXYGEN_VERBATIM_VARS DOXYGEN_ALIASES)
-
-    # set directory to create the docs in
-    set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs)
+    set(DOXYGEN_VERBATIM_VARS DOXYGEN_ALIASES)
 
     # set the project read me file as the content of the main index page of
     # the documentation
@@ -95,9 +113,9 @@ if(DOXYGEN_FOUND)
     add_custom_command(
             TARGET doc_doxygen
             POST_BUILD
-            COMMAND Python3::Interpreter "${CMAKE_CURRENT_SOURCE_DIR}/cmake/doxy_to_godot.py"
+            COMMAND Python3::Interpreter "${ALBATROSS_DIRECTORY}/aerify_didi.py"
             "${DOXYGEN_OUTPUT_DIRECTORY}/xml"
-            "${CMAKE_CURRENT_SOURCE_DIR}/doc_classes"
+            "${GODOT_GENERATED_DOCS_DIRECTORY}"
             COMMENT "Generating Godot class documentation"
             VERBATIM
     )
@@ -107,13 +125,13 @@ if(DOXYGEN_FOUND)
         add_custom_command(
                 TARGET doc_doxygen
                 POST_BUILD
-                COMMAND Python3::Interpreter "${CMAKE_CURRENT_SOURCE_DIR}/cmake/doxy_build_profile.py"
+                COMMAND Python3::Interpreter "${ALBATROSS_DIRECTORY}/waft_gogo.py"
                 "${DOXYGEN_OUTPUT_DIRECTORY}/xml"
                 "${CMAKE_CURRENT_SOURCE_DIR}/doc_classes"
                 COMMENT "Generating Build Profile"
                 VERBATIM
         )
     endif ()
- else()
-   message(STATUS "Doxygen Not Found")
+else()
+    message(STATUS "Doxygen Not Found")
 endif()
