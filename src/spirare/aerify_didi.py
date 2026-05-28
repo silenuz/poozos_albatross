@@ -27,7 +27,7 @@ xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
 src_folder = Path(dest_folder).parent
 
-template_methods_path = next(src_folder.rglob("methods.py"))
+template_methods_path = next(src_folder.rglob("methods.py"), None)
 module_name = "template_methods"
 template_methods_found = False
 methods_module = None
@@ -629,4 +629,5 @@ def write_file(godot_root: et.Element, class_name: str) -> bool:
     return result
 
 
-parse_class_xml_files()
+if __name__ == '__main__':
+    parse_class_xml_files()

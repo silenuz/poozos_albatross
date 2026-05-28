@@ -75,3 +75,5 @@ def parse_class_xml_files() -> None:
         create_profile_for_class(file)
         write_output()
 
+if __name__ == '__main__':
+    parse_class_xml_files()
