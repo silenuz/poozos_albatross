@@ -6,7 +6,7 @@
 @Date: 5/27/26
 @File: waft_gogo
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 
 This module parses Doxygen generated XML documentation and attempts to generate
 GDExtension build_profile.json file.

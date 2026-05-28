@@ -6,7 +6,7 @@
 @Date: 5/28/26
 @File: build_profile
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 import sys
 from pathlib import Path

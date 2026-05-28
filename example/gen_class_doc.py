@@ -6,7 +6,7 @@
 @Date: 5/28/26
 @File: gen_class_doc
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 import sys
 from pathlib import Path

@@ -6,7 +6,7 @@
 @Date: 5/27/26
 @File: aerify_didi
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 
 This module parses Doxygen XML output to generate Godot class documentation for a GDExtension.
 

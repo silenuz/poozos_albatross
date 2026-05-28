@@ -6,7 +6,7 @@
 @Date: 5/27/26
 @File: luckys_zephyr
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 
 This module contains common functions used by the other modules
 
