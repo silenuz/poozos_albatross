@@ -1,0 +1,399 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classTrafficLight" kind="class" language="C++" prot="public">
+    <compoundname>TrafficLight</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">godot::Control</basecompoundref>
+    <includes refid="traffic__light_8h" local="no">traffic_light.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classTrafficLight_1a3f8d8c5ad0b25ed7c68ca02b31d6d3ab" prot="private" static="no" mutable="no">
+        <type>TextureRect *</type>
+        <definition>TextureRect* TrafficLight::texture_rect</definition>
+        <argsstring></argsstring>
+        <name>texture_rect</name>
+        <qualifiedname>TrafficLight::texture_rect</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="40" column="13" bodyfile="src/traffic_light.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classTrafficLight_1aeb3186d5341e2c65009e49545cdc11e6" prot="private" static="no" mutable="no">
+        <type>Ref&lt; Texture2D &gt;</type>
+        <definition>Ref&lt;Texture2D&gt; TrafficLight::go_texture</definition>
+        <argsstring></argsstring>
+        <name>go_texture</name>
+        <qualifiedname>TrafficLight::go_texture</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> used for displaying the Go state </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="42" column="5" bodyfile="src/traffic_light.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classTrafficLight_1a79b786932ba08e6e5dba46b9f452eb4f" prot="private" static="no" mutable="no">
+        <type>Ref&lt; Texture2D &gt;</type>
+        <definition>Ref&lt;Texture2D&gt; TrafficLight::stop_texture</definition>
+        <argsstring></argsstring>
+        <name>stop_texture</name>
+        <qualifiedname>TrafficLight::stop_texture</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> used for displaying the Stop state </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="43" column="5" bodyfile="src/traffic_light.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classTrafficLight_1a0cbc765cf815a6134128e006c2f4d202" prot="private" static="no" mutable="no">
+        <type>Ref&lt; Texture2D &gt;</type>
+        <definition>Ref&lt;Texture2D&gt; TrafficLight::caution_texture</definition>
+        <argsstring></argsstring>
+        <name>caution_texture</name>
+        <qualifiedname>TrafficLight::caution_texture</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> used for displaying the Caution state </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="44" column="5" bodyfile="src/traffic_light.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classTrafficLight_1ac586d4243735cb69f5d54a7069f89a26" prot="private" static="no" mutable="no">
+        <type>TrafficLightType</type>
+        <definition>TrafficLightType TrafficLight::light_type</definition>
+        <argsstring></argsstring>
+        <name>light_type</name>
+        <qualifiedname>TrafficLight::light_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The current,state of the traffic light (Go, Caution, Stop ), see  <godotonly position="open" content="[enum TrafficLight."></godotonly>TrafficLightType<godotonly position="close" content="]"></godotonly> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="45" column="18" bodyfile="src/traffic_light.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classTrafficLight_1acc29230cf7e48e6cab9a475edc4a5815" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TrafficLight::GDCLASS</definition>
+        <argsstring>(TrafficLight, Control)</argsstring>
+        <name>GDCLASS</name>
+        <qualifiedname>TrafficLight::GDCLASS</qualifiedname>
+        <param>
+          <type><ref refid="classTrafficLight" kindref="compound">TrafficLight</ref></type>
+        </param>
+        <param>
+          <type>Control</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="38" column="1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="classTrafficLight_1a3949215d0fbb8273e1602abaabba8c41" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TrafficLight::_bind_methods</definition>
+        <argsstring>()</argsstring>
+        <name>_bind_methods</name>
+        <qualifiedname>TrafficLight::_bind_methods</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>You must declare a protected static void <computeroutput><ref refid="classTrafficLight_1a3949215d0fbb8273e1602abaabba8c41" kindref="member">_bind_methods()</ref></computeroutput> function in your class header. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="51" column="13" bodyfile="src/traffic_light.cpp" bodystart="13" bodyend="49"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classTrafficLight_1a96e207c04a276fbd4f754e5d086675e0" prot="protected" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TrafficLight::_notification</definition>
+        <argsstring>(int p_what)</argsstring>
+        <name>_notification</name>
+        <qualifiedname>TrafficLight::_notification</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>p_what</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Primary method used to handle engine-level callbacks, such as an object&apos;s life cycle events or node status changes <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p_what</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the notification value from the Godot engine some common ones are READY,PROCESS,ENTER_TREE, and EXIT_TREE </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="56" column="6" bodyfile="src/traffic_light.cpp" bodystart="51" bodyend="59"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classTrafficLight_1a28e72db41dcbd224a0a811d08ae20c3f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>TrafficLight::TrafficLight</definition>
+        <argsstring>()</argsstring>
+        <name>TrafficLight</name>
+        <qualifiedname>TrafficLight::TrafficLight</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>constructor </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="62" column="1" bodyfile="src/traffic_light.cpp" bodystart="116" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="classTrafficLight_1a5a989d55646c3a11ca807f9b91c42047" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TrafficLight::set_go_texture</definition>
+        <argsstring>(const Ref&lt; Texture2D &gt; &amp;p_texture)</argsstring>
+        <name>set_go_texture</name>
+        <qualifiedname>TrafficLight::set_go_texture</qualifiedname>
+        <param>
+          <type>const Ref&lt; Texture2D &gt; &amp;</type>
+          <declname>p_texture</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> to be used when the light is in a (Go state <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p_texture</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the texture to be used </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="68" column="6" bodyfile="src/traffic_light.cpp" bodystart="106" bodyend="109"/>
+      </memberdef>
+      <memberdef kind="function" id="classTrafficLight_1a1373c1648395d3dd59356aa63c8b7e25" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>Ref&lt; Texture2D &gt;</type>
+        <definition>Ref&lt; Texture2D &gt; TrafficLight::get_go_texture</definition>
+        <argsstring>() const</argsstring>
+        <name>get_go_texture</name>
+        <qualifiedname>TrafficLight::get_go_texture</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> that acts as the texture for the Go state <simplesect kind="return"><para>the current  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> being used to represent Go </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="74" column="5" bodyfile="src/traffic_light.cpp" bodystart="86" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="classTrafficLight_1a8f335d111cadd57b3692b535dca13285" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TrafficLight::set_caution_texture</definition>
+        <argsstring>(const Ref&lt; Texture2D &gt; &amp;p_texture)</argsstring>
+        <name>set_caution_texture</name>
+        <qualifiedname>TrafficLight::set_caution_texture</qualifiedname>
+        <param>
+          <type>const Ref&lt; Texture2D &gt; &amp;</type>
+          <declname>p_texture</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> to be used when the light is in a Caution state <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p_texture</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the texture to be used </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="80" column="6" bodyfile="src/traffic_light.cpp" bodystart="101" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="classTrafficLight_1a08cdb36fc55b968affa3c1faafb5d942" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>Ref&lt; Texture2D &gt;</type>
+        <definition>Ref&lt; Texture2D &gt; TrafficLight::get_caution_texture</definition>
+        <argsstring>() const</argsstring>
+        <name>get_caution_texture</name>
+        <qualifiedname>TrafficLight::get_caution_texture</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> that acts as the texture for the Caution state <simplesect kind="return"><para>the current Texture2D being used to represent Caution </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="86" column="5" bodyfile="src/traffic_light.cpp" bodystart="96" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="function" id="classTrafficLight_1ae60ebb2e9f1706657b1c6b6e75727bfc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TrafficLight::set_stop_texture</definition>
+        <argsstring>(const Ref&lt; Texture2D &gt; &amp;p_texture)</argsstring>
+        <name>set_stop_texture</name>
+        <qualifiedname>TrafficLight::set_stop_texture</qualifiedname>
+        <param>
+          <type>const Ref&lt; Texture2D &gt; &amp;</type>
+          <declname>p_texture</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> to be used when the light is in a Stop state <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p_texture</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the texture to be used </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="92" column="6" bodyfile="src/traffic_light.cpp" bodystart="111" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classTrafficLight_1acd8c1bc62d2b82e0a3173063d599a5fc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>Ref&lt; Texture2D &gt;</type>
+        <definition>Ref&lt; Texture2D &gt; TrafficLight::get_stop_texture</definition>
+        <argsstring>() const</argsstring>
+        <name>get_stop_texture</name>
+        <qualifiedname>TrafficLight::get_stop_texture</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the  <godotonly position="open" content="["></godotonly>Texture2D<godotonly position="close" content="]"></godotonly> that acts as the texture for the Stop state <simplesect kind="return"><para>the current Texture2D being used to represent Stop </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="98" column="5" bodyfile="src/traffic_light.cpp" bodystart="91" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="classTrafficLight_1a0be77a799e6abd426a80939eeee2215e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void TrafficLight::set_light_type</definition>
+        <argsstring>(TrafficLightType p_light_type)</argsstring>
+        <name>set_light_type</name>
+        <qualifiedname>TrafficLight::set_light_type</qualifiedname>
+        <param>
+          <type>TrafficLightType</type>
+          <declname>p_light_type</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Sets the current state of the light to a value from  <godotonly position="open" content="[enum TrafficLight."></godotonly>TrafficLightType<godotonly position="close" content="]"></godotonly> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p_light_type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the traffic light type enumerator </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="104" column="6" bodyfile="src/traffic_light.cpp" bodystart="66" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classTrafficLight_1a846f87f93fae05fa00ba2d014a57ae23" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>TrafficLightType</type>
+        <definition>TrafficLightType TrafficLight::get_light_type</definition>
+        <argsstring>() const</argsstring>
+        <name>get_light_type</name>
+        <qualifiedname>TrafficLight::get_light_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gets the current state of the traffic light, a value from  <godotonly position="open" content="[enum TrafficLight."></godotonly>TrafficLightType<godotonly position="close" content="]"></godotonly> <simplesect kind="return"><para>the traffic light type enumerator for the current light state(go,caution,stop) </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="110" column="18" bodyfile="src/traffic_light.cpp" bodystart="61" bodyend="64"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A classic code example from <emphasis>Godotcon 2024</emphasis> </para>
+    </briefdescription>
+    <detaileddescription>
+<para><strike>stolen</strike> <bold>borrowed</bold> from <emphasis>Godotcon 2024</emphasis></para>
+<para>The class <underline>must inherit</underline> from a Godot built in class (like  <godotonly position="open" content="["></godotonly>Object<godotonly position="close" content="]"></godotonly>,  <godotonly position="open" content="["></godotonly>Node<godotonly position="close" content="]"></godotonly>,  <godotonly position="open" content="["></godotonly>Sprite2D<godotonly position="close" content="]"></godotonly>, or  <godotonly position="open" content="["></godotonly>Resource<godotonly position="close" content="]"></godotonly>). Godot does not support multiple inheritance for GDExtension classes. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>TrafficLight</label>
+        <link refid="classTrafficLight"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>godot::Control</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>TrafficLight</label>
+        <link refid="classTrafficLight"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>godot::Control</label>
+      </node>
+    </collaborationgraph>
+    <location file="src/traffic_light.h" line="37" column="1" bodyfile="src/traffic_light.h" bodystart="37" bodyend="111"/>
+    <listofallmembers>
+      <member refid="classTrafficLight_1a3949215d0fbb8273e1602abaabba8c41" prot="protected" virt="non-virtual"><scope>TrafficLight</scope><name>_bind_methods</name></member>
+      <member refid="classTrafficLight_1a96e207c04a276fbd4f754e5d086675e0" prot="protected" virt="non-virtual"><scope>TrafficLight</scope><name>_notification</name></member>
+      <member refid="classTrafficLight_1a0cbc765cf815a6134128e006c2f4d202" prot="private" virt="non-virtual"><scope>TrafficLight</scope><name>caution_texture</name></member>
+      <member refid="classTrafficLight_1acc29230cf7e48e6cab9a475edc4a5815" prot="private" virt="non-virtual"><scope>TrafficLight</scope><name>GDCLASS</name></member>
+      <member refid="classTrafficLight_1a08cdb36fc55b968affa3c1faafb5d942" prot="public" virt="non-virtual"><scope>TrafficLight</scope><name>get_caution_texture</name></member>
+      <member refid="classTrafficLight_1a1373c1648395d3dd59356aa63c8b7e25" prot="public" virt="non-virtual"><scope>TrafficLight</scope><name>get_go_texture</name></member>
+      <member refid="classTrafficLight_1a846f87f93fae05fa00ba2d014a57ae23" prot="public" virt="non-virtual"><scope>TrafficLight</scope><name>get_light_type</name></member>
+      <member refid="classTrafficLight_1acd8c1bc62d2b82e0a3173063d599a5fc" prot="public" virt="non-virtual"><scope>TrafficLight</scope><name>get_stop_texture</name></member>
+      <member refid="classTrafficLight_1aeb3186d5341e2c65009e49545cdc11e6" prot="private" virt="non-virtual"><scope>TrafficLight</scope><name>go_texture</name></member>
+      <member refid="classTrafficLight_1ac586d4243735cb69f5d54a7069f89a26" prot="private" virt="non-virtual"><scope>TrafficLight</scope><name>light_type</name></member>
+      <member refid="classTrafficLight_1a8f335d111cadd57b3692b535dca13285" prot="public" virt="non-virtual"><scope>TrafficLight</scope><name>set_caution_texture</name></member>
+      <member refid="classTrafficLight_1a5a989d55646c3a11ca807f9b91c42047" prot="public" virt="non-virtual"><scope>TrafficLight</scope><name>set_go_texture</name></member>
+      <member refid="classTrafficLight_1a0be77a799e6abd426a80939eeee2215e" prot="public" virt="non-virtual"><scope>TrafficLight</scope><name>set_light_type</name></member>
+      <member refid="classTrafficLight_1ae60ebb2e9f1706657b1c6b6e75727bfc" prot="public" virt="non-virtual"><scope>TrafficLight</scope><name>set_stop_texture</name></member>
+      <member refid="classTrafficLight_1a79b786932ba08e6e5dba46b9f452eb4f" prot="private" virt="non-virtual"><scope>TrafficLight</scope><name>stop_texture</name></member>
+      <member refid="classTrafficLight_1a3f8d8c5ad0b25ed7c68ca02b31d6d3ab" prot="private" virt="non-virtual"><scope>TrafficLight</scope><name>texture_rect</name></member>
+      <member refid="classTrafficLight_1a28e72db41dcbd224a0a811d08ae20c3f" prot="public" virt="non-virtual"><scope>TrafficLight</scope><name>TrafficLight</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

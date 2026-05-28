@@ -26,7 +26,7 @@ import luckys_zephyr as lz
 
 xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
-src_folder = Path(dest_folder).parent
+src_folder = Path(dest_folder)
 
 build_profile = dict()
 build_profile['_'] = 'Build Profile Generated from Doxygen XML'
@@ -75,4 +75,3 @@ def parse_class_xml_files() -> None:
         create_profile_for_class(file)
         write_output()
 
-parse_class_xml_files()

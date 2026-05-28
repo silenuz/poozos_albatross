@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.13.2" xml:lang="en-US">
+  <compound refid="classSummator" kind="class"><name>Summator</name>
+    <member refid="classSummator_1a87ae9682eade0936951a9725bbf31f77" kind="variable"><name>sum</name></member>
+    <member refid="classSummator_1a04c0843c429f41308e858933293cd43b" kind="function"><name>GDCLASS</name></member>
+    <member refid="classSummator_1a87a714a1fa810061b161a562eb4f3cd9" kind="function"><name>_bind_methods</name></member>
+    <member refid="classSummator_1a6294425c68c6937d4de8cc2334069b00" kind="function"><name>add</name></member>
+    <member refid="classSummator_1a6e8d85e71fc296888b14ca72fa5fe4de" kind="function"><name>reset</name></member>
+    <member refid="classSummator_1a1c3b1b74ac163588a654900ec500685c" kind="function"><name>get_total</name></member>
+    <member refid="classSummator_1a250b744c59b186168717cb0dc6f3a4da" kind="function"><name>Summator</name></member>
+  </compound>
+  <compound refid="classTrafficLight" kind="class"><name>TrafficLight</name>
+    <member refid="classTrafficLight_1a3f8d8c5ad0b25ed7c68ca02b31d6d3ab" kind="variable"><name>texture_rect</name></member>
+    <member refid="classTrafficLight_1aeb3186d5341e2c65009e49545cdc11e6" kind="variable"><name>go_texture</name></member>
+    <member refid="classTrafficLight_1a79b786932ba08e6e5dba46b9f452eb4f" kind="variable"><name>stop_texture</name></member>
+    <member refid="classTrafficLight_1a0cbc765cf815a6134128e006c2f4d202" kind="variable"><name>caution_texture</name></member>
+    <member refid="classTrafficLight_1ac586d4243735cb69f5d54a7069f89a26" kind="variable"><name>light_type</name></member>
+    <member refid="classTrafficLight_1acc29230cf7e48e6cab9a475edc4a5815" kind="function"><name>GDCLASS</name></member>
+    <member refid="classTrafficLight_1a3949215d0fbb8273e1602abaabba8c41" kind="function"><name>_bind_methods</name></member>
+    <member refid="classTrafficLight_1a96e207c04a276fbd4f754e5d086675e0" kind="function"><name>_notification</name></member>
+    <member refid="classTrafficLight_1a28e72db41dcbd224a0a811d08ae20c3f" kind="function"><name>TrafficLight</name></member>
+    <member refid="classTrafficLight_1a5a989d55646c3a11ca807f9b91c42047" kind="function"><name>set_go_texture</name></member>
+    <member refid="classTrafficLight_1a1373c1648395d3dd59356aa63c8b7e25" kind="function"><name>get_go_texture</name></member>
+    <member refid="classTrafficLight_1a8f335d111cadd57b3692b535dca13285" kind="function"><name>set_caution_texture</name></member>
+    <member refid="classTrafficLight_1a08cdb36fc55b968affa3c1faafb5d942" kind="function"><name>get_caution_texture</name></member>
+    <member refid="classTrafficLight_1ae60ebb2e9f1706657b1c6b6e75727bfc" kind="function"><name>set_stop_texture</name></member>
+    <member refid="classTrafficLight_1acd8c1bc62d2b82e0a3173063d599a5fc" kind="function"><name>get_stop_texture</name></member>
+    <member refid="classTrafficLight_1a0be77a799e6abd426a80939eeee2215e" kind="function"><name>set_light_type</name></member>
+    <member refid="classTrafficLight_1a846f87f93fae05fa00ba2d014a57ae23" kind="function"><name>get_light_type</name></member>
+  </compound>
+  <compound refid="namespacegodot" kind="namespace"><name>godot</name>
+  </compound>
+  <compound refid="README_8md" kind="file"><name>README.md</name>
+  </compound>
+  <compound refid="summator_8cpp" kind="file"><name>summator.cpp</name>
+  </compound>
+  <compound refid="summator_8h" kind="file"><name>summator.h</name>
+  </compound>
+  <compound refid="traffic__light_8cpp" kind="file"><name>traffic_light.cpp</name>
+  </compound>
+  <compound refid="traffic__light_8h" kind="file"><name>traffic_light.h</name>
+    <member refid="traffic__light_8h_1a2e13f54047cc51f08632a48b36d8b7eb" kind="enum"><name>TrafficLightType</name></member>
+    <member refid="traffic__light_8h_1a2e13f54047cc51f08632a48b36d8b7eba60f78826580046c0b19703e0af2fdeda" kind="enumvalue"><name>TRAFFIC_LIGHT_GO</name></member>
+    <member refid="traffic__light_8h_1a2e13f54047cc51f08632a48b36d8b7eba107ed10dd2df3c7a3ab33559cc7a72d5" kind="enumvalue"><name>TRAFFIC_LIGHT_CAUTION</name></member>
+    <member refid="traffic__light_8h_1a2e13f54047cc51f08632a48b36d8b7eba7bc1ed65131153813e4f959798ffb377" kind="enumvalue"><name>TRAFFIC_LIGHT_STOP</name></member>
+    <member refid="traffic__light_8h_1a83c5ec5d8090d2657fff44dce46b68ca" kind="function"><name>VARIANT_ENUM_CAST</name></member>
+  </compound>
+  <compound refid="signal" kind="page"><name>signal</name>
+  </compound>
+  <compound refid="dir_68267d1309a1af8e8297ef4c3efbcdba" kind="dir"><name>src</name>
+  </compound>
+  <compound refid="indexpage" kind="page"><name>index</name>
+  </compound>
+</doxygenindex>

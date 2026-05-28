@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="traffic__light_8h" kind="file" language="C++">
+    <compoundname>traffic_light.h</compoundname>
+    <includes local="no">godot_cpp/classes/control.hpp</includes>
+    <includes local="no">godot_cpp/classes/texture2d.hpp</includes>
+    <includes local="no">godot_cpp/classes/texture_rect.hpp</includes>
+    <includedby refid="traffic__light_8cpp" local="yes">src/traffic_light.cpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>src/traffic_light.h</label>
+        <link refid="traffic__light_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>godot_cpp/classes/control.hpp</label>
+      </node>
+      <node id="3">
+        <label>godot_cpp/classes/texture2d.hpp</label>
+      </node>
+      <node id="4">
+        <label>godot_cpp/classes/texture_rect.hpp</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="classTrafficLight" prot="public">TrafficLight</innerclass>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="traffic__light_8h_1a2e13f54047cc51f08632a48b36d8b7eb" prot="public" static="no" strong="no">
+        <type></type>
+        <name>TrafficLightType</name>
+        <enumvalue id="traffic__light_8h_1a2e13f54047cc51f08632a48b36d8b7eba60f78826580046c0b19703e0af2fdeda" prot="public">
+          <name>TRAFFIC_LIGHT_GO</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Represents a light indicating Go </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="traffic__light_8h_1a2e13f54047cc51f08632a48b36d8b7eba107ed10dd2df3c7a3ab33559cc7a72d5" prot="public">
+          <name>TRAFFIC_LIGHT_CAUTION</name>
+          <initializer>= 500</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Represents a light indicating Caution </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="traffic__light_8h_1a2e13f54047cc51f08632a48b36d8b7eba7bc1ed65131153813e4f959798ffb377" prot="public">
+          <name>TRAFFIC_LIGHT_STOP</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Represents a light indicating Stop </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>TrafficLightType enumerator the traffic light enumerator is used to track the current state of the light (Go,Caution,Stop) </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="21" column="1" bodyfile="src/traffic_light.h" bodystart="21" bodyend="25"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="traffic__light_8h_1a83c5ec5d8090d2657fff44dce46b68ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>VARIANT_ENUM_CAST</definition>
+        <argsstring>(TrafficLightType)</argsstring>
+        <name>VARIANT_ENUM_CAST</name>
+        <param>
+          <type>TrafficLightType</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/traffic_light.h" line="113" column="1" declfile="src/traffic_light.h" declline="113" declcolumn="1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>This<sp/>source<sp/>code<sp/>was<sp/>&quot;borrowed&quot;<sp/>from<sp/>the<sp/>Godot<sp/>documentation.</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>©<sp/>Copyright<sp/>2014-2026,<sp/>Juan<sp/>Linietsky,<sp/>Ariel<sp/>Manzur<sp/>and<sp/>the<sp/>Godot<sp/>community<sp/>(CC-BY<sp/>3.0)</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>GODOT_CPP_TEMPLATE_TRAFFIC_LIGHT_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GODOT_CPP_TEMPLATE_TRAFFIC_LIGHT_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;godot_cpp/classes/control.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;godot_cpp/classes/texture2d.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;godot_cpp/classes/texture_rect.hpp&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">godot;</highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="keyword">enum</highlight><highlight class="normal"><sp/>TrafficLightType<sp/>{</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>TRAFFIC_LIGHT_GO<sp/>,<sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>TRAFFIC_LIGHT_CAUTION<sp/>=<sp/>500,<sp/></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>TRAFFIC_LIGHT_STOP<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37" refid="classTrafficLight" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classTrafficLight_1a28e72db41dcbd224a0a811d08ae20c3f" kindref="member">TrafficLight</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>godot::Control<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>GDCLASS(<ref refid="classTrafficLight_1a28e72db41dcbd224a0a811d08ae20c3f" kindref="member">TrafficLight</ref>,<sp/>Control);</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>TextureRect<sp/>*texture_rect;</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/>Ref&lt;Texture2D&gt;<sp/>go_texture;<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>Ref&lt;Texture2D&gt;<sp/>stop_texture;<sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/>Ref&lt;Texture2D&gt;<sp/>caution_texture;<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>TrafficLightType<sp/>light_type;<sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classTrafficLight_1a3949215d0fbb8273e1602abaabba8c41" kindref="member">_bind_methods</ref>();</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classTrafficLight_1a96e207c04a276fbd4f754e5d086675e0" kindref="member">_notification</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>p_what);</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classTrafficLight_1a28e72db41dcbd224a0a811d08ae20c3f" kindref="member">TrafficLight</ref>();</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classTrafficLight_1a5a989d55646c3a11ca807f9b91c42047" kindref="member">set_go_texture</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Ref&lt;Texture2D&gt;<sp/>&amp;p_texture);</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/>Ref&lt;Texture2D&gt;<sp/><ref refid="classTrafficLight_1a1373c1648395d3dd59356aa63c8b7e25" kindref="member">get_go_texture</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classTrafficLight_1a8f335d111cadd57b3692b535dca13285" kindref="member">set_caution_texture</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Ref&lt;Texture2D&gt;<sp/>&amp;p_texture);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>Ref&lt;Texture2D&gt;<sp/><ref refid="classTrafficLight_1a08cdb36fc55b968affa3c1faafb5d942" kindref="member">get_caution_texture</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classTrafficLight_1ae60ebb2e9f1706657b1c6b6e75727bfc" kindref="member">set_stop_texture</ref>(</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Ref&lt;Texture2D&gt;<sp/>&amp;p_texture);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>Ref&lt;Texture2D&gt;<sp/><ref refid="classTrafficLight_1acd8c1bc62d2b82e0a3173063d599a5fc" kindref="member">get_stop_texture</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classTrafficLight_1a0be77a799e6abd426a80939eeee2215e" kindref="member">set_light_type</ref>(TrafficLightType<sp/>p_light_type);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>TrafficLightType<sp/><ref refid="classTrafficLight_1a846f87f93fae05fa00ba2d014a57ae23" kindref="member">get_light_type</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal">};</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal">VARIANT_ENUM_CAST(TrafficLightType);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//GODOT_CPP_TEMPLATE_TRAFFIC_LIGHT_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="src/traffic_light.h"/>
+  </compounddef>
+</doxygen>
