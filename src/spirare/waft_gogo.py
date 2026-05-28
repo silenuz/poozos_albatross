@@ -7,6 +7,14 @@
 @File: waft_gogo
 
 @Author: Phosphor (horuuendillus@gmail.com)
+
+This module parses Doxygen generated XML documentation and attempts to generate
+GDExtension build_profile.json file.
+
+Gogo: "You're sure it was this evening?"
+Didi: "What?"
+Gogo: "That we were to wait."
+Didi: "He said Saturday. (Pause) I think."
 """
 import sys
 import json

@@ -7,6 +7,13 @@
 @File: aerify_didi
 
 @Author: Phosphor (horuuendillus@gmail.com)
+
+This module parses Doxygen XML output to generate Godot class documentation for a GDExtension.
+
+Command-line Arguments:
+
+Didi: "Well? What do we do?"
+Gogo: "Don't let's do anything.  It's safer"
 """
 import re
 import importlib.util

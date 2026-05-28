@@ -7,7 +7,13 @@
 @File: luckys_zephyr
 
 @Author: Phosphor (horuuendillus@gmail.com)
+
+This module contains common functions used by the other modules
+
+Didi: "Tomorrow when I wake or think I do, what shall I say of today?
+       That with Estragon my friend, at this place, until the fall of night, I waited for Godot? "
 """
+
 from collections import namedtuple
 from pathlib import Path
 from xml.etree import ElementTree as et
