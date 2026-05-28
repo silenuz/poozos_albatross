@@ -17,11 +17,6 @@ Currently, the python script is capable of exporting the content for methods, pr
 Processing of signals is in progress and should be finished soon, as well code blocks in description fields should be working
 in the next week or so. 
 
-The example directory has a self-contained example to represent parts of a GDExtension cpp template project.  It has
-no requirement other than python, and contains command line scripts that demonstrate usage.
-
-The example directory has a README with more information.
-
 Contents:
 ---------
 This repository contains 3 pythons scripts, one with shared functions, 
@@ -29,17 +24,20 @@ one for generating Godot class documentation from Doxygen generated XML files,
 and one for generating a build_profile.json file for the project from the Doxygen
 XML files.
 
+The example directory has a self-contained example to represent parts of a GDExtension cpp template project.  It has
+no requirement other than python, and contains command line scripts that demonstrate usage.
+
+The example directory has a README with more information.
+
 The support_files directory contains a sample cmake file for configuring Doxygen
 and running the scripts as part of a cmake target.
 
 The support files directory also contains Doxygen configuration file with
 all the aliases already in it.  This can then be used from the command line to generate the
-Doxygen XML so that the scripts can be used manually, or integrated into the scons build system.  
+Doxygen XML so that the scripts can be used manually, or integrated into the scons build system via the doxygen.py module.
 
-To see an example project using cmake to generate documents see 
+To see an example project using cmake with the scripts to generate Godot class documentation see 
 [doxy_demo](https://github.com/silenuz/doxy_demo)
-
-Demo for scons coming soon.
 
 Notes:
 ------

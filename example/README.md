@@ -12,7 +12,7 @@ The doxygen_output directory has pre-generated Doxygen XML for the above classes
 this example can be run even if Doxygen is not present on the system.
 
 If Doxygen is present the config directory has a Doxygen configuration file that can be used to generate 
-a HTML sample is so desired.  As well if Doxygen is present, one can add additional classes to
+a HTML sample if so desired.  As well if Doxygen is present, one can add additional classes to
 the source directory to see what the generated documentation for those classes might look like.
 
 To generate the Doxygen XML just open a terminal in the example directory and enter:
