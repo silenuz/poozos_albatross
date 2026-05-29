@@ -22,7 +22,10 @@ doxygen ./config/doxygen_config.cfg
 This will generate the XML and HTML output files, and this read me should be the main page of the
 HTML output.
 
-There are two python scripts in the example directory as well.  
+There are three python scripts in the example directory as well.  
+
+build_all will generate the Doxygen content if Doxygen can be found in the path, 
+it will then generate a build profile, and class documentation.
 
 gen_class_doc can be run from the command line to generate Godot class documentation in the doc_classes_generated 
 directory.  This documentation is generated from the XML content in the doxygen_ouput directory.
