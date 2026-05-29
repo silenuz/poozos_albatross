@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="classSummator" kind="class" language="C++" prot="public">
+    <compoundname>Summator</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Object</basecompoundref>
+    <includes refid="summator_8h" local="no">summator.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classSummator_1a87ae9682eade0936951a9725bbf31f77" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Summator::sum</definition>
+        <argsstring></argsstring>
+        <name>sum</name>
+        <qualifiedname>Summator::sum</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="53" column="5" bodyfile="src/summator.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classSummator_1a04c0843c429f41308e858933293cd43b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Summator::GDCLASS</definition>
+        <argsstring>(Summator, Object)</argsstring>
+        <name>GDCLASS</name>
+        <qualifiedname>Summator::GDCLASS</qualifiedname>
+        <param>
+          <type><ref refid="classSummator" kindref="compound">Summator</ref></type>
+        </param>
+        <param>
+          <type>Object</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="50" column="1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="classSummator_1a87a714a1fa810061b161a562eb4f3cd9" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Summator::_bind_methods</definition>
+        <argsstring>()</argsstring>
+        <name>_bind_methods</name>
+        <qualifiedname>Summator::_bind_methods</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>You must declare a protected static void <ref refid="classSummator_1a87a714a1fa810061b161a562eb4f3cd9" kindref="member">_bind_methods()</ref> function in your class header. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="59" column="13" bodyfile="src/summator.cpp" bodystart="10" bodyend="18"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classSummator_1a6294425c68c6937d4de8cc2334069b00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Summator::add</definition>
+        <argsstring>(int p_value)</argsstring>
+        <name>add</name>
+        <qualifiedname>Summator::add</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>p_value</declname>
+        </param>
+        <briefdescription>
+<para>adds the passed value to the current total </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function simply adds the integer value of the argument to the current total</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>p_value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>integer value to be added to the current total </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="69" column="6" bodyfile="src/summator.cpp" bodystart="20" bodyend="24"/>
+      </memberdef>
+      <memberdef kind="function" id="classSummator_1a6e8d85e71fc296888b14ca72fa5fe4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Summator::reset</definition>
+        <argsstring>()</argsstring>
+        <name>reset</name>
+        <qualifiedname>Summator::reset</qualifiedname>
+        <briefdescription>
+<para>resets the total to zero </para>
+        </briefdescription>
+        <detaileddescription>
+<para>resets the current total to zero </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="76" column="6" bodyfile="src/summator.cpp" bodystart="25" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classSummator_1a1c3b1b74ac163588a654900ec500685c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Summator::get_total</definition>
+        <argsstring>() const</argsstring>
+        <name>get_total</name>
+        <qualifiedname>Summator::get_total</qualifiedname>
+        <briefdescription>
+<para>returns the current total </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function returns the current total, which is the sum of all the integers the summator added together.</para>
+<para><simplesect kind="return"><para>the sum of all the integers that were added together </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="86" column="5" bodyfile="src/summator.cpp" bodystart="31" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classSummator_1a250b744c59b186168717cb0dc6f3a4da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Summator::Summator</definition>
+        <argsstring>()</argsstring>
+        <name>Summator</name>
+        <qualifiedname>Summator::Summator</qualifiedname>
+        <briefdescription>
+<para>constructor </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a new instance of the <ref refid="classSummator" kindref="compound">Summator</ref> class </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="93" column="1" bodyfile="src/summator.cpp" bodystart="36" bodyend="39"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A <emphasis>classic</emphasis> code example for a <bold>GDExtension</bold> </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The class must inherit from a Godot built in class (like  <godotonly position="open" content="["/>Object<godotonly position="close" content="]"/>,  <godotonly position="open" content="["/>Node<godotonly position="close" content="]"/>,  <godotonly position="open" content="["/>Sprite2D<godotonly position="close" content="]"/>, or  <godotonly position="open" content="["/>Resource<godotonly position="close" content="]"/>). Godot does not support multiple inheritance for GDExtension classes.</para>
+<para><ref refid="classSummator" kindref="compound">Summator</ref> Example Usage: <programlisting filename=".gdscript"><codeline><highlight class="normal">var<sp/>sum<sp/>=<sp/>Summator.new()</highlight></codeline>
+<codeline><highlight class="normal"><sp/>sum.add(5)</highlight></codeline>
+<codeline><highlight class="normal"><sp/>sum.add(7)</highlight></codeline>
+<codeline><highlight class="normal"><sp/>var<sp/>total<sp/>=<sp/>sum.get_total()</highlight></codeline>
+<codeline><highlight class="normal"><sp/>#<sp/>prints<sp/>12</highlight></codeline>
+<codeline><highlight class="normal"><sp/>print(total)</highlight></codeline>
+</programlisting></para>
+<para><xrefsect id="signal_1_signal000001"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly ref="signal" position="open" name="sum_changed(int: sum)"/><parblock><para><bold>sum_changed(int: sum):</bold></para>
+<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero.  <godotonly position="open" content="[br][br][b]Note:[/b]"/>Missing emit signal in total reset function has been recently fixed</para>
+</parblock></para>
+</xrefdescription></xrefsect><simplesect kind="note"><para>Missing emit signal in total reset function has been recently fixed</para>
+</simplesect>
+</para>
+<para> <godotonly ref="signal" position="close"/> </para>
+<para><xrefsect id="signal_1_signal000002"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly ref="signal" position="open" name="sum_reset()"/><parblock><para><bold>sum_reset():</bold></para>
+<para>This signal is emitted when the total is reset to zero  <godotonly position="open" content="[br][br][b]Note:[/b]"/>this signal is highly redundant and was added so there would be a warning to parse</para>
+</parblock></para>
+</xrefdescription></xrefsect><simplesect kind="note"><para>this signal is highly redundant and was added so there would be a warning to parse</para>
+</simplesect>
+ <godotonly position="open" content="[br][br][b]Warning:[/b]"/>I'm making this up as I go along <simplesect kind="warning"><para>I&apos;m making this up as I go along</para>
+</simplesect>
+</para>
+<para> <godotonly ref="signal" position="close"/> </para>
+<para><xrefsect id="signal_1_signal000003"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly ref="signal" position="open" name="doesnt_exist"/><parblock><para><bold>doesnt_exist:</bold></para>
+<para>This is just a plain description, no warning or note for parser testing. This signal doesn&apos;t actually exist, so don&apos;t try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
+</parblock></para>
+</xrefdescription></xrefsect></para>
+<para> <godotonly ref="signal" position="close"/>  </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Object</label>
+      </node>
+      <node id="1">
+        <label>Summator</label>
+        <link refid="classSummator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Object</label>
+      </node>
+      <node id="1">
+        <label>Summator</label>
+        <link refid="classSummator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="src/summator.h" line="47" column="1" bodyfile="src/summator.h" bodystart="48" bodyend="94"/>
+    <listofallmembers>
+      <member refid="classSummator_1a87a714a1fa810061b161a562eb4f3cd9" prot="protected" virt="non-virtual"><scope>Summator</scope><name>_bind_methods</name></member>
+      <member refid="classSummator_1a6294425c68c6937d4de8cc2334069b00" prot="public" virt="non-virtual"><scope>Summator</scope><name>add</name></member>
+      <member refid="classSummator_1a04c0843c429f41308e858933293cd43b" prot="private" virt="non-virtual"><scope>Summator</scope><name>GDCLASS</name></member>
+      <member refid="classSummator_1a1c3b1b74ac163588a654900ec500685c" prot="public" virt="non-virtual"><scope>Summator</scope><name>get_total</name></member>
+      <member refid="classSummator_1a6e8d85e71fc296888b14ca72fa5fe4de" prot="public" virt="non-virtual"><scope>Summator</scope><name>reset</name></member>
+      <member refid="classSummator_1a87ae9682eade0936951a9725bbf31f77" prot="private" virt="non-virtual"><scope>Summator</scope><name>sum</name></member>
+      <member refid="classSummator_1a250b744c59b186168717cb0dc6f3a4da" prot="public" virt="non-virtual"><scope>Summator</scope><name>Summator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

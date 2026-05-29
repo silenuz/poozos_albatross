@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+  <compounddef id="README_8md" kind="file" language="Markdown">
+    <compoundname>README.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">This<sp/>example<sp/>represents<sp/>some<sp/>of<sp/>the<sp/>directories<sp/>from<sp/>the<sp/>GDExtension<sp/>templates<sp/>directory<sp/>structure.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Contents:</highlight></codeline>
+<codeline><highlight class="normal">---------</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">*<sp/>config:<sp/>represents<sp/>a<sp/>tool<sp/>directory,<sp/>or<sp/>config<sp/>directory</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>doc_classes_generated:<sp/>this<sp/>is<sp/>where<sp/>the<sp/>Godot<sp/>class<sp/>XML<sp/>is<sp/>generated<sp/>into</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>doxygen_output:<sp/>This<sp/>is<sp/>where<sp/>Doxygen<sp/>generated<sp/>output<sp/>ends<sp/>up</highlight></codeline>
+<codeline><highlight class="normal">*<sp/>src:<sp/>Represents<sp/>the<sp/>src<sp/>directory<sp/>in<sp/>the<sp/>template,<sp/>this<sp/>is<sp/>what<sp/>Doxygen<sp/>will<sp/>document.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>src<sp/>directory<sp/>contains<sp/>two<sp/>sample<sp/>GDExtension<sp/>classes,<sp/>with<sp/>comments<sp/>to<sp/>generate<sp/></highlight></codeline>
+<codeline><highlight class="normal">documentation<sp/>from.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>doxygen_output<sp/>directory<sp/>has<sp/>pre-generated<sp/>Doxygen<sp/>XML<sp/>for<sp/>the<sp/>above<sp/>classes<sp/>so</highlight></codeline>
+<codeline><highlight class="normal">this<sp/>example<sp/>can<sp/>be<sp/>run<sp/>even<sp/>if<sp/>Doxygen<sp/>is<sp/>not<sp/>present<sp/>on<sp/>the<sp/>system.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Example<sp/>Scripts:</highlight></codeline>
+<codeline><highlight class="normal">----------------</highlight></codeline>
+<codeline><highlight class="normal">There<sp/>are<sp/>4<sp/>python<sp/>scripts<sp/>in<sp/>the<sp/>example<sp/>directory<sp/>as<sp/>well.<sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">build_all<sp/>will<sp/>generate<sp/>the<sp/>Doxygen<sp/>content<sp/>if<sp/>Doxygen<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>path,<sp/></highlight></codeline>
+<codeline><highlight class="normal">it<sp/>will<sp/>then<sp/>generate<sp/>a<sp/>build<sp/>profile,<sp/>and<sp/>class<sp/>documentation.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">gen_class_doc<sp/>can<sp/>be<sp/>run<sp/>from<sp/>the<sp/>command<sp/>line<sp/>to<sp/>generate<sp/>Godot<sp/>class<sp/>documentation<sp/>in<sp/>the<sp/>doc_classes_generated<sp/></highlight></codeline>
+<codeline><highlight class="normal">directory.<sp/><sp/>This<sp/>documentation<sp/>is<sp/>generated<sp/>from<sp/>the<sp/>XML<sp/>content<sp/>in<sp/>the<sp/>doxygen_ouput<sp/>directory.<sp/><sp/>When<sp/>running<sp/>this</highlight></codeline>
+<codeline><highlight class="normal">script<sp/>you<sp/>may<sp/>see<sp/>a<sp/>message<sp/>informing<sp/>you<sp/>that<sp/>methods.py<sp/>is<sp/>not<sp/>found.<sp/><sp/>This<sp/>can<sp/>be<sp/>safely<sp/>ignored,<sp/>it&apos;s<sp/>meant<sp/>to<sp/>run<sp/>in<sp/>the<sp/>template</highlight></codeline>
+<codeline><highlight class="normal">and<sp/>looks<sp/>for<sp/>methods.py<sp/>to<sp/>use<sp/>it&apos;s<sp/>print_warning<sp/>and<sp/>print_error<sp/>functions<sp/>if<sp/>found.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">gen_doxygen_config<sp/>can<sp/>be<sp/>run<sp/>to<sp/>generate<sp/>a<sp/>Doxygen<sp/>configuration<sp/>file,<sp/>based<sp/>on<sp/>the<sp/>current<sp/>system<sp/>for<sp/>the<sp/>example<sp/>project.</highlight></codeline>
+<codeline><highlight class="normal">This<sp/>script<sp/>requires<sp/>Doxygen<sp/>to<sp/>be<sp/>installed<sp/>and<sp/>in<sp/>the<sp/>current<sp/>path.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">gen_profile<sp/>can<sp/>also<sp/>be<sp/>run<sp/>from<sp/>the<sp/>command<sp/>line<sp/>to<sp/>generate<sp/>a<sp/>build<sp/>profile<sp/>for<sp/>a<sp/>GDExtension<sp/>based<sp/>on<sp/>the<sp/>content<sp/>of</highlight></codeline>
+<codeline><highlight class="normal">Doxygen<sp/>generated<sp/>XML.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Using<sp/>With<sp/>Doxygen:</highlight></codeline>
+<codeline><highlight class="normal">-------------------</highlight></codeline>
+<codeline><highlight class="normal">If<sp/>Doxygen<sp/>is<sp/>installed<sp/>and<sp/>in<sp/>the<sp/>current<sp/>path,<sp/>a<sp/>config<sp/>file<sp/>can<sp/>be<sp/>generated<sp/>by<sp/>executing<sp/>```gen_doxygen_config.py```</highlight></codeline>
+<codeline><highlight class="normal">script,<sp/>this<sp/>will<sp/>create<sp/>a<sp/>Doxygen<sp/>configuration<sp/>file<sp/>in<sp/>the<sp/>config<sp/>directory,<sp/>so<sp/>that<sp/>Doxygen<sp/>can<sp/>be<sp/>used<sp/>with<sp/>the<sp/></highlight></codeline>
+<codeline><highlight class="normal">example.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>Doxygen<sp/>configuration<sp/>file<sp/>that<sp/>can<sp/>now<sp/>be<sp/>used<sp/>to<sp/>generate<sp/>a<sp/>HTML<sp/>sample<sp/>if<sp/>so<sp/>desired.<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">As<sp/>well<sp/>one<sp/>can<sp/>add<sp/>additional<sp/>classes<sp/>to<sp/>the<sp/>source<sp/>directory<sp/>to<sp/>see<sp/>what<sp/>the<sp/>generated<sp/>documentation<sp/>for<sp/></highlight></codeline>
+<codeline><highlight class="normal">those<sp/>classes<sp/>might<sp/>look<sp/>like.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">To<sp/>generate<sp/>the<sp/>Doxygen<sp/>XML<sp/>just<sp/>open<sp/>a<sp/>terminal<sp/>in<sp/>the<sp/>example<sp/>directory<sp/>and<sp/>enter:</highlight></codeline>
+<codeline><highlight class="normal">```commandline</highlight></codeline>
+<codeline><highlight class="normal">doxygen<sp/>./config/example_doxygen_config.cfg<sp/></highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">This<sp/>will<sp/>generate<sp/>the<sp/>XML<sp/>and<sp/>HTML<sp/>output<sp/>files,<sp/>and<sp/>this<sp/>read<sp/>me<sp/>should<sp/>be<sp/>the<sp/>main<sp/>page<sp/>of<sp/>the</highlight></codeline>
+<codeline><highlight class="normal">HTML<sp/>output.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Alternately<sp/>the<sp/>```build_all.py```<sp/>script<sp/>can<sp/>be<sp/>used<sp/>to<sp/>generate<sp/>the<sp/>Doxygen<sp/>output<sp/>along<sp/>with<sp/>the<sp/>Godot<sp/>class<sp/>documentation,</highlight></codeline>
+<codeline><highlight class="normal">and<sp/>a<sp/>build<sp/>profile.</highlight></codeline>
+    </programlisting>
+    <location file="README.md"/>
+  </compounddef>
+</doxygen>
