@@ -1,7 +1,7 @@
 IMPORTANT
 ---------
 Due to certain changes today, signal notes and warnings may be parsed as part of the class description
-instead of as part of the signal description.  Should be fixed Monday which will mean working signal documentation generation.
+instead of as part of the signal description if they're parsed at all.  Should be fixed Monday which will mean working signal documentation generation.
 
 Description:
 ------------
