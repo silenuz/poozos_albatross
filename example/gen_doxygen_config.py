@@ -17,8 +17,13 @@ from pathlib import Path
 # Get the absolute path to this script
 script_path = Path(__file__).resolve()
 
+# set the example directory as the working directory as the relative paths in the
+# Doxygen configuration file are relative to the working directory and not the
+# directory containing the configuration file.  This holds true for the ini as well.
+os.chdir(script_path.parent)
+
 config = configparser.ConfigParser()
-config.read('example_config.ini')
+config.read('./config/example_config.ini')
 config_values = dict()
 config_value = dict()
 config_value['input'] = 'PROJECT_NAME           = "My Project"'
@@ -64,10 +69,6 @@ doxygen_path = shutil.which('doxygen')
 if doxygen_path is None:
     print("Doxygen not found in system path, unable to generate Doxygen configuration file")
 else:
-    # set the example directory as the working directory as the relative paths in the
-    # Doxygen configuration file are relative to the working directory and not the
-    # directory containing the configuration file.  This holds true for the ini as well.
-    os.chdir(script_path.parent)
     result = subprocess.run(["doxygen", "-s", "-g", "./config/tmp_config.tmp"], capture_output=True, text=True)
     # uncomment the next line if you wish to see the output from doxygen, for example if there is a problem
     #print(result.stdout)
@@ -86,9 +87,17 @@ else:
             initial_config = initial_config.replace(config_values['latex']['input'], config_values['latex']['output'])
             initial_config = initial_config.replace(config_values['man']['input'], config_values['man']['output'])
             initial_config = initial_config.replace(config_values['recursive']['input'], config_values['recursive']['output'])
+            alias_file = script_path.parent.parent / "support_files" / "doxygen_aliases.txt"
+            if not alias_file.exists():
+                print("Could not find alias file. Unable to add custom aliases to the configuration file")
+            else:
+                aliases = alias_file.read_text()
+                initial_config = initial_config.replace('ALIASES                =',aliases)
+
     ok = False
+
     try:
-        with open("./config/example.cfg", "w") as f:
+        with open("./config/example_doxygen_config.cfg", "w") as f:
             f.write(initial_config)
             ok = True
     except PermissionError:

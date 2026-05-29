@@ -33,10 +33,10 @@ if doxygen_path:
     # Doxygen configuration file are relative to the working directory and not the
     # directory containing the configuration file.
     os.chdir(script_path.parent)
-    result = subprocess.run(["doxygen", "./config/doxygen_config.cfg"], capture_output=True, text=True)
+    result = subprocess.run(["doxygen", "./config/example_doxygen_config.cfg"], capture_output=True, text=True)
 
     # uncomment the next line if you wish to see the output from doxygen, for example if there is a problem
-    #print(result.stdout)
+    print(result.stdout)
     if result.returncode != 0:
         print("Doxygen generation failed, depending on the state of the output data, the next steps may fail unexpectedly")
 else:
