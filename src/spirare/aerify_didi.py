@@ -15,12 +15,13 @@ Command-line Arguments:
 Didi: "Well? What do we do?"
 Gogo: "Don't let's do anything.  It's safer"
 """
-
+import copy
 import re
 import importlib.util
 from collections import namedtuple
 import sys
 from pathlib import Path
+from pickle import GLOBAL
 from xml.etree import ElementTree as et
 import luckys_zephyr as lz
 
@@ -61,9 +62,12 @@ element_black_list_set.add("htmlonly")
 element_black_list_set.add("manonly")
 element_black_list_set.add("latexonly")
 element_black_list_set.add("xrefsect")
+element_black_list_set.add("programlisting")
 
 # track property definitions
 bound_properties = dict()
+
+bound_signals = dict()
 
 # track opening and closing markup for bbcode to translate html markup in element text attibutes
 BBCodeMap = namedtuple("BBCodeMap", ["open", "close"])
@@ -82,12 +86,8 @@ format_map["emphasis"] = bbc_italic
 format_map["strike"] = bbc_strikethrough
 format_map["underline"] = bbc_underline
 
-signal_note_set = set()
-signal_warning_set = set()
-
 MESSAGE_TYPE_WARNING = 0
 MESSAGE_TYPE_ERROR = 1
-
 
 def add_constants_node(godot_root: et.Element) -> et.Element:
     """
@@ -183,9 +183,28 @@ def create_bound_methods(bind_methods_code: str) -> None:
 
 def create_bound_signals(bind_methods_code: str) -> None:
     bound_signal_pattern = r'ADD_SIGNAL\((.*?)\)\);'
-    bound_signals = re.findall(bound_signal_pattern, bind_methods_code)
-    for bound_signal in bound_signals:
-        print(bound_signal)
+    bound_signal_data = re.findall(bound_signal_pattern, bind_methods_code)
+
+    for bound_signal in bound_signal_data:
+        bound_signal_values = dict()
+        name_pattern = r'MethodInfo\(\"(.*?)\"'
+        signal_name = re.findall(name_pattern, bound_signal)[0]
+        propert_info_pattern = r'PropertyInfo\((.*?)\)'
+        propert_info = re.findall(propert_info_pattern, bound_signal)
+        parameter_index = 0
+        bound_signal_values['name'] = signal_name
+        bound_signal_values['parameters'] = []
+        for propert_info in propert_info:
+            values = propert_info.split(",")
+            value_type = values[0].split("::")[1]
+            parameter_name = values[1].replace('"', "")
+            parameter_value =dict()
+            parameter_value['type'] = value_type
+            parameter_value['index'] = parameter_index
+            parameter_value['name'] = parameter_name
+            bound_signal_values['parameters'].append(parameter_value)
+            parameter_index += 1
+        bound_signals[signal_name] = bound_signal_values
 
 
 def create_enumator_data(godot_root: et.Element, reference: str) -> None:
@@ -206,30 +225,6 @@ def create_enumator_data(godot_root: et.Element, reference: str) -> None:
         print_message("Unable to generate enumerator constants, file not found " + file_name, MESSAGE_TYPE_ERROR)
 
 
-def get_plain_text_headline(reference_node, mappable_node) -> None:
-    reference_string = et.tostring(reference_node, encoding="utf-8").decode("utf-8")
-    parts = re.split(r"<godotonly [^>]*/>", reference_string)
-    if len(parts) >= 3:
-        tail_marked_up = parts[2].replace(f"</{reference_node.tag}>", "")
-        plain_tail = re.sub(r"<[^>]+>", "", tail_marked_up)
-        signal_note_set.add(plain_tail)
-    if len(parts) == 4:
-        tail_marked_up = parts[3].replace(f"</{reference_node.tag}>", "")
-        plain_tail = re.sub(r"<[^>]+>", "", tail_marked_up)
-        signal_note_set.add(plain_tail)
-
-
-def catalog_reference_headlines(data_node: et.Element) -> None:
-    reference_nodes = data_node.findall(".//xrefsect")
-    for reference_node in reference_nodes:
-        mappable_nodes = reference_node.findall(".//godotonly")
-        for mappable_node in mappable_nodes:
-            if not mappable_node.get('ref') == 'signal' and 'Note:' in mappable_node.get('content'):
-                get_plain_text_headline(reference_node, mappable_node)
-
-    print(signal_note_set)
-
-
 def create_godot_doc(file: Path) -> None:
     """
     Creates godot XML class documentation from the doxygen XML file whose path is passed as the argument
@@ -240,13 +235,13 @@ def create_godot_doc(file: Path) -> None:
     data_node = class_data[0]
     class_info = class_data[1]
     if catalog_bindings(data_node, class_info.class_name):
-        catalog_reference_headlines(data_node)
         godot_root = et.Element('class')
         godot_root.set('name', class_info.class_name)
         set_description(godot_root, data_node)
         create_method_data(godot_root, data_node)
         create_member_data(godot_root, data_node)
         create_enumator_data(godot_root, class_info.reference)
+        create_signal_data(godot_root,data_node)
         write_file(godot_root, class_info.class_name)
 
 
@@ -279,6 +274,60 @@ def create_method_data(godot_root: et.Element, data_node: et.Element) -> None:
     # todo: add handling of protected functions
 
 
+def set_signal_data(godot_root:et.Element,signal_data: dict()):
+    if len(bound_signals) < 1:
+        return
+    signals_node = et.SubElement(godot_root, "signals")
+    for signal in bound_signals:
+        signal_node = et.SubElement(signals_node, "signal")
+        signal_node.set("name", signal)
+        parameters = bound_signals[signal]['parameters']
+        if len(parameters) > 0:
+            for each_parameter in parameters:
+                parameter_node = et.SubElement(signal_node, "parameter")
+                parameter_node.set("index", str(each_parameter['index']))
+                parameter_node.set("name", each_parameter['name'])
+                parameter_node.set("type", each_parameter['type'])
+        if signal in signal_data:
+            description_node = et.SubElement(signal_node, "description")
+            description = signal_data[signal]['description']
+            if 'note' in signal_data[signal]:
+                description = description + '[br][br][b]Note:[/b]' + ' ' + signal_data[signal]['note']
+            if 'warning' in signal_data[signal]:
+                description = description + '[br][br][b]Warning:[/b]' + ' ' + signal_data[signal]['warning']
+            description_node.text = description
+
+
+def create_signal_data(godot_root: et.Element,data_node: et.Element) -> None:
+    reference_nodes = data_node.findall(".//xrefsect/..")
+    signal_data = dict()
+    for reference_node in reference_nodes:
+        godot_only_node = reference_node.find(".//godotonly")
+        if godot_only_node is not None:
+            if godot_only_node.get("kind") == 'signal':
+                signal_name = godot_only_node.get("name")
+                signal_name_actual = re.sub(r"\(.*?\)", "", signal_name)
+                content_nodes = reference_node.findall('.//para')
+                text_node = et.Element('description')
+                text_node.text = content_nodes[2].text
+                for child in content_nodes[2]:
+                    text_node.append(copy.deepcopy(child))
+                description = parse_xml_text(text_node)
+                signal_values = dict()
+                signal_values['name'] = signal_name_actual
+                signal_values['description'] = description
+                headlines = reference_node.findall('.//simplesect')
+                if len(headlines) > 0:
+                    for headline in headlines:
+                        if headline.get("kind")== 'note':
+                            signal_values['note'] = parse_xml_text(headline[0])
+                        elif headline.get("kind") == 'warning':
+                            signal_values['warning'] = parse_xml_text(headline[0])
+                            
+                signal_data[signal_name_actual] = signal_values
+
+    set_signal_data(godot_root,signal_data)
+        
 def get_class_name(data_node: et.Element) -> lz.ClassInfo:
     # todo: update docstring for new method signature
     """
@@ -336,11 +385,15 @@ def get_tag_text(doxygen_node: et.Element) -> str:
         parts.append(doxygen_node.text.strip())
 
     for mixed_element_node in doxygen_node:
+        empty_element = True
         element_text = parse_xml_text(mixed_element_node)
-        parts.append(element_text)
-        if mixed_element_node.tag == 'para':
-            parts.append(bbc_linebreak.open)
-            parts.append(bbc_linebreak.open)
+        if element_text:
+            parts.append(element_text)
+            empty_element = False
+        if not empty_element and mixed_element_node.tag == 'para':
+            if parts[-1] != bbc_linebreak.open:
+                parts.append(bbc_linebreak.open)
+                parts.append(bbc_linebreak.open)
 
     text = " ".join(parts)
 
@@ -424,7 +477,12 @@ def parse_xml_text(doxygen_node: et.Element) -> str:
     if doxygen_node.tag in element_black_list_set:
         return ""
 
-    if not doxygen_node.text is None:
+    if doxygen_node.tag == 'para':
+        if len(doxygen_node) > 0:
+            if doxygen_node[0].tag == 'xrefsect':
+                return ""
+
+    if doxygen_node.text is not None:
         parts.append(doxygen_node.text.strip())
 
     for mixed_element_node in doxygen_node:
@@ -439,7 +497,7 @@ def parse_xml_text(doxygen_node: et.Element) -> str:
                 child_content = parse_xml_text(mixed_element_node)
                 parts[-1] = parts[-1] + child_content.strip()
             parts[-1] = parts[-1] + markup.close
-        elif mixed_element_node.tag == "godotonly":
+        elif mixed_element_node.tag == "godotonly" and mixed_element_node.get("kind") == 'text':
 
             if mixed_element_node.tail is not None:
                 node_tail = mixed_element_node.tail.rstrip()

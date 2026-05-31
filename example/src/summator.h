@@ -20,9 +20,10 @@ using namespace godot;
  * The class must inherit from a Godot built in class (like @glnk{Object}, @glnk{Node}, @glnk{Sprite2D}, or @glnk{Resource}).
  * Godot does not support multiple inheritance for GDExtension classes.
  *
- * Summator Example Usage:
+ * Summator Example Usage
+ *
  *	\code{.gdscript}
- *  var sum = Summator.new()
+ * var sum = Summator.new()
  *	sum.add(5)
  *	sum.add(7)
  *	var total = sum.get_total()
@@ -30,15 +31,14 @@ using namespace godot;
  *	print(total)
  * \endcode
  *
- *
  * @signal{sum_changed(int: sum)|
  * This **signal**, is _emitted_ when the sum changes whether
  * after adding a new integer or when resetting the total back to zero.
- * @gdnote{Missing emit signal in total reset function has been recently fixed}}
+ * @note “You're on Earth. There's no cure for that.” ― Samuel Beckett  }
  *
  * @signal{sum_reset()| This signal is emitted when the total is reset to zero
- * @gdnote{this signal is highly redundant and was added so there would be a warning to parse}
- * @gdwarn{I'm making this up as I go along} }
+ * @note Gogo: 'We always find something, eh Didi, to give us the impression we exist?"
+ * @warning I'm making this up as I go along }
  *
  * @signal{doesnt_exist|This is just a plain description, no warning or note for parser testing.  This signal
  * doesn't actually exist, so don't try to use it.  This should only output to html as the signal is not actually registered

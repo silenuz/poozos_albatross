@@ -33,16 +33,26 @@ if doxygen_path:
     # Doxygen configuration file are relative to the working directory and not the
     # directory containing the configuration file.
     os.chdir(script_path.parent)
-    result = subprocess.run(["python3","gen_doxygen_config.py"], capture_output=True, text=True)
-    if result.returncode != 0:
-        print("unable to generate a configuration for doxygen")
+    doxygen_config_file = script_path.parent / 'config' / 'example_doxygen_config.cfg'
+    has_config = False
 
-    result = subprocess.run(["doxygen", "./config/example_doxygen_config.cfg"], capture_output=True, text=True)
+    if not doxygen_config_file.exists():
+        config_result = subprocess.run(["python3", "gen_doxygen_config.py"], capture_output=True, text=True)
+        if config_result.returncode != 0:
+            print("unable to generate a configuration for doxygen.  Doxygen can't run without a configuration file")
+        else:
+            has_config = True
+    else:
+        has_config = True
 
-    # uncomment the next line if you wish to see the output from doxygen, for example if there is a problem
-    print(result.stdout)
-    if result.returncode != 0:
-        print("Doxygen generation failed, depending on the state of the output data, the next steps may fail unexpectedly")
+    if has_config:
+        result = subprocess.run(["doxygen", "./config/example_doxygen_config.cfg"], capture_output=True, text=True)
+
+        # uncomment the next line if you wish to see the output from doxygen, for example if there is a problem
+        print(result.stdout)
+        if result.returncode != 0:
+            print(
+                "Doxygen generation failed, depending on the state of the output data, the next steps may fail unexpectedly")
 else:
     print("Doxygen not found in system path, unable to generate Doxygen XML")
 
@@ -55,7 +65,8 @@ waft_gogo_path = spirare_script_dir / 'waft_gogo.py'
 doxygen_xml_output = script_path.parent / 'doxygen_output'
 
 # run profile generator
-result = subprocess.run(["python3",str(waft_gogo_path),str(doxygen_xml_output),str(script_path.parent)], capture_output=True, text=True)
+result = subprocess.run(["python3", str(waft_gogo_path), str(doxygen_xml_output), str(script_path.parent)],
+                        capture_output=True, text=True)
 
 if result.returncode != 0:
     print("something went wrong while generating the build profile.")
@@ -72,7 +83,8 @@ aerify_didi_path = spirare_script_dir / "aerify_didi.py"
 doc_classes_directory = script_path.parent / 'doc_classes_generated'
 
 # run document generator
-result = subprocess.run(["python3",str(aerify_didi_path),str(doxygen_xml_output),str(doc_classes_directory)], capture_output=True, text=True)
+result = subprocess.run(["python3", str(aerify_didi_path), str(doxygen_xml_output), str(doc_classes_directory)],
+                        capture_output=True, text=True)
 
 if result.returncode != 0:
     print("something went wrong while generating the class documentation.")

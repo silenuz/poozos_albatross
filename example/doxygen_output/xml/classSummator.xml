@@ -146,35 +146,33 @@
 <para>A <emphasis>classic</emphasis> code example for a <bold>GDExtension</bold> </para>
     </briefdescription>
     <detaileddescription>
-<para>The class must inherit from a Godot built in class (like  <godotonly position="open" content="["/>Object<godotonly position="close" content="]"/>,  <godotonly position="open" content="["/>Node<godotonly position="close" content="]"/>,  <godotonly position="open" content="["/>Sprite2D<godotonly position="close" content="]"/>, or  <godotonly position="open" content="["/>Resource<godotonly position="close" content="]"/>). Godot does not support multiple inheritance for GDExtension classes.</para>
-<para><ref refid="classSummator" kindref="compound">Summator</ref> Example Usage: <programlisting filename=".gdscript"><codeline><highlight class="normal">var<sp/>sum<sp/>=<sp/>Summator.new()</highlight></codeline>
-<codeline><highlight class="normal"><sp/>sum.add(5)</highlight></codeline>
-<codeline><highlight class="normal"><sp/>sum.add(7)</highlight></codeline>
-<codeline><highlight class="normal"><sp/>var<sp/>total<sp/>=<sp/>sum.get_total()</highlight></codeline>
-<codeline><highlight class="normal"><sp/>#<sp/>prints<sp/>12</highlight></codeline>
-<codeline><highlight class="normal"><sp/>print(total)</highlight></codeline>
+<para>The class must inherit from a Godot built in class (like  <godotonly position="open" kind="text" content="["/>Object<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Node<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Sprite2D<godotonly position="close" kind="text" content="]"/>, or  <godotonly position="open" kind="text" content="["/>Resource<godotonly position="close" kind="text" content="]"/>). Godot does not support multiple inheritance for GDExtension classes.</para>
+<para><ref refid="classSummator" kindref="compound">Summator</ref> Example Usage</para>
+<para><programlisting filename=".gdscript"><codeline><highlight class="normal">var<sp/>sum<sp/>=<sp/>Summator.new()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>sum.add(5)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>sum.add(7)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>var<sp/>total<sp/>=<sp/>sum.get_total()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>#<sp/>prints<sp/>12</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>print(total)</highlight></codeline>
 </programlisting></para>
-<para><xrefsect id="signal_1_signal000001"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly ref="signal" position="open" name="sum_changed(int: sum)"/><parblock><para><bold>sum_changed(int: sum):</bold></para>
-<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero.  <godotonly position="open" content="[br][br][b]Note:[/b]"/>Missing emit signal in total reset function has been recently fixed</para>
+<para><xrefsect id="signal_1_signal000001"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="sum_changed(int: sum)"/><parblock><para><bold>sum_changed(int: sum):</bold></para>
+<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero. </para>
 </parblock></para>
-</xrefdescription></xrefsect><simplesect kind="note"><para>Missing emit signal in total reset function has been recently fixed</para>
+</xrefdescription></xrefsect><simplesect kind="note"><para>“You&apos;re on Earth. There&apos;s no cure for that.” ― Samuel Beckett</para>
 </simplesect>
 </para>
-<para> <godotonly ref="signal" position="close"/> </para>
-<para><xrefsect id="signal_1_signal000002"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly ref="signal" position="open" name="sum_reset()"/><parblock><para><bold>sum_reset():</bold></para>
-<para>This signal is emitted when the total is reset to zero  <godotonly position="open" content="[br][br][b]Note:[/b]"/>this signal is highly redundant and was added so there would be a warning to parse</para>
+<para><xrefsect id="signal_1_signal000002"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="sum_reset()"/><parblock><para><bold>sum_reset():</bold></para>
+<para>This signal is emitted when the total is reset to zero </para>
 </parblock></para>
-</xrefdescription></xrefsect><simplesect kind="note"><para>this signal is highly redundant and was added so there would be a warning to parse</para>
+</xrefdescription></xrefsect><simplesect kind="note"><para>Gogo: &apos;We always find something, eh Didi, to give us the impression we exist?" </para>
 </simplesect>
- <godotonly position="open" content="[br][br][b]Warning:[/b]"/>I'm making this up as I go along <simplesect kind="warning"><para>I&apos;m making this up as I go along</para>
+<simplesect kind="warning"><para>I&apos;m making this up as I go along</para>
 </simplesect>
 </para>
-<para> <godotonly ref="signal" position="close"/> </para>
-<para><xrefsect id="signal_1_signal000003"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly ref="signal" position="open" name="doesnt_exist"/><parblock><para><bold>doesnt_exist:</bold></para>
+<para><xrefsect id="signal_1_signal000003"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="doesnt_exist"/><parblock><para><bold>doesnt_exist:</bold></para>
 <para>This is just a plain description, no warning or note for parser testing. This signal doesn&apos;t actually exist, so don&apos;t try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
 </parblock></para>
 </xrefdescription></xrefsect></para>
-<para> <godotonly ref="signal" position="close"/>  </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="2">
