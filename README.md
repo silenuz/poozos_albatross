@@ -40,11 +40,6 @@ To see an example project using cmake with the scripts to generate Godot class d
 
 Notes:
 ------
-There are multiple predefined aliases for Doxygen.  These aliases 
-can be used in comments to insert Godot specific elements into the Doxygen XML output that will be ignored by other document 
-generators like Breathe that work with the Doxygen XML output.  This output is also ignored when producing html, latex, 
-or man pages documentation.
-
 Signal information is now output to the class documentation and the Doxygen XML parser expects the information to be part of the
 detailed description for the class.  If it can find signal reference items in the class' detailed description, it will output 
 those descriptions, otherwise it will simply generate the signal content with an empty description much the same as doctool would.
