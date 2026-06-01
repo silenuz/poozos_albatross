@@ -14,9 +14,8 @@ This module can be used when using scons to build the Doxygen XML.
 
 Current Status: ALPHA (if that)
 -------------------------------
-Currently, the python script is capable of exporting the content for methods, properties, and enum constants.
-Processing of signals is in progress and should be finished soon, as well code blocks in description fields should be working
-in the next week or so. 
+Currently, the python script is capable of exporting the content for methods, properties, enum constants and signals.
+Processing of code blocks in description fields should be working in the next week or so. 
 
 Contents:
 ---------
