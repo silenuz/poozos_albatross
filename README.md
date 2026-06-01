@@ -50,15 +50,73 @@ or man pages documentation.
 The Current Defined Aliases Are:
 --------------------------------
 
-Note the @signal, or \signal alias uses a pipe symbol | as the parameter seperator so that commas don't have to be escaped in the description.
+Signal information is now output to the class documentation and the Doxygen XML parser expects the information to be part of the
+detailed description for the class.  If it can find signal reference items in the class' detailed description, it will output 
+those descriptions, otherwise it will simply generate the signal content with an empty description much the same as doctool would.
 
-It's also important not to use the built-in @warning or @note inside the description for a signal, as this will cause the 
-Doxygen to create a paragraph outside the symbol description block, which will cause the parser to potentially include it as part
-of the class description instead of the signal's description.
+Unlike properties which have a backing field to parse content for, signals don't necessarily have a physical presence in the file,
+so to provide the information to Doxygen the signal alias is used.  It takes two arguments, the name of the signal, and the description.
+Unlike the other aliases the signal alias uses a pipe as the argument seperator so that commas in the description do not have to
+escaped.  
 
-Lastly signals should be detailed in the detailed description area for the class.  This is where the parser looks.  If signals are
-not described here, then the signal information output in the Godot docs will be the same empty structure that 
-doctool produces.
+The name can be the full signature ```sum_changed(int: sum)``` or just the name ```sum_changed```.  The name
+here is what shows up in the other output formats, so if your generating html or other formats for in-house documentation
+using the full signature is recommended.  
+
+The description contains the description and any notes and or warnings using the standard @note and @warning Doxygen commands.
+Currently, there is a bug in the xml parser where it will only read 1 paragraph for the description.  So only the first paragraph of the 
+second argument will be read into the description, however it is fine to have a paragraph break between the description and any note or warning.
+
+Sample:
+
+```c++
+ * @signal{sum_changed(int: sum)|
+ * This **signal**, is _emitted_ when the sum changes whether
+ * after adding a new integer or when resetting the total back to zero.
+ *
+ * @note “You're on Earth. There's no cure for that.” ― Samuel Beckett  }
+ *
+ * @signal{sum_reset()| This signal is emitted when the total is reset to zero
+ * @note Gogo: 'We always find something, eh Didi, to give us the impression we exist?"
+ * @warning I'm making this up as I go along }
+ *
+ * @signal{doesnt_exist|This is just a plain description, no warning or note for parser testing.  This signal
+ * doesn't actually exist, so don't try to use it.  This should only output to html as the signal is not actually registered
+ * with ClassDB.}
+```
+Editor Signal Output:
+
+![Alt signal_output_godot](git_content/signals_godot.png)
+
+Html Signal Output:
+
+![Alt signal_output_html](git_content/signals_html.png)
+
+There are multiple predefined aliases for Doxygen.  the definitions for these aliases can be found in
+the [doxygen_aliases](support_files/doxygen_aliases.txt) file, this file is used in the example project to
+generate the Doxygen configuration. These aliases can be used to insert Godot specific elements into the Doxygen XML 
+output that will be ignored by other document generators like Breathe that work with the Doxygen XML output.  
+This output is also ignored when producing html, latex, or man pages documentation.
+
+The simplest of these aliases is the class linker.  
+
+Here's part of [TrafficLight.h](/src/traffic_light.h) showing the class linker ```@glnk{Class}```
+```
+* The class <u>must inherit</u> from a Godot built in class (like @glnk{Object}, @glnk{Node}, @glnk{Sprite2D}, or @glnk{Resource}).
+* Godot does not support multiple inheritance for GDExtension classes.
+```
+
+Generates this html:
+
+![Alt htmlcontent](/git_content/html_output.png)
+
+But generates this class documentation:
+```
+The class [u]must inherit[/u] from a Godot built in class (like [Object], [Node], [Sprite2D], or [Resource]). Godot does not support multiple inheritance for GDExtension classes.
+```
+Which looks like this in the Godot editor:
+
+![Alt doc_content](/git_content/editor_screen1.png)
 
  Aliases:
 

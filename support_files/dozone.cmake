@@ -17,7 +17,7 @@ if(DOXYGEN_FOUND)
     set(ENV{PYTHONPATH} "$ENV{PYTHONPATH}${ENV_PATH_SEP}${ALBATROSS_DIRECTORY}")
 
     # set the output directory for the generated Godot class documentation
-    set(GODOT_GENERATED_DOCS_DIRECTORY  "${CMAKE_CURRENT_SOURCE_DIR}/doc_classes_generated")
+    set(GODOT_GENERATED_DOCS_DIRECTORY  "${CMAKE_CURRENT_SOURCE_DIR}/doc_classes")
 
     # set directory to create the doxygen docs in
     set(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/doxygen")
@@ -41,31 +41,29 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_GENERATE_XML YES)
 
     # help save repetitive typing
-    Set(GODOT_LINK_START "<godotonly position=\\\"open\\\" content=\\\"[")
-    set(GODOT_LINK_CLOSE "<godotonly position=\\\"close\\\" content=\\\"]\\\"></godotonly>")
-    set(GODOT_OPERATOR_LINK_CLOSE "<godotonly position=\\\"close\\\" content=\\\" *]\\\"></godotonly>")
-    set(GODOT_NOTE_OPEN "<godotonly position=\\\"open\\\" content=\\\"[br][br][b]Note:[/b]\\\"></godotonly>")
-    set(GODOT_WARNING_OPEN "<godotonly position=\\\"open\\\" content=\\\"[br][br][b]Warning:[/b]\\\"></godotonly>")
+    Set(GODOT_LINK_START "<godotonly position=\\\"open\\\" kind=\\\"text\\\" content=\\\"[")
+    set(GODOT_LINK_CLOSE "<godotonly position=\\\"close\\\" kind=\\\"text\\\" content=\\\"]\\\"/>")
+    set(GODOT_OPERATOR_LINK_CLOSE "<godotonly position=\\\"close\\\" content=\\\" *]\\\"/>")
+    set(GODOT_SIGNAL_OPEN "\\xmlonly<godotonly kind=\\\"signal\\\" name=\\\"\\1\\\"/>\\endxmlonly")
 
     # create an alias so we can use @glnk{} or \glnk{} in comments to create output for Godot documentation only
     # so that doxygen xml output remains compatible with Breathe.
     set(DOXYGEN_ALIASES
             ## define aliases for various godot documentation only links see https://docs.godotengine.org/en/stable/engine_details/class_reference/index.html#linking
-            "glnk{1}=\"\\xmlonly${GODOT_LINK_START}\\\"></godotonly>\\endxmlonly\\1\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
-            "gdcon{2}=\"\\xmlonly${GODOT_LINK_START}constant \\1.\\\"></godotonly>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
-            "gdcon{2}=\"\\xmlonly${GODOT_LINK_START}constant \\1.\\\"></godotonly>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
-            "gdenu{2}=\"\\xmlonly${GODOT_LINK_START}enum \\1.\\\"></godotonly>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
-            "gdmem{2}=\"\\xmlonly${GODOT_LINK_START}member \\1.\\\"></godotonly>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
-            "gdmet{2}=\"\\xmlonly${GODOT_LINK_START}method \\1.\\\"></godotonly>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
-            "gdnew{2}=\"\\xmlonly${GODOT_LINK_START}constructor \\1.\\\"></godotonly>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
-            "gdope{2}=\"\\xmlonly${GODOT_LINK_START}operator \\1.\\\"></godotonly>\\endxmlonly\\2\\xmlonly${GODOT_OPERATOR_LINK_CLOSE}\\endxmlonly\""
-            "gdsig{2}=\"\\xmlonly${GODOT_LINK_START}signal \\1.\\\"></godotonly>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
-            "gdthe{2}=\"\\xmlonly${GODOT_LINK_START}theme_item \\1.\\\"></godotonly>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
-            "gdpar{1}=\"\\xmlonly${GODOT_LINK_START}param\\\"></godotonly>\\endxmlonly\\1\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "glnk{1}=\"\\xmlonly${GODOT_LINK_START}\\\"/>\\endxmlonly\\1\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "gdcon{2}=\"\\xmlonly${GODOT_LINK_START}constant \\1.\\\"/>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "gdcon{2}=\"\\xmlonly${GODOT_LINK_START}constant \\1.\\\"/>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "gdenu{2}=\"\\xmlonly${GODOT_LINK_START}enum \\1.\\\"/>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "gdmem{2}=\"\\xmlonly${GODOT_LINK_START}member \\1.\\\"/>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "gdmet{2}=\"\\xmlonly${GODOT_LINK_START}method \\1.\\\"/>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "gdnew{2}=\"\\xmlonly${GODOT_LINK_START}constructor \\1.\\\"/>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "gdope{2}=\"\\xmlonly${GODOT_LINK_START}operator \\1.\\\"/>\\endxmlonly\\2\\xmlonly${GODOT_OPERATOR_LINK_CLOSE}\\endxmlonly\""
+            "gdsig{2}=\"\\xmlonly${GODOT_LINK_START}signal \\1.\\\"/>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "gdthe{2}=\"\\xmlonly${GODOT_LINK_START}theme_item \\1.\\\"/>\\endxmlonly\\2\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
+            "gdpar{1}=\"\\xmlonly${GODOT_LINK_START}param\\\"/>\\endxmlonly\\1\\xmlonly${GODOT_LINK_CLOSE}\\endxmlonly\""
             # signal alias uses | pipes as a parameter seperator so that commas don't have to be escaped
-            "signal{2|}=\"\\xrefitem signal \\\"Signal\\\" \\\"Signals\\\"\\xmlonly<godotonly reference=\\\"signal\\\" name=\\\"\\1\\\"/>\\endxmlonly@parblock<b>\\1:</b> ^^^^^^ \\2@endparblock\""
-            "gdwarn{1}=\"\\xmlonly${GODOT_WARNING_OPEN}\\1\\endxmlonly \\warning \\1 ^^^^^^\""
-            "gdnote{1}=\"\\xmlonly${GODOT_NOTE_OPEN}\\1\\endxmlonly \\note \\1 ^^^^^^\""
+            "signal{2|}=\"\\xrefitem signal \\\"Signal\\\" \\\"Signals\\\"${GODOT_SIGNAL_OPEN}@parblock<b>\\1:</b> ^^^^^^ \\2@endparblock${GODOT_SIGNAL_CLOSE}\""
+
     )
 
     set(DOXYGEN_VERBATIM_VARS DOXYGEN_ALIASES)

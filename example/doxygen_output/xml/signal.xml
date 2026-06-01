@@ -8,11 +8,11 @@
     <detaileddescription>
 <para><variablelist>
 <varlistentry><term>Class <ref refid="classSummator" kindref="compound">Summator</ref>  </term></varlistentry>
-<listitem><para><anchor id="signal_1_signal000001"/> <godotonly ref="signal" position="open" name="sum_changed(int: sum)"/><parblock><para><bold>sum_changed(int: sum):</bold></para>
-<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero.  <godotonly position="open" content="[br][br][b]Note:[/b]"/>Missing emit signal in total reset function has been recently fixed</para>
-<para><anchor id="signal_1_signal000002"/> <godotonly ref="signal" position="open" name="sum_reset()"/><parblock><para><bold>sum_reset():</bold></para>
-<para>This signal is emitted when the total is reset to zero  <godotonly position="open" content="[br][br][b]Note:[/b]"/>this signal is highly redundant and was added so there would be a warning to parse</para>
-<para><anchor id="signal_1_signal000003"/> <godotonly ref="signal" position="open" name="doesnt_exist"/><parblock><para><bold>doesnt_exist:</bold></para>
+<listitem><para><anchor id="signal_1_signal000001"/> <godotonly kind="signal" name="sum_changed(int: sum)"/><parblock><para><bold>sum_changed(int: sum):</bold></para>
+<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero. </para>
+<para><anchor id="signal_1_signal000002"/> <godotonly kind="signal" name="sum_reset()"/><parblock><para><bold>sum_reset():</bold></para>
+<para>This signal is emitted when the total is reset to zero </para>
+<para><anchor id="signal_1_signal000003"/> <godotonly kind="signal" name="doesnt_exist"/><parblock><para><bold>doesnt_exist:</bold></para>
 <para>This is just a plain description, no warning or note for parser testing. This signal doesn&apos;t actually exist, so don&apos;t try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
 </parblock></para>
 </parblock></para>

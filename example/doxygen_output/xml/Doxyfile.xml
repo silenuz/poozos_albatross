@@ -43,20 +43,18 @@
   <option  id='SEPARATE_MEMBER_PAGES' default='yes' type='bool'><value>NO</value></option>
   <option  id='TAB_SIZE' default='yes' type='int'><value>4</value></option>
   <option  id='ALIASES' default='no' type='stringlist'>
-    <value><![CDATA["glnk{1}=\xmlonly<godotonly position=\"open\" content=\"[\"/>\endxmlonly\1\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdcon{2}=\xmlonly<godotonly position=\"open\" content=\"[constant \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdcon{2}=\xmlonly<godotonly position=\"open\" content=\"[constant \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdenu{2}=\xmlonly<godotonly position=\"open\" content=\"[enum \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdmem{2}=\xmlonly<godotonly position=\"open\" content=\"[member \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdmet{2}=\xmlonly<godotonly position=\"open\" content=\"[method \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdnew{2}=\xmlonly<godotonly position=\"open\" content=\"[constructor \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdope{2}=\xmlonly<godotonly position=\"open\" content=\"[operator \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" content=\" *]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdsig{2}=\xmlonly<godotonly position=\"open\" content=\"[signal \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdthe{2}=\xmlonly<godotonly position=\"open\" content=\"[theme_item \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["gdpar{1}=\xmlonly<godotonly position=\"open\" content=\"[param\"/>\endxmlonly\1\xmlonly<godotonly position=\"close\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["signal{2|}=\xrefitem signal \"Signal\" \"Signals\"\xmlonly<godotonly ref=\"signal\" position=\"open\" name=\"\1\"/>\endxmlonly@parblock<b>\1:</b> ^^^^^^ \2@endparblock\xmlonly <godotonly ref=\"signal\" position=\"close\"/> \endxmlonly"]]></value>
-    <value><![CDATA["gdwarn{1}=\xmlonly<godotonly position=\"open\" content=\"[br][br][b]Warning:[/b]\"/>\1\endxmlonly \warning \1 ^^^^^^"]]></value>
-    <value><![CDATA["gdnote{1}=\xmlonly<godotonly position=\"open\" content=\"[br][br][b]Note:[/b]\"/>\1\endxmlonly \note \1 ^^^^^^"]]></value>
+    <value><![CDATA["glnk{1}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[\"/>\endxmlonly\1\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdcon{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[constant \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdcon{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[constant \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdenu{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[enum \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdmem{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[member \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdmet{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[method \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdnew{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[constructor \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" kind=\"text\"  content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdope{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[operator \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" kind=\"text\" content=\" *]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdsig{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[signal \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdthe{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[theme_item \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\"  kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["gdpar{1}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[param\"/>\endxmlonly\1\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
+    <value><![CDATA["signal{2|}=\xrefitem signal \"Signal\" \"Signals\"\xmlonly<godotonly kind=\"signal\" name=\"\1\"/>\endxmlonly@parblock<b>\1:</b> ^^^^^^ \2@endparblock"]]></value>
   </option>
   <option  id='OPTIMIZE_OUTPUT_FOR_C' default='yes' type='bool'><value>NO</value></option>
   <option  id='OPTIMIZE_OUTPUT_JAVA' default='yes' type='bool'><value>NO</value></option>
