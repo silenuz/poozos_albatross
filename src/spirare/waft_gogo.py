@@ -34,35 +34,18 @@ build_profile['type'] = 'feature_profile'
 build_profile['enabled_classes'] = []
 build_profile['enabled_classes'].append("OS")
 
-def parse_reference_file(reference):
-    file_name = reference + ".xml"
-    xml_reference_file = next(Path(xml_input_folder).rglob(file_name), None)
-    if xml_reference_file:
-        tree = et.parse(xml_reference_file)
-        root = tree.getroot()
-        data_node = root[0]
-        include_node_list = data_node.findall('includes')
-        for include_node in include_node_list:
-            if include_node.text.startswith('godot_cpp'):
-                include_file_name = Path(include_node.text).name.replace('.hpp', '')
-                class_name = "".join(word.capitalize() for word in include_file_name.split("_"))
-                # handle the fact that 2d or 3d in file name becomes 2D or 3D in Class name
-                actual_class_name =  re.sub(r'(?<=\d)(d|D)', lambda match: match.group(0).upper(), class_name)
-                if actual_class_name not in build_profile['enabled_classes']:
-                    build_profile['enabled_classes'].append(actual_class_name)
-    else:
-        print("file not found " + file_name)
+def create_include_dictionary(lucky_data):
+    includes = lucky_data.get_include_values()
+    for include in includes:
+        if include not in build_profile['enabled_classes']:
+            build_profile['enabled_classes'].append(include)
 
-
-def create_profile_for_class(file: Path):
-    class_data = lz.create_profile_for_class(file)
-    class_info = class_data[1]
-    parse_reference_file(class_info.reference)
 
 def write_output():
     file_name = src_folder / 'build_profile_gen.json'
     with open(file_name, 'w') as f:
         json.dump(build_profile, f,indent=4)
+
 
 def parse_class_xml_files() -> None:
     """
@@ -72,7 +55,8 @@ def parse_class_xml_files() -> None:
     """
     files = list(Path(xml_input_folder).rglob('class*.xml'))
     for file in files:
-        create_profile_for_class(file)
+        lucky_data = lz.LuckyZephyr(file)
+        create_include_dictionary(lucky_data)
         write_output()
 
 if __name__ == '__main__':

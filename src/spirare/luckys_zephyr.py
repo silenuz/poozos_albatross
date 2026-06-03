@@ -167,6 +167,23 @@ class LuckyZephyr:
 
         return result
 
+
+    def get_include_values(self)->list[str]:
+        result = []
+
+        reference_file_content = self.load_reference_file()
+        xml_reference_node = reference_file_content[0]
+        if xml_reference_node:
+            include_node_list = xml_reference_node.findall('includes')
+            for include_node in include_node_list:
+                if include_node.text.startswith('godot_cpp'):
+                    include_file_name = Path(include_node.text).name.replace('.hpp', '')
+                    class_name = "".join(word.capitalize() for word in include_file_name.split("_"))
+                    # handle the fact that 2d or 3d in file name becomes 2D or 3D in Class name
+                    actual_class_name = re.sub(r'(?<=\d)(d|D)', lambda match: match.group(0).upper(), class_name)
+                    result.append(actual_class_name)
+        return result
+
     def get_method_data(self, method_list: set) -> list[dict]:
         """
         Iterates over the list of method names passed as an argument,
