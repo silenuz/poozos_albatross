@@ -170,11 +170,10 @@ class LuckyZephyr:
 
     def get_include_values(self)->list[str]:
         result = []
-
         reference_file_content = self.load_reference_file()
         xml_reference_node = reference_file_content[0]
         if xml_reference_node:
-            include_node_list = xml_reference_node.findall('includes')
+            include_node_list = xml_reference_node.findall('.//includes')
             for include_node in include_node_list:
                 if include_node.text.startswith('godot_cpp'):
                     include_file_name = Path(include_node.text).name.replace('.hpp', '')
