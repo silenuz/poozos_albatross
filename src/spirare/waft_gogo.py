@@ -18,10 +18,7 @@ Didi: "He said Saturday. (Pause) I think."
 """
 import sys
 import json
-import re
-from collections import namedtuple
 from pathlib import Path
-from xml.etree import ElementTree as et
 import luckys_zephyr as lz
 
 xml_input_folder = sys.argv[1]
@@ -34,14 +31,23 @@ build_profile['type'] = 'feature_profile'
 build_profile['enabled_classes'] = []
 build_profile['enabled_classes'].append("OS")
 
-def create_include_dictionary(lucky_data):
+def create_include_dictionary(lucky_data: lz.LuckyZephyr) -> None:
+    """
+    Iterates through the includes files, adding them to the build profile dictionary
+    :param lucky_data: The LuckyZephyr instance with the current loaded class
+    :return: None
+    """
     includes = lucky_data.get_include_values()
     for include in includes:
         if include not in build_profile['enabled_classes']:
             build_profile['enabled_classes'].append(include)
 
 
-def write_output():
+def write_output()->None:
+    """
+    Writes the build profile dictionary to a json file
+    :return: None
+    """
     file_name = src_folder / 'build_profile_gen.json'
     with open(file_name, 'w') as f:
         json.dump(build_profile, f,indent=4)
