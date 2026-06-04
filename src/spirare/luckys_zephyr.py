@@ -44,7 +44,9 @@ element_black_list_set.add("htmlonly")
 element_black_list_set.add("manonly")
 element_black_list_set.add("latexonly")
 element_black_list_set.add("xrefsect")
-#element_black_list_set.add("programlisting")
+
+
+# element_black_list_set.add("programlisting")
 
 class LuckyZephyr:
     """
@@ -75,8 +77,7 @@ class LuckyZephyr:
             return src_file_name
         return None
 
-
-    def get_brief_description(self,doxygen_node: et.Element) -> str:
+    def get_brief_description(self, doxygen_node: et.Element) -> str:
         """
         Gets the briefdescription tag from the Doxygen element passed as an argument
         and returns the value of the text content.
@@ -85,7 +86,6 @@ class LuckyZephyr:
         node = doxygen_node.find('briefdescription')
         text = self.get_tag_text(node)
         return text
-
 
     def get_class_brief(self) -> et.Element:
         """
@@ -109,7 +109,7 @@ class LuckyZephyr:
         brief.text = text
         return brief
 
-    def get_data_type(self,text)->str:
+    def get_data_type(self, text) -> str:
         """
         Parses text to determine the inner data type for Ref<data> text
         :return: The inner data type for the text
@@ -122,8 +122,7 @@ class LuckyZephyr:
         else:
             return text
 
-
-    def get_detailed_description(self,doxygen_node: et.Element) -> str:
+    def get_detailed_description(self, doxygen_node: et.Element) -> str:
         """
         Gets the detaileddescription tag from the Doxygen element passed as an argument
         and returns the value of the text content.
@@ -133,7 +132,7 @@ class LuckyZephyr:
         text = self.get_tag_text(node)
         return text
 
-    def get_enumerator_data(self,enumerator_value_name_list:list)->list[dict]:
+    def get_enumerator_data(self, enumerator_value_name_list: list) -> list[dict]:
         """
         Iterates over the list of enumerator value names passed as an argument, it then gets the
         reference file data and node map for the reference file, it then finds each
@@ -168,8 +167,7 @@ class LuckyZephyr:
 
         return result
 
-
-    def get_include_values(self)->list[str]:
+    def get_include_values(self) -> list[str]:
         result = []
         reference_file_content = self.load_reference_file()
         xml_reference_node = reference_file_content[0]
@@ -214,7 +212,7 @@ class LuckyZephyr:
 
         return result
 
-    def get_member_data(self, member_list:list)->list[dict]:
+    def get_member_data(self, member_list: list) -> list[dict]:
         """
         Iterates over the list of member names passed as an argument,
         finding each in the current Doxygen XML tree, it then uses the parent child
@@ -243,8 +241,7 @@ class LuckyZephyr:
                 result.append(member_values)
         return result
 
-
-    def get_reference_file_path(self)->Path:
+    def get_reference_file_path(self) -> Path:
         """
         Trys to get the absolute path to the reference file containing extra header information.
         :return: Absolute path to the reference file containing extra header information or None if not found
@@ -291,7 +288,7 @@ class LuckyZephyr:
                     signal_data[signal_name_actual] = signal_values
         return signal_data
 
-    def get_tag_text(self,doxygen_node: et.Element) -> str:
+    def get_tag_text(self, doxygen_node: et.Element) -> str:
         """
         central function to get text from a tag.  currently it just strips markup from the text,
         but later can hopefully be used to convert some markup tags in the text to BBCode
@@ -301,28 +298,23 @@ class LuckyZephyr:
         parts = []
         if doxygen_node.text:
             parts.append(doxygen_node.text.strip())
-
-        for mixed_element_node in doxygen_node:
+        para_nodes = doxygen_node.findall('para')
+        count = len(para_nodes)
+        for paragraph_index in range(count):
+            paragraph = para_nodes[paragraph_index]
             empty_element = True
-            element_text = self.parse_xml_text(mixed_element_node)
+            element_text = self.parse_xml_text(paragraph)
             if element_text:
                 parts.append(element_text)
                 empty_element = False
-            if not empty_element and mixed_element_node.tag == 'para':
-                if parts[-1] != bbc_linebreak.open:
-                    parts.append(bbc_linebreak.open)
-                    parts.append(bbc_linebreak.open)
+            if not empty_element and paragraph_index != count - 1:
+                parts.append(bbc_linebreak.open)
+                parts.append(bbc_linebreak.open)
 
         text = " ".join(parts)
+        return text
 
-        # todo: fix the above so this is not needed it's pretty ridiculous
-        tmp = text.strip()
-        while tmp.endswith(bbc_linebreak.open):
-            tmp = tmp.removesuffix(bbc_linebreak.open).strip()
-
-        return tmp
-
-    def load_reference_file(self)->tuple[et.Element,dict]:
+    def load_reference_file(self) -> tuple[et.Element, dict]:
         reference_file_path = self.get_reference_file_path()
         if reference_file_path:
             tree = et.parse(reference_file_path)
@@ -332,7 +324,7 @@ class LuckyZephyr:
         else:
             return None, None
 
-    def parse_xml_text(self,doxygen_node: et.Element) -> str:
+    def parse_xml_text(self, doxygen_node: et.Element) -> str:
         parts = []
         has_existing_codeblock = False
 
@@ -388,7 +380,7 @@ class LuckyZephyr:
                     if lang_value == 'csharp':
                         existing_is_godot = False
 
-                file_extension = mixed_element_node.get("filename").replace('.','')
+                file_extension = mixed_element_node.get("filename").replace('.', '')
                 if file_extension == 'cs':
                     language = 'csharp'
                 else:
@@ -423,7 +415,6 @@ class LuckyZephyr:
 
         text = " ".join(parts)
         return text
-
 
     ###############################################################################
     ##                            Internal                                       ##
