@@ -1,9 +1,12 @@
 IMPORTANT
----------
-Nothing here to report.
+=========
+Major rewrites and refactorings, code is much cleaner and more efficient.  Should be a significant gain 
+in the processing time of large classes.  The luckys_zephyr module now contains a class for dealing with 
+the Doxygen class XML files. Most of the functions return dictionaries, which will eventually be typed dicts to make working 
+with class as easy as possible.
 
 Description:
-------------
+============
 Some python scripts based off the Godot GDExtension cpp [template](https://github.com/godotengine/godot-cpp-template)
 structure and build system to generate Godot class documentation from Doxygen generated XML.
 
@@ -11,17 +14,19 @@ While this project's source code is unlicensed, the doxygen.py module is not my 
 under the GNU Lesser General Public License version 2.1.  A copy of said license has been provided in the support directory.
 This module can be used when using scons to build the Doxygen XML.  
 
-Current Status: ALPHA (if that)
--------------------------------
+Current Status: ALPHA (Almost beta)
+===================================
 Currently, the python script is capable of exporting the content for methods, properties, enum constants and signals.
-Processing of code blocks in description fields should be working in the next week or so. 
+Processing of code blocks in description fields now working, see [Codeblocks](#codeblocks).
 
 Contents:
----------
-This repository contains 3 pythons scripts, one with shared functions, 
-one for generating Godot class documentation from Doxygen generated XML files,
-and one for generating a build_profile.json file for the project from the Doxygen
-XML files.
+=========
+
+This repository contains 3 python modules:
+
+- aerify_did.py : script to generate Godot class documentation from Doxygen generated class XML files
+- luckys_zephyr.py : contains LuckyZephyr class that parses and searches the Doxygen XML, this class is used by the above to parse the source XML
+- waft_gogo.py : script to generate a build profile based on include statements in the header files parsed by Doxygen
 
 The example directory has a self-contained example to represent parts of a GDExtension cpp template project.  It has
 no requirement other than python, and contains command line scripts that demonstrate usage.
@@ -38,8 +43,16 @@ Doxygen XML so that the scripts can be used manually, or integrated into the sco
 To see an example project using cmake with the scripts to generate Godot class documentation see 
 [doxy_demo](https://github.com/silenuz/doxy_demo)
 
+The Scripts:
+============
+Detailed information about the scripts will soon be here.
+
 Notes:
-------
+======
+This section contains notes pertaining to how the Doxygen XML is parsed into the Godot class documentation.
+
+Signals:
+--------
 Signal information is now output to the class documentation and the Doxygen XML parser expects the information to be part of the
 detailed description for the class.  If it can find signal reference items in the class' detailed description, it will output 
 those descriptions, otherwise it will simply generate the signal content with an empty description much the same as doctool would.
@@ -82,6 +95,62 @@ Html Signal Output:
 
 ![Alt signal_output_html](git_content/signals_html.png)
 
+CodeBlocks:
+-----------
+When providing code block examples, to have them parsed correctly it is important 
+not to break up individual code blocks that are to be part of a codeblocks example.
+If there is a blank line between the code example two individual code blocks will be created.
+However, I don't see the point of including csharp examples as they never display in the editor anyway.
+If your using gd script it doesn't display and if using csharp the documentation isn't even available.
+
+Confucius: "The hardest thing of all is to find a black cat in a dark room, especially if there is no cat"
+
+For example the following code comments:
+```cpp
+ * The class must inherit from a Godot built in class (like @glnk{Object}, @glnk{Node}, @glnk{Sprite2D}, or @glnk{Resource}).
+ * Godot does not support multiple inheritance for GDExtension classes.
+ *
+ *  Example Usage:
+ *
+ *  \code{.csharp}
+ *	GodotObject sum = ClassDB.Instantiate("Summator").As<GodotObject>();
+ *	sum.Call("add",5);
+ *	sum.Call("add",7);
+ *	int total = sum.Call("get_total").As<int>();
+ *	// prints 12
+ *	GD.Print(total);
+ *  \endcode
+ *	\code{.gdscript}
+ *  var sum = Summator.new()
+ *	sum.add(5)
+ *	sum.add(7)
+ *	var total = sum.get_total()
+ *	# prints 12
+ *	print(total)
+ * \endcode
+```
+produces this output:
+```xml
+  <description>The class must inherit from a Godot built in class (like [Object], [Node], [Sprite2D], or [Resource]). Godot does not support multiple inheritance for GDExtension classes. [br] [br] Example Usage: [codeblocks][gdscript]var sum = Summator.new()
+sum.add(5)
+sum.add(7)
+var total = sum.get_total()
+# prints 12
+print(total)
+[/gdscript][csharp]GodotObject sum = ClassDB.Instantiate( "Summator" ).As&lt;GodotObject&gt;();
+sum.Call( "add" ,5);
+sum.Call( "add" ,7);
+int total = sum.Call( "get_total" ).As&lt; int &gt;();
+// prints 12
+GD.Print(total);
+[/csharp][/codeblocks]</description>
+```
+Note the gdscript was rearranged to be first in the codeblocks markup.  If there is a new paragraph (blank line)
+between code blocks then a separate code block will be created for each.  Here's how it looks in the editor:
+![Alt codeblock](git_content/code_block.png)
+
+Other Aliases:
+--------------
 There are multiple predefined aliases for Doxygen.  the definitions for these aliases can be found in
 the [doxygen_aliases](support_files/doxygen_aliases.txt) file, this file is used in the example project to
 generate the Doxygen configuration. These aliases can be used to insert Godot specific elements into the Doxygen XML 

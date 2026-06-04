@@ -20,10 +20,17 @@ using namespace godot;
  * The class must inherit from a Godot built in class (like @glnk{Object}, @glnk{Node}, @glnk{Sprite2D}, or @glnk{Resource}).
  * Godot does not support multiple inheritance for GDExtension classes.
  *
- * Summator Example Usage
- *
+ *  Example Usage:
+ *  \code{.csharp}
+ *	GodotObject sum = ClassDB.Instantiate("Summator").As<GodotObject>();
+ *	sum.Call("add",5);
+ *	sum.Call("add",7);
+ *	int total = sum.Call("get_total").As<int>();
+ *	// prints 12
+ *	GD.Print(total);
+ *  \endcode
  *	\code{.gdscript}
- * var sum = Summator.new()
+ *  var sum = Summator.new()
  *	sum.add(5)
  *	sum.add(7)
  *	var total = sum.get_total()

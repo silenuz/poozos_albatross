@@ -15,6 +15,7 @@ Didi: "Tomorrow when I wake or think I do, what shall I say of today?
        That with Estragon my friend, at this place, until the fall of night, I waited for Godot? "
 """
 import copy
+import html
 import re
 from collections import namedtuple
 from pathlib import Path
@@ -43,7 +44,7 @@ element_black_list_set.add("htmlonly")
 element_black_list_set.add("manonly")
 element_black_list_set.add("latexonly")
 element_black_list_set.add("xrefsect")
-element_black_list_set.add("programlisting")
+#element_black_list_set.add("programlisting")
 
 class LuckyZephyr:
     """
@@ -333,6 +334,7 @@ class LuckyZephyr:
 
     def parse_xml_text(self,doxygen_node: et.Element) -> str:
         parts = []
+        has_existing_codeblock = False
 
         if doxygen_node.tag in element_black_list_set:
             return ""
@@ -372,6 +374,48 @@ class LuckyZephyr:
                     parts[-1] = parts[-1] + content + node_tail
                 else:
                     parts.append(content + node_tail)
+            elif mixed_element_node.tag == "programlisting":
+                insert_index = len(parts) - 1
+                existing_is_godot = True
+                if has_existing_codeblock:
+                    insert_index = next(i for i, s in enumerate(parts) if s.startswith('[codeblock'))
+                    current_codeblock = parts[insert_index]
+                    lang_pattern = r'lang=(.*?)\]'
+                    lang_value = re.search(lang_pattern, current_codeblock).group(1)
+                    current_codeblock = current_codeblock.replace('codeblock lang=', '')
+                    current_codeblock = current_codeblock.replace('/codeblock', f'/{lang_value}')
+                    parts[insert_index] = current_codeblock
+                    if lang_value == 'csharp':
+                        existing_is_godot = False
+
+                file_extension = mixed_element_node.get("filename").replace('.','')
+                if file_extension == 'cs':
+                    language = 'csharp'
+                else:
+                    language = file_extension
+
+                block_text = []
+                line_nodes = mixed_element_node.findall('codeline')
+                for line_node in line_nodes:
+                    line = " ".join(line_node.itertext()) + "\n"
+                    block_text.append(line)
+
+                if has_existing_codeblock:
+                    if existing_is_godot:
+                        parts[insert_index] = '[codeblocks]' + parts[insert_index]
+                        parts[insert_index] = f'[{language}]]' + "".join(block_text) + f'[/{language}]'
+                        parts[insert_index] = parts[insert_index] + '[/codeblocks]'
+                    else:
+                        current_block = parts[insert_index]
+                        parts[insert_index] = f'[codeblocks][{language}]' + "".join(block_text) + f'[/{language}]'
+                        parts[insert_index] = parts[insert_index] + current_block + '[/codeblocks]'
+                else:
+                    parts.append(f'[codeblock lang={language}]' + "".join(block_text) + f'[/codeblock]')
+
+                has_existing_codeblock = True
+            else:
+                if not mixed_element_node.text is None:
+                    parts.append(" ".join(mixed_element_node.itertext()))
 
             if not mixed_element_node.tail is None and not mixed_element_node.tail == " ":
                 if not mixed_element_node.tag == "godotonly":
