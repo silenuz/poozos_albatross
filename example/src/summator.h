@@ -21,6 +21,7 @@ using namespace godot;
  * Godot does not support multiple inheritance for GDExtension classes.
  *
  *  Example Usage:
+ *
  *  \code{.csharp}
  *	GodotObject sum = ClassDB.Instantiate("Summator").As<GodotObject>();
  *	sum.Call("add",5);
