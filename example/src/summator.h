@@ -50,6 +50,8 @@ using namespace godot;
  * @signal{doesnt_exist|This is just a plain description, no warning or note for parser testing.  This signal
  * doesn't actually exist, so don't try to use it.  This should only output to html as the signal is not actually registered
  * with ClassDB.}
+ *
+ *
  */
 class Summator : public Object
 {

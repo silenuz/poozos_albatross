@@ -17,7 +17,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="60" column="5" bodyfile="src/summator.h" bodystart="60" bodyend="-1"/>
+        <location file="src/summator.h" line="62" column="5" bodyfile="src/summator.h" bodystart="62" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-func">
@@ -39,7 +39,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="57" column="1"/>
+        <location file="src/summator.h" line="59" column="1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-static-func">
@@ -56,7 +56,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="66" column="13" bodyfile="src/summator.cpp" bodystart="10" bodyend="18"/>
+        <location file="src/summator.h" line="68" column="13" bodyfile="src/summator.cpp" bodystart="10" bodyend="18"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -88,7 +88,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="76" column="6" bodyfile="src/summator.cpp" bodystart="20" bodyend="24"/>
+        <location file="src/summator.h" line="78" column="6" bodyfile="src/summator.cpp" bodystart="20" bodyend="24"/>
       </memberdef>
       <memberdef kind="function" id="classSummator_1a6e8d85e71fc296888b14ca72fa5fe4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -104,7 +104,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="83" column="6" bodyfile="src/summator.cpp" bodystart="25" bodyend="30"/>
+        <location file="src/summator.h" line="85" column="6" bodyfile="src/summator.cpp" bodystart="25" bodyend="30"/>
       </memberdef>
       <memberdef kind="function" id="classSummator_1a1c3b1b74ac163588a654900ec500685c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -123,7 +123,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="93" column="5" bodyfile="src/summator.cpp" bodystart="31" bodyend="34"/>
+        <location file="src/summator.h" line="95" column="5" bodyfile="src/summator.cpp" bodystart="31" bodyend="34"/>
       </memberdef>
       <memberdef kind="function" id="classSummator_1a250b744c59b186168717cb0dc6f3a4da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -139,7 +139,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="100" column="1" bodyfile="src/summator.cpp" bodystart="36" bodyend="39"/>
+        <location file="src/summator.h" line="102" column="1" bodyfile="src/summator.cpp" bodystart="36" bodyend="39"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -201,7 +201,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="src/summator.h" line="54" column="1" bodyfile="src/summator.h" bodystart="55" bodyend="101"/>
+    <location file="src/summator.h" line="56" column="1" bodyfile="src/summator.h" bodystart="57" bodyend="103"/>
     <listofallmembers>
       <member refid="classSummator_1a87a714a1fa810061b161a562eb4f3cd9" prot="protected" virt="non-virtual"><scope>Summator</scope><name>_bind_methods</name></member>
       <member refid="classSummator_1a6294425c68c6937d4de8cc2334069b00" prot="public" virt="non-virtual"><scope>Summator</scope><name>add</name></member>

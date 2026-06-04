@@ -99,11 +99,15 @@ CodeBlocks:
 -----------
 When providing code block examples, to have them parsed correctly it is important 
 not to break up individual code blocks that are to be part of a codeblocks example.
-If there is a blank line between the code example two individual code blocks will be created.
-However, I don't see the point of including csharp examples as they never display in the editor anyway.
-If your using gd script it doesn't display and if using csharp the documentation isn't even available.
+If there is a blank line between the code examples two individual code blocks will be created.
 
-Confucius: "The hardest thing of all is to find a black cat in a dark room, especially if there is no cat"
+However, I don't see the point of including csharp examples in [codeblocks] as they never display in the editor anyway.
+If your using gd script it doesn't display and if using csharp the documentation isn't even available.  
+Even if you go to the [class documentation reference](https://docs.godotengine.org/en/stable/engine_details/class_reference/index.html#formatting-code-blocks)
+and copy and paste the code blocks example it only displays the gdscript portion.  If you violate the reference guide and put
+the csharp example first, it's still only the gdscript example that displays in the editor. 
+
+"The hardest thing of all is to find a black cat in a dark room, especially if there is no cat"
 
 For example the following code comments:
 ```cpp

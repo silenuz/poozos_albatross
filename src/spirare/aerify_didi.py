@@ -331,21 +331,22 @@ def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:
         index_value += 1
 
 
-def set_member_data(godot_members_node: et.Element, lz_data: LuckyZephyr) -> None:
+def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     """
     loops through all the private fields defined in the doxygen XML and find the fields corresponding
     to backing fields of the bound properties
-    :param godot_members_node: the members node in the Godot output XML
+    :param godot_root_node: the root node in the Godot output XML
     :param lz_data: The LuckyZephyr instance with the current doxygen class data
-    :return: None
-    """
+    :return: None    """
+
     properties = list(bound_properties)
     member_data = lz_data.get_member_data(properties)
+    members_node = et.SubElement(godot_root_node, "members")
 
     for member in member_data:
         member_name = member["name"]
         property_values = bound_properties[member_name]
-        output_member_node = et.SubElement(godot_members_node, "member")
+        output_member_node = et.SubElement(members_node, "member")
         output_member_node.set("name", member_name)
         output_member_node.set("setter", property_values["setter"])
         output_member_node.set("getter", property_values["getter"])
