@@ -19,9 +19,9 @@ using namespace godot;
  *
  * The class must inherit from a Godot built in class (like @glnk{Object}, @glnk{Node}, @glnk{Sprite2D}, or @glnk{Resource}).
  * Godot does not support multiple inheritance for GDExtension classes.
+ *  Why the #@@# does the editor documentation allow csharp code blocks if it never displays them?
  *
  *  Example Usage:
- *
  *  \code{.csharp}
  *	GodotObject sum = ClassDB.Instantiate("Summator").As<GodotObject>();
  *	sum.Call("add",5);
@@ -42,6 +42,7 @@ using namespace godot;
  * @signal{sum_changed(int: sum)|
  * This **signal**, is _emitted_ when the sum changes whether
  * after adding a new integer or when resetting the total back to zero.
+ *
  * @note “You're on Earth. There's no cure for that.” ― Samuel Beckett  }
  *
  * @signal{sum_reset()| This signal is emitted when the total is reset to zero
@@ -52,7 +53,17 @@ using namespace godot;
  * doesn't actually exist, so don't try to use it.  This should only output to html as the signal is not actually registered
  * with ClassDB.}
  *
- *
+ * Check Status Example:
+ *	\code{.gdscript}
+ * if total >= sum.SUM_GOOD:
+ *	print("Life is good")
+ * elif total >= sum.SUM_OKAY:
+ *	print("Could be doing better")
+ * elif total >= sum.SUM_REQUIRED:
+ *	print("At least you making rent")
+ * else:
+ *	print("Your broke")
+ * \endcode
  */
 class Summator : public Object
 {
@@ -69,6 +80,13 @@ protected:
 	static void _bind_methods();
 
 public:
+
+	static constexpr int MINMUM_REQUIRED_AMOUNT = 50; /**<The minimum total that is required to meet expenses */
+	/** Meeting expenses with a little extra */
+	static const int DOING_OKAY_AMOUNT = 100;
+	/** Things are going good, well into the black */
+	static const int DOING_NOTHING_AMOUNT = 200;
+
 	/**
 	 * @brief adds the passed value to the current total
 	 *
