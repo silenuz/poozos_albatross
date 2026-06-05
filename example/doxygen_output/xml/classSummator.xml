@@ -17,7 +17,57 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="63" column="5" bodyfile="src/summator.h" bodystart="63" bodyend="-1"/>
+        <location file="src/summator.h" line="74" column="5" bodyfile="src/summator.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classSummator_1aa29ddd006b86446f127b8351be81a38b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Summator::MINMUM_REQUIRED_AMOUNT</definition>
+        <argsstring></argsstring>
+        <name>MINMUM_REQUIRED_AMOUNT</name>
+        <qualifiedname>Summator::MINMUM_REQUIRED_AMOUNT</qualifiedname>
+        <initializer>= 50</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The minimum total that is required to meet expenses </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="84" column="22" bodyfile="src/summator.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSummator_1a738bcb6ca43d8a174a792903cadb11ed" prot="public" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int Summator::DOING_OKAY_AMOUNT</definition>
+        <argsstring></argsstring>
+        <name>DOING_OKAY_AMOUNT</name>
+        <qualifiedname>Summator::DOING_OKAY_AMOUNT</qualifiedname>
+        <initializer>= 100</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Meeting expenses with a little extra </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="86" column="18" bodyfile="src/summator.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classSummator_1a48c0514f98e29915fb2736b9b170be2a" prot="public" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int Summator::DOING_NOTHING_AMOUNT</definition>
+        <argsstring></argsstring>
+        <name>DOING_NOTHING_AMOUNT</name>
+        <qualifiedname>Summator::DOING_NOTHING_AMOUNT</qualifiedname>
+        <initializer>= 200</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Things are going good, well into the black </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/summator.h" line="88" column="18" bodyfile="src/summator.h" bodystart="88" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-func">
@@ -39,7 +89,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="60" column="1"/>
+        <location file="src/summator.h" line="71" column="1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-static-func">
@@ -56,7 +106,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="69" column="13" bodyfile="src/summator.cpp" bodystart="10" bodyend="18"/>
+        <location file="src/summator.h" line="80" column="13" bodyfile="src/summator.cpp" bodystart="10" bodyend="27"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -88,7 +138,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="79" column="6" bodyfile="src/summator.cpp" bodystart="20" bodyend="24"/>
+        <location file="src/summator.h" line="97" column="6" bodyfile="src/summator.cpp" bodystart="29" bodyend="32"/>
       </memberdef>
       <memberdef kind="function" id="classSummator_1a6e8d85e71fc296888b14ca72fa5fe4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -104,7 +154,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="86" column="6" bodyfile="src/summator.cpp" bodystart="25" bodyend="30"/>
+        <location file="src/summator.h" line="104" column="6" bodyfile="src/summator.cpp" bodystart="33" bodyend="37"/>
       </memberdef>
       <memberdef kind="function" id="classSummator_1a1c3b1b74ac163588a654900ec500685c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -123,7 +173,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="96" column="5" bodyfile="src/summator.cpp" bodystart="31" bodyend="34"/>
+        <location file="src/summator.h" line="114" column="5" bodyfile="src/summator.cpp" bodystart="38" bodyend="40"/>
       </memberdef>
       <memberdef kind="function" id="classSummator_1a250b744c59b186168717cb0dc6f3a4da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -139,16 +189,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="103" column="1" bodyfile="src/summator.cpp" bodystart="36" bodyend="39"/>
+        <location file="src/summator.h" line="121" column="1" bodyfile="src/summator.cpp" bodystart="42" bodyend="44"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>A <emphasis>classic</emphasis> code example for a <bold>GDExtension</bold> </para>
     </briefdescription>
     <detaileddescription>
-<para>The class must inherit from a Godot built in class (like  <godotonly position="open" kind="text" content="["/>Object<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Node<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Sprite2D<godotonly position="close" kind="text" content="]"/>, or  <godotonly position="open" kind="text" content="["/>Resource<godotonly position="close" kind="text" content="]"/>). Godot does not support multiple inheritance for GDExtension classes.</para>
-<para>Example Usage:</para>
-<para><programlisting filename=".cs"><codeline><highlight class="normal">GodotObject<sp/>sum<sp/>=<sp/>ClassDB.Instantiate(</highlight><highlight class="stringliteral">&quot;Summator&quot;</highlight><highlight class="normal">).As&lt;GodotObject&gt;();</highlight></codeline>
+<para>The class must inherit from a Godot built in class (like  <godotonly position="open" kind="text" content="["/>Object<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Node<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Sprite2D<godotonly position="close" kind="text" content="]"/>, or  <godotonly position="open" kind="text" content="["/>Resource<godotonly position="close" kind="text" content="]"/>). Godot does not support multiple inheritance for GDExtension classes. Why the #@# does the editor documentation allow csharp code blocks if it never displays them?</para>
+<para>Example Usage: <programlisting filename=".cs"><codeline><highlight class="normal">GodotObject<sp/>sum<sp/>=<sp/>ClassDB.Instantiate(</highlight><highlight class="stringliteral">&quot;Summator&quot;</highlight><highlight class="normal">).As&lt;GodotObject&gt;();</highlight></codeline>
 <codeline><highlight class="normal">sum.Call(</highlight><highlight class="stringliteral">&quot;add&quot;</highlight><highlight class="normal">,5);</highlight></codeline>
 <codeline><highlight class="normal">sum.Call(</highlight><highlight class="stringliteral">&quot;add&quot;</highlight><highlight class="normal">,7);</highlight></codeline>
 <codeline><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>total<sp/>=<sp/>sum.Call(</highlight><highlight class="stringliteral">&quot;get_total&quot;</highlight><highlight class="normal">).As&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">&gt;();</highlight></codeline>
@@ -162,7 +211,8 @@
 <codeline><highlight class="normal"><sp/>print(total)</highlight></codeline>
 </programlisting></para>
 <para><xrefsect id="signal_1_signal000001"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="sum_changed(int: sum)"/><parblock><para><bold>sum_changed(int: sum):</bold></para>
-<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero. </para>
+<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero.</para>
+<para></para>
 </parblock></para>
 </xrefdescription></xrefsect><simplesect kind="note"><para>“You&apos;re on Earth. There&apos;s no cure for that.” ― Samuel Beckett</para>
 </simplesect>
@@ -179,6 +229,15 @@
 <para>This is just a plain description, no warning or note for parser testing. This signal doesn&apos;t actually exist, so don&apos;t try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
 </parblock></para>
 </xrefdescription></xrefsect></para>
+<para>Check Status Example: <programlisting filename=".gdscript"><codeline><highlight class="normal">if<sp/>total<sp/>&gt;=<sp/>sum.SUM_GOOD:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>print(&quot;Life<sp/>is<sp/>good&quot;)</highlight></codeline>
+<codeline><highlight class="normal">elif<sp/>total<sp/>&gt;=<sp/>sum.SUM_OKAY:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>print(&quot;Could<sp/>be<sp/>doing<sp/>better&quot;)</highlight></codeline>
+<codeline><highlight class="normal">elif<sp/>total<sp/>&gt;=<sp/>sum.SUM_REQUIRED:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>print(&quot;At<sp/>least<sp/>you<sp/>making<sp/>rent&quot;)</highlight></codeline>
+<codeline><highlight class="normal">else:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>print(&quot;Your<sp/>broke&quot;)</highlight></codeline>
+</programlisting> </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="2">
@@ -202,12 +261,15 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="src/summator.h" line="57" column="1" bodyfile="src/summator.h" bodystart="58" bodyend="104"/>
+    <location file="src/summator.h" line="68" column="1" bodyfile="src/summator.h" bodystart="69" bodyend="122"/>
     <listofallmembers>
       <member refid="classSummator_1a87a714a1fa810061b161a562eb4f3cd9" prot="protected" virt="non-virtual"><scope>Summator</scope><name>_bind_methods</name></member>
       <member refid="classSummator_1a6294425c68c6937d4de8cc2334069b00" prot="public" virt="non-virtual"><scope>Summator</scope><name>add</name></member>
+      <member refid="classSummator_1a48c0514f98e29915fb2736b9b170be2a" prot="public" virt="non-virtual"><scope>Summator</scope><name>DOING_NOTHING_AMOUNT</name></member>
+      <member refid="classSummator_1a738bcb6ca43d8a174a792903cadb11ed" prot="public" virt="non-virtual"><scope>Summator</scope><name>DOING_OKAY_AMOUNT</name></member>
       <member refid="classSummator_1a04c0843c429f41308e858933293cd43b" prot="private" virt="non-virtual"><scope>Summator</scope><name>GDCLASS</name></member>
       <member refid="classSummator_1a1c3b1b74ac163588a654900ec500685c" prot="public" virt="non-virtual"><scope>Summator</scope><name>get_total</name></member>
+      <member refid="classSummator_1aa29ddd006b86446f127b8351be81a38b" prot="public" virt="non-virtual"><scope>Summator</scope><name>MINMUM_REQUIRED_AMOUNT</name></member>
       <member refid="classSummator_1a6e8d85e71fc296888b14ca72fa5fe4de" prot="public" virt="non-virtual"><scope>Summator</scope><name>reset</name></member>
       <member refid="classSummator_1a87ae9682eade0936951a9725bbf31f77" prot="private" virt="non-virtual"><scope>Summator</scope><name>sum</name></member>
       <member refid="classSummator_1a250b744c59b186168717cb0dc6f3a4da" prot="public" virt="non-virtual"><scope>Summator</scope><name>Summator</name></member>

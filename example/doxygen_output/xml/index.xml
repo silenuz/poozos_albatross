@@ -2,6 +2,9 @@
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.13.2" xml:lang="en-US">
   <compound refid="classSummator" kind="class"><name>Summator</name>
     <member refid="classSummator_1a87ae9682eade0936951a9725bbf31f77" kind="variable"><name>sum</name></member>
+    <member refid="classSummator_1aa29ddd006b86446f127b8351be81a38b" kind="variable"><name>MINMUM_REQUIRED_AMOUNT</name></member>
+    <member refid="classSummator_1a738bcb6ca43d8a174a792903cadb11ed" kind="variable"><name>DOING_OKAY_AMOUNT</name></member>
+    <member refid="classSummator_1a48c0514f98e29915fb2736b9b170be2a" kind="variable"><name>DOING_NOTHING_AMOUNT</name></member>
     <member refid="classSummator_1a04c0843c429f41308e858933293cd43b" kind="function"><name>GDCLASS</name></member>
     <member refid="classSummator_1a87a714a1fa810061b161a562eb4f3cd9" kind="function"><name>_bind_methods</name></member>
     <member refid="classSummator_1a6294425c68c6937d4de8cc2334069b00" kind="function"><name>add</name></member>

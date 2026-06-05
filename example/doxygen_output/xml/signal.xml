@@ -9,7 +9,8 @@
 <para><variablelist>
 <varlistentry><term>Class <ref refid="classSummator" kindref="compound">Summator</ref>  </term></varlistentry>
 <listitem><para><anchor id="signal_1_signal000001"/> <godotonly kind="signal" name="sum_changed(int: sum)"/><parblock><para><bold>sum_changed(int: sum):</bold></para>
-<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero. </para>
+<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero.</para>
+<para></para>
 <para><anchor id="signal_1_signal000002"/> <godotonly kind="signal" name="sum_reset()"/><parblock><para><bold>sum_reset():</bold></para>
 <para>This signal is emitted when the total is reset to zero </para>
 <para><anchor id="signal_1_signal000003"/> <godotonly kind="signal" name="doesnt_exist"/><parblock><para><bold>doesnt_exist:</bold></para>

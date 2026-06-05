@@ -5,6 +5,16 @@ in the processing time of large classes.  The luckys_zephyr module now contains 
 the Doxygen class XML files. Most of the functions return dictionaries, which will eventually be typed dicts to make working 
 with class as easy as possible.
 
+Current Known Bugs:
+-------------------
+Code blocks are currently formatted incorrectly if they contain tabs as someone ignored white space markup when
+writing the parser for code blocks.
+
+Signals can only contain one paragraph in the description because someone decided to just grab a single
+paragraph when parsing said content.
+
+Both should be fixed early next week.
+
 Description:
 ============
 Some python scripts based off the Godot GDExtension cpp [template](https://github.com/godotengine/godot-cpp-template)

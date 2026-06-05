@@ -290,6 +290,7 @@ class LuckyZephyr:
 
     def get_tag_text(self, doxygen_node: et.Element) -> str:
         """
+        todo: this docstring is out of date, update it
         central function to get text from a tag.  currently it just strips markup from the text,
         but later can hopefully be used to convert some markup tags in the text to BBCode
         :param doxygen_node: the node to get the text from

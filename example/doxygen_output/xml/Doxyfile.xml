@@ -54,7 +54,8 @@
     <value><![CDATA["gdsig{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[signal \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
     <value><![CDATA["gdthe{2}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[theme_item \1.\"/>\endxmlonly\2\xmlonly<godotonly position=\"close\"  kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
     <value><![CDATA["gdpar{1}=\xmlonly<godotonly position=\"open\" kind=\"text\" content=\"[param\"/>\endxmlonly\1\xmlonly<godotonly position=\"close\" kind=\"text\" content=\"]\"/>\endxmlonly"]]></value>
-    <value><![CDATA["signal{2|}=\xrefitem signal \"Signal\" \"Signals\"\xmlonly<godotonly kind=\"signal\" name=\"\1\"/>\endxmlonly@parblock<b>\1:</b> ^^^^^^ \2@endparblock"]]></value>
+    <value><![CDATA["signal{2|}=\xrefitem signal \"Signal\" \"Signals\"\xmlonly<godotonly kind=\"signal\" name=\"\1\"/>\endxmlonly@parblock<b>\1:</b> ^^^^^^ \2@endparblock^^"]]></value>
+    <value><![CDATA["signalg{2|}=\xrefitem signal \"Signal\" \"Signals\"\xmlonly<godotonly kind=\"signal\" name=\"\1\"/>\endxmlonly<b>\1:</b> ^^^^^^ \2"]]></value>
   </option>
   <option  id='OPTIMIZE_OUTPUT_FOR_C' default='yes' type='bool'><value>NO</value></option>
   <option  id='OPTIMIZE_OUTPUT_JAVA' default='yes' type='bool'><value>NO</value></option>

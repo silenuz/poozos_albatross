@@ -18,8 +18,8 @@ Example Scripts:
 ----------------
 There are 4 python scripts in the example directory as well.  
 
-build_all will generate the Doxygen content if Doxygen can be found in the path, 
-it will then generate a build profile, and class documentation.
+build_all will generate now generate a Doxygen configuration file if it doesn't exist as well
+as the Doxygen content if Doxygen can be found in the path, it will then generate a build profile, and class documentation.
 
 gen_class_doc can be run from the command line to generate Godot class documentation in the doc_classes_generated 
 directory.  This documentation is generated from the XML content in the doxygen_ouput directory.  When running this
@@ -27,7 +27,9 @@ script you may see a message informing you that methods.py is not found.  This c
 and looks for methods.py to use it's print_warning and print_error functions if found.
 
 gen_doxygen_config can be run to generate a Doxygen configuration file, based on the current system for the example project.
-This script requires Doxygen to be installed and in the current path.
+This script requires Doxygen to be installed and in the current path.  This script uses the ini
+file in the example config directory for the configuration settings, along with
+the Doxygen aliases file in the support directory.
 
 gen_profile can also be run from the command line to generate a build profile for a GDExtension based on the content of
 Doxygen generated XML.
