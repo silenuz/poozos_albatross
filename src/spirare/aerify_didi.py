@@ -111,6 +111,7 @@ def clear_tracked_bindings() -> None:
     property_methods_set.clear()
     bound_properties.clear()
     bound_enums_set.clear()
+    bound_signals.clear()
 
 
 def create_bound_enums(bind_method_code: str) -> None:

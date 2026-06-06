@@ -19,7 +19,6 @@ using namespace godot;
  *
  * The class must inherit from a Godot built in class (like @glnk{Object}, @glnk{Node}, @glnk{Sprite2D}, or @glnk{Resource}).
  * Godot does not support multiple inheritance for GDExtension classes.
- *  Why the #@@# does the editor documentation allow csharp code blocks if it never displays them?
  *
  *  Example Usage:
  *  \code{.csharp}
