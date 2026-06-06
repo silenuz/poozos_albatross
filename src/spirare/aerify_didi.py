@@ -44,7 +44,7 @@ else:
     print("methods.py not found")
 
 # track bound enum constants
-bound_enums_set = set()
+bound_enums_set = []
 
 # track bound methods and properties for the current class being processed
 bound_methods_set = set()
@@ -123,7 +123,8 @@ def create_bound_enums(bind_method_code: str) -> None:
     bound_enum_pattern = r"(?<=BIND_ENUM_CONSTANT)\((.*?)\)"
     bound_enum_matches = re.findall(bound_enum_pattern, bind_method_code)
     for bound_enum_match in bound_enum_matches:
-        bound_enums_set.add(bound_enum_match)
+        bound_enums_set.append(bound_enum_match)
+    print(bound_enums_set)
 
 
 def create_bound_methods(bind_methods_code: str) -> None:
@@ -305,16 +306,14 @@ def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:
     :return: None
     """
     constants_node = add_constants_node(godot_root)
-    enumerator_value_names = list(bound_enums_set)
+    enumerator_value_names = list(dict.fromkeys(bound_enums_set))
     enumerator_value_data = lz_data.get_enumerator_data(enumerator_value_names)
 
     # track index, Godot will pick up the values after the last initialized value based on index.
     index_value = 0
 
     for enumerator_value in enumerator_value_data:
-        value_name = enumerator_value['name']
         description = enumerator_value['description']
-        output_values = value_name
         output_node = et.SubElement(constants_node, "constant")
         output_node.set("name", enumerator_value["name"])
         output_node.set("enum", enumerator_value["enumerator_name"])
