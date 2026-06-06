@@ -149,7 +149,6 @@ class LuckyZephyr:
 
         if doxygen_node:
             for enumerator_value in enumerator_value_name_list:
-                print("ENUM VALE:" + enumerator_value)
                 value_name_node = doxygen_node.find(f".//name[.='{enumerator_value}']")
                 enumerator_value_node = enumerator_node_xml_map[value_name_node]
                 enumerator_node = enumerator_node_xml_map[enumerator_value_node]

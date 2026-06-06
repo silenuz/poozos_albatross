@@ -153,12 +153,13 @@ def create_bound_signals(bind_methods_code: str) -> None:
     :return: None
     """
     bound_signal_pattern = r'ADD_SIGNAL\((.*?)\)\);'
-    bound_signal_data = re.findall(bound_signal_pattern, bind_methods_code)
+    bound_signal_data = re.findall(bound_signal_pattern, bind_methods_code,re.DOTALL)
 
     for bound_signal in bound_signal_data:
         bound_signal_values = dict()
-        name_pattern = r'MethodInfo\(\"(.*?)\"'
-        signal_name = re.findall(name_pattern, bound_signal)[0]
+        name_pattern = r'MethodInfo\(\s*"([^"]+)"'
+        signal_name_match = re.match(name_pattern, bound_signal,re.DOTALL)
+        signal_name = signal_name_match.group(1)
         propert_info_pattern = r'PropertyInfo\((.*?)\)'
         propert_info = re.findall(propert_info_pattern, bound_signal)
         parameter_index = 0
@@ -304,7 +305,7 @@ def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:
     :return: None
     """
     constants_node = add_constants_node(godot_root)
-    enumerator_value_names = list(test_set)
+    enumerator_value_names = list(bound_enums_set)
     enumerator_value_data = lz_data.get_enumerator_data(enumerator_value_names)
 
     # track index, Godot will pick up the values after the last initialized value based on index.
