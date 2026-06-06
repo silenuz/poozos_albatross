@@ -17,7 +17,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="74" column="5" bodyfile="src/summator.h" bodystart="74" bodyend="-1"/>
+        <location file="src/summator.h" line="73" column="5" bodyfile="src/summator.h" bodystart="73" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-attrib">
@@ -35,7 +35,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="84" column="22" bodyfile="src/summator.h" bodystart="84" bodyend="-1"/>
+        <location file="src/summator.h" line="83" column="22" bodyfile="src/summator.h" bodystart="83" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classSummator_1a738bcb6ca43d8a174a792903cadb11ed" prot="public" static="yes" mutable="no">
         <type>const int</type>
@@ -51,7 +51,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="86" column="18" bodyfile="src/summator.h" bodystart="86" bodyend="-1"/>
+        <location file="src/summator.h" line="85" column="18" bodyfile="src/summator.h" bodystart="85" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classSummator_1a48c0514f98e29915fb2736b9b170be2a" prot="public" static="yes" mutable="no">
         <type>const int</type>
@@ -67,7 +67,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="88" column="18" bodyfile="src/summator.h" bodystart="88" bodyend="-1"/>
+        <location file="src/summator.h" line="87" column="18" bodyfile="src/summator.h" bodystart="87" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-func">
@@ -89,7 +89,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="71" column="1"/>
+        <location file="src/summator.h" line="70" column="1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-static-func">
@@ -106,7 +106,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="80" column="13" bodyfile="src/summator.cpp" bodystart="10" bodyend="27"/>
+        <location file="src/summator.h" line="79" column="13" bodyfile="src/summator.cpp" bodystart="10" bodyend="27"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -138,7 +138,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="97" column="6" bodyfile="src/summator.cpp" bodystart="29" bodyend="32"/>
+        <location file="src/summator.h" line="96" column="6" bodyfile="src/summator.cpp" bodystart="29" bodyend="32"/>
       </memberdef>
       <memberdef kind="function" id="classSummator_1a6e8d85e71fc296888b14ca72fa5fe4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -154,7 +154,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="104" column="6" bodyfile="src/summator.cpp" bodystart="33" bodyend="37"/>
+        <location file="src/summator.h" line="103" column="6" bodyfile="src/summator.cpp" bodystart="33" bodyend="37"/>
       </memberdef>
       <memberdef kind="function" id="classSummator_1a1c3b1b74ac163588a654900ec500685c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -173,7 +173,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="114" column="5" bodyfile="src/summator.cpp" bodystart="38" bodyend="40"/>
+        <location file="src/summator.h" line="113" column="5" bodyfile="src/summator.cpp" bodystart="38" bodyend="40"/>
       </memberdef>
       <memberdef kind="function" id="classSummator_1a250b744c59b186168717cb0dc6f3a4da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -189,14 +189,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/summator.h" line="121" column="1" bodyfile="src/summator.cpp" bodystart="42" bodyend="44"/>
+        <location file="src/summator.h" line="120" column="1" bodyfile="src/summator.cpp" bodystart="42" bodyend="44"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>A <emphasis>classic</emphasis> code example for a <bold>GDExtension</bold> </para>
     </briefdescription>
     <detaileddescription>
-<para>The class must inherit from a Godot built in class (like  <godotonly position="open" kind="text" content="["/>Object<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Node<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Sprite2D<godotonly position="close" kind="text" content="]"/>, or  <godotonly position="open" kind="text" content="["/>Resource<godotonly position="close" kind="text" content="]"/>). Godot does not support multiple inheritance for GDExtension classes. Why the #@# does the editor documentation allow csharp code blocks if it never displays them?</para>
+<para>The class must inherit from a Godot built in class (like  <godotonly position="open" kind="text" content="["/>Object<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Node<godotonly position="close" kind="text" content="]"/>,  <godotonly position="open" kind="text" content="["/>Sprite2D<godotonly position="close" kind="text" content="]"/>, or  <godotonly position="open" kind="text" content="["/>Resource<godotonly position="close" kind="text" content="]"/>). Godot does not support multiple inheritance for GDExtension classes.</para>
 <para>Example Usage: <programlisting filename=".cs"><codeline><highlight class="normal">GodotObject<sp/>sum<sp/>=<sp/>ClassDB.Instantiate(</highlight><highlight class="stringliteral">&quot;Summator&quot;</highlight><highlight class="normal">).As&lt;GodotObject&gt;();</highlight></codeline>
 <codeline><highlight class="normal">sum.Call(</highlight><highlight class="stringliteral">&quot;add&quot;</highlight><highlight class="normal">,5);</highlight></codeline>
 <codeline><highlight class="normal">sum.Call(</highlight><highlight class="stringliteral">&quot;add&quot;</highlight><highlight class="normal">,7);</highlight></codeline>
@@ -261,7 +261,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="src/summator.h" line="68" column="1" bodyfile="src/summator.h" bodystart="69" bodyend="122"/>
+    <location file="src/summator.h" line="67" column="1" bodyfile="src/summator.h" bodystart="68" bodyend="121"/>
     <listofallmembers>
       <member refid="classSummator_1a87a714a1fa810061b161a562eb4f3cd9" prot="protected" virt="non-virtual"><scope>Summator</scope><name>_bind_methods</name></member>
       <member refid="classSummator_1a6294425c68c6937d4de8cc2334069b00" prot="public" virt="non-virtual"><scope>Summator</scope><name>add</name></member>

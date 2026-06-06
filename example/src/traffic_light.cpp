@@ -48,8 +48,8 @@ void TrafficLight::_bind_methods()
         );
 
     BIND_ENUM_CONSTANT(TRAFFIC_LIGHT_GO)
-	BIND_ENUM_CONSTANT(TRAFFIC_LIGHT_CAUTION)
-	BIND_ENUM_CONSTANT(TRAFFIC_LIGHT_STOP)
+	 BIND_ENUM_CONSTANT(TRAFFIC_LIGHT_CAUTION)
+	 BIND_ENUM_CONSTANT(TRAFFIC_LIGHT_STOP)
 
 
 	//ADD_SIGNAL(MethodInfo("light_changed",PropertyInfo(Variant::INT,"light_type",PROPERTY_HINT_ENUM,"Go,Caution,Stop","TrafficLightType")));

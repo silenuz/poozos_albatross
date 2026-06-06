@@ -149,16 +149,17 @@ class LuckyZephyr:
 
         if doxygen_node:
             for enumerator_value in enumerator_value_name_list:
+                print("ENUM VALE:" + enumerator_value)
                 value_name_node = doxygen_node.find(f".//name[.='{enumerator_value}']")
                 enumerator_value_node = enumerator_node_xml_map[value_name_node]
                 enumerator_node = enumerator_node_xml_map[enumerator_value_node]
                 name_node = enumerator_node.find('name')
-                name = name_node.text
+                enumerator_name = name_node.text
                 description = self.get_detailed_description(enumerator_value_node)
                 enumerator_definition = dict()
-                enumerator_definition['name'] = name
+                enumerator_definition['name'] = enumerator_value
                 enumerator_definition['description'] = description
-                enumerator_definition['value_name'] = enumerator_value
+                enumerator_definition['enumerator_name'] = enumerator_name
                 initial_value_node = enumerator_value_node.find("initializer")
                 if initial_value_node is not None:
                     initial_value = initial_value_node.text.split(" ")[1].strip()

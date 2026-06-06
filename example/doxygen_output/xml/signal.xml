@@ -14,8 +14,16 @@
 <para><anchor id="signal_1_signal000002"/> <godotonly kind="signal" name="sum_reset()"/><parblock><para><bold>sum_reset():</bold></para>
 <para>This signal is emitted when the total is reset to zero </para>
 <para><anchor id="signal_1_signal000003"/> <godotonly kind="signal" name="doesnt_exist"/><parblock><para><bold>doesnt_exist:</bold></para>
-<para>This is just a plain description, no warning or note for parser testing. This signal doesn&apos;t actually exist, so don&apos;t try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
+<para>This is just a plain description, no warning or note for parser testing. This signal doesn&apos;t actually exist, so don&apos;t try to use it. This should only output to html as the signal is not actually registered with ClassDB. </para>
 </parblock></para>
+</parblock></para>
+</parblock></para>
+</listitem>
+<varlistentry><term>Member <ref refid="classTrafficLight_1a3949215d0fbb8273e1602abaabba8c41" kindref="member">TrafficLight::_bind_methods</ref>  ()</term></varlistentry>
+<listitem><para><anchor id="signal_1_signal000004"/> <godotonly kind="signal" name="light_changed(TrafficLightType new_state)"/><parblock><para><bold>light_changed(TrafficLightType new_state):</bold></para>
+<para>This signal is emitted when the state of the Traffic Light changes.</para>
+<para><anchor id="signal_1_signal000005"/> <godotonly kind="signal" name="light_changing(TrafficLightType old_state,TrafficLightType new_state)"/><parblock><para><bold>light_changing(TrafficLightType old_state,TrafficLightType new_state):</bold></para>
+<para>this signal is emitted when the light is about to change. The signal parameter indicate the current state and what the new state will be</para>
 </parblock></para>
 </parblock></para>
 </listitem>

@@ -44,7 +44,7 @@ else:
     print("methods.py not found")
 
 # track bound enum constants
-bound_enums_set = dict()
+bound_enums_set = set()
 
 # track bound methods and properties for the current class being processed
 bound_methods_set = set()
@@ -123,14 +123,7 @@ def create_bound_enums(bind_method_code: str) -> None:
     bound_enum_pattern = r"(?<=BIND_ENUM_CONSTANT)\((.*?)\)"
     bound_enum_matches = re.findall(bound_enum_pattern, bind_method_code)
     for bound_enum_match in bound_enum_matches:
-        values = bound_enum_match.split("::")
-        enumerator_name = values[0]
-        enumerator_value_name = values[1]
-        value_dict = dict()
-        value_dict["qualified_name"] = bound_enum_match
-        value_dict["enumerator_name"] = enumerator_name
-        value_dict["enumerator_value_name"] = enumerator_value_name
-        bound_enums_set[enumerator_value_name] = value_dict
+        bound_enums_set.add(bound_enum_match)
 
 
 def create_bound_methods(bind_methods_code: str) -> None:
@@ -311,19 +304,19 @@ def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:
     :return: None
     """
     constants_node = add_constants_node(godot_root)
-    enumerator_value_names = list(bound_enums_set)
+    enumerator_value_names = list(test_set)
     enumerator_value_data = lz_data.get_enumerator_data(enumerator_value_names)
 
     # track index, Godot will pick up the values after the last initialized value based on index.
     index_value = 0
 
     for enumerator_value in enumerator_value_data:
-        value_name = enumerator_value['value_name']
+        value_name = enumerator_value['name']
         description = enumerator_value['description']
-        output_values = bound_enums_set[value_name]
+        output_values = value_name
         output_node = et.SubElement(constants_node, "constant")
-        output_node.set("name", output_values["qualified_name"])
-        output_node.set("enum", output_values["enumerator_name"])
+        output_node.set("name", enumerator_value["name"])
+        output_node.set("enum", enumerator_value["enumerator_name"])
         if 'initial_value' in enumerator_value:
             value = enumerator_value['initial_value']
             index_value = int(value)
