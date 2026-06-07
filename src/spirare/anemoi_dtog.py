@@ -50,13 +50,23 @@ class PropertyInfo:
 
     def get_hint_type(self)->tuple[str, str]:
         # todo: rename soon as possible
+        if self.hint is None and self.usage_flags is None:
+            return None
+
+        if self.hint is not None:
+            if self.hint_string is not None and self.hint == "PROPERTY_HINT_RESOURCE_TYPE":
+                return "type", self.hint_string
+            elif self.hint == "PROPERTY_HINT_ENUM":
+                if self.class_name:
+                    return "enum", self.class_name
+                else:
+                    return "enum", None
+
         if self.usage_flags is not None:
             if "PROPERTY_USAGE_CLASS_IS_ENUM" in self.usage_flags:
                 return 'enum',self.class_name
-            else:
-                return None
-        else:
-            return None
+
+        return None
 
     @property
     def index_string(self) -> str:

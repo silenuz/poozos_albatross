@@ -154,6 +154,8 @@ def create_bound_signals(bind_methods_code: str) -> None:
     :param bind_methods_code: The code content of the _bind_methods function
     :return: None
     """
+    # hopefully this will fix commented signals from being read
+    # todo: fix the other regex patterns
     bound_signal_pattern = r'(?m)^[^\S\r\n]*(?!\/\/)\bADD_SIGNAL\(([\s\S]*?)\);'
     bound_signal_data = re.findall(bound_signal_pattern, bind_methods_code,re.DOTALL)
 
@@ -343,7 +345,14 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
         output_member_node.set("name", member_name)
         output_member_node.set("setter", bound_property.setter)
         output_member_node.set("getter", bound_property.getter)
-        output_member_node.set("type", member["type"])
+        output_member_node.set("type", bound_property.info.variant_type_name)
+        hint_type = bound_property.info.get_hint_type()
+        if hint_type is not None:
+            if hint_type[1] is None:
+                output_member_node.set(hint_type[0], member["type"])
+            else:
+                output_member_node.set(hint_type[0], hint_type[1])
+
         description = member["description"]
         if description:
             output_member_node.text = description
