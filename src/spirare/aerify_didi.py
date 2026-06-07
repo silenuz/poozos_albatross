@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as et
 from luckys_zephyr import LuckyZephyr
-from src.spirare.anemoi_dtog import PropertyInfo
+from src.spirare.anemoi_dtog import PropertyInfo, BoundProperty
 
 xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
@@ -51,7 +51,7 @@ bound_enums_set = []
 bound_methods_set = set()
 
 # track property definitions
-bound_properties = dict()
+bound_properties : dict[str,BoundProperty] = {}
 
 # track bound signals
 bound_signals = dict()
@@ -154,7 +154,7 @@ def create_bound_signals(bind_methods_code: str) -> None:
     :param bind_methods_code: The code content of the _bind_methods function
     :return: None
     """
-    bound_signal_pattern = r'ADD_SIGNAL\((.*?)\)\);'
+    bound_signal_pattern = r'(?m)^[^\S\r\n]*(?!\/\/)\bADD_SIGNAL\(([\s\S]*?)\);'
     bound_signal_data = re.findall(bound_signal_pattern, bind_methods_code,re.DOTALL)
 
     for bound_signal in bound_signal_data:
@@ -166,14 +166,9 @@ def create_bound_signals(bind_methods_code: str) -> None:
         property_info_list  = re.findall(property_info_pattern, bound_signal)
         parameter_index = 0
         bound_signal_values['name'] = signal_name
-        bound_signal_values['parameters'] = []
+        value_list: list[PropertyInfo] = []
+        bound_signal_values['parameters'] = value_list
         for property_info in property_info_list:
-            #values = property_info.split(",")
-            #value_type = values[0].split("::")[1]
-            #parameter_name = values[1].replace('"', "")
-            #parameter_value = PropertyInfo(variant_type=value_type,
-                                          # name=parameter_name,
-                                           #index=parameter_index)
             parameter_value = PropertyInfo.from_arg_string(property_info)
             bound_signal_values['parameters'].append(parameter_value)
             parameter_index += 1
@@ -258,11 +253,14 @@ def map_property_bindings(bind_methods_code: str) -> None:
     :return: None
     """
     add_property_pattern = r'ADD_PROPERTY\s+\((.*?)\s+\);'
+    property_info_pattern = r'PropertyInfo\((.*?)\)'
     property_matches = re.findall(add_property_pattern, bind_methods_code, re.DOTALL)
     for property_match in property_matches:
+        info_match = re.match(property_info_pattern, property_match.lstrip(),re.DOTALL)
+        property_info = PropertyInfo.from_arg_string(info_match.group(1))
         property_values = get_property_values(property_match)
-        field = property_values["field"]
-        bound_properties[field] = property_values
+        bound_property = BoundProperty(property_values["field"],property_values["setter"],property_values["getter"],property_info)
+        bound_properties[property_values['field']] = bound_property
         property_methods_set.add(property_values["setter"])
         property_methods_set.add(property_values["getter"])
 
@@ -340,11 +338,11 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
 
     for member in member_data:
         member_name = member["name"]
-        property_values = bound_properties[member_name]
+        bound_property = bound_properties[member_name]
         output_member_node = et.SubElement(members_node, "member")
         output_member_node.set("name", member_name)
-        output_member_node.set("setter", property_values["setter"])
-        output_member_node.set("getter", property_values["getter"])
+        output_member_node.set("setter", bound_property.setter)
+        output_member_node.set("getter", bound_property.getter)
         output_member_node.set("type", member["type"])
         description = member["description"]
         if description:
@@ -382,19 +380,21 @@ def set_signal_data(godot_root: et.Element, lz_data:LuckyZephyr):
 
     signal_data = lz_data.get_signal_data()
     signals_node = et.SubElement(godot_root, "signals")
+    # first generate the standard skeleton output doctool would create for signals
     for signal in bound_signals:
         signal_node = et.SubElement(signals_node, "signal")
         signal_node.set("name", signal)
         parameters = bound_signals[signal]['parameters']
         if len(parameters) > 0:
-            for each_parameter in parameters:
+            for bound_parameter in parameters:
                 parameter_node = et.SubElement(signal_node, "parameter")
-                parameter_node.set("index", each_parameter.index_string)
-                parameter_node.set("name", each_parameter.name)
-                parameter_node.set("type", each_parameter.variant_type_name)
-                specified_type = each_parameter.get_hint_type()
+                parameter_node.set("index", bound_parameter.index_string)
+                parameter_node.set("name", bound_parameter.name)
+                parameter_node.set("type", bound_parameter.variant_type_name)
+                specified_type = bound_parameter.get_hint_type()
                 if specified_type is not None:
                     parameter_node.set(specified_type[0], specified_type[1])
+        # if the signal has a description and or notes add them
         if signal in signal_data:
             description_node = et.SubElement(signal_node, "description")
             description = signal_data[signal]['description']

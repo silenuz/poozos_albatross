@@ -89,3 +89,17 @@ class PropertyInfo:
         kwargs = dict(zip(field_names, args))
         kwargs["index"] = index
         return cls(**kwargs)
+
+@dataclass()
+class BoundProperty:
+    """
+    Data Model for Bound properties parsed from source code
+    """
+    field: str
+    """Member name"""
+    getter: str
+    """Name of the method to get the member value"""
+    setter: str
+    """Name of the method to set the member value"""
+    info: PropertyInfo
+    """PropertyInfo model containing the information from the source code declaration"""
