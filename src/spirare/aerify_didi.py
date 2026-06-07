@@ -21,6 +21,7 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as et
 from luckys_zephyr import LuckyZephyr
+from src.spirare.anemoi_dtog import PropertyInfo
 
 xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
@@ -161,19 +162,19 @@ def create_bound_signals(bind_methods_code: str) -> None:
         name_pattern = r'MethodInfo\(\s*"([^"]+)"'
         signal_name_match = re.match(name_pattern, bound_signal,re.DOTALL)
         signal_name = signal_name_match.group(1)
-        propert_info_pattern = r'PropertyInfo\((.*?)\)'
-        propert_info = re.findall(propert_info_pattern, bound_signal)
+        property_info_pattern = r'PropertyInfo\((.*?)\)'
+        property_info_list  = re.findall(property_info_pattern, bound_signal)
         parameter_index = 0
         bound_signal_values['name'] = signal_name
         bound_signal_values['parameters'] = []
-        for propert_info in propert_info:
-            values = propert_info.split(",")
-            value_type = values[0].split("::")[1]
-            parameter_name = values[1].replace('"', "")
-            parameter_value = dict()
-            parameter_value['type'] = value_type
-            parameter_value['index'] = parameter_index
-            parameter_value['name'] = parameter_name
+        for property_info in property_info_list:
+            #values = property_info.split(",")
+            #value_type = values[0].split("::")[1]
+            #parameter_name = values[1].replace('"', "")
+            #parameter_value = PropertyInfo(variant_type=value_type,
+                                          # name=parameter_name,
+                                           #index=parameter_index)
+            parameter_value = PropertyInfo.from_arg_string(property_info)
             bound_signal_values['parameters'].append(parameter_value)
             parameter_index += 1
         bound_signals[signal_name] = bound_signal_values
@@ -388,9 +389,12 @@ def set_signal_data(godot_root: et.Element, lz_data:LuckyZephyr):
         if len(parameters) > 0:
             for each_parameter in parameters:
                 parameter_node = et.SubElement(signal_node, "parameter")
-                parameter_node.set("index", str(each_parameter['index']))
-                parameter_node.set("name", each_parameter['name'])
-                parameter_node.set("type", each_parameter['type'])
+                parameter_node.set("index", each_parameter.index_string)
+                parameter_node.set("name", each_parameter.name)
+                parameter_node.set("type", each_parameter.variant_type_name)
+                specified_type = each_parameter.get_hint_type()
+                if specified_type is not None:
+                    parameter_node.set(specified_type[0], specified_type[1])
         if signal in signal_data:
             description_node = et.SubElement(signal_node, "description")
             description = signal_data[signal]['description']

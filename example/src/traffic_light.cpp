@@ -52,7 +52,7 @@ void TrafficLight::_bind_methods()
 	 BIND_ENUM_CONSTANT(TRAFFIC_LIGHT_STOP)
 
 
-	//ADD_SIGNAL(MethodInfo("light_changed",PropertyInfo(Variant::INT,"light_type",PROPERTY_HINT_ENUM,"Go,Caution,Stop","TrafficLightType")));
+	//  ADD_SIGNAL(MethodInfo("light_signal_comment",PropertyInfo(Variant::INT,"light_type",PROPERTY_HINT_ENUM,"Go,Caution,Stop","TrafficLightType")));
 	ADD_SIGNAL(MethodInfo(
 	   "light_changed",
 	   PropertyInfo(
@@ -66,7 +66,7 @@ void TrafficLight::_bind_methods()
    ));
 
 	ADD_SIGNAL(MethodInfo("light_changing",
-		PropertyInfo(Variant::INT,"current_light_type",PROPERTY_HINT_NONE,"",PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_CLASS_IS_ENUM,"TarfficLightType"),
+		PropertyInfo(Variant::INT,"current_light_type",PROPERTY_HINT_NONE,"",PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_CLASS_IS_ENUM,"TrafficLightType"),
 		PropertyInfo(Variant::INT,"new_light_type",PROPERTY_HINT_NONE,"",PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_CLASS_IS_ENUM,"TrafficLightType")));
 }
 
