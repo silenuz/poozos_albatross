@@ -21,6 +21,8 @@ from collections import namedtuple
 from pathlib import Path
 from xml.etree import ElementTree as et
 
+from src.spirare.anemoi_dtog import MemberDefinitionModel
+
 # track opening and closing markup for bbcode to translate html markup in element text attibutes
 BBCodeMap = namedtuple("BBCodeMap", ["open", "close"])
 bbc_bold = BBCodeMap(open="[b]", close=r"[/b]")
@@ -212,7 +214,7 @@ class LuckyZephyr:
 
         return result
 
-    def get_member_data(self, member_list: list) -> list[dict]:
+    def get_member_data(self, member_list: list) -> list[MemberDefinitionModel]:
         """
         Iterates over the list of member names passed as an argument,
         finding each in the current Doxygen XML tree, it then uses the parent child
@@ -229,15 +231,28 @@ class LuckyZephyr:
                 member_node = self.xml_map[name_node]
                 type_node = member_node.find("type")
                 type_value = self.get_data_type(type_node.text)
+                definition_node = member_node.find("definition")
+                definition_value = definition_node.text
+                qualified_name_node = member_node.find("qualifiedname")
+                qualified_name_value = qualified_name_node.text
+                member_values = MemberDefinitionModel(
+                    member_type=type_value,
+                    definition=definition_value,
+                    member_name=name,
+                    qualified_name=qualified_name_value,
+                )
                 description_node = member_node.find("detaileddescription")
                 if description_node.text is not None:
-                    description = self.get_tag_text(description_node)
-                else:
-                    description = None
-                member_values = dict()
-                member_values["name"] = name
-                member_values["description"] = description
-                member_values["type"] = type_value
+                    member_values.description = self.get_tag_text(description_node)
+
+                initializer_node = member_node.find("initializer")
+                if initializer_node is not None and initializer_node.text is not None:
+                   member_values.initializer = initializer_node.text
+
+                argg_node = member_node.find("argsstring")
+                if argg_node.text is not None:
+                   member_values.arg_string = argg_node.text
+
                 result.append(member_values)
         return result
 

@@ -69,9 +69,9 @@ class MemberDefinitionModel:
     definition: str
     member_name: str
     qualified_name: str
-    description: str
+    description: str | None = None
     initializer: str | None = None
-    argstring: str | None = None
+    arg_string: str | None = None
 
 
 @dataclass()

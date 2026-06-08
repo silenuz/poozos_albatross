@@ -357,23 +357,21 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     members_node = et.SubElement(godot_root_node, "members")
 
     for member in member_data:
-        member_name = member["name"]
-        bound_property = bound_properties[member_name]
+        bound_property = bound_properties[member.member_name]
         output_member_node = et.SubElement(members_node, "member")
-        output_member_node.set("name", member_name)
+        output_member_node.set("name", member.member_name)
         output_member_node.set("setter", bound_property.setter)
         output_member_node.set("getter", bound_property.getter)
         output_member_node.set("type", bound_property.info.variant_type_name)
         hint_type = bound_property.info.get_hint_type()
         if hint_type is not None:
             if hint_type[1] is None:
-                output_member_node.set(hint_type[0], member["type"])
+                output_member_node.set(hint_type[0],member.member_type)
             else:
                 output_member_node.set(hint_type[0], hint_type[1])
 
-        description = member["description"]
-        if description:
-            output_member_node.text = description
+        if member.description:
+            output_member_node.text = member.description
 
 
 def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
