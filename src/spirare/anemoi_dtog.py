@@ -74,6 +74,8 @@ class MemberDefinitionModel:
     """for constants and enumerators this indicates the initial value """
     arg_string: str | None = None
     """If applicable contains the argument string for the member"""
+    inbody_description: str | None = None
+
 
 
 @dataclass()
@@ -181,17 +183,17 @@ class PropertyInfoModel:
         kwargs["index"] = index
         return cls(**kwargs)
 
-    @dataclass()
-    class PropertyModel:
-        """
-        Data Model for Bound properties parsed from source code
-        """
-        field: str
-        """Member name"""
-        getter: str
-        """Name of the method to get the member value"""
-        setter: str
-        """Name of the method to set the member value"""
-        info: PropertyInfoModel
-        """PropertyInfo model containing the information from the source code declaration"""
+@dataclass()
+class PropertyModel:
+    """
+    Data Model for Bound properties parsed from source code
+    """
+    field: str
+    """Member name"""
+    getter: str
+    """Name of the method to get the member value"""
+    setter: str
+    """Name of the method to set the member value"""
+    info: PropertyInfoModel
+    """PropertyInfo model containing the information from the source code declaration"""
 

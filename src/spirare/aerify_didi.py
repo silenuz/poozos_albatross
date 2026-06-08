@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as et
 from luckys_zephyr import LuckyZephyr
-from src.spirare.anemoi_dtog import PropertyInfoModel, PropertyModel, MethodInfoModel, IntegerConstantModel
+from src.spirare.anemoi_dtog import PropertyInfoModel,PropertyModel, MethodInfoModel, IntegerConstantModel
 
 xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
@@ -353,7 +353,7 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     :return: None    """
 
     properties = list(bound_properties)
-    member_data = lz_data.get_member_data(properties)
+    member_data = lz_data.get_field_data(properties)
     members_node = et.SubElement(godot_root_node, "members")
 
     for member in member_data:
@@ -384,15 +384,14 @@ def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     """
     method_data = lz_data.get_method_data(bound_methods_set)
     methods_node = et.SubElement(godot_root_node, "methods")
-    for method_description in method_data:
+    for method in method_data:
         output_method_node = et.SubElement(methods_node, "method")
-        output_method_node.set("name", method_description["name"])
-        description = method_description["description"]
-        if description:
+        output_method_node.set("name",method.member_name)
+        if method.description:
             output_method_node_description = et.SubElement(output_method_node, "description")
-            output_method_node_description.text = description
+            output_method_node_description.text = method.description
         output_method_node_return = et.SubElement(output_method_node, "return")
-        output_method_node_return.set("type", method_description["return_type"])
+        output_method_node_return.set("type", method.member_type)
 
 def set_signal_data(godot_root: et.Element, lz_data:LuckyZephyr):
     """

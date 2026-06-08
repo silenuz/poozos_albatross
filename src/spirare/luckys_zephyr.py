@@ -184,7 +184,7 @@ class LuckyZephyr:
                     result.append(actual_class_name)
         return result
 
-    def get_method_data(self, method_list: set) -> list[dict]:
+    def get_method_data(self, method_list: set) -> list[MemberDefinitionModel]:
         """
         Iterates over the list of method names passed as an argument,
         finding each in the current Doxygen XML tree, it then uses the parent child
@@ -198,23 +198,12 @@ class LuckyZephyr:
             name_node = self.data_node.find(f".//qualifiedname[.='{method}']")
             if name_node is not None:
                 method_node = self.xml_map[name_node]
-                name_node = method_node.find("name")
-                name = name_node.text
-                description = self.get_detailed_description(method_node)
-                doxygen_type_node = method_node.find('type')
-                if doxygen_type_node.text:
-                    return_value_type = doxygen_type_node.text
-                else:
-                    return_value_type = "void"
-                method_data = dict()
-                method_data["name"] = name
-                method_data["description"] = description
-                method_data["return_type"] = return_value_type
+                method_data = self.model_member_definition(method_node)
                 result.append(method_data)
 
         return result
 
-    def get_member_data(self, member_list: list) -> list[MemberDefinitionModel]:
+    def get_field_data(self, member_list: list) -> list[MemberDefinitionModel]:
         """
         Iterates over the list of member names passed as an argument,
         finding each in the current Doxygen XML tree, it then uses the parent child
@@ -227,34 +216,44 @@ class LuckyZephyr:
         for member in member_list:
             name_node = self.data_node.find(f".//name[.='{member}']")
             if name_node is not None:
-                name = name_node.text
                 member_node = self.xml_map[name_node]
-                type_node = member_node.find("type")
-                type_value = self.get_data_type(type_node.text)
-                definition_node = member_node.find("definition")
-                definition_value = definition_node.text
-                qualified_name_node = member_node.find("qualifiedname")
-                qualified_name_value = qualified_name_node.text
-                member_values = MemberDefinitionModel(
-                    member_type=type_value,
-                    definition=definition_value,
-                    member_name=name,
-                    qualified_name=qualified_name_value,
-                )
-                description_node = member_node.find("detaileddescription")
-                if description_node.text is not None:
-                    member_values.description = self.get_tag_text(description_node)
-
-                initializer_node = member_node.find("initializer")
-                if initializer_node is not None and initializer_node.text is not None:
-                   member_values.initializer = initializer_node.text
-
-                argg_node = member_node.find("argsstring")
-                if argg_node.text is not None:
-                   member_values.arg_string = argg_node.text
-
+                member_values = self.model_member_definition(member_node)
                 result.append(member_values)
         return result
+
+    def model_member_definition(self,member_node:et.Element) -> MemberDefinitionModel:
+        name_node = member_node.find("name")
+        name = name_node.text
+        type_node = member_node.find("type")
+        type_value = self.get_data_type(type_node.text)
+        definition_node = member_node.find("definition")
+        definition_value = definition_node.text
+        qualified_name_node = member_node.find("qualifiedname")
+        qualified_name_value = qualified_name_node.text
+        member_values = MemberDefinitionModel(
+            member_type=type_value,
+            definition=definition_value,
+            member_name=name,
+            qualified_name=qualified_name_value,
+        )
+
+        brief_node = member_node.find("briefdescription")
+        if brief_node.text is not None:
+            member_values.brief = self.get_tag_text(brief_node)
+
+        description_node = member_node.find("detaileddescription")
+        if description_node.text is not None:
+            member_values.description = self.get_tag_text(description_node)
+
+        initializer_node = member_node.find("initializer")
+        if initializer_node is not None and initializer_node.text is not None:
+            member_values.initializer = initializer_node.text
+
+        argg_node = member_node.find("argsstring")
+        if argg_node.text is not None:
+            member_values.arg_string = argg_node.text
+
+        return member_values
 
     def get_reference_file_path(self) -> Path:
         """
