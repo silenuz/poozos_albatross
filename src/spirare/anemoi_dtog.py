@@ -10,8 +10,12 @@
 
 Contains Data Transfer Objects for Godot
 """
-from dataclasses import dataclass
+from __future__ import annotations
+from dataclasses import dataclass, field
 import shlex
+from typing import List
+from xml.etree import ElementTree as et
+
 
 def split_arg_string(arg_string: str) -> str:
     lexer = shlex.shlex(arg_string, posix=True)
@@ -20,9 +24,84 @@ def split_arg_string(arg_string: str) -> str:
     args_list = [arg.strip() for arg in lexer]
     return args_list
 
+@dataclass()
+class BoundProperty:
+    """
+    Data Model for Bound properties parsed from source code
+    """
+    field: str
+    """Member name"""
+    getter: str
+    """Name of the method to get the member value"""
+    setter: str
+    """Name of the method to set the member value"""
+    info: PropertyInfoModel
+    """PropertyInfo model containing the information from the source code declaration"""
 
 @dataclass()
-class PropertyInfo:
+class IntegerConstantModel:
+    p_class: str
+    p_enum: str
+    p_name: str
+    p_value: str
+    p_is_bitfield: bool = False
+
+    @classmethod
+    def from_arg_string(cls, arg_string: str):
+        args = split_arg_string(arg_string)
+        # expected CSV structure
+        field_names = [
+            "p_class",
+            "p_enum",
+            "p_name",
+            "p_value",
+            "p_is_bitfield"
+        ]
+        kwargs = dict(zip(field_names, args))
+        return cls(**kwargs)
+
+@dataclass()
+class MemberDefinitionModel:
+    """
+    Used to model data from the Doxygen XML
+    """
+    member_type: str
+    definition: str
+    member_name: str
+    qualified_name: str
+    description: str
+    initializer: str | None = None
+    argstring: str | None = None
+
+
+@dataclass()
+class MethodInfoModel:
+    """
+    MethodInfo Data Model
+
+    Used to model a MethodInfo declaration in CPP code.
+
+    CPP USAGE:
+    1. Name only (No arguments, no return value / void)
+          MethodInfo(const StringName &p_name);
+   2. Name followed by a variable number of PropertyInfo arguments(Used for signals and void methods)
+         MethodInfo(const StringName &p_name, const PropertyInfo &p_p1);
+         MethodInfo(const StringName &p_name, const PropertyInfo &p_p1, const PropertyInfo &p_p2);
+   3. Explicit Return Value FIRST, then Name, then arguments (Used for methods that return a value)
+         MethodInfo(const PropertyInfo &p_return_val, const StringName &p_name);
+    """
+    name: str
+    argument_info: List[PropertyInfoModel] = field(default_factory=list)
+    return_info: PropertyInfoModel | None = None
+
+    def __post_init__(self):
+        # Fallback to an empty list if None was passed so we can just loop it without worry
+        if self.argument_info is None:
+            self.argument_info = []
+
+
+@dataclass()
+class PropertyInfoModel:
     """
     PropertyInfo Data Model
 
@@ -48,7 +127,7 @@ class PropertyInfo:
     """ (Optional): Used if the type is a Resource or Object and you want to specify the exact class type"""
     index: int = 0
 
-    def get_hint_type(self)->tuple[str, str]:
+    def get_hint_type(self) -> tuple[str, str]:
         # todo: rename soon as possible
         if self.hint is None and self.usage_flags is None:
             return None
@@ -64,7 +143,7 @@ class PropertyInfo:
 
         if self.usage_flags is not None:
             if "PROPERTY_USAGE_CLASS_IS_ENUM" in self.usage_flags:
-                return 'enum',self.class_name
+                return 'enum', self.class_name
 
         return None
 
@@ -95,21 +174,10 @@ class PropertyInfo:
             "hint",
             "hint_string",
             "usage_flags",
-            "class_name" ]
+            "class_name"]
         kwargs = dict(zip(field_names, args))
         kwargs["index"] = index
         return cls(**kwargs)
 
-@dataclass()
-class BoundProperty:
-    """
-    Data Model for Bound properties parsed from source code
-    """
-    field: str
-    """Member name"""
-    getter: str
-    """Name of the method to get the member value"""
-    setter: str
-    """Name of the method to set the member value"""
-    info: PropertyInfo
-    """PropertyInfo model containing the information from the source code declaration"""
+
+

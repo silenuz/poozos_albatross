@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as et
 from luckys_zephyr import LuckyZephyr
-from src.spirare.anemoi_dtog import PropertyInfo, BoundProperty
+from src.spirare.anemoi_dtog import PropertyInfoModel, BoundProperty, MethodInfoModel, IntegerConstantModel
 
 xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
@@ -54,7 +54,9 @@ bound_methods_set = set()
 bound_properties : dict[str,BoundProperty] = {}
 
 # track bound signals
-bound_signals = dict()
+bound_signals : dict[str,MethodInfoModel] = {}
+
+bound_constants : dict[str,IntegerConstantModel] = {}
 
 # track methods that are getters and setters as they should be part of the members output
 # and not the methods output
@@ -115,6 +117,16 @@ def clear_tracked_bindings() -> None:
     bound_signals.clear()
 
 
+def create_bound_constants(bind_method_code:str)->None:
+    constant_pattern = r'ClassDB::bind_integer_constant\s*\(([\s\S]*?)\)\s*;'
+    constant_matches = re.findall(constant_pattern, bind_method_code)
+    for constant_match in constant_matches:
+        # remove comments
+        constant_cleaned =  re.sub(r"//.*", "", constant_match)
+        constant_info = IntegerConstantModel.from_arg_string(constant_cleaned)
+        bound_constants[constant_info.p_name] = constant_info
+
+
 def create_bound_enums(bind_method_code: str) -> None:
     """
     Creates the nested dictionary to track enumerator values and the enumerator they belong to.
@@ -160,21 +172,25 @@ def create_bound_signals(bind_methods_code: str) -> None:
     bound_signal_data = re.findall(bound_signal_pattern, bind_methods_code,re.DOTALL)
 
     for bound_signal in bound_signal_data:
-        bound_signal_values = dict()
         name_pattern = r'MethodInfo\(\s*"([^"]+)"'
         signal_name_match = re.match(name_pattern, bound_signal,re.DOTALL)
         signal_name = signal_name_match.group(1)
-        property_info_pattern = r'PropertyInfo\((.*?)\)'
+        property_info_pattern = r'PropertyInfo\s*\(([\s\S]*?)\)'
         property_info_list  = re.findall(property_info_pattern, bound_signal)
         parameter_index = 0
-        bound_signal_values['name'] = signal_name
-        value_list: list[PropertyInfo] = []
-        bound_signal_values['parameters'] = value_list
+        bound_signal_values = MethodInfoModel(name=signal_name)
         for property_info in property_info_list:
-            parameter_value = PropertyInfo.from_arg_string(property_info)
-            bound_signal_values['parameters'].append(parameter_value)
+            property_cleaned = re.sub(r"//.*", "", property_info.strip())
+            parameter_value = PropertyInfoModel.from_arg_string(property_cleaned, parameter_index)
+            bound_signal_values.argument_info.append(parameter_value)
             parameter_index += 1
         bound_signals[signal_name] = bound_signal_values
+
+
+def set_constants_data(godot_root : et.Element, lucky_data : LuckyZephyr) -> None:
+    output_constants_node = add_constants_node(godot_root)
+    for integer_constant in bound_constants:
+        pass
 
 
 def create_godot_doc(file: Path) -> None:
@@ -193,6 +209,7 @@ def create_godot_doc(file: Path) -> None:
         set_member_data(godot_root, lucky)
         set_enumerator_data(godot_root, lucky)
         set_signal_data(godot_root, lucky)
+        set_constants_data(godot_root, lucky)
         write_file(godot_root, lucky.class_name)
 
 
@@ -244,6 +261,7 @@ def map_godot_bindings(bind_method_code: str) -> None:
         create_bound_methods(bound_methods_match.group(1))
         create_bound_enums(bound_methods_match.group(1))
         create_bound_signals(bound_methods_match.group(1))
+        create_bound_constants(bound_methods_match.group(1))
     else:
         print_message("Unknown error could not get content of _bind_methods function", MESSAGE_TYPE_ERROR)
 
@@ -259,7 +277,7 @@ def map_property_bindings(bind_methods_code: str) -> None:
     property_matches = re.findall(add_property_pattern, bind_methods_code, re.DOTALL)
     for property_match in property_matches:
         info_match = re.match(property_info_pattern, property_match.lstrip(),re.DOTALL)
-        property_info = PropertyInfo.from_arg_string(info_match.group(1))
+        property_info = PropertyInfoModel.from_arg_string(info_match.group(1))
         property_values = get_property_values(property_match)
         bound_property = BoundProperty(property_values["field"],property_values["setter"],property_values["getter"],property_info)
         bound_properties[property_values['field']] = bound_property
@@ -393,7 +411,7 @@ def set_signal_data(godot_root: et.Element, lz_data:LuckyZephyr):
     for signal in bound_signals:
         signal_node = et.SubElement(signals_node, "signal")
         signal_node.set("name", signal)
-        parameters = bound_signals[signal]['parameters']
+        parameters = bound_signals[signal].argument_info
         if len(parameters) > 0:
             for bound_parameter in parameters:
                 parameter_node = et.SubElement(signal_node, "parameter")
