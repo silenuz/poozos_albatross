@@ -14,7 +14,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import shlex
 from typing import List
-from xml.etree import ElementTree as et
 
 
 def split_arg_string(arg_string: str) -> str:
@@ -25,26 +24,20 @@ def split_arg_string(arg_string: str) -> str:
     return args_list
 
 @dataclass()
-class BoundProperty:
-    """
-    Data Model for Bound properties parsed from source code
-    """
-    field: str
-    """Member name"""
-    getter: str
-    """Name of the method to get the member value"""
-    setter: str
-    """Name of the method to set the member value"""
-    info: PropertyInfoModel
-    """PropertyInfo model containing the information from the source code declaration"""
-
-@dataclass()
 class IntegerConstantModel:
+    """
+    Data Model to hold information about constant integer bindings in the source code.
+    """
     p_class: str
+    """p_class_name value"""
     p_enum: str
+    """p_enum_value value"""
     p_name: str
+    """p_constant_name value"""
     p_value: str
+    """p_constant_value value"""
     p_is_bitfield: bool = False
+    """is bitfield value"""
 
     @classmethod
     def from_arg_string(cls, arg_string: str):
@@ -63,15 +56,24 @@ class IntegerConstantModel:
 @dataclass()
 class MemberDefinitionModel:
     """
-    Used to model data from the Doxygen XML
+    Used to model data from the Doxygen XML Memberdef elements
     """
     member_type: str
+    """data type if a field the data type of the field, if a function the return type of the function"""
     definition: str
+    """member definition data value followed by qualified name, ex: int Summator::get_total """
     member_name: str
+    """simple name portion of the method or member name"""
     qualified_name: str
+    """qualified name of the method or member"""
+    brief: str | None = None
+    """brief description of the method or member"""
     description: str | None = None
+    """detailed description of the method or member"""
     initializer: str | None = None
+    """for constants and enumerators this indicates the initial value """
     arg_string: str | None = None
+    """If applicable contains the argument string for the member"""
 
 
 @dataclass()
@@ -179,5 +181,17 @@ class PropertyInfoModel:
         kwargs["index"] = index
         return cls(**kwargs)
 
-
+    @dataclass()
+    class PropertyModel:
+        """
+        Data Model for Bound properties parsed from source code
+        """
+        field: str
+        """Member name"""
+        getter: str
+        """Name of the method to get the member value"""
+        setter: str
+        """Name of the method to set the member value"""
+        info: PropertyInfoModel
+        """PropertyInfo model containing the information from the source code declaration"""
 

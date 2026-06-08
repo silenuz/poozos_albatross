@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as et
 from luckys_zephyr import LuckyZephyr
-from src.spirare.anemoi_dtog import PropertyInfoModel, BoundProperty, MethodInfoModel, IntegerConstantModel
+from src.spirare.anemoi_dtog import PropertyInfoModel, PropertyModel, MethodInfoModel, IntegerConstantModel
 
 xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
@@ -51,7 +51,7 @@ bound_enums_set = []
 bound_methods_set = set()
 
 # track property definitions
-bound_properties : dict[str,BoundProperty] = {}
+bound_properties : dict[str,PropertyModel] = {}
 
 # track bound signals
 bound_signals : dict[str,MethodInfoModel] = {}
@@ -279,7 +279,7 @@ def map_property_bindings(bind_methods_code: str) -> None:
         info_match = re.match(property_info_pattern, property_match.lstrip(),re.DOTALL)
         property_info = PropertyInfoModel.from_arg_string(info_match.group(1))
         property_values = get_property_values(property_match)
-        bound_property = BoundProperty(property_values["field"],property_values["setter"],property_values["getter"],property_info)
+        bound_property = PropertyModel(property_values["field"], property_values["setter"], property_values["getter"], property_info)
         bound_properties[property_values['field']] = bound_property
         property_methods_set.add(property_values["setter"])
         property_methods_set.add(property_values["getter"])
