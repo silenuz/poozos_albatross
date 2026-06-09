@@ -15,13 +15,12 @@ Didi: "Tomorrow when I wake or think I do, what shall I say of today?
        That with Estragon my friend, at this place, until the fall of night, I waited for Godot? "
 """
 import copy
-import html
 import re
 from collections import namedtuple
 from pathlib import Path
 from xml.etree import ElementTree as et
 
-from src.spirare.anemoi_dtog import MemberDefinitionModel
+from src.spirare.anemoi_dtog import MemberDefinitionModel, MemberDefinitionAttributes, MemberDefinitionLocation
 
 # track opening and closing markup for bbcode to translate html markup in element text attibutes
 BBCodeMap = namedtuple("BBCodeMap", ["open", "close"])
@@ -47,9 +46,6 @@ element_black_list_set.add("manonly")
 element_black_list_set.add("latexonly")
 element_black_list_set.add("xrefsect")
 
-
-# element_black_list_set.add("programlisting")
-
 class LuckyZephyr:
     """
     Class to load and parse Doxygen XML for use in generating Godot class
@@ -60,9 +56,20 @@ class LuckyZephyr:
         class_xml (Path): The path to the Doxygen XML file
         data_node (et.Element): The class node of the Doxygen XML file
         reference_file (str): The path to the reference XML file that contains extra information from the header file
-        xml_map (dict) : Map of each node to it's parent in the form of a dictionary.
+        data_xml_map (dict) : Map of each node to it's parent in the form of a dictionary.
         xml_root_node (et.Element): The root node of the Doxygen XML file
     """
+
+    def find_parent_by_child_tag(self,tag:str,value:str)->et.Element:
+        node = self.data_node.find(f".//{tag}[.='{value}']")
+        if node is not None:
+            return self.data_xml_map[node]
+        else:
+            node = self.reference_node.find(f".//{tag}[.='{value}']")
+            if node is not None:
+                return self.reference_data_map[node]
+            else:
+                return None
 
     def get_bind_methods_implementation(self) -> str:
         """
@@ -73,7 +80,7 @@ class LuckyZephyr:
         """
         bind_methods_node = self.data_node.find(".//name[.='_bind_methods']")
         if bind_methods_node is not None:
-            definition_node = self.xml_map[bind_methods_node]
+            definition_node = self.data_xml_map[bind_methods_node]
             location_node = definition_node.find("location")
             src_file_name = location_node.attrib['bodyfile']
             return src_file_name
@@ -145,9 +152,9 @@ class LuckyZephyr:
         :return: A list of dictionary item containing the extracted information for each enumerator value
         """
         result = []
-        enumerator_data = self.load_reference_file()
-        doxygen_node = enumerator_data[0]
-        enumerator_node_xml_map = enumerator_data[1]
+
+        doxygen_node = self.reference_node
+        enumerator_node_xml_map = self.reference_data_map
 
         if doxygen_node:
             for enumerator_value in enumerator_value_name_list:
@@ -184,6 +191,17 @@ class LuckyZephyr:
                     result.append(actual_class_name)
         return result
 
+    def get_inner_markup(self,element: et.Element)->str:
+        # 1. Grab the initial text chunk before any child tag
+        parts = [element.text or ""]
+
+        # 2. Serialize every child element completely (including its own tags and tails)
+        for child in element:
+            # encoding="unicode" returns a standard python string instead of bytes
+            parts.append(et.tostring(child, encoding="unicode"))
+
+        return "".join(parts)
+
     def get_method_data(self, method_list: set) -> list[MemberDefinitionModel]:
         """
         Iterates over the list of method names passed as an argument,
@@ -193,14 +211,11 @@ class LuckyZephyr:
         :param method_list: List of method names to search for
         :return: A list of dictionary item containing the extracted information for each method
         """
-        result: list[dict] = []
+        result: list[MemberDefinitionModel] = []
         for method in method_list:
-            name_node = self.data_node.find(f".//qualifiedname[.='{method}']")
-            if name_node is not None:
-                method_node = self.xml_map[name_node]
-                method_data = self.model_member_definition(method_node)
-                result.append(method_data)
-
+            memberdef = self.get_member_definition_by_child('qualifiedname', method)
+            if memberdef is not None:
+                result.append(memberdef)
         return result
 
     def get_field_data(self, member_list: list) -> list[MemberDefinitionModel]:
@@ -214,14 +229,22 @@ class LuckyZephyr:
         """
         result = []
         for member in member_list:
-            name_node = self.data_node.find(f".//name[.='{member}']")
-            if name_node is not None:
-                member_node = self.xml_map[name_node]
-                member_values = self.model_member_definition(member_node)
-                result.append(member_values)
+            memberdef = self.get_member_definition_by_child('name',member)
+            if memberdef is not None:
+                result.append(memberdef)
         return result
 
+    def get_member_definition_by_child(self,tag:str,value:str)->MemberDefinitionModel:
+        member_def_node = self.find_parent_by_child_tag(tag,value)
+        if member_def_node is not None:
+            return self.model_member_definition(member_def_node)
+        else:
+            return None
+
     def model_member_definition(self,member_node:et.Element) -> MemberDefinitionModel:
+        attribute_values = MemberDefinitionAttributes.from_xml_element(member_node)
+        location_node = member_node.find("location")
+        location_values = MemberDefinitionLocation.from_xml_element(location_node)
         name_node = member_node.find("name")
         name = name_node.text
         type_node = member_node.find("type")
@@ -231,6 +254,8 @@ class LuckyZephyr:
         qualified_name_node = member_node.find("qualifiedname")
         qualified_name_value = qualified_name_node.text
         member_values = MemberDefinitionModel(
+            attributes=attribute_values,
+            location=location_values,
             member_type=type_value,
             definition=definition_value,
             member_name=name,
@@ -244,6 +269,7 @@ class LuckyZephyr:
         description_node = member_node.find("detaileddescription")
         if description_node.text is not None:
             member_values.description = self.get_tag_text(description_node)
+            member_values.alt_description = self.get_inner_markup(description_node)
 
         initializer_node = member_node.find("initializer")
         if initializer_node is not None and initializer_node.text is not None:
@@ -328,16 +354,6 @@ class LuckyZephyr:
 
         text = " ".join(parts)
         return text
-
-    def load_reference_file(self) -> tuple[et.Element, dict]:
-        reference_file_path = self.get_reference_file_path()
-        if reference_file_path:
-            tree = et.parse(reference_file_path)
-            root = tree.getroot()
-            xml_map = {child: parent for parent in root.iter() for child in parent}
-            return root, xml_map
-        else:
-            return None, None
 
     def parse_xml_text(self, doxygen_node: et.Element) -> str:
         parts = []
@@ -438,9 +454,10 @@ class LuckyZephyr:
     def __init__(self, xml_file: Path) -> None:
         self.class_xml = xml_file
         """Path: The path to the Doxygen XML file"""
-        self.xml_map = self.__map_xml_nodes()
+        self.data_xml_map = self.__map_xml_nodes()
         """dict:  Map of parent nodes for all child nodes in the Doxygen XML file"""
         self.__set_class_profile()
+        self.__load_reference_file()
 
     def __map_xml_nodes(self) -> dict():
         """
@@ -467,3 +484,11 @@ class LuckyZephyr:
         reference_node = self.data_node.find('includes')
         self.reference_file = reference_node.attrib['refid']
         """str: The path to the reference XML file that contains extra information from the header file"""
+
+    def __load_reference_file(self):
+        reference_file_path = self.get_reference_file_path()
+        if reference_file_path:
+            tree = et.parse(reference_file_path)
+            root = tree.getroot()
+            self.reference_node = root[0]
+            self.reference_data_map = {child: parent for parent in root.iter() for child in parent}

@@ -117,12 +117,12 @@ def clear_tracked_bindings() -> None:
     bound_signals.clear()
 
 
-def create_bound_constants(bind_method_code:str)->None:
+def create_bound_constants(bind_method_code:str,class_name:str)->None:
     constant_pattern = r'ClassDB::bind_integer_constant\s*\(([\s\S]*?)\)\s*;'
     constant_matches = re.findall(constant_pattern, bind_method_code)
     for constant_match in constant_matches:
         # remove comments
-        constant_cleaned =  re.sub(r"//.*", "", constant_match)
+        constant_cleaned =  re.sub(r"//.*", "", constant_match.replace('get_class_static()',class_name))
         constant_info = IntegerConstantModel.from_arg_string(constant_cleaned)
         bound_constants[constant_info.p_name] = constant_info
 
@@ -137,7 +137,6 @@ def create_bound_enums(bind_method_code: str) -> None:
     bound_enum_matches = re.findall(bound_enum_pattern, bind_method_code)
     for bound_enum_match in bound_enum_matches:
         bound_enums_set.append(bound_enum_match)
-    print(bound_enums_set)
 
 
 def create_bound_methods(bind_methods_code: str) -> None:
@@ -241,12 +240,12 @@ def load_godot_bindings(src_file: Path, class_name: str) -> None:
 
     if bind_methods_match:
         bind_method_content = bind_methods_match.group(0)
-        map_godot_bindings(bind_method_content)
+        map_godot_bindings(bind_method_content,class_name)
     else:
         print_message("_bind_methods function not found in " + src_file, MESSAGE_TYPE_WARNING)
 
 
-def map_godot_bindings(bind_method_code: str) -> None:
+def map_godot_bindings(bind_method_code: str,class_name:str) -> None:
     """
     Adds bound methods, properties and constants from the implementation file to a set, so that the set can be
     checked to see if a method is bound, so only bound methods and properties
@@ -261,7 +260,7 @@ def map_godot_bindings(bind_method_code: str) -> None:
         create_bound_methods(bound_methods_match.group(1))
         create_bound_enums(bound_methods_match.group(1))
         create_bound_signals(bound_methods_match.group(1))
-        create_bound_constants(bound_methods_match.group(1))
+        create_bound_constants(bound_methods_match.group(1),class_name)
     else:
         print_message("Unknown error could not get content of _bind_methods function", MESSAGE_TYPE_ERROR)
 
