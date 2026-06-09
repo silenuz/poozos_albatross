@@ -331,12 +331,12 @@ def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:
     index_value = 0
 
     for enumerator_value in enumerator_value_data:
-        description = enumerator_value['description']
+        description = enumerator_value.detaileddescription
         output_node = et.SubElement(constants_node, "constant")
-        output_node.set("name", enumerator_value["name"])
-        output_node.set("enum", enumerator_value["enumerator_name"])
-        if 'initial_value' in enumerator_value:
-            value = enumerator_value['initial_value']
+        output_node.set("name", enumerator_value.name)
+        output_node.set("enum", enumerator_value.enum)
+        if enumerator_value.initializer is not None:
+            value = enumerator_value.initializer_value
             index_value = int(value)
         output_node.set("value", str(index_value))
         output_node.text = description

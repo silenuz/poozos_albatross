@@ -18,8 +18,9 @@ from __future__ import annotations
 import copy
 import re
 from collections import namedtuple
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, fields, field
 from pathlib import Path
+from typing import List
 from xml.etree import ElementTree as et
 
 # track opening and closing markup for bbcode to translate html markup in element text attibutes
@@ -53,7 +54,6 @@ def get_inner_markup(element: et.Element)->str:
     for child in element:
         # encoding="unicode" returns a standard python string instead of bytes
         parts.append(et.tostring(child, encoding="unicode"))
-
     return "".join(parts)
 
 
@@ -105,11 +105,9 @@ class LuckyZephyr:
         implementation for _bind_methods and returns it
         :return: The name of the source code file that implements _bind_methods
         """
-        bind_methods_node = self.data_node.find(".//name[.='_bind_methods']")
-        if bind_methods_node is not None:
-            definition_node = self.data_xml_map[bind_methods_node]
-            location_node = definition_node.find("location")
-            src_file_name = location_node.attrib['bodyfile']
+        bind_methods_definition = self.get_member_definition_by_child('name','_bind_methods')
+        if bind_methods_definition is not None:
+            src_file_name = bind_methods_definition.location.bodyfile
             return src_file_name
         return None
 
@@ -155,7 +153,7 @@ class LuckyZephyr:
         text = self.get_tag_text(node)
         return text
 
-    def get_enumerator_data(self, enumerator_value_name_list: list) -> list[MemberDefinitionModel]:
+    def get_enumerator_data(self, enumerator_value_name_list: list) -> list[EnumValueModel]:
         """
         Iterates over the list of enumerator value names passed as an argument, it then gets the
         reference file data and node map for the reference file, it then finds each
@@ -169,24 +167,14 @@ class LuckyZephyr:
 
         doxygen_node = self.reference_node
         enumerator_node_xml_map = self.reference_data_map
-
         if doxygen_node:
             for enumerator_value in enumerator_value_name_list:
-                value_name_node = doxygen_node.find(f".//name[.='{enumerator_value}']")
-                enumerator_value_node = enumerator_node_xml_map[value_name_node]
-                enumerator_node = enumerator_node_xml_map[enumerator_value_node]
+                value_node = self.find_parent_by_child_tag('name', enumerator_value)
+                value_definition = self.model_enumvalue_definition(value_node)
+                enumerator_node = enumerator_node_xml_map[value_node]
                 name_node = enumerator_node.find('name')
-                enumerator_name = name_node.text
-                description = self.get_detailed_description(enumerator_value_node)
-                enumerator_definition = dict()
-                enumerator_definition['name'] = enumerator_value
-                enumerator_definition['description'] = description
-                enumerator_definition['enumerator_name'] = enumerator_name
-                initial_value_node = enumerator_value_node.find("initializer")
-                if initial_value_node is not None:
-                    initial_value = initial_value_node.text.split(" ")[1].strip()
-                    enumerator_definition['initial_value'] = initial_value
-                result.append(enumerator_definition)
+                value_definition.enum = name_node.text
+                result.append(value_definition)
         return result
         #return self.get_member_definitions(enumerator_value_name_list,'name')
 
@@ -242,12 +230,33 @@ class LuckyZephyr:
         else:
             return None
 
+    def model_enumvalue_definition(self,enum_value_node:et.Element)->EnumValueModel:
+        attributes = EnumValueAttributes.from_xml_element(enum_value_node)
+        name = enum_value_node.find('name').text
+        enum_value_definition = EnumValueModel(name=name,attributes=attributes)
+        init_node = enum_value_node.find('initializer')
+        if init_node is not None and init_node.text is not None:
+            enum_value_definition.initializer = init_node.text
+        brief_node = enum_value_node.find('briefdescription')
+        if brief_node is not None and brief_node.text is not None:
+            content = self.get_tag_text(brief_node)
+            enum_value_definition.briefdescription = content
+        detail_node = enum_value_node.find('detaileddescription')
+        if detail_node is not None and detail_node.text is not None:
+            content = self.get_tag_text(detail_node)
+            enum_value_definition.detaileddescription = content
+        return enum_value_definition
+
+
+
     def model_member_definition(self,member_node:et.Element) -> MemberDefinitionModel:
         attribute_values = MemberDefinitionAttributes.from_xml_element(member_node)
         name_node = member_node.find("name")
         name = name_node.text
         args = dict()
         args['attributes'] = attribute_values
+        enum_values : List[EnumValueModel] = list()
+
         for node in member_node:
             if node.tag == 'detaileddescription':
                 if node.text is not None:
@@ -259,10 +268,16 @@ class LuckyZephyr:
                     args[node.tag] = brief_description
             elif node.tag == 'location':
                 args[node.tag] = MemberDefinitionLocation.from_xml_element(node)
+            elif node.tag == 'enumvalue':
+                enum_value = self.model_enumvalue_definition(node)
+                enum_values.append(enum_value)
             elif node.text is not None:
                 args[node.tag] = node.text
 
         member_definition = MemberDefinitionModel.from_dict(args)
+        if len(enum_values) > 0:
+            member_definition.enum_values = enum_values
+
         return member_definition
 
     def get_reference_file_path(self) -> Path:
@@ -480,6 +495,30 @@ class LuckyZephyr:
 ##################################################################################################################
 ###                                    Data objects                                                            ###
 ###################################################################################################################
+@dataclass()
+class EnumValueAttributes:
+    id: str
+    prot: str
+    @classmethod
+    def from_xml_element(cls, member_element:et.Element) -> "EnumValueAttributes":
+        attrs = member_element.attrib
+        # kind is always present
+        kwargs = {"id": attrs["id"], "prot": attrs["prot"]}
+        return cls(**kwargs)
+
+@dataclass()
+class EnumValueModel:
+    attributes: MemberDefinitionAttributes
+    name: str
+    initializer: str | None = None
+    briefdescription: str | None = None
+    detaileddescription: str | None = None
+    enum: str | None = None
+    """Used to store parent enumerator name, not part of doxygen xsd"""
+
+    @property
+    def initializer_value(self) -> str:
+        return self.initializer.split(" ")[1].strip()
 
 
 @dataclass
@@ -487,8 +526,6 @@ class MemberDefinitionAttributes:
     """
     Data model for Doxygen memberdef element attributes.
     """
-    # --- OPTIONAL / CONDITIONAL ATTRIBUTES ---
-    # These are initialized via field(default=None) so they can live in any order
     id: str
     """A unique, auto-generated Doxygen identifier string used for cross-referencing throughout the XML structure"""
     kind: str | None = None
@@ -604,11 +641,12 @@ class MemberDefinitionModel:
     write: str | None = None
     bitfield: str | None = None
     qualifier: str | None = None
+    enum_values: List[EnumValueModel] = field(default_factory=list)
 
     @classmethod
     def from_dict(cls, data: dict):
         valid_fields = {f.name for f in fields(cls)}
         # 2. Filter the input dictionary to keep only valid fields
-        filtered_data = {k: v for k, v in data.items() if k in valid_fields}
+        filtered_data = {key: value for key, value in data.items() if key in valid_fields}
         # 3. Unpack the filtered dictionary into the class constructor
         return cls(**filtered_data)
