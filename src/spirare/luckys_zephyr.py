@@ -14,13 +14,13 @@ It also contains format information for the mixed element text parser that is pa
 Didi: "Tomorrow when I wake or think I do, what shall I say of today?
        That with Estragon my friend, at this place, until the fall of night, I waited for Godot? "
 """
+from __future__ import annotations
 import copy
 import re
 from collections import namedtuple
+from dataclasses import dataclass, fields
 from pathlib import Path
 from xml.etree import ElementTree as et
-
-from src.spirare.anemoi_dtog import MemberDefinitionModel, MemberDefinitionAttributes, MemberDefinitionLocation
 
 # track opening and closing markup for bbcode to translate html markup in element text attibutes
 BBCodeMap = namedtuple("BBCodeMap", ["open", "close"])
@@ -45,6 +45,33 @@ element_black_list_set.add("htmlonly")
 element_black_list_set.add("manonly")
 element_black_list_set.add("latexonly")
 element_black_list_set.add("xrefsect")
+
+
+def get_inner_markup(element: et.Element)->str:
+    # 1. Grab the initial text chunk before any child tag
+    parts = [element.text or ""]
+    for child in element:
+        # encoding="unicode" returns a standard python string instead of bytes
+        parts.append(et.tostring(child, encoding="unicode"))
+
+    return "".join(parts)
+
+
+def get_data_type(text) -> str:
+    """
+    Parses text to determine the inner data type for Ref<data> text
+    :return: The inner data type for the text
+    """
+    if text.startswith("Ref<"):
+        type_pattern = r"<(.*?)>"
+        type_match = re.search(type_pattern, text)
+        if type_match:
+            return type_match.group(1).strip()
+        else:
+            return text.strip()
+    else:
+        return text.strip()
+
 
 class LuckyZephyr:
     """
@@ -118,19 +145,6 @@ class LuckyZephyr:
         brief.text = text
         return brief
 
-    def get_data_type(self, text) -> str:
-        """
-        Parses text to determine the inner data type for Ref<data> text
-        :return: The inner data type for the text
-        """
-        if text.startswith("Ref<"):
-            type_pattern = r"<(.*?)>"
-            type_match = re.search(type_pattern, text)
-            if type_match:
-                return type_match.group(1).strip()
-        else:
-            return text
-
     def get_detailed_description(self, doxygen_node: et.Element) -> str:
         """
         Gets the detaileddescription tag from the Doxygen element passed as an argument
@@ -141,7 +155,7 @@ class LuckyZephyr:
         text = self.get_tag_text(node)
         return text
 
-    def get_enumerator_data(self, enumerator_value_name_list: list) -> list[dict]:
+    def get_enumerator_data(self, enumerator_value_name_list: list) -> list[MemberDefinitionModel]:
         """
         Iterates over the list of enumerator value names passed as an argument, it then gets the
         reference file data and node map for the reference file, it then finds each
@@ -173,13 +187,12 @@ class LuckyZephyr:
                     initial_value = initial_value_node.text.split(" ")[1].strip()
                     enumerator_definition['initial_value'] = initial_value
                 result.append(enumerator_definition)
-
         return result
+        #return self.get_member_definitions(enumerator_value_name_list,'name')
 
     def get_include_values(self) -> list[str]:
         result = []
-        reference_file_content = self.load_reference_file()
-        xml_reference_node = reference_file_content[0]
+        xml_reference_node = self.reference_node
         if xml_reference_node:
             include_node_list = xml_reference_node.findall('.//includes')
             for include_node in include_node_list:
@@ -191,17 +204,6 @@ class LuckyZephyr:
                     result.append(actual_class_name)
         return result
 
-    def get_inner_markup(self,element: et.Element)->str:
-        # 1. Grab the initial text chunk before any child tag
-        parts = [element.text or ""]
-
-        # 2. Serialize every child element completely (including its own tags and tails)
-        for child in element:
-            # encoding="unicode" returns a standard python string instead of bytes
-            parts.append(et.tostring(child, encoding="unicode"))
-
-        return "".join(parts)
-
     def get_method_data(self, method_list: set) -> list[MemberDefinitionModel]:
         """
         Iterates over the list of method names passed as an argument,
@@ -211,12 +213,7 @@ class LuckyZephyr:
         :param method_list: List of method names to search for
         :return: A list of dictionary item containing the extracted information for each method
         """
-        result: list[MemberDefinitionModel] = []
-        for method in method_list:
-            memberdef = self.get_member_definition_by_child('qualifiedname', method)
-            if memberdef is not None:
-                result.append(memberdef)
-        return result
+        return self.get_member_definitions(method_list,'qualifiedname')
 
     def get_field_data(self, member_list: list) -> list[MemberDefinitionModel]:
         """
@@ -227,12 +224,16 @@ class LuckyZephyr:
         :param member_list: List of member names to search for
         :return: A list of dictionary item containing the extracted information for each member
         """
+        return self.get_member_definitions(member_list,'name')
+
+    def get_member_definitions(self,member_list: list,tag_name: str) -> list[MemberDefinitionModel]:
         result = []
         for member in member_list:
-            memberdef = self.get_member_definition_by_child('name',member)
+            memberdef = self.get_member_definition_by_child(tag_name, member)
             if memberdef is not None:
                 result.append(memberdef)
         return result
+
 
     def get_member_definition_by_child(self,tag:str,value:str)->MemberDefinitionModel:
         member_def_node = self.find_parent_by_child_tag(tag,value)
@@ -243,43 +244,26 @@ class LuckyZephyr:
 
     def model_member_definition(self,member_node:et.Element) -> MemberDefinitionModel:
         attribute_values = MemberDefinitionAttributes.from_xml_element(member_node)
-        location_node = member_node.find("location")
-        location_values = MemberDefinitionLocation.from_xml_element(location_node)
         name_node = member_node.find("name")
         name = name_node.text
-        type_node = member_node.find("type")
-        type_value = self.get_data_type(type_node.text)
-        definition_node = member_node.find("definition")
-        definition_value = definition_node.text
-        qualified_name_node = member_node.find("qualifiedname")
-        qualified_name_value = qualified_name_node.text
-        member_values = MemberDefinitionModel(
-            attributes=attribute_values,
-            location=location_values,
-            member_type=type_value,
-            definition=definition_value,
-            member_name=name,
-            qualified_name=qualified_name_value,
-        )
+        args = dict()
+        args['attributes'] = attribute_values
+        for node in member_node:
+            if node.tag == 'detaileddescription':
+                if node.text is not None:
+                    detailed_description = self.get_tag_text(node)
+                    args[node.tag] = detailed_description
+            elif node.tag == 'briefdescription':
+                if node.text is not None:
+                    brief_description = self.get_tag_text(node)
+                    args[node.tag] = brief_description
+            elif node.tag == 'location':
+                args[node.tag] = MemberDefinitionLocation.from_xml_element(node)
+            elif node.text is not None:
+                args[node.tag] = node.text
 
-        brief_node = member_node.find("briefdescription")
-        if brief_node.text is not None:
-            member_values.brief = self.get_tag_text(brief_node)
-
-        description_node = member_node.find("detaileddescription")
-        if description_node.text is not None:
-            member_values.description = self.get_tag_text(description_node)
-            member_values.alt_description = self.get_inner_markup(description_node)
-
-        initializer_node = member_node.find("initializer")
-        if initializer_node is not None and initializer_node.text is not None:
-            member_values.initializer = initializer_node.text
-
-        argg_node = member_node.find("argsstring")
-        if argg_node.text is not None:
-            member_values.arg_string = argg_node.text
-
-        return member_values
+        member_definition = MemberDefinitionModel.from_dict(args)
+        return member_definition
 
     def get_reference_file_path(self) -> Path:
         """
@@ -492,3 +476,139 @@ class LuckyZephyr:
             root = tree.getroot()
             self.reference_node = root[0]
             self.reference_data_map = {child: parent for parent in root.iter() for child in parent}
+
+##################################################################################################################
+###                                    Data objects                                                            ###
+###################################################################################################################
+
+
+@dataclass
+class MemberDefinitionAttributes:
+    """
+    Data model for Doxygen memberdef element attributes.
+    """
+    # --- OPTIONAL / CONDITIONAL ATTRIBUTES ---
+    # These are initialized via field(default=None) so they can live in any order
+    id: str
+    """A unique, auto-generated Doxygen identifier string used for cross-referencing throughout the XML structure"""
+    kind: str | None = None
+    """Specifies the type of member. Common values include: function, variable, typedef, enum, enumvalue, 
+    property, or event"""
+    prot: str | None = None
+    """The access protection/visibility level in the source code. Possible values: public, protected, private, 
+    or package"""
+    static: str | None = None
+    """Boolean indicator (yes or no) specifying if the member is declared static"""
+    const: str | None = None
+    """Boolean indicator (yes or no) showing if the member function acts as const"""
+    volatile: str | None = None
+    """Boolean indicator (yes or no) showing if the member is declared volatile"""
+    mutable: str | None = None
+    """Boolean indicator (yes or no) for C++ mutable variables"""
+    virt: str | None = None
+    """Specifies virtual function behavior. Values: non-virtual, virtual, or pure-virtual."""
+    explicit: str | None = None
+    """Boolean indicator (yes or no) for explicit C++ constructors/conversion operators"""
+    inline: str | None = None
+    """Boolean indicator (yes or no) indicating if the member was defined inline"""
+    final: str | None = None
+    sealed: str | None = None
+    new: str | None = None
+    readable: str | None = None
+    writable: str | None = None
+    add: str | None = None
+    remove: str | None = None
+    raise_: str | None = None
+    getaccessor: str | None = None
+    setaccessor: str | None = None
+    accessor: str | None = None
+    initonly: str | None = None
+    strong: str | None = None
+
+    @classmethod
+    def from_xml_element(cls, member_element:et.Element) -> "MemberDefinitionAttributes":
+        # get element attributes
+        attrs = member_element.attrib
+        # kind is always present
+        kwargs = {"id": attrs["id"]}
+        # 2. Map everything else dynamically if it exists in the XML
+        for xml_key, value in attrs.items():
+            if xml_key == "id":
+                continue
+            # Handle Python keyword conflict safely
+            if xml_key == "raise":
+                kwargs["raise_"] = value
+            else:
+                kwargs[xml_key] = value
+
+        return cls(**kwargs)
+
+
+@dataclass()
+class MemberDefinitionLocation:
+    file: str
+    """The path to the source file where the member is defined or declared. 
+    This is usually relative to the root input directory unless full paths are enabled in your Doxyfile."""
+    line: str
+    """The line number in the source file where the member's definition or declaration begins."""
+    column: str
+    """The column number (character offset) on the line where the member begins.
+     (Note: column reporting can be dependent on your specific Doxygen version and configuration)."""
+    bodyfile: str | None = None
+    """The path to the source file where the actual body (implementation) of the member resides. 
+    This is typically used for functions or methods, whereas file denotes where the signature is declared."""
+    bodystart: str | None = None
+    """The line number where the implementation of the member starts (e.g., the opening brace of a function)."""
+    bodyend: str | None = None
+    """The line number where the implementation of the member ends (e.g., the closing brace of a function)."""
+
+    @classmethod
+    def from_xml_element(cls, location_element: et.Element) -> "MemberDefinitionLocation":
+        attrs = location_element.attrib
+        kwargs = {"file": attrs["file"]}
+        # 2. Map everything else dynamically if it exists in the XML
+        for xml_key, value in attrs.items():
+            if xml_key == "file":
+                continue
+            kwargs[xml_key] = value
+
+        return cls(**kwargs)
+
+@dataclass()
+class MemberDefinitionModel:
+    """
+    Used to model data from the Doxygen XML Memberdef elements
+    todo: add missing tags, already have more than needed might as well complete it
+    """
+    attributes: MemberDefinitionAttributes
+    name: str
+    """simple name portion of the method or member name"""
+    qualifiedname: str | None = None
+    """qualified name of the method or member"""
+    definition: str | None = None
+    """member definition data value followed by qualified name, ex: int Summator::get_total """
+    type: str | None = None
+    """data type if a field the data type of the field, if a function the return type of the function"""
+    briefdescription: str | None = None
+    """brief description of the method or member"""
+    detaileddescription: str | None = None
+    """detailed description of the method or member"""
+    initializer: str | None = None
+    """for constants and enumerators this indicates the initial value """
+    argsstring: str | None = None
+    """If applicable contains the argument string for the member"""
+    inbodydescription: str | None = None
+    alt_description: str | None = None
+    location: MemberDefinitionLocation | None = None
+    read: str | None = None
+    write: str | None = None
+    bitfield: str | None = None
+    qualifier: str | None = None
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        valid_fields = {f.name for f in fields(cls)}
+        # 2. Filter the input dictionary to keep only valid fields
+        filtered_data = {k: v for k, v in data.items() if k in valid_fields}
+        # 3. Unpack the filtered dictionary into the class constructor
+        return cls(**filtered_data)

@@ -356,21 +356,21 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     members_node = et.SubElement(godot_root_node, "members")
 
     for member in member_data:
-        bound_property = bound_properties[member.member_name]
+        bound_property = bound_properties[member.name]
         output_member_node = et.SubElement(members_node, "member")
-        output_member_node.set("name", member.member_name)
+        output_member_node.set("name", member.name)
         output_member_node.set("setter", bound_property.setter)
         output_member_node.set("getter", bound_property.getter)
         output_member_node.set("type", bound_property.info.variant_type_name)
         hint_type = bound_property.info.get_hint_type()
         if hint_type is not None:
             if hint_type[1] is None:
-                output_member_node.set(hint_type[0],member.member_type)
+                output_member_node.set(hint_type[0], member.type)
             else:
                 output_member_node.set(hint_type[0], hint_type[1])
 
-        if member.description:
-            output_member_node.text = member.description
+        if member.detaileddescription:
+            output_member_node.text = member.detaileddescription
 
 
 def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
@@ -385,12 +385,12 @@ def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     methods_node = et.SubElement(godot_root_node, "methods")
     for method in method_data:
         output_method_node = et.SubElement(methods_node, "method")
-        output_method_node.set("name",method.member_name)
-        if method.description:
+        output_method_node.set("name", method.name)
+        if method.detaileddescription:
             output_method_node_description = et.SubElement(output_method_node, "description")
-            output_method_node_description.text = method.description
+            output_method_node_description.text = method.detaileddescription
         output_method_node_return = et.SubElement(output_method_node, "return")
-        output_method_node_return.set("type", method.member_type)
+        output_method_node_return.set("type", method.type)
 
 def set_signal_data(godot_root: et.Element, lz_data:LuckyZephyr):
     """
