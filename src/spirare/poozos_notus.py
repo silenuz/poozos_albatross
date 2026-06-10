@@ -148,6 +148,10 @@ class DMethodModel:
     class_method: str
     args: List[str] = field(default_factory=list)
 
+    @property
+    def qualified_class_name(self) -> str:
+        return self.qualified_name.replace('&','')
+
     @classmethod
     def from_arg_string(cls, arg_string: str, qualified_name: str) -> "DMethodModel":
         args = split_arg_string(arg_string)
@@ -159,7 +163,7 @@ class DMethodModel:
         name_values = qualified_name.split('::')
         clss_name = name_values[0].replace("&",'')
         method_name = name_values[1]
-        return cls(name=name, class_name=clss_name, qualified_name=qualified_name, args=method_args,class_method=method_name)
+        return cls(name=name, class_name=clss_name, qualified_name=qualified_name.strip(), args=method_args,class_method=method_name)
 
 
 
