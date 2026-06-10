@@ -63,14 +63,8 @@ class PoozoNotus:
 
         """
         result: list[DMethodModel] = []
-
-        # Strip block comments (/* ... */)
-        clean_code = re.sub(r'/\*.*?\*/', '', self.source_code, flags=re.DOTALL)
-        # 2. Strip single-line comments
-        clean_code = re.sub(r'//.*$', '', clean_code, flags=re.MULTILINE)
-
         pattern = r'ClassDB::bind_method\s*\(\s*D_METHOD\(.*?;\s*'
-        arg_matches = re.findall(pattern, clean_code)
+        arg_matches = re.findall(pattern, self.source_code)
 
         for match in arg_matches:
             d_pattern = r'D_METHOD\(([^)]*)\)'
@@ -82,6 +76,22 @@ class PoozoNotus:
             qualified_class = qualified_class_matches.group(0)
             method_model = DMethodModel.from_arg_string(' '.join(args), qualified_class)
             result.append(method_model)
+        return result
+
+
+    def get_bound_properties(self) -> list[PropertyModel]:
+        result: list[PropertyModel] = []
+        add_property_pattern = r'ADD_PROPERTY\s+\((.*?)\s+\);'
+        property_info_pattern = r'PropertyInfo\((.*?)\)'
+        property_matches = re.findall(add_property_pattern, self.source_code, re.DOTALL)
+        for property_match in property_matches:
+            info_match = re.match(property_info_pattern, property_match.lstrip(), re.DOTALL)
+            property_info = PropertyInfoModel.from_arg_string(info_match.group(1))
+            property_values = re.findall(r'"(.*?)"', property_match)
+            bound_property = PropertyModel(field=property_values[0], setter=property_values[2],
+                                           getter=property_values[3],
+                                           info=property_info)
+            result.append(bound_property)
         return result
 
     def get_bound_signals(self) -> list[MethodInfoModel]:
@@ -118,8 +128,13 @@ class PoozoNotus:
     def __init__(self, cpp_file: Path) -> None:
         self.source_file = cpp_file
         """Path: The path to the cpp file with bindings implementation"""
-        self.source_code = cpp_file.read_text()
+        source_code_original = cpp_file.read_text()
         """The code content of the source file"""
+        # Strip block comments (/* ... */)
+        clean_code = re.sub(r'/\*.*?\*/', '', source_code_original, flags=re.DOTALL)
+        # 2. Strip single-line comments
+        clean_code = re.sub(r'//.*$', '', clean_code, flags=re.MULTILINE)
+        self.source_code = clean_code
 
 
 ##############################################################################################################
