@@ -329,7 +329,6 @@ def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:
 
     # track index, Godot will pick up the values after the last initialized value based on index.
     index_value = 0
-
     for enumerator_value in enumerator_value_data:
         description = enumerator_value.detaileddescription
         output_node = et.SubElement(constants_node, "constant")

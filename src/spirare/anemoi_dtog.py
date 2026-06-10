@@ -11,10 +11,13 @@
 Contains Data Transfer Objects for Godot
 """
 from __future__ import annotations
+
+import re
 from dataclasses import dataclass, field
 import shlex
+from pathlib import Path
 from typing import List
-from xml.etree import ElementTree as et
+
 
 def split_arg_string(arg_string: str) -> str:
     lexer = shlex.shlex(arg_string, posix=True)
@@ -23,7 +26,129 @@ def split_arg_string(arg_string: str) -> str:
     args_list = [arg.strip() for arg in lexer]
     return args_list
 
-@dataclass()
+
+class PoozoNotus:
+    """
+    Class for parsing cpp source code to catalog any bindings.
+
+    "aut, gelidas hibernus aquas cum
+    fuderit Auster,
+    securum somnos igne iuvante sequi" - Tibullus
+    """
+
+    def get_bound_constants(self, class_name: str) -> list[IntegerConstantModel]:
+        result = []
+        constant_pattern = r'ClassDB::bind_integer_constant\s*\(([\s\S]*?)\)\s*;'
+        constant_matches = re.findall(constant_pattern, self.source_code)
+        for constant_match in constant_matches:
+            # remove comments
+            constant_cleaned = re.sub(r"//.*", "", constant_match.replace('get_class_static()', class_name))
+            constant_info = IntegerConstantModel.from_arg_string(constant_cleaned)
+            result.append(constant_info)
+        return
+
+    def get_bound_enums(self) -> list[str]:
+        """
+
+        """
+        result = []
+        bound_enum_pattern = r"(?<=BIND_ENUM_CONSTANT)\((.*?)\)"
+        bound_enum_matches = re.findall(bound_enum_pattern, self.source_code)
+        for bound_enum_match in bound_enum_matches:
+            result.append(bound_enum_match)
+        return result
+
+    def get_bound_methods(self) -> list[DMethodModel]:
+        """
+
+        """
+        result: list[DMethodModel] = []
+
+        # Strip block comments (/* ... */)
+        clean_code = re.sub(r'/\*.*?\*/', '', self.source_code, flags=re.DOTALL)
+        # 2. Strip single-line comments
+        clean_code = re.sub(r'//.*$', '', clean_code, flags=re.MULTILINE)
+
+        pattern = r'ClassDB::bind_method\s*\(\s*D_METHOD\(.*?;\s*'
+        arg_matches = re.findall(pattern, clean_code)
+
+        for match in arg_matches:
+            d_pattern = r'D_METHOD\(([^)]*)\)'
+            arg_matches = re.search(d_pattern, match)
+            args = arg_matches.groups(1)
+            class_substring = match.split(',')[-1]
+            qualified_class_pattern = r"^.*?(?=\))"
+            qualified_class_matches = re.search(qualified_class_pattern, class_substring)
+            qualified_class = qualified_class_matches.group(0)
+            method_model = DMethodModel.from_arg_string(' '.join(args), qualified_class)
+            result.append(method_model)
+        return result
+
+    def get_bound_signals(self) -> list[MethodInfoModel]:
+        """
+
+        """
+        result : list[MethodInfoModel] = []
+
+        # hopefully this will fix commented signals from being read
+        bound_signal_pattern = r'(?m)^[^\S\r\n]*(?!\/\/)\bADD_SIGNAL\(([\s\S]*?)\);'
+        bound_signal_data = re.findall(bound_signal_pattern, self.source_code, re.DOTALL)
+
+        for bound_signal in bound_signal_data:
+            name_pattern = r'MethodInfo\(\s*"([^"]+)"'
+            signal_name_match = re.match(name_pattern, bound_signal, re.DOTALL)
+            signal_name = signal_name_match.group(1)
+            property_info_pattern = r'PropertyInfo\s*\(([\s\S]*?)\)'
+            property_info_list = re.findall(property_info_pattern, bound_signal)
+            parameter_index = 0
+            bound_signal_values = MethodInfoModel(name=signal_name)
+            for property_info in property_info_list:
+                property_cleaned = re.sub(r"//.*", "", property_info.strip())
+                parameter_value = PropertyInfoModel.from_arg_string(property_cleaned, parameter_index)
+                bound_signal_values.argument_info.append(parameter_value)
+                parameter_index += 1
+            result.append(bound_signal_values)
+        return result
+
+
+    ###############################################################################
+    ##                            Internal                                       ##
+    ###############################################################################
+
+    def __init__(self, cpp_file: Path) -> None:
+        self.source_file = cpp_file
+        """Path: The path to the cpp file with bindings implementation"""
+        self.source_code = cpp_file.read_text()
+        """The code content of the source file"""
+
+
+##############################################################################################################
+###                                 Data objects                                                           ###
+##############################################################################################################
+@dataclass(slots=True)
+class DMethodModel:
+    name: str
+    class_name: str
+    qualified_name: str
+    class_method: str
+    args: List[str] = field(default_factory=list)
+
+    @classmethod
+    def from_arg_string(cls, arg_string: str, qualified_name: str) -> "DMethodModel":
+        args = split_arg_string(arg_string)
+        name = args[0]
+        method_args = []
+        if len(args) > 1:
+            for index in range(1, len(args)):
+                method_args.append(args[index])
+        name_values = qualified_name.split('::')
+        clss_name = name_values[0].replace("&",'')
+        method_name = name_values[1]
+        return cls(name=name, class_name=clss_name, qualified_name=qualified_name, args=method_args,class_method=method_name)
+
+
+
+@dataclass(slots=True)
 class IntegerConstantModel:
     """
     Data Model to hold information about constant integer bindings in the source code.
@@ -40,7 +165,7 @@ class IntegerConstantModel:
     """is bitfield value"""
 
     @classmethod
-    def from_arg_string(cls, arg_string: str)->"IntegerConstantModel":
+    def from_arg_string(cls, arg_string: str) -> "IntegerConstantModel":
         args = split_arg_string(arg_string)
         # expected CSV structure
         field_names = [
@@ -54,7 +179,7 @@ class IntegerConstantModel:
         return cls(**kwargs)
 
 
-@dataclass()
+@dataclass(slots=True)
 class MethodInfoModel:
     """
     MethodInfo Data Model
@@ -80,7 +205,7 @@ class MethodInfoModel:
             self.argument_info = []
 
 
-@dataclass()
+@dataclass(slots=True)
 class PropertyInfoModel:
     """
     PropertyInfo Data Model
@@ -136,7 +261,7 @@ class PropertyInfoModel:
         return self.variant_type.split("::")[1].lower()
 
     @classmethod
-    def from_arg_string(cls, arg_string: str, index: int = 0)->"PropertyInfoModel":
+    def from_arg_string(cls, arg_string: str, index: int = 0) -> "PropertyInfoModel":
         """
         Creates a PropertyInfo from a string containing the PropertyInfo arguments
         :param index: optional index to track the position of the property info, in a list or property info args
@@ -159,7 +284,8 @@ class PropertyInfoModel:
         kwargs["index"] = index
         return cls(**kwargs)
 
-@dataclass()
+
+@dataclass(slots=True)
 class PropertyModel:
     """
     Data Model for Bound properties parsed from source code
@@ -172,4 +298,3 @@ class PropertyModel:
     """Name of the method to set the member value"""
     info: PropertyInfoModel
     """PropertyInfo model containing the information from the source code declaration"""
-

@@ -48,7 +48,7 @@ element_black_list_set.add("latexonly")
 element_black_list_set.add("xrefsect")
 
 
-def get_inner_markup(element: et.Element)->str:
+def get_inner_markup(element: et.Element) -> str:
     # 1. Grab the initial text chunk before any child tag
     parts = [element.text or ""]
     for child in element:
@@ -87,7 +87,7 @@ class LuckyZephyr:
         xml_root_node (et.Element): The root node of the Doxygen XML file
     """
 
-    def find_parent_by_child_tag(self,tag:str,value:str)->et.Element:
+    def find_parent_by_child_tag(self, tag: str, value: str) -> et.Element:
         node = self.data_node.find(f".//{tag}[.='{value}']")
         if node is not None:
             return self.data_xml_map[node]
@@ -105,7 +105,7 @@ class LuckyZephyr:
         implementation for _bind_methods and returns it
         :return: The name of the source code file that implements _bind_methods
         """
-        bind_methods_definition = self.get_member_definition_by_child('name','_bind_methods')
+        bind_methods_definition = self.get_member_definition_by_child('name', '_bind_methods')
         if bind_methods_definition is not None:
             src_file_name = bind_methods_definition.location.bodyfile
             return src_file_name
@@ -176,7 +176,7 @@ class LuckyZephyr:
                 value_definition.enum = name_node.text
                 result.append(value_definition)
         return result
-        #return self.get_member_definitions(enumerator_value_name_list,'name')
+        # return self.get_member_definitions(enumerator_value_name_list,'name')
 
     def get_include_values(self) -> list[str]:
         result = []
@@ -201,7 +201,7 @@ class LuckyZephyr:
         :param method_list: List of method names to search for
         :return: A list of dictionary item containing the extracted information for each method
         """
-        return self.get_member_definitions(method_list,'qualifiedname')
+        return self.get_member_definitions(method_list, 'qualifiedname')
 
     def get_field_data(self, member_list: list) -> list[MemberDefinitionModel]:
         """
@@ -212,9 +212,9 @@ class LuckyZephyr:
         :param member_list: List of member names to search for
         :return: A list of dictionary item containing the extracted information for each member
         """
-        return self.get_member_definitions(member_list,'name')
+        return self.get_member_definitions(member_list, 'name')
 
-    def get_member_definitions(self,member_list: list,tag_name: str) -> list[MemberDefinitionModel]:
+    def get_member_definitions(self, member_list: list, tag_name: str) -> list[MemberDefinitionModel]:
         result = []
         for member in member_list:
             memberdef = self.get_member_definition_by_child(tag_name, member)
@@ -222,18 +222,17 @@ class LuckyZephyr:
                 result.append(memberdef)
         return result
 
-
-    def get_member_definition_by_child(self,tag:str,value:str)->MemberDefinitionModel:
-        member_def_node = self.find_parent_by_child_tag(tag,value)
+    def get_member_definition_by_child(self, tag: str, value: str) -> MemberDefinitionModel:
+        member_def_node = self.find_parent_by_child_tag(tag, value)
         if member_def_node is not None:
             return self.model_member_definition(member_def_node)
         else:
             return None
 
-    def model_enumvalue_definition(self,enum_value_node:et.Element)->EnumValueModel:
+    def model_enumvalue_definition(self, enum_value_node: et.Element) -> EnumValueModel:
         attributes = EnumValueAttributes.from_xml_element(enum_value_node)
         name = enum_value_node.find('name').text
-        enum_value_definition = EnumValueModel(name=name,attributes=attributes)
+        enum_value_definition = EnumValueModel(name=name, attributes=attributes)
         init_node = enum_value_node.find('initializer')
         if init_node is not None and init_node.text is not None:
             enum_value_definition.initializer = init_node.text
@@ -247,15 +246,13 @@ class LuckyZephyr:
             enum_value_definition.detaileddescription = content
         return enum_value_definition
 
-
-
-    def model_member_definition(self,member_node:et.Element) -> MemberDefinitionModel:
+    def model_member_definition(self, member_node: et.Element) -> MemberDefinitionModel:
         attribute_values = MemberDefinitionAttributes.from_xml_element(member_node)
         name_node = member_node.find("name")
         name = name_node.text
         args = dict()
         args['attributes'] = attribute_values
-        enum_values : List[EnumValueModel] = list()
+        enum_values: List[EnumValueModel] = list()
 
         for node in member_node:
             if node.tag == 'detaileddescription':
@@ -492,27 +489,50 @@ class LuckyZephyr:
             self.reference_node = root[0]
             self.reference_data_map = {child: parent for parent in root.iter() for child in parent}
 
+
 ##################################################################################################################
 ###                                    Data objects                                                            ###
 ###################################################################################################################
-@dataclass()
+@dataclass(slots=True)
 class EnumValueAttributes:
+    """
+    Data model for enumvalue tag attributes
+
+     <xsd:attribute name="id" type="xsd:string" />
+     <xsd:attribute name="prot" type="DoxProtectionKind" />
+    """
     id: str
+    """A unique, auto-generated Doxygen identifier string used for cross-referencing throughout the XML structure"""
     prot: str
+    """The access protection/visibility level in the source code. Possible values: public, protected, private, """
+
     @classmethod
-    def from_xml_element(cls, member_element:et.Element) -> "EnumValueAttributes":
+    def from_xml_element(cls, member_element: et.Element) -> "EnumValueAttributes":
         attrs = member_element.attrib
-        # kind is always present
         kwargs = {"id": attrs["id"], "prot": attrs["prot"]}
         return cls(**kwargs)
 
-@dataclass()
+
+@dataclass(slots=True)
 class EnumValueModel:
+    """
+    Data model for enumvalue tag elements
+
+    <xsd:element name="name" type="xsd:string" />
+    <xsd:element name="initializer" type="linkedTextType" minOccurs="0" />
+    <xsd:element name="briefdescription" type="descriptionType" minOccurs="0" />
+    <xsd:element name="detaileddescription" type="descriptionType" minOccurs="0" />
+    """
     attributes: MemberDefinitionAttributes
+    """Attributes for the tag"""
     name: str
+    """simple name portion of the method or member name"""
     initializer: str | None = None
+    """for constants and enumerators this indicates the initial value """
     briefdescription: str | None = None
+    """brief description of the method or member"""
     detaileddescription: str | None = None
+    """detailed description of the method or member"""
     enum: str | None = None
     """Used to store parent enumerator name, not part of doxygen xsd"""
 
@@ -563,12 +583,11 @@ class MemberDefinitionAttributes:
     strong: str | None = None
 
     @classmethod
-    def from_xml_element(cls, member_element:et.Element) -> "MemberDefinitionAttributes":
-        # get element attributes
+    def from_xml_element(cls, member_element: et.Element) -> "MemberDefinitionAttributes":
         attrs = member_element.attrib
-        # kind is always present
+        # id is always present
         kwargs = {"id": attrs["id"]}
-        # 2. Map everything else dynamically if it exists in the XML
+        # Map everything else dynamically if it exists in the XML
         for xml_key, value in attrs.items():
             if xml_key == "id":
                 continue
@@ -581,7 +600,7 @@ class MemberDefinitionAttributes:
         return cls(**kwargs)
 
 
-@dataclass()
+@dataclass(slots=True)
 class MemberDefinitionLocation:
     file: str
     """The path to the source file where the member is defined or declared. 
@@ -611,11 +630,12 @@ class MemberDefinitionLocation:
 
         return cls(**kwargs)
 
-@dataclass()
+
+@dataclass(slots=True)
 class MemberDefinitionModel:
     """
     Used to model data from the Doxygen XML Memberdef elements
-    todo: add missing tags, already have more than needed might as well complete it
+    todo: add missing elements, already have more than needed might as well complete it
     """
     attributes: MemberDefinitionAttributes
     name: str
