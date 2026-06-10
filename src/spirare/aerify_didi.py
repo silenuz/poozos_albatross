@@ -20,11 +20,14 @@ Didi: "Well? What do we do?"
 Gogo: "Don't let's do anything.  It's safer"
 """
 import importlib.util
+import re
 import sys
+from collections import namedtuple
 from pathlib import Path
 from xml.etree import ElementTree as et
 from luckys_zephyr import LuckyZephyr
-from src.spirare.poozos_notus import PropertyInfoModel, PropertyModel, MethodInfoModel, IntegerConstantModel, PoozoNotus, \
+from src.spirare.poozos_notus import PropertyInfoModel, PropertyModel, MethodInfoModel, IntegerConstantModel, \
+    PoozoNotus, \
     DMethodModel
 
 xml_input_folder = sys.argv[1]
@@ -52,7 +55,7 @@ else:
 bound_enums_set = []
 
 # track bound methods and properties for the current class being processed
-bound_methods_set : dict[str,DMethodModel] = {}
+bound_methods_set: dict[str, DMethodModel] = {}
 
 # track property definitions
 bound_properties: dict[str, PropertyModel] = {}
@@ -65,6 +68,30 @@ bound_constants: dict[str, IntegerConstantModel] = {}
 # track methods that are getters and setters as they should be part of the members output
 # and not the methods output
 property_methods_set = set()
+
+# track opening and closing markup for bbcode to translate html markup in element text attibutes
+BBCodeMap = namedtuple("BBCodeMap", ["open", "close"])
+bbc_bold = BBCodeMap(open="[b]", close=r"[/b]")
+bbc_italic = BBCodeMap(open="[i]", close=r"[/i]")
+bbc_underline = BBCodeMap(open="[u]", close=r"[/u]")
+bbc_strikethrough = BBCodeMap(open="[s]", close=r"[/s]")
+bbc_code = BBCodeMap(open="[code]", close=r"[/code]")
+bbc_keyboard = BBCodeMap(open="[kbd]", close=r"[/kbd]")
+bbc_linebreak = BBCodeMap(open="[br]", close=r"")
+bbc_link = BBCodeMap(open="[url]", close=r"[/url]")
+
+format_map = dict()
+format_map["bold"] = bbc_bold
+format_map["emphasis"] = bbc_italic
+format_map["strike"] = bbc_strikethrough
+format_map["underline"] = bbc_underline
+
+# track xml tags that should not be parsed, such as htmlonly
+element_black_list_set = set()
+element_black_list_set.add("htmlonly")
+element_black_list_set.add("manonly")
+element_black_list_set.add("latexonly")
+element_black_list_set.add("xrefsect")
 
 MESSAGE_TYPE_WARNING = 0
 MESSAGE_TYPE_ERROR = 1
@@ -122,7 +149,7 @@ def clear_tracked_bindings() -> None:
     bound_signals.clear()
 
 
-def create_bound_constants(poozo_data:PoozoNotus, class_name: str) -> None:
+def create_bound_constants(poozo_data: PoozoNotus, class_name: str) -> None:
     """
     Creates a map of bound integer constants in the source code
 
@@ -135,7 +162,7 @@ def create_bound_constants(poozo_data:PoozoNotus, class_name: str) -> None:
         bound_constants[constant_info.p_name] = constant_info
 
 
-def create_bound_enums(poozo_data:PoozoNotus) -> None:
+def create_bound_enums(poozo_data: PoozoNotus) -> None:
     """
     Creates a list of bound enum value names in the source code
 
@@ -145,7 +172,8 @@ def create_bound_enums(poozo_data:PoozoNotus) -> None:
     enums = poozo_data.get_bound_enums()
     bound_enums_set.extend(enums)
 
-def create_bound_methods(poozo_data:PoozoNotus) -> None:
+
+def create_bound_methods(poozo_data: PoozoNotus) -> None:
     """
     Creates a map of method bindings in the source code
 
@@ -171,13 +199,136 @@ def create_bound_properties(poozo_data: PoozoNotus) -> None:
         property_methods_set.add(bound_property.getter)
         property_methods_set.add(bound_property.setter)
 
-def create_bound_signals(poozo_data:PoozoNotus) -> None:
-    """
 
+def create_bound_signals(poozo_data: PoozoNotus) -> None:
+    """
+    Creates a map of bound signals in the source code that are registered using ADD_SIGNAL
+
+    :param poozo_data: The PoozoNotus instance containing the source code for the current class
+    :return: None
     """
     signals = poozo_data.get_bound_signals()
     for signal in signals:
         bound_signals[signal.name] = signal
+
+def get_tag_text(doxygen_node: et.Element) -> str:
+    """
+    todo: this docstring is out of date, update it
+    central function to get text from a tag.  currently it just strips markup from the text,
+    but later can hopefully be used to convert some markup tags in the text to BBCode
+    :param doxygen_node: the node to get the text from
+    :return: the full content of the text attribute of the doxygen node
+    """
+    parts = []
+    if doxygen_node.text:
+        parts.append(doxygen_node.text.strip())
+    para_nodes = doxygen_node.findall('para')
+    count = len(para_nodes)
+    for paragraph_index in range(count):
+        paragraph = para_nodes[paragraph_index]
+        empty_element = True
+        element_text = parse_xml_text(paragraph)
+        if element_text:
+            parts.append(element_text)
+            empty_element = False
+        if not empty_element and paragraph_index != count - 1:
+            parts.append(bbc_linebreak.open)
+            parts.append(bbc_linebreak.open)
+
+    text = " ".join(parts)
+    return text
+
+def parse_xml_text(doxygen_node: et.Element) -> str:
+    parts = []
+    has_existing_codeblock = False
+
+    if doxygen_node.tag in element_black_list_set:
+        return ""
+
+    if doxygen_node.tag == 'para':
+        if len(doxygen_node) > 0:
+            if doxygen_node[0].tag == 'xrefsect':
+                return ""
+
+    if doxygen_node.text is not None:
+        parts.append(doxygen_node.text.strip())
+
+    for mixed_element_node in doxygen_node:
+        if mixed_element_node.tag in format_map:
+            markup = format_map[mixed_element_node.tag]
+            if not mixed_element_node.text is None:
+                content = markup.open + mixed_element_node.text.strip()
+            else:
+                content = markup.open
+            parts.append(content)
+            if len(mixed_element_node):
+                child_content = self.parse_xml_text(mixed_element_node)
+                parts[-1] = parts[-1] + child_content.strip()
+            parts[-1] = parts[-1] + markup.close
+        elif mixed_element_node.tag == "godotonly" and mixed_element_node.get("kind") == 'text':
+
+            if mixed_element_node.tail is not None:
+                node_tail = mixed_element_node.tail.rstrip()
+            else:
+                node_tail = ""
+            if mixed_element_node.get("content") is not None:
+                content = mixed_element_node.get("content")
+            else:
+                content = ""
+
+            if mixed_element_node.get('position') == "close":
+                parts[-1] = parts[-1] + content + node_tail
+            else:
+                parts.append(content + node_tail)
+        elif mixed_element_node.tag == "programlisting":
+            insert_index = len(parts) - 1
+            existing_is_godot = True
+            if has_existing_codeblock:
+                insert_index = next(i for i, s in enumerate(parts) if s.startswith('[codeblock'))
+                current_codeblock = parts[insert_index]
+                lang_pattern = r'lang=(.*?)\]'
+                lang_value = re.search(lang_pattern, current_codeblock).group(1)
+                current_codeblock = current_codeblock.replace('codeblock lang=', '')
+                current_codeblock = current_codeblock.replace('/codeblock', f'/{lang_value}')
+                parts[insert_index] = current_codeblock
+                if lang_value == 'csharp':
+                    existing_is_godot = False
+
+            file_extension = mixed_element_node.get("filename").replace('.', '')
+            if file_extension == 'cs':
+                language = 'csharp'
+            else:
+                language = file_extension
+
+            block_text = []
+            line_nodes = mixed_element_node.findall('codeline')
+            for line_node in line_nodes:
+                line = " ".join(line_node.itertext()) + "\n"
+                block_text.append(line)
+
+            if has_existing_codeblock:
+                if existing_is_godot:
+                    parts[insert_index] = '[codeblocks]' + parts[insert_index]
+                    parts[insert_index] = f'[{language}]]' + "".join(block_text) + f'[/{language}]'
+                    parts[insert_index] = parts[insert_index] + '[/codeblocks]'
+                else:
+                    current_block = parts[insert_index]
+                    parts[insert_index] = f'[codeblocks][{language}]' + "".join(block_text) + f'[/{language}]'
+                    parts[insert_index] = parts[insert_index] + current_block + '[/codeblocks]'
+            else:
+                parts.append(f'[codeblock lang={language}]' + "".join(block_text) + f'[/codeblock]')
+
+            has_existing_codeblock = True
+        else:
+            if not mixed_element_node.text is None:
+                parts.append(" ".join(mixed_element_node.itertext()))
+
+        if not mixed_element_node.tail is None and not mixed_element_node.tail == " ":
+            if not mixed_element_node.tag == "godotonly":
+                parts.append(mixed_element_node.tail.strip())
+
+    text = " ".join(parts)
+    return text
 
 
 def set_constants_data(godot_root: et.Element, lucky_data: LuckyZephyr) -> None:
@@ -196,8 +347,19 @@ def create_godot_doc(file: Path) -> None:
     if catalog_bindings(lucky):
         godot_root = et.Element('class')
         godot_root.set('name', lucky.class_name)
-        godot_root.append(lucky.get_class_brief())
-        godot_root.append(lucky.get_class_detail())
+
+        class_brief = lucky.get_class_brief()
+        brief_node = et.SubElement(godot_root, "brief_description")
+        if class_brief is not None:
+            brief = get_tag_text(et.fromstring(f"<root>{class_brief}</root>"))
+            brief_node.text = brief
+
+        class_detail = lucky.get_class_detail()
+        detail_node = et.SubElement(godot_root, "description")
+        if class_detail is not None:
+            detail = get_tag_text(et.fromstring(f"<root>{class_detail}</root>"))
+            detail_node.text = detail
+
         set_method_data(godot_root, lucky)
         set_member_data(godot_root, lucky)
         set_enumerator_data(godot_root, lucky)
@@ -266,7 +428,8 @@ def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:
     # track index, Godot will pick up the values after the last initialized value based on index.
     index_value = 0
     for enumerator_value in enumerator_value_data:
-        description = enumerator_value.detaileddescription
+        if enumerator_value.node_description is not None:
+            description = get_tag_text(enumerator_value.node_description)
         output_node = et.SubElement(constants_node, "constant")
         output_node.set("name", enumerator_value.name)
         output_node.set("enum", enumerator_value.enum)
@@ -274,7 +437,8 @@ def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:
             value = enumerator_value.initializer_value
             index_value = int(value)
         output_node.set("value", str(index_value))
-        output_node.text = description
+        if description:
+            output_node.text = description
         index_value += 1
 
 
@@ -304,8 +468,8 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
             else:
                 output_member_node.set(hint_type[0], hint_type[1])
 
-        if member.detaileddescription:
-            output_member_node.text = member.detaileddescription
+        if member.node_description is not None:
+            output_member_node.text = get_tag_text(member.node_description)
 
 
 def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:

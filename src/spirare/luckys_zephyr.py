@@ -9,7 +9,6 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 
 This module contains the LuckyZephyr class that handles loading and parsing the Doxygen generated XML content.
-It also contains format information for the mixed element text parser that is part of the class.
 
 Didi: "Tomorrow when I wake or think I do, what shall I say of today?
        That with Estragon my friend, at this place, until the fall of night, I waited for Godot? "
@@ -22,30 +21,6 @@ from dataclasses import dataclass, fields, field
 from pathlib import Path
 from typing import List
 from xml.etree import ElementTree as et
-
-# track opening and closing markup for bbcode to translate html markup in element text attibutes
-BBCodeMap = namedtuple("BBCodeMap", ["open", "close"])
-bbc_bold = BBCodeMap(open="[b]", close=r"[/b]")
-bbc_italic = BBCodeMap(open="[i]", close=r"[/i]")
-bbc_underline = BBCodeMap(open="[u]", close=r"[/u]")
-bbc_strikethrough = BBCodeMap(open="[s]", close=r"[/s]")
-bbc_code = BBCodeMap(open="[code]", close=r"[/code]")
-bbc_keyboard = BBCodeMap(open="[kbd]", close=r"[/kbd]")
-bbc_linebreak = BBCodeMap(open="[br]", close=r"")
-bbc_link = BBCodeMap(open="[url]", close=r"[/url]")
-
-format_map = dict()
-format_map["bold"] = bbc_bold
-format_map["emphasis"] = bbc_italic
-format_map["strike"] = bbc_strikethrough
-format_map["underline"] = bbc_underline
-
-# track xml tags that should not be parsed, such as htmlonly
-element_black_list_set = set()
-element_black_list_set.add("htmlonly")
-element_black_list_set.add("manonly")
-element_black_list_set.add("latexonly")
-element_black_list_set.add("xrefsect")
 
 
 def get_inner_markup(element: et.Element) -> str:
@@ -111,26 +86,18 @@ class LuckyZephyr:
             return src_file_name
         return None
 
-    def get_brief_description(self, doxygen_node: et.Element) -> str:
-        """
-        Gets the briefdescription tag from the Doxygen element passed as an argument
-        and returns the value of the text content.
-        :return: The value of the text content
-        """
-        node = doxygen_node.find('briefdescription')
-        text = self.get_tag_text(node)
-        return text
-
-    def get_class_brief(self) -> et.Element:
+    def get_class_brief(self) -> str:
         """
         Creates a brief_description tag with the text content from the Doxygen class documentation's briefdescription
         tag for the class.
         :return: The brief_description tag that was created so it can be added to the Godot XML output
         """
-        text = self.get_brief_description(self.data_node)
-        brief = et.Element("brief_description")
-        brief.text = text
-        return brief
+        node = self.data_node.find("briefdescription")
+        if node.text is not None:
+            text = get_inner_markup(node)
+            return text
+        else:
+            return None
 
     def get_class_detail(self) -> et.Element:
         """
@@ -138,20 +105,12 @@ class LuckyZephyr:
         tag for the class.
         :return: The description tag that was created so it can be added to the Godot XML output
         """
-        text = self.get_detailed_description(self.data_node)
-        brief = et.Element("description")
-        brief.text = text
-        return brief
-
-    def get_detailed_description(self, doxygen_node: et.Element) -> str:
-        """
-        Gets the detaileddescription tag from the Doxygen element passed as an argument
-        and returns the value of the text content.
-        :return: The value of the text content
-        """
-        node = doxygen_node.find('detaileddescription')
-        text = self.get_tag_text(node)
-        return text
+        node = self.data_node.find("detaileddescription")
+        if node.text is not None:
+            text = get_inner_markup(node)
+            return text
+        else:
+            return None
 
     def get_enumerator_data(self, enumerator_value_name_list: list) -> list[EnumValueModel]:
         """
@@ -238,11 +197,11 @@ class LuckyZephyr:
             enum_value_definition.initializer = init_node.text
         brief_node = enum_value_node.find('briefdescription')
         if brief_node is not None and brief_node.text is not None:
-            content = self.get_tag_text(brief_node)
+            content = get_inner_markup(brief_node)
             enum_value_definition.briefdescription = content
         detail_node = enum_value_node.find('detaileddescription')
         if detail_node is not None and detail_node.text is not None:
-            content = self.get_tag_text(detail_node)
+            content = get_inner_markup(detail_node)
             enum_value_definition.detaileddescription = content
         return enum_value_definition
 
@@ -257,11 +216,11 @@ class LuckyZephyr:
         for node in member_node:
             if node.tag == 'detaileddescription':
                 if node.text is not None:
-                    detailed_description = self.get_tag_text(node)
+                    detailed_description = get_inner_markup(node)
                     args[node.tag] = detailed_description
             elif node.tag == 'briefdescription':
                 if node.text is not None:
-                    brief_description = self.get_tag_text(node)
+                    brief_description = get_inner_markup(node)
                     args[node.tag] = brief_description
             elif node.tag == 'location':
                 args[node.tag] = MemberDefinitionLocation.from_xml_element(node)
@@ -310,7 +269,7 @@ class LuckyZephyr:
                     text_node.text = content_nodes[2].text
                     for child in content_nodes[2]:
                         text_node.append(copy.deepcopy(child))
-                    description = self.parse_xml_text(text_node)
+                    description = get_inner_markup(text_node)
                     signal_values = dict()
                     signal_values['name'] = signal_name_actual
                     signal_values['description'] = description
@@ -318,130 +277,11 @@ class LuckyZephyr:
                     if len(headlines) > 0:
                         for headline in headlines:
                             if headline.get("kind") == 'note':
-                                signal_values['note'] = self.parse_xml_text(headline[0])
+                                signal_values['note'] = get_inner_markup(headline)
                             elif headline.get("kind") == 'warning':
-                                signal_values['warning'] = self.parse_xml_text(headline[0])
+                                signal_values['warning'] = get_inner_markup(headline)
                     signal_data[signal_name_actual] = signal_values
         return signal_data
-
-    def get_tag_text(self, doxygen_node: et.Element) -> str:
-        """
-        todo: this docstring is out of date, update it
-        central function to get text from a tag.  currently it just strips markup from the text,
-        but later can hopefully be used to convert some markup tags in the text to BBCode
-        :param doxygen_node: the node to get the text from
-        :return: the full content of the text attribute of the doxygen node
-        """
-        parts = []
-        if doxygen_node.text:
-            parts.append(doxygen_node.text.strip())
-        para_nodes = doxygen_node.findall('para')
-        count = len(para_nodes)
-        for paragraph_index in range(count):
-            paragraph = para_nodes[paragraph_index]
-            empty_element = True
-            element_text = self.parse_xml_text(paragraph)
-            if element_text:
-                parts.append(element_text)
-                empty_element = False
-            if not empty_element and paragraph_index != count - 1:
-                parts.append(bbc_linebreak.open)
-                parts.append(bbc_linebreak.open)
-
-        text = " ".join(parts)
-        return text
-
-    def parse_xml_text(self, doxygen_node: et.Element) -> str:
-        parts = []
-        has_existing_codeblock = False
-
-        if doxygen_node.tag in element_black_list_set:
-            return ""
-
-        if doxygen_node.tag == 'para':
-            if len(doxygen_node) > 0:
-                if doxygen_node[0].tag == 'xrefsect':
-                    return ""
-
-        if doxygen_node.text is not None:
-            parts.append(doxygen_node.text.strip())
-
-        for mixed_element_node in doxygen_node:
-            if mixed_element_node.tag in format_map:
-                markup = format_map[mixed_element_node.tag]
-                if not mixed_element_node.text is None:
-                    content = markup.open + mixed_element_node.text.strip()
-                else:
-                    content = markup.open
-                parts.append(content)
-                if len(mixed_element_node):
-                    child_content = self.parse_xml_text(mixed_element_node)
-                    parts[-1] = parts[-1] + child_content.strip()
-                parts[-1] = parts[-1] + markup.close
-            elif mixed_element_node.tag == "godotonly" and mixed_element_node.get("kind") == 'text':
-
-                if mixed_element_node.tail is not None:
-                    node_tail = mixed_element_node.tail.rstrip()
-                else:
-                    node_tail = ""
-                if mixed_element_node.get("content") is not None:
-                    content = mixed_element_node.get("content")
-                else:
-                    content = ""
-
-                if mixed_element_node.get('position') == "close":
-                    parts[-1] = parts[-1] + content + node_tail
-                else:
-                    parts.append(content + node_tail)
-            elif mixed_element_node.tag == "programlisting":
-                insert_index = len(parts) - 1
-                existing_is_godot = True
-                if has_existing_codeblock:
-                    insert_index = next(i for i, s in enumerate(parts) if s.startswith('[codeblock'))
-                    current_codeblock = parts[insert_index]
-                    lang_pattern = r'lang=(.*?)\]'
-                    lang_value = re.search(lang_pattern, current_codeblock).group(1)
-                    current_codeblock = current_codeblock.replace('codeblock lang=', '')
-                    current_codeblock = current_codeblock.replace('/codeblock', f'/{lang_value}')
-                    parts[insert_index] = current_codeblock
-                    if lang_value == 'csharp':
-                        existing_is_godot = False
-
-                file_extension = mixed_element_node.get("filename").replace('.', '')
-                if file_extension == 'cs':
-                    language = 'csharp'
-                else:
-                    language = file_extension
-
-                block_text = []
-                line_nodes = mixed_element_node.findall('codeline')
-                for line_node in line_nodes:
-                    line = " ".join(line_node.itertext()) + "\n"
-                    block_text.append(line)
-
-                if has_existing_codeblock:
-                    if existing_is_godot:
-                        parts[insert_index] = '[codeblocks]' + parts[insert_index]
-                        parts[insert_index] = f'[{language}]]' + "".join(block_text) + f'[/{language}]'
-                        parts[insert_index] = parts[insert_index] + '[/codeblocks]'
-                    else:
-                        current_block = parts[insert_index]
-                        parts[insert_index] = f'[codeblocks][{language}]' + "".join(block_text) + f'[/{language}]'
-                        parts[insert_index] = parts[insert_index] + current_block + '[/codeblocks]'
-                else:
-                    parts.append(f'[codeblock lang={language}]' + "".join(block_text) + f'[/codeblock]')
-
-                has_existing_codeblock = True
-            else:
-                if not mixed_element_node.text is None:
-                    parts.append(" ".join(mixed_element_node.itertext()))
-
-            if not mixed_element_node.tail is None and not mixed_element_node.tail == " ":
-                if not mixed_element_node.tag == "godotonly":
-                    parts.append(mixed_element_node.tail.strip())
-
-        text = " ".join(parts)
-        return text
 
     ###############################################################################
     ##                            Internal                                       ##
@@ -493,6 +333,63 @@ class LuckyZephyr:
 ##################################################################################################################
 ###                                    Data objects                                                            ###
 ###################################################################################################################
+
+@dataclass(slots=True)
+class DescriptionModel:
+    """
+    Model to hold description information, with convenience properties to get the content as an element
+    or as plain text without html markup
+    """
+    briefdescription: str | None = None
+    """brief description of the method or member"""
+    detaileddescription: str = None
+    """detailed description of the method or member"""
+
+    @property
+    def text_brief(self) -> str:
+        """
+        Get the plain text (removes html markup) from the briefdescription field
+        :return:
+        """
+        if self.briefdescription:
+            return re.sub(r"<.*?>", "", self.briefdescription)
+        else:
+            return None
+
+    @property
+    def text_description(self) -> str:
+        """
+        Get the plain text (removes html markup) from the detaileddescription field
+        :return:
+        """
+        if self.detaileddescription:
+            return re.sub(r"<.*?>", "", self.detaileddescription)
+        else:
+            return None
+
+    @property
+    def node_brief(self) -> et.Element:
+        """
+        Get the brief description html and creates a node from it
+        :return: The node with the briefdescription markup as the text
+        """
+        if self.briefdescription:
+            return et.fromstring(f"<briefdescription>{self.briefdescription}</briefdescription>")
+        else:
+            return None
+
+    @property
+    def node_description(self) -> str:
+        """
+        Get the detailed description html and creates a node from it
+        :return: The node with the detailed description markup as the text
+        """
+        if self.detaileddescription:
+            return et.fromstring(f"<detaileddescription>{self.detaileddescription}</detaileddescription>")
+        else:
+            return None
+
+
 @dataclass(slots=True)
 class EnumValueAttributes:
     """
@@ -513,8 +410,8 @@ class EnumValueAttributes:
         return cls(**kwargs)
 
 
-@dataclass(slots=True)
-class EnumValueModel:
+@dataclass(slots=True, kw_only=True)
+class EnumValueModel(DescriptionModel):
     """
     Data model for enumvalue tag elements
 
@@ -529,10 +426,6 @@ class EnumValueModel:
     """simple name portion of the method or member name"""
     initializer: str | None = None
     """for constants and enumerators this indicates the initial value """
-    briefdescription: str | None = None
-    """brief description of the method or member"""
-    detaileddescription: str | None = None
-    """detailed description of the method or member"""
     enum: str | None = None
     """Used to store parent enumerator name, not part of doxygen xsd"""
 
@@ -542,7 +435,7 @@ class EnumValueModel:
 
 
 @dataclass
-class MemberDefinitionAttributes:
+class MemberDefinitionAttributes():
     """
     Data model for Doxygen memberdef element attributes.
     """
@@ -631,8 +524,8 @@ class MemberDefinitionLocation:
         return cls(**kwargs)
 
 
-@dataclass(slots=True)
-class MemberDefinitionModel:
+@dataclass(slots=True, kw_only=True)
+class MemberDefinitionModel(DescriptionModel):
     """
     Used to model data from the Doxygen XML Memberdef elements
     todo: add missing elements, already have more than needed might as well complete it
@@ -646,16 +539,15 @@ class MemberDefinitionModel:
     """member definition data value followed by qualified name, ex: int Summator::get_total """
     type: str | None = None
     """data type if a field the data type of the field, if a function the return type of the function"""
-    briefdescription: str | None = None
+    # briefdescription: str | None = None
     """brief description of the method or member"""
-    detaileddescription: str | None = None
+    # detaileddescription: str | None = None
     """detailed description of the method or member"""
     initializer: str | None = None
     """for constants and enumerators this indicates the initial value """
     argsstring: str | None = None
     """If applicable contains the argument string for the member"""
     inbodydescription: str | None = None
-    alt_description: str | None = None
     location: MemberDefinitionLocation | None = None
     read: str | None = None
     write: str | None = None
