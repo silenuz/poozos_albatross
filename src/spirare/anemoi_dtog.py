@@ -45,7 +45,7 @@ class PoozoNotus:
             constant_cleaned = re.sub(r"//.*", "", constant_match.replace('get_class_static()', class_name))
             constant_info = IntegerConstantModel.from_arg_string(constant_cleaned)
             result.append(constant_info)
-        return
+        return result
 
     def get_bound_enums(self) -> list[str]:
         """

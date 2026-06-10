@@ -21,7 +21,8 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as et
 from luckys_zephyr import LuckyZephyr
-from src.spirare.anemoi_dtog import PropertyInfoModel,PropertyModel, MethodInfoModel, IntegerConstantModel
+from src.spirare.anemoi_dtog import PropertyInfoModel, PropertyModel, MethodInfoModel, IntegerConstantModel, PoozoNotus, \
+    DMethodModel
 
 xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
@@ -48,15 +49,15 @@ else:
 bound_enums_set = []
 
 # track bound methods and properties for the current class being processed
-bound_methods_set = set()
+bound_methods_set : dict[str,DMethodModel] = {}
 
 # track property definitions
-bound_properties : dict[str,PropertyModel] = {}
+bound_properties: dict[str, PropertyModel] = {}
 
 # track bound signals
-bound_signals : dict[str,MethodInfoModel] = {}
+bound_signals: dict[str, MethodInfoModel] = {}
 
-bound_constants : dict[str,IntegerConstantModel] = {}
+bound_constants: dict[str, IntegerConstantModel] = {}
 
 # track methods that are getters and setters as they should be part of the members output
 # and not the methods output
@@ -98,7 +99,8 @@ def catalog_bindings(lz_data: LuckyZephyr) -> bool:
         project_src = src_folder
         code_file = next(project_src.rglob(code_file_name), None)
         if code_file:
-            load_godot_bindings(code_file, lz_data.class_name)
+            poozo_data = PoozoNotus(code_file)
+            load_godot_bindings(poozo_data, lz_data.class_name)
             return True
         else:
             print_message("Code Implementation File not found " + code_file_name, MESSAGE_TYPE_ERROR)
@@ -117,76 +119,49 @@ def clear_tracked_bindings() -> None:
     bound_signals.clear()
 
 
-def create_bound_constants(bind_method_code:str,class_name:str)->None:
-    constant_pattern = r'ClassDB::bind_integer_constant\s*\(([\s\S]*?)\)\s*;'
-    constant_matches = re.findall(constant_pattern, bind_method_code)
-    for constant_match in constant_matches:
-        # remove comments
-        constant_cleaned =  re.sub(r"//.*", "", constant_match.replace('get_class_static()',class_name))
-        constant_info = IntegerConstantModel.from_arg_string(constant_cleaned)
+def create_bound_constants(poozo_data:PoozoNotus, class_name: str) -> None:
+    constants = poozo_data.get_bound_constants(class_name)
+    for constant_info in constants:
         bound_constants[constant_info.p_name] = constant_info
 
 
-def create_bound_enums(bind_method_code: str) -> None:
+def create_bound_enums(poozo_data:PoozoNotus) -> None:
     """
-    Creates the nested dictionary to track enumerator values and the enumerator they belong to.
-    :param bind_method_code: The code content of the _bind_methods function
-    :return: None
+
     """
-    bound_enum_pattern = r"(?<=BIND_ENUM_CONSTANT)\((.*?)\)"
-    bound_enum_matches = re.findall(bound_enum_pattern, bind_method_code)
-    for bound_enum_match in bound_enum_matches:
-        bound_enums_set.append(bound_enum_match)
+    enums = poozo_data.get_bound_enums()
+    bound_enums_set.extend(enums)
 
-
-def create_bound_methods(bind_methods_code: str) -> None:
+def create_bound_methods(poozo_data:PoozoNotus) -> None:
     """
-    Creates the bind methods set to track the methods that are bound _bind_methods
-    :param bind_methods_code: The code content of the _bind_methods function
-    :return: None
+
     """
-    # todo: fix regex so that it doesn't require each declaration starting a line
-    bound_method_pattern = r'^\s*ClassDB::.+;'
-    bound_methods = re.findall(bound_method_pattern, bind_methods_code, re.MULTILINE)
-    for bound_method in bound_methods:
-        # get the qualified name of the function from the binding
-        definition_match = re.search(r"&([^)]*)\)", bound_method)
-        if definition_match:
-            qualified_name = definition_match.group(1)
-            values = [value for value in qualified_name.split(':') if value]
-            name = values[1]
-            if not name in property_methods_set:
-                bound_methods_set.add(qualified_name)
+    methods = poozo_data.get_bound_methods()
+    for method_info in methods:
+        if not method_info.name in property_methods_set:
+            bound_methods_set[method_info.qualified_name] = method_info
 
-
-def create_bound_signals(bind_methods_code: str) -> None:
+def create_bound_properties(poozo_data: PoozoNotus) -> None:
     """
-    Creates the bind signals set to track the signals that are bound _bind_methods
-    :param bind_methods_code: The code content of the _bind_methods function
-    :return: None
+    Maps the property bindings in the _bind_methods function, that are registered using ADD_PROPERTY
+
     """
-    # hopefully this will fix commented signals from being read
-    # todo: fix the other regex patterns
-    bound_signal_pattern = r'(?m)^[^\S\r\n]*(?!\/\/)\bADD_SIGNAL\(([\s\S]*?)\);'
-    bound_signal_data = re.findall(bound_signal_pattern, bind_methods_code,re.DOTALL)
+    properties = poozo_data.get_bound_properties()
+    for bound_property in properties:
+        bound_properties[bound_property.field] = bound_property
+        property_methods_set.add(bound_property.getter)
+        property_methods_set.add(bound_property.setter)
 
-    for bound_signal in bound_signal_data:
-        name_pattern = r'MethodInfo\(\s*"([^"]+)"'
-        signal_name_match = re.match(name_pattern, bound_signal,re.DOTALL)
-        signal_name = signal_name_match.group(1)
-        property_info_pattern = r'PropertyInfo\s*\(([\s\S]*?)\)'
-        property_info_list  = re.findall(property_info_pattern, bound_signal)
-        parameter_index = 0
-        bound_signal_values = MethodInfoModel(name=signal_name)
-        for property_info in property_info_list:
-            property_cleaned = re.sub(r"//.*", "", property_info.strip())
-            parameter_value = PropertyInfoModel.from_arg_string(property_cleaned, parameter_index)
-            bound_signal_values.argument_info.append(parameter_value)
-            parameter_index += 1
-        bound_signals[signal_name] = bound_signal_values
+def create_bound_signals(poozo_data:PoozoNotus) -> None:
+    """
+
+    """
+    signals = poozo_data.get_bound_signals()
+    for signal in signals:
+        bound_signals[signal.name] = signal
 
 
-def set_constants_data(godot_root : et.Element, lucky_data : LuckyZephyr) -> None:
+def set_constants_data(godot_root: et.Element, lucky_data: LuckyZephyr) -> None:
     output_constants_node = add_constants_node(godot_root)
     for integer_constant in bound_constants:
         pass
@@ -212,76 +187,15 @@ def create_godot_doc(file: Path) -> None:
         write_file(godot_root, lucky.class_name)
 
 
-def get_property_values(property_match: str) -> dict[str, str]:
+def load_godot_bindings(poozo_data: PoozoNotus, class_name: str) -> None:
     """
-    Separates the PropertyInfo from the property_match into separate values for the methods, and backing field
-    :param property_match: the PropertyInfo declaration from the _bind_methods function
-    :return: A dictionary containing the methods and backing field for the property
-    """
-    values = re.findall(r'"(.*?)"', property_match)
-    property_values = dict()
-    property_values["field"] = values[0]
-    property_values["setter"] = values[2]
-    property_values["getter"] = values[3]
-    return property_values
 
-
-def load_godot_bindings(src_file: Path, class_name: str) -> None:
     """
-    Parses the implementation code file, to extract the method and property bindings
-    :param src_file: the implementation code file for the current class documentation being parsed
-    :param class_name: the name of the class for the implementation file
-    :return: None
-    """
-    cpp_file = Path(src_file)
-    content = cpp_file.read_text()
-    bind_methods_pattern = r"void\s+" + class_name + r"::_bind_methods\(\)\s*\{.*?\}"
-    bind_methods_match = re.search(bind_methods_pattern, content, re.DOTALL)
-
-    if bind_methods_match:
-        bind_method_content = bind_methods_match.group(0)
-        map_godot_bindings(bind_method_content,class_name)
-    else:
-        print_message("_bind_methods function not found in " + src_file, MESSAGE_TYPE_WARNING)
-
-
-def map_godot_bindings(bind_method_code: str,class_name:str) -> None:
-    """
-    Adds bound methods, properties and constants from the implementation file to a set, so that the set can be
-    checked to see if a method is bound, so only bound methods and properties
-    are extracted from the generated doxygen XML.
-    :param bind_method_code: The content of the _bind_methods function from opening brace to closing brace
-    :return: None
-    """
-    # get content between opening and closing brace
-    bound_methods_match = re.search(r'\{(.*?)\}', bind_method_code, re.DOTALL)
-    if bound_methods_match:
-        map_property_bindings(bound_methods_match.group(1))
-        create_bound_methods(bound_methods_match.group(1))
-        create_bound_enums(bound_methods_match.group(1))
-        create_bound_signals(bound_methods_match.group(1))
-        create_bound_constants(bound_methods_match.group(1),class_name)
-    else:
-        print_message("Unknown error could not get content of _bind_methods function", MESSAGE_TYPE_ERROR)
-
-
-def map_property_bindings(bind_methods_code: str) -> None:
-    """
-    Maps the property bindings in the _bind_methods function, that are registered using ADD_PROPERTY
-    :param bind_methods_code: the code content of the _bind_methods function
-    :return: None
-    """
-    add_property_pattern = r'ADD_PROPERTY\s+\((.*?)\s+\);'
-    property_info_pattern = r'PropertyInfo\((.*?)\)'
-    property_matches = re.findall(add_property_pattern, bind_methods_code, re.DOTALL)
-    for property_match in property_matches:
-        info_match = re.match(property_info_pattern, property_match.lstrip(),re.DOTALL)
-        property_info = PropertyInfoModel.from_arg_string(info_match.group(1))
-        property_values = get_property_values(property_match)
-        bound_property = PropertyModel(property_values["field"], property_values["setter"], property_values["getter"], property_info)
-        bound_properties[property_values['field']] = bound_property
-        property_methods_set.add(property_values["setter"])
-        property_methods_set.add(property_values["getter"])
+    create_bound_properties(poozo_data)
+    create_bound_methods(poozo_data)
+    create_bound_enums(poozo_data)
+    create_bound_signals(poozo_data)
+    create_bound_constants(poozo_data, class_name)
 
 
 def parse_class_xml_files() -> None:
@@ -391,7 +305,8 @@ def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
         output_method_node_return = et.SubElement(output_method_node, "return")
         output_method_node_return.set("type", method.type)
 
-def set_signal_data(godot_root: et.Element, lz_data:LuckyZephyr):
+
+def set_signal_data(godot_root: et.Element, lz_data: LuckyZephyr):
     """
     Sets the signal data in the Godot output XML
     :param godot_root: godot root element to add signal data to
