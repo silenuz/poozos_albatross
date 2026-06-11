@@ -57,7 +57,9 @@ To see an example project using cmake with the scripts to generate Godot class d
 
 The Scripts:
 ============
-Detailed information about the scripts will soon be here.
+Information about how the scripts work will eventually be here.  
+
+Information about basic usage of the poozo_notus module can be found [here](git_doc/poozo.md).
 
 Notes:
 ======
