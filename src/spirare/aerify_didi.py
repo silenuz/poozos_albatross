@@ -481,7 +481,7 @@ def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     for method in method_data:
         output_method_node = et.SubElement(methods_node, "method")
         output_method_node.set("name", method.name)
-        if method.node_description:
+        if method.node_description is not None:
             output_method_node_description = et.SubElement(output_method_node, "description")
             output_method_node_description.text = get_tag_text(method.node_description)
         output_method_node_return = et.SubElement(output_method_node, "return")
@@ -493,6 +493,7 @@ def set_signal_data(godot_root: et.Element, lz_data: LuckyZephyr):
     Sets the signal data in the Godot output XML
     :param godot_root: godot root element to add signal data to
     :param lz_data: LuckyZephyr instance with the current doxygen class XML
+    todo: this is the last hold out that returns a dict instead of an object fix ASAP
     """
     if len(bound_signals) < 1:
         return

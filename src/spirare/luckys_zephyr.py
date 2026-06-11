@@ -212,6 +212,7 @@ class LuckyZephyr:
         args = dict()
         args['attributes'] = attribute_values
         enum_values: List[EnumValueModel] = list()
+        param_values: List[ParameterTypeModel] = list()
 
         for node in member_node:
             if node.tag == 'detaileddescription':
@@ -227,14 +228,28 @@ class LuckyZephyr:
             elif node.tag == 'enumvalue':
                 enum_value = self.model_enumvalue_definition(node)
                 enum_values.append(enum_value)
+            elif node.tag == 'param':
+                parameter = self.model_param_definition(node)
+                param_values.append(parameter)
             elif node.text is not None:
                 args[node.tag] = node.text
 
         member_definition = MemberDefinitionModel.from_dict(args)
         if len(enum_values) > 0:
             member_definition.enum_values = enum_values
-
+        if len(param_values) > 0:
+            member_definition.parameters = param_values
         return member_definition
+
+
+    def model_param_definition(self, node)->ParameterTypeModel:
+        values = dict()
+        for element in node:
+            if element.text is not None:
+                values[element.tag] = element.text
+        model = ParameterTypeModel(**values)
+        return model
+
 
     def get_reference_file_path(self) -> Path:
         """
@@ -264,22 +279,31 @@ class LuckyZephyr:
                 if godot_only_node.get("kind") == 'signal':
                     signal_name = godot_only_node.get("name")
                     signal_name_actual = re.sub(r"\(.*?\)", "", signal_name)
-                    content_nodes = reference_node.findall('.//para')
-                    text_node = et.Element('description')
-                    text_node.text = content_nodes[2].text
-                    for child in content_nodes[2]:
-                        text_node.append(copy.deepcopy(child))
-                    description = get_inner_markup(text_node)
+                    signal_description = reference_node.find(".//parblock")
+                    signal_paras = signal_description.findall("para")
+                    desc_paragraphs = signal_paras[1:]
+
+                    description_paragraphs : list[str] = list()
+                    for desc in desc_paragraphs:
+                        desc_string = get_inner_markup(desc)
+                        description_paragraphs.append(desc_string)
+
+                    if len(description_paragraphs) > 0:
+                        description = " ".join(description_paragraphs)
+                    else:
+                        description = None
+
                     signal_values = dict()
                     signal_values['name'] = signal_name_actual
-                    signal_values['description'] = description
+                    if description is not None:
+                        signal_values['description'] = description
                     headlines = reference_node.findall('.//simplesect')
                     if len(headlines) > 0:
                         for headline in headlines:
                             if headline.get("kind") == 'note':
-                                signal_values['note'] = get_inner_markup(headline)
+                                signal_values['note'] = get_inner_markup(headline.find("para"))
                             elif headline.get("kind") == 'warning':
-                                signal_values['warning'] = get_inner_markup(headline)
+                                signal_values['warning'] = get_inner_markup(headline.find("para"))
                     signal_data[signal_name_actual] = signal_values
         return signal_data
 
@@ -328,6 +352,8 @@ class LuckyZephyr:
             root = tree.getroot()
             self.reference_node = root[0]
             self.reference_data_map = {child: parent for parent in root.iter() for child in parent}
+
+
 
 
 ##################################################################################################################
@@ -394,9 +420,6 @@ class DescriptionModel:
 class EnumValueAttributes:
     """
     Data model for enumvalue tag attributes
-
-     <xsd:attribute name="id" type="xsd:string" />
-     <xsd:attribute name="prot" type="DoxProtectionKind" />
     """
     id: str
     """A unique, auto-generated Doxygen identifier string used for cross-referencing throughout the XML structure"""
@@ -414,11 +437,6 @@ class EnumValueAttributes:
 class EnumValueModel(DescriptionModel):
     """
     Data model for enumvalue tag elements
-
-    <xsd:element name="name" type="xsd:string" />
-    <xsd:element name="initializer" type="linkedTextType" minOccurs="0" />
-    <xsd:element name="briefdescription" type="descriptionType" minOccurs="0" />
-    <xsd:element name="detaileddescription" type="descriptionType" minOccurs="0" />
     """
     attributes: MemberDefinitionAttributes
     """Attributes for the tag"""
@@ -438,62 +456,6 @@ class EnumValueModel(DescriptionModel):
 class MemberDefinitionAttributes:
     """
     Data model for Doxygen memberdef element attributes.
-
-    <xsd:attribute name="kind" type="DoxMemberKind" />
-    <xsd:attribute name="id" type="xsd:string" />
-    <xsd:attribute name="prot" type="DoxProtectionKind" />
-    <xsd:attribute name="static" type="DoxBool" />
-    <xsd:attribute name="extern" type="DoxBool" use="optional" />
-    <xsd:attribute name="strong" type="DoxBool" use="optional"/>
-    <xsd:attribute name="const" type="DoxBool" use="optional"/>
-    <xsd:attribute name="explicit" type="DoxBool" use="optional"/>
-    <xsd:attribute name="inline" type="DoxBool" use="optional"/>
-    <xsd:attribute name="refqual" type="DoxRefQualifierKind" use="optional"/>
-    <xsd:attribute name="virt" type="DoxVirtualKind" use="optional"/>
-    <xsd:attribute name="volatile" type="DoxBool" use="optional"/>
-    <xsd:attribute name="mutable" type="DoxBool" use="optional"/>
-    <xsd:attribute name="noexcept" type="DoxBool" use="optional"/>
-    <xsd:attribute name="noexceptexpression" type="xsd:string" use="optional"/>
-    <xsd:attribute name="nodiscard" type="DoxBool" use="optional"/>
-    <xsd:attribute name="constexpr" type="DoxBool" use="optional"/>
-    <xsd:attribute name="consteval" type="DoxBool" use="optional"/>
-    <xsd:attribute name="constinit" type="DoxBool" use="optional"/>
-    <!-- Qt property -->
-    <xsd:attribute name="readable" type="DoxBool" use="optional"/>
-    <xsd:attribute name="writable" type="DoxBool" use="optional"/>
-    <!-- C++/CLI variable -->
-    <xsd:attribute name="initonly" type="DoxBool" use="optional"/>
-    <!-- C++/CLI and C# property -->
-    <xsd:attribute name="settable" type="DoxBool" use="optional"/>
-    <xsd:attribute name="privatesettable" type="DoxBool" use="optional"/>
-    <xsd:attribute name="protectedsettable" type="DoxBool" use="optional"/>
-    <xsd:attribute name="gettable" type="DoxBool" use="optional"/>
-    <xsd:attribute name="privategettable" type="DoxBool" use="optional"/>
-    <xsd:attribute name="protectedgettable" type="DoxBool" use="optional"/>
-    <!-- C++/CLI function -->
-    <xsd:attribute name="final" type="DoxBool" use="optional"/>
-    <xsd:attribute name="sealed" type="DoxBool" use="optional"/>
-    <xsd:attribute name="new" type="DoxBool" use="optional"/>
-    <!-- C++/CLI event -->
-    <xsd:attribute name="add" type="DoxBool" use="optional"/>
-    <xsd:attribute name="remove" type="DoxBool" use="optional"/>
-    <xsd:attribute name="raise" type="DoxBool" use="optional"/>
-    <!-- Objective-C 2.0 protocol method -->
-    <xsd:attribute name="optional" type="DoxBool" use="optional"/>
-    <xsd:attribute name="required" type="DoxBool" use="optional"/>
-    <!-- Objective-C 2.0 property accessor -->
-    <xsd:attribute name="accessor" type="DoxAccessor" use="optional"/>
-    <!-- UNO IDL --> NOT PART OF MODEL - Reference ONLY!
-    <xsd:attribute name="attribute" type="DoxBool" use="optional"/>
-    <xsd:attribute name="property" type="DoxBool" use="optional"/>
-    <xsd:attribute name="readonly" type="DoxBool" use="optional"/>
-    <xsd:attribute name="bound" type="DoxBool" use="optional"/>
-    <xsd:attribute name="removable" type="DoxBool" use="optional"/>
-    <xsd:attribute name="constrained" type="DoxBool" use="optional"/>
-    <xsd:attribute name="transient" type="DoxBool" use="optional"/>
-    <xsd:attribute name="maybevoid" type="DoxBool" use="optional"/>
-    <xsd:attribute name="maybedefault" type="DoxBool" use="optional"/>
-    <xsd:attribute name="maybeambiguous" type="DoxBool" use="optional"/>
     """
     id: str
     """A unique, auto-generated Doxygen identifier string used for cross-referencing throughout the XML structure"""
@@ -623,6 +585,14 @@ class MemberDefinitionModel(DescriptionModel):
     """
     Used to model data from the Doxygen XML Memberdef elements
     todo: add missing elements, already have more than needed might as well complete it
+      <xsd:element name="templateparamlist" type="templateparamlistType" minOccurs="0" />
+      <xsd:element name="reimplements" type="reimplementType" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="reimplementedby" type="reimplementType" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="param" type="paramType" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="requiresclause" type="linkedTextType" minOccurs="0" />
+      <xsd:element name="exceptions" type="linkedTextType" minOccurs="0" />
+      <xsd:element name="references" type="referenceType" minOccurs="0" maxOccurs="unbounded" />
+      <xsd:element name="referencedby" type="referenceType" minOccurs="0" maxOccurs="unbounded" />
     """
     attributes: MemberDefinitionAttributes
     name: str
@@ -648,6 +618,7 @@ class MemberDefinitionModel(DescriptionModel):
     bitfield: str | None = None
     qualifier: str | None = None
     enum_values: List[EnumValueModel] = field(default_factory=list)
+    parameters: List[ParameterTypeModel] = field(default_factory=list)
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -656,3 +627,18 @@ class MemberDefinitionModel(DescriptionModel):
         filtered_data = {key: value for key, value in data.items() if key in valid_fields}
         # 3. Unpack the filtered dictionary into the class constructor
         return cls(**filtered_data)
+
+@dataclass(slots=True,kw_only=True)
+class ParameterTypeModel(DescriptionModel):
+    """
+    Used to model data from the Doxygen XML ParameterType elements
+    because it inherits DescriptionModel it will have a detailed and brief description field,
+    however only the biref is ever used in a parameter type.
+    """
+    attributes: str | None = None
+    type: str | None = None
+    declname: str | None = None
+    defname: str | None = None
+    array: str | None = None
+    defval: str | None = None
+    typeconstraint: str | None = None
