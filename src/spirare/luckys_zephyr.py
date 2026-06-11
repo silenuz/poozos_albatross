@@ -405,7 +405,7 @@ class DescriptionModel:
             return None
 
     @property
-    def node_description(self) -> str:
+    def node_description(self) -> et.Element:
         """
         Get the detailed description html and creates a node from it
         :return: The node with the detailed description markup as the text
@@ -619,6 +619,10 @@ class MemberDefinitionModel(DescriptionModel):
     qualifier: str | None = None
     enum_values: List[EnumValueModel] = field(default_factory=list)
     parameters: List[ParameterTypeModel] = field(default_factory=list)
+
+    @property
+    def initializer_value(self) -> str:
+        return self.initializer.split(" ")[1].strip()
 
     @classmethod
     def from_dict(cls, data: dict):

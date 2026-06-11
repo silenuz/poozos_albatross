@@ -257,7 +257,7 @@ def parse_xml_text(doxygen_node: et.Element) -> str:
                 content = markup.open
             parts.append(content)
             if len(mixed_element_node):
-                child_content = self.parse_xml_text(mixed_element_node)
+                child_content = parse_xml_text(mixed_element_node)
                 parts[-1] = parts[-1] + child_content.strip()
             parts[-1] = parts[-1] + markup.close
         elif mixed_element_node.tag == "godotonly" and mixed_element_node.get("kind") == 'text':
@@ -329,7 +329,18 @@ def parse_xml_text(doxygen_node: et.Element) -> str:
 def set_constants_data(godot_root: et.Element, lucky_data: LuckyZephyr) -> None:
     output_constants_node = add_constants_node(godot_root)
     for integer_constant in bound_constants:
-        pass
+        constant_value = bound_constants[integer_constant]
+        output_node = et.SubElement(output_constants_node, "constant")
+        output_node.set("name", constant_value.p_name)
+        if constant_value.p_enum:
+            output_node.set('enum', constant_value.p_class)
+        member_def = lucky_data.get_member_definition_by_child('name', constant_value.p_value)
+        if member_def is not None:
+            if member_def.node_description is not None:
+                output_node.text = get_tag_text(member_def.node_description)
+                output_node.set('value', member_def.initializer_value)
+
+
 
 
 def create_godot_doc(file: Path) -> None:

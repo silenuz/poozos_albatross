@@ -1,6 +1,6 @@
 IMPORTANT
 =========
-Major rewrites and refactorings, code is much cleaner and more efficient. 
+Major rewrites and refactorings,  again !
 
 Except for the few remaining methods that are Godot specific in LuckyZephyr that need to be decoupled, I like the current 
 architecture as the logic for each specific use is isolated and independent.  LuckZephyr can basically now be used 
