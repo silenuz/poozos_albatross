@@ -115,6 +115,7 @@
 <para>You must declare a protected static void <computeroutput><ref refid="classTrafficLight_1a3949215d0fbb8273e1602abaabba8c41" kindref="member">_bind_methods()</ref></computeroutput> function in your class header.</para>
 <para><xrefsect id="signal_1_signal000004"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="light_changed(TrafficLightType new_state)"/><parblock><para><bold>light_changed(TrafficLightType new_state):</bold></para>
 <para>This signal is emitted when the state of the Traffic Light changes.</para>
+<para>This is test to see if this paragraph is read in</para>
 </parblock></para>
 </xrefdescription></xrefsect></para>
 <para><xrefsect id="signal_1_signal000005"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="light_changing(TrafficLightType old_state,TrafficLightType new_state)"/><parblock><para><bold>light_changing(TrafficLightType old_state,TrafficLightType new_state):</bold></para>
@@ -124,7 +125,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="51" column="13" bodyfile="src/traffic_light.cpp" bodystart="18" bodyend="71"/>
+        <location file="src/traffic_light.h" line="51" column="13" bodyfile="src/traffic_light.cpp" bodystart="20" bodyend="82"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -154,7 +155,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="56" column="6" bodyfile="src/traffic_light.cpp" bodystart="73" bodyend="81"/>
+        <location file="src/traffic_light.h" line="56" column="6" bodyfile="src/traffic_light.cpp" bodystart="84" bodyend="92"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -171,7 +172,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="62" column="1" bodyfile="src/traffic_light.cpp" bodystart="138" bodyend="145"/>
+        <location file="src/traffic_light.h" line="62" column="1" bodyfile="src/traffic_light.cpp" bodystart="149" bodyend="156"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a5a989d55646c3a11ca807f9b91c42047" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -199,7 +200,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="68" column="6" bodyfile="src/traffic_light.cpp" bodystart="128" bodyend="131"/>
+        <location file="src/traffic_light.h" line="68" column="6" bodyfile="src/traffic_light.cpp" bodystart="139" bodyend="142"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a1373c1648395d3dd59356aa63c8b7e25" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>Ref&lt; Texture2D &gt;</type>
@@ -216,7 +217,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="74" column="5" bodyfile="src/traffic_light.cpp" bodystart="108" bodyend="111"/>
+        <location file="src/traffic_light.h" line="74" column="5" bodyfile="src/traffic_light.cpp" bodystart="119" bodyend="122"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a8f335d111cadd57b3692b535dca13285" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -244,7 +245,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="80" column="6" bodyfile="src/traffic_light.cpp" bodystart="123" bodyend="126"/>
+        <location file="src/traffic_light.h" line="80" column="6" bodyfile="src/traffic_light.cpp" bodystart="134" bodyend="137"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a08cdb36fc55b968affa3c1faafb5d942" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>Ref&lt; Texture2D &gt;</type>
@@ -261,7 +262,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="86" column="5" bodyfile="src/traffic_light.cpp" bodystart="118" bodyend="121"/>
+        <location file="src/traffic_light.h" line="86" column="5" bodyfile="src/traffic_light.cpp" bodystart="129" bodyend="132"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1ae60ebb2e9f1706657b1c6b6e75727bfc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -289,7 +290,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="92" column="6" bodyfile="src/traffic_light.cpp" bodystart="133" bodyend="136"/>
+        <location file="src/traffic_light.h" line="92" column="6" bodyfile="src/traffic_light.cpp" bodystart="144" bodyend="147"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1acd8c1bc62d2b82e0a3173063d599a5fc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>Ref&lt; Texture2D &gt;</type>
@@ -306,7 +307,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="98" column="5" bodyfile="src/traffic_light.cpp" bodystart="113" bodyend="116"/>
+        <location file="src/traffic_light.h" line="98" column="5" bodyfile="src/traffic_light.cpp" bodystart="124" bodyend="127"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a0be77a799e6abd426a80939eeee2215e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -334,7 +335,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="104" column="6" bodyfile="src/traffic_light.cpp" bodystart="88" bodyend="106"/>
+        <location file="src/traffic_light.h" line="104" column="6" bodyfile="src/traffic_light.cpp" bodystart="99" bodyend="117"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a846f87f93fae05fa00ba2d014a57ae23" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>TrafficLightType</type>
@@ -351,7 +352,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="110" column="18" bodyfile="src/traffic_light.cpp" bodystart="83" bodyend="86"/>
+        <location file="src/traffic_light.h" line="110" column="18" bodyfile="src/traffic_light.cpp" bodystart="94" bodyend="97"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

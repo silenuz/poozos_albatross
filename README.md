@@ -1,19 +1,20 @@
 IMPORTANT
 =========
-Major rewrites and refactorings, code is much cleaner and more efficient.  Should be a significant gain 
-in the processing time of large classes.  The luckys_zephyr module now contains a class for dealing with 
-the Doxygen class XML files. Most of the functions return dictionaries, which will eventually be typed dicts to make working 
-with class as easy as possible.
+Major rewrites and refactorings, code is much cleaner and more efficient. 
+
+Except for the few remaining methods that are Godot specific in LuckyZephyr that need to be decoupled, I like the current 
+architecture as the logic for each specific use is isolated and independent.  LuckZephyr can basically now be used 
+generically to parse Doxygen xml for any project.
+
+Same for PoozosNotus which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
+Except for one holdout method for getting signal data from Doxygen, all class methods return data class objects that model 
+the information from the source file whether it's Doxygen with LZ or cpp files with PN.
 
 Current Known Bugs:
 -------------------
 Code blocks are currently formatted incorrectly if they contain tabs as someone ignored white space markup when
 writing the parser for code blocks.
 
-Signals can only contain one paragraph in the description because someone decided to just grab a single
-paragraph when parsing said content.
-
-Both should be fixed early next week.
 
 Description:
 ============
@@ -32,11 +33,12 @@ Processing of code blocks in description fields now working, see [Codeblocks](#c
 Contents:
 =========
 
-This repository contains 3 python modules:
+This repository contains 4 python modules:
 
-- aerify_did.py : script to generate Godot class documentation from Doxygen generated class XML files
 - luckys_zephyr.py : contains LuckyZephyr class that parses and searches the Doxygen XML, this class is used by the above to parse the source XML
-- waft_gogo.py : script to generate a build profile based on include statements in the header files parsed by Doxygen
+- poozos_notus.py contains PoozosNotus class to parse cpp source code containing binding declarations for a GDExtension 
+- aerify_did.py : script to generate Godot class documentation using LuckyZephyr to query the Doxygen XML and PoozosNotus to scrape the source code.
+- waft_gogo.py : script to generate a build profile based on include statements, using LuckyZephyr to parse the Doxygen XML
 
 The example directory has a self-contained example to represent parts of a GDExtension cpp template project.  It has
 no requirement other than python, and contains command line scripts that demonstrate usage.

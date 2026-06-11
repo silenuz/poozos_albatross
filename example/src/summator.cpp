@@ -23,7 +23,7 @@ void Summator::_bind_methods() {
 			MINMUM_REQUIRED_AMOUNT // The actual value
 	);
 	ClassDB::bind_integer_constant("Summator","","SUM_OKAY",DOING_OKAY_AMOUNT);
-	ClassDB::bind_integer_constant("Summator","","SUM_GOOD",DOING_NOTHING_AMOUNT);
+	ClassDB::bind_integer_constant(get_class_static(),"","SUM_GOOD",DOING_NOTHING_AMOUNT);
 }
 
 void Summator::add(int p_value) {
