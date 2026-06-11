@@ -296,14 +296,14 @@ class LuckyZephyr:
                     signal_values = dict()
                     signal_values['name'] = signal_name_actual
                     if description is not None:
-                        signal_values['description'] = description
-                    headlines = reference_node.findall('.//simplesect')
+                        signal_values['description'] = f'<desc>{description}</desc>'
+                        headlines = reference_node.findall('.//simplesect')
                     if len(headlines) > 0:
                         for headline in headlines:
                             if headline.get("kind") == 'note':
-                                signal_values['note'] = get_inner_markup(headline.find("para"))
+                                signal_values['note'] = get_inner_markup(headline)
                             elif headline.get("kind") == 'warning':
-                                signal_values['warning'] = get_inner_markup(headline.find("para"))
+                                signal_values['warning'] = get_inner_markup(headline)
                     signal_data[signal_name_actual] = signal_values
         return signal_data
 

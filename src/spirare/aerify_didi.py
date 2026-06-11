@@ -234,6 +234,7 @@ def get_tag_text(doxygen_node: et.Element) -> str:
     return text
 
 def parse_xml_text(doxygen_node: et.Element) -> str:
+    # todo fix extra space being inserted when a tail is present for the element
     parts = []
     has_existing_codeblock = False
 
@@ -527,13 +528,21 @@ def set_signal_data(godot_root: et.Element, lz_data: LuckyZephyr):
                     parameter_node.set(specified_type[0], specified_type[1])
         # if the signal has a description and or notes add them
         if signal in signal_data:
-            description_node = et.SubElement(signal_node, "description")
-            description = signal_data[signal]['description']
+            description_parts = []
+            if 'description' in signal_data[signal]:
+                description_node = et.SubElement(signal_node, "description")
+                value = signal_data[signal]['description']
+                description = parse_xml_text(et.fromstring(value))
+                description_parts.append(description)
             if 'note' in signal_data[signal]:
-                description = description + '[br][br][b]Note:[/b]' + ' ' + signal_data[signal]['note']
+                value = et.fromstring(signal_data[signal]['note'])
+                note = parse_xml_text(value)
+                description_parts.append('[br][br][b]Note:[/b]' + ' ' + note)
             if 'warning' in signal_data[signal]:
-                description = description + '[br][br][b]Warning:[/b]' + ' ' + signal_data[signal]['warning']
-            description_node.text = description
+                value = et.fromstring(signal_data[signal]['warning'])
+                warning = parse_xml_text(value)
+                description_parts.append('[br][br][b]Warning:[/b]' + ' ' + warning)
+            description_node.text = "".join(description_parts)
 
 
 def write_file(godot_root: et.Element, class_name: str) -> bool:
