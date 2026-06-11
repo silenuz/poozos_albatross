@@ -152,7 +152,6 @@ def clear_tracked_bindings() -> None:
 def create_bound_constants(poozo_data: PoozoNotus, class_name: str) -> None:
     """
     Creates a map of bound integer constants in the source code
-
     :param poozo_data:  The PoozoNotus instance containing the source code for the current class
     :param class_name: the name of the current class being processed
     :return: None
@@ -165,7 +164,6 @@ def create_bound_constants(poozo_data: PoozoNotus, class_name: str) -> None:
 def create_bound_enums(poozo_data: PoozoNotus) -> None:
     """
     Creates a list of bound enum value names in the source code
-
     :param poozo_data: The PoozoNotus instance containing the source code for the current class
     :return: None
     """
@@ -176,7 +174,6 @@ def create_bound_enums(poozo_data: PoozoNotus) -> None:
 def create_bound_methods(poozo_data: PoozoNotus) -> None:
     """
     Creates a map of method bindings in the source code
-
     :param poozo_data: The PoozoNotus instance containing the source code for the current class
     :return: None
     """
@@ -189,7 +186,6 @@ def create_bound_methods(poozo_data: PoozoNotus) -> None:
 def create_bound_properties(poozo_data: PoozoNotus) -> None:
     """
     Maps the property bindings in the source code that are registered using ADD_PROPERTY
-
     :param poozo_data: The PoozoNotus instance containing the source code for the current class
     :return: None
     """
@@ -203,7 +199,6 @@ def create_bound_properties(poozo_data: PoozoNotus) -> None:
 def create_bound_signals(poozo_data: PoozoNotus) -> None:
     """
     Creates a map of bound signals in the source code that are registered using ADD_SIGNAL
-
     :param poozo_data: The PoozoNotus instance containing the source code for the current class
     :return: None
     """
@@ -486,9 +481,9 @@ def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     for method in method_data:
         output_method_node = et.SubElement(methods_node, "method")
         output_method_node.set("name", method.name)
-        if method.detaileddescription:
+        if method.node_description:
             output_method_node_description = et.SubElement(output_method_node, "description")
-            output_method_node_description.text = method.detaileddescription
+            output_method_node_description.text = get_tag_text(method.node_description)
         output_method_node_return = et.SubElement(output_method_node, "return")
         output_method_node_return.set("type", method.type)
 

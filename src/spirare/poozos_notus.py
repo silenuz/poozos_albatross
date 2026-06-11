@@ -4,7 +4,7 @@
 """
 @Project: poozos_albatross
 @Date: 6/7/26
-@File: anemoi_dtog
+@File: poozos_notus
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 
@@ -74,7 +74,7 @@ class PoozoNotus:
             qualified_class_pattern = r"^.*?(?=\))"
             qualified_class_matches = re.search(qualified_class_pattern, class_substring)
             qualified_class = qualified_class_matches.group(0)
-            method_model = DMethodModel.from_arg_string(' '.join(args), qualified_class)
+            method_model = DMethodModel.from_arg_string(','.join(args), qualified_class)
             result.append(method_model)
         return result
 

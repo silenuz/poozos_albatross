@@ -434,20 +434,76 @@ class EnumValueModel(DescriptionModel):
         return self.initializer.split(" ")[1].strip()
 
 
-@dataclass
-class MemberDefinitionAttributes():
+@dataclass(slots=True)
+class MemberDefinitionAttributes:
     """
     Data model for Doxygen memberdef element attributes.
+
+    <xsd:attribute name="kind" type="DoxMemberKind" />
+    <xsd:attribute name="id" type="xsd:string" />
+    <xsd:attribute name="prot" type="DoxProtectionKind" />
+    <xsd:attribute name="static" type="DoxBool" />
+    <xsd:attribute name="extern" type="DoxBool" use="optional" />
+    <xsd:attribute name="strong" type="DoxBool" use="optional"/>
+    <xsd:attribute name="const" type="DoxBool" use="optional"/>
+    <xsd:attribute name="explicit" type="DoxBool" use="optional"/>
+    <xsd:attribute name="inline" type="DoxBool" use="optional"/>
+    <xsd:attribute name="refqual" type="DoxRefQualifierKind" use="optional"/>
+    <xsd:attribute name="virt" type="DoxVirtualKind" use="optional"/>
+    <xsd:attribute name="volatile" type="DoxBool" use="optional"/>
+    <xsd:attribute name="mutable" type="DoxBool" use="optional"/>
+    <xsd:attribute name="noexcept" type="DoxBool" use="optional"/>
+    <xsd:attribute name="noexceptexpression" type="xsd:string" use="optional"/>
+    <xsd:attribute name="nodiscard" type="DoxBool" use="optional"/>
+    <xsd:attribute name="constexpr" type="DoxBool" use="optional"/>
+    <xsd:attribute name="consteval" type="DoxBool" use="optional"/>
+    <xsd:attribute name="constinit" type="DoxBool" use="optional"/>
+    <!-- Qt property -->
+    <xsd:attribute name="readable" type="DoxBool" use="optional"/>
+    <xsd:attribute name="writable" type="DoxBool" use="optional"/>
+    <!-- C++/CLI variable -->
+    <xsd:attribute name="initonly" type="DoxBool" use="optional"/>
+    <!-- C++/CLI and C# property -->
+    <xsd:attribute name="settable" type="DoxBool" use="optional"/>
+    <xsd:attribute name="privatesettable" type="DoxBool" use="optional"/>
+    <xsd:attribute name="protectedsettable" type="DoxBool" use="optional"/>
+    <xsd:attribute name="gettable" type="DoxBool" use="optional"/>
+    <xsd:attribute name="privategettable" type="DoxBool" use="optional"/>
+    <xsd:attribute name="protectedgettable" type="DoxBool" use="optional"/>
+    <!-- C++/CLI function -->
+    <xsd:attribute name="final" type="DoxBool" use="optional"/>
+    <xsd:attribute name="sealed" type="DoxBool" use="optional"/>
+    <xsd:attribute name="new" type="DoxBool" use="optional"/>
+    <!-- C++/CLI event -->
+    <xsd:attribute name="add" type="DoxBool" use="optional"/>
+    <xsd:attribute name="remove" type="DoxBool" use="optional"/>
+    <xsd:attribute name="raise" type="DoxBool" use="optional"/>
+    <!-- Objective-C 2.0 protocol method -->
+    <xsd:attribute name="optional" type="DoxBool" use="optional"/>
+    <xsd:attribute name="required" type="DoxBool" use="optional"/>
+    <!-- Objective-C 2.0 property accessor -->
+    <xsd:attribute name="accessor" type="DoxAccessor" use="optional"/>
+    <!-- UNO IDL --> NOT PART OF MODEL - Reference ONLY!
+    <xsd:attribute name="attribute" type="DoxBool" use="optional"/>
+    <xsd:attribute name="property" type="DoxBool" use="optional"/>
+    <xsd:attribute name="readonly" type="DoxBool" use="optional"/>
+    <xsd:attribute name="bound" type="DoxBool" use="optional"/>
+    <xsd:attribute name="removable" type="DoxBool" use="optional"/>
+    <xsd:attribute name="constrained" type="DoxBool" use="optional"/>
+    <xsd:attribute name="transient" type="DoxBool" use="optional"/>
+    <xsd:attribute name="maybevoid" type="DoxBool" use="optional"/>
+    <xsd:attribute name="maybedefault" type="DoxBool" use="optional"/>
+    <xsd:attribute name="maybeambiguous" type="DoxBool" use="optional"/>
     """
     id: str
     """A unique, auto-generated Doxygen identifier string used for cross-referencing throughout the XML structure"""
-    kind: str | None = None
+    kind: str
     """Specifies the type of member. Common values include: function, variable, typedef, enum, enumvalue, 
     property, or event"""
-    prot: str | None = None
+    prot: str
     """The access protection/visibility level in the source code. Possible values: public, protected, private, 
     or package"""
-    static: str | None = None
+    static: str
     """Boolean indicator (yes or no) specifying if the member is declared static"""
     const: str | None = None
     """Boolean indicator (yes or no) showing if the member function acts as const"""
@@ -461,19 +517,57 @@ class MemberDefinitionAttributes():
     """Boolean indicator (yes or no) for explicit C++ constructors/conversion operators"""
     inline: str | None = None
     """Boolean indicator (yes or no) indicating if the member was defined inline"""
-    final: str | None = None
-    sealed: str | None = None
-    new: str | None = None
-    readable: str | None = None
-    writable: str | None = None
-    add: str | None = None
-    remove: str | None = None
-    raise_: str | None = None
-    getaccessor: str | None = None
-    setaccessor: str | None = None
-    accessor: str | None = None
-    initonly: str | None = None
     strong: str | None = None
+    """Used primarily for scoping controls, such as C++ scoped enums (enum class) or C# strongly-typed data structures"""
+    extern: str | None = None
+    """(Optional): Indicates if the variable or function is declared extern"""
+    refqual: str | None = None
+    """ Identifies reference equality behavior, typically used when parsing managed languages like C# or CLI."""
+    noexcept: str | None = None
+    """Tracks whether a function or method is declared noexcept or has a non-throwing exception specification"""
+    noexceptexpression: str | None = None
+    """ It captures the raw code snippet or conditional boolean logic passed inside a conditional noexcept(...) specifier"""
+    nodiscard: str | None = None
+    """ Tracks the standard attribute [[nodiscard]] (found in C++17 and C23)"""
+    constexpr: str | None = None
+    """Tracks if a function or variable is declared with the C++ constexpr specifier"""
+    consteval: str | None = None
+    """Tracks the C++20 consteval keyword"""
+    constinit: str | None = None
+    """Tracks the C++20 constinit keyword"""
+    settable: str | None = None
+    """C++/CLI and C# property"""
+    privatesettable: str | None = None
+    """C++/CLI and C# property"""
+    protectedsettable: str | None = None
+    """C++/CLI and C# property"""
+    gettable: str | None = None
+    """C++/CLI and C# property"""
+    privategettable: str | None = None
+    """C++/CLI and C# property"""
+    protectedgettable: str | None = None
+    """C++/CLI and C# property"""
+    final: str | None = None
+    """C++/CLI function"""
+    sealed: str | None = None
+    """C++/CLI function"""
+    new: str | None = None
+    """C++/CLI function"""
+    readable: str | None = None
+    """Qt property"""
+    writable: str | None = None
+    """Qt property"""
+    add: str | None = None
+    """C++/CLI event"""
+    remove: str | None = None
+    """C++/CLI event"""
+    raise_: str | None = None
+    """C++/CLI event"""
+    accessor: str | None = None
+    """Objective-C 2.0 property accessor"""
+    initonly: str | None = None
+    """C++/CLI variable"""
+
 
     @classmethod
     def from_xml_element(cls, member_element: et.Element) -> "MemberDefinitionAttributes":
