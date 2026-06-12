@@ -24,19 +24,23 @@ summator_path = script_path.parent.parent / 'example' / 'src' / 'summator.cpp'
 traffic_light_parser = PoozoNotus(traffic_light_path)
 summator_parser = PoozoNotus(summator_path)
 
+## get bound integer constants
+## recent refactors mean this method needs the name of the class to amp get_class_static() to
+bound_integer_constants = summator_parser.get_bound_constants("Summator")
+for bound_constant in bound_integer_constants:
+    print(bound_constant)
+
 # get bound methods that were bound using dmethod macro
 # traffic light has no methods so we use summator here
 bound_methods_set = summator_parser.get_bound_methods()
 for bound_method in bound_methods_set:
     print(bound_method)
-    pass
 
 # get bound properties, summator has no properties
 # use traffic light source instead
 bound_properties = traffic_light_parser.get_bound_properties()
 for bound_property in bound_properties:
     print(bound_property)
-    pass
 
 # get bound signals, both files have signals, but traffic light has usage flags
 bound_signals = traffic_light_parser.get_bound_signals()

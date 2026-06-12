@@ -180,7 +180,7 @@ def create_bound_methods(poozo_data: PoozoNotus) -> None:
     methods = poozo_data.get_bound_methods()
     for method_info in methods:
         if not method_info.name in property_methods_set:
-            bound_methods_set[method_info.qualified_class_name] = method_info
+            bound_methods_set[method_info.qualified_method_name] = method_info
 
 
 def create_bound_properties(poozo_data: PoozoNotus) -> None:
@@ -327,23 +327,6 @@ def parse_xml_text(doxygen_node: et.Element) -> str:
     return text
 
 
-def set_constants_data(godot_root: et.Element, lucky_data: LuckyZephyr) -> None:
-    output_constants_node = add_constants_node(godot_root)
-    for integer_constant in bound_constants:
-        constant_value = bound_constants[integer_constant]
-        output_node = et.SubElement(output_constants_node, "constant")
-        output_node.set("name", constant_value.p_name)
-        if constant_value.p_enum:
-            output_node.set('enum', constant_value.p_class)
-        member_def = lucky_data.get_member_definition_by_child('name', constant_value.p_value)
-        if member_def is not None:
-            if member_def.node_description is not None:
-                output_node.text = get_tag_text(member_def.node_description)
-                output_node.set('value', member_def.initializer_value)
-
-
-
-
 def create_godot_doc(file: Path) -> None:
     """
     Creates godot XML class documentation from the doxygen XML file whose path is passed as the argument
@@ -418,6 +401,21 @@ def print_message(message: str, message_type: int) -> None:
             print(message)
     else:
         print(message)
+
+
+def set_constants_data(godot_root: et.Element, lucky_data: LuckyZephyr) -> None:
+    output_constants_node = add_constants_node(godot_root)
+    for integer_constant in bound_constants:
+        constant_value = bound_constants[integer_constant]
+        output_node = et.SubElement(output_constants_node, "constant")
+        output_node.set("name", constant_value.p_name)
+        if constant_value.p_enum:
+            output_node.set('enum', constant_value.p_enum)
+        member_def = lucky_data.get_definition_by_tag('name', constant_value.p_value)
+        if member_def is not None:
+            if member_def.node_description is not None:
+                output_node.text = get_tag_text(member_def.node_description)
+                output_node.set('value', member_def.initializer_value)
 
 
 def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:

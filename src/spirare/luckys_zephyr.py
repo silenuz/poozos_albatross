@@ -62,7 +62,7 @@ class LuckyZephyr:
         xml_root_node (et.Element): The root node of the Doxygen XML file
     """
 
-    def find_parent_by_child_tag(self, tag: str, value: str) -> et.Element:
+    def find_by_child_tag(self, tag: str, value: str) -> et.Element:
         node = self.data_node.find(f".//{tag}[.='{value}']")
         if node is not None:
             return self.data_xml_map[node]
@@ -80,7 +80,7 @@ class LuckyZephyr:
         implementation for _bind_methods and returns it
         :return: The name of the source code file that implements _bind_methods
         """
-        bind_methods_definition = self.get_member_definition_by_child('name', '_bind_methods')
+        bind_methods_definition = self.get_definition_by_tag('name', '_bind_methods')
         if bind_methods_definition is not None:
             src_file_name = bind_methods_definition.location.bodyfile
             return src_file_name
@@ -125,17 +125,24 @@ class LuckyZephyr:
         result = []
 
         doxygen_node = self.reference_node
-        enumerator_node_xml_map = self.reference_data_map
+
         if doxygen_node:
             for enumerator_value in enumerator_value_name_list:
-                value_node = self.find_parent_by_child_tag('name', enumerator_value)
-                value_definition = self.model_enumvalue_definition(value_node)
-                enumerator_node = enumerator_node_xml_map[value_node]
-                name_node = enumerator_node.find('name')
-                value_definition.enum = name_node.text
+                value_definition = self.get_enumerator_value(enumerator_value)
                 result.append(value_definition)
         return result
         # return self.get_member_definitions(enumerator_value_name_list,'name')
+
+
+    def get_enumerator_value(self, enumerator_value_name: str)->EnumValueModel:
+        enumerator_node_xml_map = self.reference_data_map
+        value_node = self.find_by_child_tag('name', enumerator_value_name)
+        value_definition = self.model_enumvalue_definition(value_node)
+        enumerator_node = enumerator_node_xml_map[value_node]
+        name_node = enumerator_node.find('name')
+        value_definition.enum = name_node.text
+        return value_definition
+
 
     def get_include_values(self) -> list[str]:
         result = []
@@ -176,19 +183,20 @@ class LuckyZephyr:
     def get_member_definitions(self, member_list: list, tag_name: str) -> list[MemberDefinitionModel]:
         result = []
         for member in member_list:
-            memberdef = self.get_member_definition_by_child(tag_name, member)
+            memberdef = self.get_definition_by_tag(tag_name, member)
             if memberdef is not None:
                 result.append(memberdef)
         return result
 
-    def get_member_definition_by_child(self, tag: str, value: str) -> MemberDefinitionModel:
-        member_def_node = self.find_parent_by_child_tag(tag, value)
+    def get_definition_by_tag(self, tag: str, value: str) -> MemberDefinitionModel:
+        member_def_node = self.find_by_child_tag(tag, value)
         if member_def_node is not None:
             return self.model_member_definition(member_def_node)
         else:
             return None
 
-    def model_enumvalue_definition(self, enum_value_node: et.Element) -> EnumValueModel:
+    @staticmethod
+    def model_enumvalue_definition(enum_value_node: et.Element) -> EnumValueModel:
         attributes = EnumValueAttributes.from_xml_element(enum_value_node)
         name = enum_value_node.find('name').text
         enum_value_definition = EnumValueModel(name=name, attributes=attributes)
@@ -205,7 +213,8 @@ class LuckyZephyr:
             enum_value_definition.detaileddescription = content
         return enum_value_definition
 
-    def model_member_definition(self, member_node: et.Element) -> MemberDefinitionModel:
+    @staticmethod
+    def model_member_definition(member_node: et.Element) -> MemberDefinitionModel:
         attribute_values = MemberDefinitionAttributes.from_xml_element(member_node)
         name_node = member_node.find("name")
         name = name_node.text
@@ -226,10 +235,10 @@ class LuckyZephyr:
             elif node.tag == 'location':
                 args[node.tag] = MemberDefinitionLocation.from_xml_element(node)
             elif node.tag == 'enumvalue':
-                enum_value = self.model_enumvalue_definition(node)
+                enum_value = LuckyZephyr.model_enumvalue_definition(node)
                 enum_values.append(enum_value)
             elif node.tag == 'param':
-                parameter = self.model_param_definition(node)
+                parameter = LuckyZephyr.model_param_definition(node)
                 param_values.append(parameter)
             elif node.text is not None:
                 args[node.tag] = node.text
@@ -242,7 +251,8 @@ class LuckyZephyr:
         return member_definition
 
 
-    def model_param_definition(self, node)->ParameterTypeModel:
+    @staticmethod
+    def model_param_definition(node)->ParameterTypeModel:
         values = dict()
         for element in node:
             if element.text is not None:

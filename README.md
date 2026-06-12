@@ -6,7 +6,7 @@ Except for the few remaining methods that are Godot specific in LuckyZephyr that
 architecture as the logic for each specific use is isolated and independent.  LuckZephyr can basically now be used 
 generically to parse Doxygen xml for any project.
 
-Same for PoozosNotus which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
+Same for [PoozosNotus](git_doc/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
 Except for one holdout method for getting signal data from Doxygen, all class methods return data class objects that model 
 the information from the source file whether it's Doxygen with LZ or cpp files with PN.
 
@@ -27,16 +27,18 @@ This module can be used when using scons to build the Doxygen XML.
 
 Current Status: ALPHA (Almost beta)
 ===================================
-Currently, the python script is capable of exporting the content for methods, properties, enum constants and signals.
-Processing of code blocks in description fields now working, see [Codeblocks](#codeblocks).
+Currently, the source code parser [PoozoNotus](git_doc/poozo.md) can extract methods, enum constants, integer constants, properties
+and signals.
+AFAIK these all now export properly to the Godot documentation format.  
+
+Processing of code blocks in description fields almost working (see bug above), see [Codeblocks](#codeblocks).
 
 Contents:
 =========
-
 This repository contains 4 python modules:
 
 - luckys_zephyr.py : contains LuckyZephyr class that parses and searches the Doxygen XML, this class is used by the above to parse the source XML
-- poozos_notus.py contains PoozosNotus class to parse cpp source code containing binding declarations for a GDExtension 
+- poozos_notus.py contains [PoozosNotus](git_doc/poozo.md) class to parse cpp source code containing binding declarations for a GDExtension 
 - aerify_did.py : script to generate Godot class documentation using LuckyZephyr to query the Doxygen XML and PoozosNotus to scrape the source code.
 - waft_gogo.py : script to generate a build profile based on include statements, using LuckyZephyr to parse the Doxygen XML
 

@@ -143,13 +143,18 @@ class PoozoNotus:
 @dataclass(slots=True)
 class DMethodModel:
     name: str
+    """p_name value"""
     class_name: str
+    """the name of the method's class"""
     qualified_name: str
+    """the qualified name of the method"""
     class_method: str
+    """actual name of the method in the class"""
     args: List[str] = field(default_factory=list)
+    """p_arg list"""
 
     @property
-    def qualified_class_name(self) -> str:
+    def qualified_method_name(self) -> str:
         return self.qualified_name.replace('&','')
 
     @classmethod
@@ -215,8 +220,11 @@ class MethodInfoModel:
          MethodInfo(const PropertyInfo &p_return_val, const StringName &p_name);
     """
     name: str
+    """name of signal or method"""
     argument_info: List[PropertyInfoModel] = field(default_factory=list)
+    """p_arg list"""
     return_info: PropertyInfoModel | None = None
+    """return value"""
 
     def __post_init__(self):
         # Fallback to an empty list if None was passed so we can just loop it without worry
@@ -250,6 +258,7 @@ class PropertyInfoModel:
     class_name: str | None = None
     """ (Optional): Used if the type is a Resource or Object and you want to specify the exact class type"""
     index: int = 0
+    """used to track the index of the model in the arg list"""
 
     def get_hint_type(self) -> tuple[str, str]:
         # todo: rename soon as possible
