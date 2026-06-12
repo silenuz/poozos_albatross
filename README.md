@@ -7,7 +7,8 @@ architecture as the logic for each specific use is isolated and independent.  Lu
 generically to parse Doxygen xml for any project.
 
 Same for [PoozosNotus](git_doc/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
-Except for one holdout method for getting signal data from Doxygen, all class methods return data class objects that model 
+
+And there is one holdout method for getting signal data from Doxygen, all class methods return data class objects that model 
 the information from the source file whether it's Doxygen with LZ or cpp files with PN.
 
 Current Known Bugs:
