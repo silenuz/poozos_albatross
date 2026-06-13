@@ -166,7 +166,7 @@ class DMethodModel:
             for index in range(1, len(args)):
                 method_args.append(args[index])
         name_values = qualified_name.split('::')
-        clss_name = name_values[0].replace("&",'')
+        clss_name = name_values[0].replace("&",'').strip()
         method_name = name_values[1]
         return cls(name=name, class_name=clss_name, qualified_name=qualified_name.strip(), args=method_args,class_method=method_name)
 
