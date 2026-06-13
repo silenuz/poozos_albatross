@@ -150,7 +150,7 @@ class_method: str
 args: List[str] = field(default_factory=list)
 """p_arg list"""
 ```
-And one property ```qualified_method_name``` that returns the qualified name without the pointer.
+And one property ```qualified_method_name``` that returns the qualified name without the Address-Of operator.
 
 IntegerConstantModel:
 ---------------------
