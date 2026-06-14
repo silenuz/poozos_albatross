@@ -26,7 +26,7 @@ from collections import namedtuple
 from pathlib import Path
 from xml.etree import ElementTree as et
 from luckys_zephyr import LuckyZephyr
-from src.spirare.poozos_notus import PropertyInfoModel, PropertyModel, MethodInfoModel, IntegerConstantModel, \
+from poozos_notus import PropertyInfoModel, PropertyModel, MethodInfoModel, IntegerConstantModel, \
     PoozoNotus, \
     DMethodModel
 
@@ -147,6 +147,7 @@ def clear_tracked_bindings() -> None:
     bound_properties.clear()
     bound_enums_set.clear()
     bound_signals.clear()
+    bound_constants.clear()
 
 
 def create_bound_constants(poozo_data: PoozoNotus, class_name: str) -> None:
