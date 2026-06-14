@@ -33,6 +33,9 @@ Currently, the source code parser [PoozoNotus](git_doc/poozo.md) can extract met
 and signals.
 AFAIK these all now export properly to the Godot documentation format.  
 
+In some cases the source code parser may fail, or may encounter something it doesn't recognize yet like GDVirtual.  
+If this happens, instructions to merge missing elements can be found [here](git_doc/merge_missing.md).
+
 Processing of code blocks in description fields almost working (see bug above), see [Codeblocks](#codeblocks).
 
 Contents:
