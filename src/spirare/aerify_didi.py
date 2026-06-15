@@ -23,9 +23,11 @@ import importlib.util
 import re
 import sys
 from collections import namedtuple
+from dataclasses import dataclass
 from pathlib import Path
 from xml.etree import ElementTree as et
-from luckys_zephyr import LuckyZephyr
+import luckys_zephyr as lz
+from luckys_zephyr import LuckyZephyr, XRefSectionModel
 from poozos_notus import PropertyInfoModel, PropertyModel, MethodInfoModel, IntegerConstantModel, \
     PoozoNotus, \
     DMethodModel
@@ -33,7 +35,6 @@ from poozos_notus import PropertyInfoModel, PropertyModel, MethodInfoModel, Inte
 xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
 src_folder = Path(dest_folder).parent
-
 template_methods_path = next(src_folder.rglob("methods.py"), None)
 module_name = "template_methods"
 template_methods_found = False
@@ -97,6 +98,59 @@ MESSAGE_TYPE_WARNING = 0
 MESSAGE_TYPE_ERROR = 1
 
 
+###################################################################################
+####  Signal Model                                                             ###
+###################################################################################
+@dataclass(slots=True, kw_only=True)
+class SignalDataModel:
+    name: str
+    reference_item: XRefSectionModel
+
+    @property
+    def description(self) -> str:
+        paragraph_block = self.reference_item.node_description.find('.//parblock')
+        paragraphs = paragraph_block.findall('para')
+        description_parts = []
+        for paragraph in paragraphs[1:]:
+            para = lz.get_inner_markup(paragraph)
+            if para:
+                description_parts.append('<para>' + para + '</para>')
+
+        description = ".".join(description_parts)
+        if description:
+            return description
+        else:
+            return None
+
+    @property
+    def node_description(self) -> et.Element:
+        if self.description is not None:
+            print("Self description: " , self.description)
+            return et.fromstring(f"<detaileddescription>{self.description}</detaileddescription>")
+        else:
+            return None
+
+    @property
+    def tag_text(self) -> str:
+        if self.node_description is not None:
+            return get_tag_text(self.node_description)
+        else:
+            return None
+
+    @classmethod
+    def from_reference_item(cls, xrefitem: XRefSectionModel) -> "SignalDataModel":
+        paragraph_block = xrefitem.node_description.find('.//parblock')
+        paragraphs = paragraph_block.findall('para')
+        name_node = paragraphs[0]
+        name = "".join(name_node.itertext())
+        signal_name = re.sub(r"\(.*?\):", "", name)
+        return cls(name=signal_name, reference_item=xrefitem)
+
+
+#############################################################################################################
+###                               Script Start                                                            ###
+##############################################################################################################
+
 def add_constants_node(godot_root: et.Element) -> et.Element:
     """
     Get the constants element from the Godot output XML, if it doesn't exist it create one
@@ -133,7 +187,8 @@ def catalog_bindings(lz_data: LuckyZephyr) -> bool:
             load_godot_bindings(poozo_data, lz_data.class_name)
             return True
         else:
-            print_message("Code Implementation File not found " + bind_methods_definition.location.bodyfile, MESSAGE_TYPE_ERROR)
+            print_message("Code Implementation File not found " + bind_methods_definition.location.bodyfile,
+                          MESSAGE_TYPE_ERROR)
             return False
 
 
@@ -207,6 +262,7 @@ def create_bound_signals(poozo_data: PoozoNotus) -> None:
     for signal in signals:
         bound_signals[signal.name] = signal
 
+
 def get_tag_text(doxygen_node: et.Element) -> str:
     """
     todo: this docstring is out of date, update it
@@ -232,7 +288,9 @@ def get_tag_text(doxygen_node: et.Element) -> str:
             parts.append(bbc_linebreak.open)
 
     text = " ".join(parts)
+
     return text
+
 
 def parse_xml_text(doxygen_node: et.Element) -> str:
     # todo fix extra space being inserted when a tail is present for the element
@@ -509,7 +567,13 @@ def set_signal_data(godot_root: et.Element, lz_data: LuckyZephyr):
     if len(bound_signals) < 1:
         return
 
-    signal_data = lz_data.get_signal_data()
+    signal_data: dict[str, SignalDataModel] = {}
+    signals = lz_data.get_xref_items('Signal')
+    for signal in signals:
+        data = SignalDataModel.from_reference_item(signal)
+        signal_data[data.name] = data
+
+    # signal_data = lz_data.get_signal_data()
     signals_node = et.SubElement(godot_root, "signals")
     # first generate the standard skeleton output doctool would create for signals
     for signal in bound_signals:
@@ -528,20 +592,21 @@ def set_signal_data(godot_root: et.Element, lz_data: LuckyZephyr):
         # if the signal has a description and or notes add them
         if signal in signal_data:
             description_parts = []
-            if 'description' in signal_data[signal]:
-                description_node = et.SubElement(signal_node, "description")
-                value = signal_data[signal]['description']
-                description = parse_xml_text(et.fromstring(value))
+            value = signal_data[signal]
+            if value.node_description is not None:
+                description = value.tag_text
                 description_parts.append(description)
-            if 'note' in signal_data[signal]:
-                value = et.fromstring(signal_data[signal]['note'])
-                note = parse_xml_text(value)
-                description_parts.append('[br][br][b]Note:[/b]' + ' ' + note)
-            if 'warning' in signal_data[signal]:
-                value = et.fromstring(signal_data[signal]['warning'])
-                warning = parse_xml_text(value)
-                description_parts.append('[br][br][b]Warning:[/b]' + ' ' + warning)
-            description_node.text = "".join(description_parts)
+            headlines = lz_data.get_headlines_for_xrefitem(value.reference_item)
+            for headline in headlines:
+                if headline.kind == 'warning' and headline.content is not None:
+                    warning = parse_xml_text(headline.node_content)
+                    description_parts.append('[br][br][b]Warning:[/b]' + ' ' + warning)
+                elif headline.kind == 'note':
+                   note = parse_xml_text(headline.node_content)
+                   description_parts.append('[br][br][b]Note:[/b]' + ' ' + note)
+            if len(description_parts) > 0:
+                description_node = et.SubElement(signal_node, "description")
+                description_node.text = "".join(description_parts)
 
 
 def write_file(godot_root: et.Element, class_name: str) -> bool:

@@ -18,6 +18,7 @@ import re
 from dataclasses import dataclass, fields, field
 from pathlib import Path
 from typing import List
+from xml import etree
 from xml.etree import ElementTree as et
 
 
@@ -75,7 +76,7 @@ class LuckyZephyr:
 
 
     def find_by_child_tag(self, tag: str, value: str) -> et.Element:
-        return self.find_node_by_search_value(f".//{tag}[@{value}]")
+        return self.find_node_by_search_value(f".//{tag}[.='{value}']")
 
 
     def get_class_description(self, node_name: str) -> et.Element:
@@ -275,6 +276,15 @@ class LuckyZephyr:
             result.append(xrefitem)
         return result
 
+    def get_headlines_for_xrefitem(self,refitem: XRefSectionModel)->list[SimpleSectionModel]:
+        result: list[SimpleSectionModel] = []
+        parent_node = self.find_by_child_attr('id',refitem.id)
+        if parent_node is not None and parent_node.tag == 'para':
+            headline_nodes = parent_node.findall("simplesect")
+            for headline_node in headline_nodes:
+                headline = SimpleSectionModel.from_xml(headline_node)
+                result.append(headline)
+        return result
 
     def get_signal_data(self) -> dict:
         """
@@ -664,6 +674,29 @@ class ParameterTypeModel(BriefDescriptionModel):
     typeconstraint: str | None = None
 
 @dataclass(slots=True,kw_only=True)
+class SimpleSectionModel:
+    kind: str
+    title: str | None = None
+    content: str | None = None
+
+    @property
+    def node_content(self) -> et.Element:
+        if self.content is not None:
+            return et.fromstring(f'<content>{self.content}</content>')
+        else:
+            return None
+
+    @classmethod
+    def from_xml(cls, element: et.Element) -> SimpleSectionModel:
+        kind = element.attrib["kind"]
+        if element.find("title") is not None:
+            title = element.find("title").text
+        else:
+            title = None
+        content = get_inner_markup(element)
+        return SimpleSectionModel(kind=kind, title=title, content=content)
+
+@dataclass(slots=True,kw_only=True)
 class XRefSectionModel:
     id: str
     xreftitle: str
@@ -696,10 +729,12 @@ class XRefSectionModel:
         id = xref_element.attrib["id"]
         title_node = xref_element.find("xreftitle")
         description_node = xref_element.find("xrefdescription")
-        if description_node.text is not None:
+        if description_node is not None:
             description = get_inner_markup(description_node)
         else:
             description = None
         return cls(id=id, xreftitle=title_node.text, xrefdescription=description)
+
+
 
 
