@@ -14,9 +14,7 @@ Didi: "Tomorrow when I wake or think I do, what shall I say of today?
        That with Estragon my friend, at this place, until the fall of night, I waited for Godot? "
 """
 from __future__ import annotations
-import copy
 import re
-from collections import namedtuple
 from dataclasses import dataclass, fields, field
 from pathlib import Path
 from typing import List
@@ -61,17 +59,23 @@ class LuckyZephyr:
         data_xml_map (dict) : Map of each node to it's parent in the form of a dictionary.
         xml_root_node (et.Element): The root node of the Doxygen XML file
     """
-
-    def find_by_child_tag(self, tag: str, value: str) -> et.Element:
-        node = self.data_node.find(f".//{tag}[.='{value}']")
+    def find_node_by_search_value(self,search: str)->et.Element:
+        node = self.data_node.find(search)
         if node is not None:
             return self.data_xml_map[node]
         else:
-            node = self.reference_node.find(f".//{tag}[.='{value}']")
+            node = self.reference_node.find(search)
             if node is not None:
                 return self.reference_data_map[node]
             else:
                 return None
+
+    def find_by_child_attr(self, attribute_name: str, value: str) -> et.Element:
+        return self.find_node_by_search_value(f".//*[@{attribute_name}='{value}']")
+
+
+    def find_by_child_tag(self, tag: str, value: str) -> et.Element:
+        return self.find_node_by_search_value(f".//{tag}[@{value}]")
 
 
     def get_class_description(self, node_name: str) -> et.Element:
@@ -261,6 +265,16 @@ class LuckyZephyr:
         else:
             print("Unable to generate enumerator constants, file not found " + file_name)
             return None
+
+
+    def get_xref_items(self,title: str)->list[XRefSectionModel]:
+        reference_nodes = self.data_node.findall(f".//xrefsect/[xreftitle='{title}']")
+        result: list[XRefSectionModel] = []
+        for reference_node in reference_nodes:
+            xrefitem = XRefSectionModel.from_xml(reference_node)
+            result.append(xrefitem)
+        return result
+
 
     def get_signal_data(self) -> dict:
         """
@@ -676,5 +690,16 @@ class XRefSectionModel:
             return et.fromstring(f"<xrefdescription>{self.xrefdescription}</xrefdescription>")
         else:
             return None
+
+    @classmethod
+    def from_xml(cls,xref_element:et.Element)->"XRefSectionModel":
+        id = xref_element.attrib["id"]
+        title_node = xref_element.find("xreftitle")
+        description_node = xref_element.find("xrefdescription")
+        if description_node.text is not None:
+            description = get_inner_markup(description_node)
+        else:
+            description = None
+        return cls(id=id, xreftitle=title_node.text, xrefdescription=description)
 
 
