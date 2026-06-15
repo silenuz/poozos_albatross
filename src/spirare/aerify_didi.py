@@ -120,20 +120,20 @@ def catalog_bindings(lz_data: LuckyZephyr) -> bool:
     :param lz_data: instance of LuckyZephyr containing the current Doxygen class XML file
     :return: Success or failure
     """
-    # clear_tracked_bindings()
-    code_file_name = lz_data.get_bind_methods_implementation()
-    if code_file_name is None:
+    bind_methods_definition = lz_data.get_definition_by_tag('name', "_bind_methods")
+
+    if bind_methods_definition is None:
         print_message("Unable to determine code implementation file for " + lz_data.class_name, MESSAGE_TYPE_WARNING)
         return False
     else:
         project_src = src_folder
-        code_file = next(project_src.rglob(code_file_name), None)
+        code_file = next(project_src.rglob(bind_methods_definition.location.bodyfile), None)
         if code_file:
             poozo_data = PoozoNotus(code_file)
             load_godot_bindings(poozo_data, lz_data.class_name)
             return True
         else:
-            print_message("Code Implementation File not found " + code_file_name, MESSAGE_TYPE_ERROR)
+            print_message("Code Implementation File not found " + bind_methods_definition.location.bodyfile, MESSAGE_TYPE_ERROR)
             return False
 
 
@@ -342,13 +342,13 @@ def create_godot_doc(file: Path) -> None:
         class_brief = lucky.get_class_brief()
         brief_node = et.SubElement(godot_root, "brief_description")
         if class_brief is not None:
-            brief = get_tag_text(et.fromstring(f"<root>{class_brief}</root>"))
+            brief = get_tag_text(class_brief)
             brief_node.text = brief
 
         class_detail = lucky.get_class_detail()
         detail_node = et.SubElement(godot_root, "description")
         if class_detail is not None:
-            detail = get_tag_text(et.fromstring(f"<root>{class_detail}</root>"))
+            detail = get_tag_text(class_detail)
             detail_node.text = detail
 
         set_method_data(godot_root, lucky)
@@ -474,7 +474,7 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
             else:
                 output_member_node.set(hint_type[0], hint_type[1])
 
-        if member.node_description is not None:
+        if member.detaileddescription is not None:
             output_member_node.text = get_tag_text(member.node_description)
 
 

@@ -17,6 +17,7 @@ Code blocks are currently formatted incorrectly if they contain tabs as someone 
 writing the parser for code blocks.
 
 Signal parser now handles multiple paragraph descriptions however I forgot to add the line breaks to the output.
+ 
 
 Description:
 ============

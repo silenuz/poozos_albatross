@@ -73,31 +73,23 @@ class LuckyZephyr:
             else:
                 return None
 
-    def get_bind_methods_implementation(self) -> str:
-        """
-        Searches the Doxygen XML nodes to find the _bind_methods node,
-        if it finds the node it gets the name of the file that has the
-        implementation for _bind_methods and returns it
-        :return: The name of the source code file that implements _bind_methods
-        """
-        bind_methods_definition = self.get_definition_by_tag('name', '_bind_methods')
-        if bind_methods_definition is not None:
-            src_file_name = bind_methods_definition.location.bodyfile
-            return src_file_name
-        return None
 
-    def get_class_brief(self) -> str:
+    def get_class_description(self, node_name: str) -> et.Element:
+        node = self.data_node.find(node_name)
+        if node.text is not None:
+            brief_description = get_inner_markup(node)
+            brief_description = et.fromstring(f"<{node_name}>{brief_description}</{node_name}>")
+            return brief_description
+        else:
+            return None
+
+    def get_class_brief(self) -> et.Element:
         """
         Creates a brief_description tag with the text content from the Doxygen class documentation's briefdescription
         tag for the class.
         :return: The brief_description tag that was created so it can be added to the Godot XML output
         """
-        node = self.data_node.find("briefdescription")
-        if node.text is not None:
-            text = get_inner_markup(node)
-            return text
-        else:
-            return None
+        return self.get_class_description("briefdescription")
 
     def get_class_detail(self) -> et.Element:
         """
@@ -105,12 +97,7 @@ class LuckyZephyr:
         tag for the class.
         :return: The description tag that was created so it can be added to the Godot XML output
         """
-        node = self.data_node.find("detaileddescription")
-        if node.text is not None:
-            text = get_inner_markup(node)
-            return text
-        else:
-            return None
+        return self.get_class_description("detaileddescription")
 
     def get_enumerator_data(self, enumerator_value_name_list: list) -> list[EnumValueModel]:
         """
@@ -157,6 +144,7 @@ class LuckyZephyr:
                     actual_class_name = re.sub(r'(?<=\d)(d|D)', lambda match: match.group(0).upper(), class_name)
                     result.append(actual_class_name)
         return result
+
 
     def get_method_data(self, method_list: set) -> list[MemberDefinitionModel]:
         """
@@ -369,9 +357,36 @@ class LuckyZephyr:
 ##################################################################################################################
 ###                                    Data objects                                                            ###
 ###################################################################################################################
+@dataclass(slots=True,kw_only=True)
+class SingleDescriptionModel:
+    description: str | None = None
+    """description of the method or member"""
+
+    @property
+    def text_description(self) -> str:
+        """
+        Get the plain text (removes html markup) from the detaileddescription field
+        :return:
+        """
+        if self.description:
+            return re.sub(r"<.*?>", "", self.description)
+        else:
+            return None
+
+    @property
+    def node_description(self) -> et.Element:
+        """
+        Get the brief description html and creates a node from it
+        :return: The node with the briefdescription markup as the text
+        """
+        if self.description:
+            return et.fromstring(f"<description>{self.briefdescription}</description>")
+        else:
+            return None
+
 
 @dataclass(slots=True)
-class DescriptionModel:
+class DualDescriptionModel:
     """
     Model to hold description information, with convenience properties to get the content as an element
     or as plain text without html markup
@@ -444,7 +459,7 @@ class EnumValueAttributes:
 
 
 @dataclass(slots=True, kw_only=True)
-class EnumValueModel(DescriptionModel):
+class EnumValueModel(DualDescriptionModel):
     """
     Data model for enumvalue tag elements
     """
@@ -591,7 +606,7 @@ class MemberDefinitionLocation:
 
 
 @dataclass(slots=True, kw_only=True)
-class MemberDefinitionModel(DescriptionModel):
+class MemberDefinitionModel(DualDescriptionModel):
     """
     Used to model data from the Doxygen XML Memberdef elements
     todo: add missing elements, already have more than needed might as well complete it
@@ -643,11 +658,11 @@ class MemberDefinitionModel(DescriptionModel):
         return cls(**filtered_data)
 
 @dataclass(slots=True,kw_only=True)
-class ParameterTypeModel(DescriptionModel):
+class ParameterTypeModel(DualDescriptionModel):
     """
     Used to model data from the Doxygen XML ParameterType elements
     because it inherits DescriptionModel it will have a detailed and brief description field,
-    however only the biref is ever used in a parameter type.
+    however only the brief is ever used in a parameter type.
     """
     attributes: str | None = None
     type: str | None = None
