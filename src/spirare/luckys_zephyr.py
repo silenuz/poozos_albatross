@@ -357,49 +357,16 @@ class LuckyZephyr:
 ##################################################################################################################
 ###                                    Data objects                                                            ###
 ###################################################################################################################
-@dataclass(slots=True,kw_only=True)
-class SingleDescriptionModel:
-    description: str | None = None
+
+@dataclass()
+class BriefDescriptionModel:
+    briefdescription: str | None = None
     """description of the method or member"""
 
     @property
-    def text_description(self) -> str:
+    def text_brief_description(self) -> str:
         """
-        Get the plain text (removes html markup) from the detaileddescription field
-        :return:
-        """
-        if self.description:
-            return re.sub(r"<.*?>", "", self.description)
-        else:
-            return None
-
-    @property
-    def node_description(self) -> et.Element:
-        """
-        Get the brief description html and creates a node from it
-        :return: The node with the briefdescription markup as the text
-        """
-        if self.description:
-            return et.fromstring(f"<description>{self.briefdescription}</description>")
-        else:
-            return None
-
-
-@dataclass(slots=True)
-class DualDescriptionModel:
-    """
-    Model to hold description information, with convenience properties to get the content as an element
-    or as plain text without html markup
-    """
-    briefdescription: str | None = None
-    """brief description of the method or member"""
-    detaileddescription: str = None
-    """detailed description of the method or member"""
-
-    @property
-    def text_brief(self) -> str:
-        """
-        Get the plain text (removes html markup) from the briefdescription field
+        Get the plain text (removes html markup) from the brief description field
         :return:
         """
         if self.briefdescription:
@@ -408,7 +375,28 @@ class DualDescriptionModel:
             return None
 
     @property
-    def text_description(self) -> str:
+    def node_brief_description(self) -> et.Element:
+        """
+        Get the brief description html and creates a node from it
+        :return: The node with the briefdescription markup as the text
+        """
+        if self.briefdescription:
+            return et.fromstring(f"<briefdescription>{self.briefdescription}</briefdescription>")
+        else:
+            return None
+
+
+@dataclass()
+class DetailedDescriptionModel:
+    """
+    Model to hold description information, with convenience properties to get the content as an element
+    or as plain text without html markup
+    """
+    detaileddescription: str = None
+    """detailed description of the method or member"""
+
+    @property
+    def text_detailed_description(self) -> str:
         """
         Get the plain text (removes html markup) from the detaileddescription field
         :return:
@@ -419,18 +407,7 @@ class DualDescriptionModel:
             return None
 
     @property
-    def node_brief(self) -> et.Element:
-        """
-        Get the brief description html and creates a node from it
-        :return: The node with the briefdescription markup as the text
-        """
-        if self.briefdescription:
-            return et.fromstring(f"<briefdescription>{self.briefdescription}</briefdescription>")
-        else:
-            return None
-
-    @property
-    def node_description(self) -> et.Element:
+    def node_detailed_description(self) -> et.Element:
         """
         Get the detailed description html and creates a node from it
         :return: The node with the detailed description markup as the text
@@ -441,7 +418,7 @@ class DualDescriptionModel:
             return None
 
 
-@dataclass(slots=True)
+@dataclass()
 class EnumValueAttributes:
     """
     Data model for enumvalue tag attributes
@@ -459,7 +436,7 @@ class EnumValueAttributes:
 
 
 @dataclass(slots=True, kw_only=True)
-class EnumValueModel(DualDescriptionModel):
+class EnumValueModel(BriefDescriptionModel,DetailedDescriptionModel):
     """
     Data model for enumvalue tag elements
     """
@@ -606,7 +583,7 @@ class MemberDefinitionLocation:
 
 
 @dataclass(slots=True, kw_only=True)
-class MemberDefinitionModel(DualDescriptionModel):
+class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
     """
     Used to model data from the Doxygen XML Memberdef elements
     todo: add missing elements, already have more than needed might as well complete it
@@ -658,7 +635,7 @@ class MemberDefinitionModel(DualDescriptionModel):
         return cls(**filtered_data)
 
 @dataclass(slots=True,kw_only=True)
-class ParameterTypeModel(DualDescriptionModel):
+class ParameterTypeModel(BriefDescriptionModel):
     """
     Used to model data from the Doxygen XML ParameterType elements
     because it inherits DescriptionModel it will have a detailed and brief description field,
@@ -671,3 +648,33 @@ class ParameterTypeModel(DualDescriptionModel):
     array: str | None = None
     defval: str | None = None
     typeconstraint: str | None = None
+
+@dataclass(slots=True,kw_only=True)
+class XRefSectionModel:
+    id: str
+    xreftitle: str
+    xrefdescription: str | None = None
+
+    @property
+    def text_description(self) -> str:
+        """
+        Get the plain text (removes html markup) from the detaileddescription field
+        :return:
+        """
+        if self.xrefdescription:
+            return re.sub(r"<.*?>", "", self.xrefdescription)
+        else:
+            return None
+
+    @property
+    def node_description(self) -> et.Element:
+        """
+        Get the detailed description html and creates a node from it
+        :return: The node with the detailed description markup as the text
+        """
+        if self.xrefdescription:
+            return et.fromstring(f"<xrefdescription>{self.xrefdescription}</xrefdescription>")
+        else:
+            return None
+
+
