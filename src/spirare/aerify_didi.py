@@ -399,14 +399,16 @@ def create_godot_doc(file: Path) -> None:
 
         class_brief = lucky.get_class_brief()
         brief_node = et.SubElement(godot_root, "brief_description")
-        if class_brief is not None:
-            brief = get_tag_text(class_brief)
+        if class_brief:
+            class_brief_node = et.fromstring(f'<brief>{class_brief}</brief>')
+            brief = get_tag_text(class_brief_node)
             brief_node.text = brief
 
         class_detail = lucky.get_class_detail()
         detail_node = et.SubElement(godot_root, "description")
-        if class_detail is not None:
-            detail = get_tag_text(class_detail)
+        if class_detail:
+            class_detail_node = et.fromstring(f'<description>{class_detail}</description>')
+            detail = get_tag_text(class_detail_node)
             detail_node.text = detail
 
         set_method_data(godot_root, lucky)

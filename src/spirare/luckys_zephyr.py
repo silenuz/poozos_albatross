@@ -18,7 +18,6 @@ import re
 from dataclasses import dataclass, fields, field
 from pathlib import Path
 from typing import List
-from xml import etree
 from xml.etree import ElementTree as et
 
 
@@ -28,7 +27,7 @@ def get_inner_markup(element: et.Element) -> str:
     for child in element:
         # encoding="unicode" returns a standard python string instead of bytes
         parts.append(et.tostring(child, encoding="unicode"))
-    return "".join(parts)
+    return "".join(parts).strip()
 
 
 def get_data_type(text) -> str:
@@ -79,16 +78,15 @@ class LuckyZephyr:
         return self.find_node_by_search_value(f".//{tag}[.='{value}']")
 
 
-    def get_class_description(self, node_name: str) -> et.Element:
+    def get_class_description(self, node_name: str) -> str:
         node = self.data_node.find(node_name)
         if node.text is not None:
             brief_description = get_inner_markup(node)
-            brief_description = et.fromstring(f"<{node_name}>{brief_description}</{node_name}>")
             return brief_description
         else:
             return None
 
-    def get_class_brief(self) -> et.Element:
+    def get_class_brief(self) -> str:
         """
         Creates a brief_description tag with the text content from the Doxygen class documentation's briefdescription
         tag for the class.
@@ -96,7 +94,7 @@ class LuckyZephyr:
         """
         return self.get_class_description("briefdescription")
 
-    def get_class_detail(self) -> et.Element:
+    def get_class_detail(self) -> str:
         """
         Creates a description tag with the text content from the Doxygen class documentation's detaileddescription
         tag for the class.
@@ -648,7 +646,10 @@ class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
 
     @property
     def initializer_value(self) -> str:
-        return self.initializer.split(" ")[1].strip()
+        if self.initializer is not None:
+            return self.initializer.split(" ")[1].strip()
+        else:
+            return None
 
     @classmethod
     def from_dict(cls, data: dict):
