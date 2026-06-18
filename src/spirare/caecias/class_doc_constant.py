@@ -4,26 +4,21 @@ from dataclasses import dataclass, field
 
 
 @dataclass(slots=True, kw_only=True)
-class ClassConstructorsConstructorParam:
+class ClassDocConstant:
     class Meta:
         global_type = False
 
-    index: None | int = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-        },
-    )
+    value: str = field(default="")
     name: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    type_value: None | str = field(
+    value_attribute: None | str = field(
         default=None,
         metadata={
-            "name": "type",
+            "name": "value",
             "type": "Attribute",
         },
     )
@@ -39,7 +34,31 @@ class ClassConstructorsConstructorParam:
             "type": "Attribute",
         },
     )
-    default: None | str = field(
+    is_deprecated: None | bool = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+    is_experimental: None | bool = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+    deprecated: None | str = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+    experimental: None | str = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+    keywords: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",

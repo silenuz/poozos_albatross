@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 
 @dataclass(slots=True, kw_only=True)
-class ClassConstantsConstant:
+class ClassDocThemeItem:
     class Meta:
         global_type = False
 
@@ -15,32 +15,20 @@ class ClassConstantsConstant:
             "type": "Attribute",
         },
     )
-    value_attribute: None | str = field(
-        default=None,
-        metadata={
-            "name": "value",
-            "type": "Attribute",
-        },
-    )
-    enum: None | str = field(
+    data_type: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    is_bitfield: None | bool = field(
+    type_value: None | str = field(
         default=None,
         metadata={
+            "name": "type",
             "type": "Attribute",
         },
     )
-    is_deprecated: None | bool = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-        },
-    )
-    is_experimental: None | bool = field(
+    default: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",

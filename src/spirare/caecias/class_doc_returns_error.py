@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 
 @dataclass(slots=True, kw_only=True)
-class ClassMethodsMethodReturnsError:
+class ClassDocReturnsError:
     class Meta:
         global_type = False
 

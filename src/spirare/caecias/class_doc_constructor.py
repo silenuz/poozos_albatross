@@ -2,27 +2,24 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from spirare.caecias.class_doc_annotations_annotation_param import (
-    ClassAnnotationsAnnotationParam,
-)
-from spirare.caecias.class_doc_annotations_annotation_return import (
-    ClassAnnotationsAnnotationReturn,
-)
+
+from .class_doc_return import ClassDocReturn
+from .class_doc_param import ClassDocParam
 
 
 @dataclass(slots=True, kw_only=True)
-class ClassAnnotationsAnnotation:
+class ClassDocConstructor:
     class Meta:
         global_type = False
 
-    return_value: None | ClassAnnotationsAnnotationReturn = field(
+    return_value: None | ClassDocReturn = field(
         default=None,
         metadata={
             "name": "return",
             "type": "Element",
         },
     )
-    param: list[ClassAnnotationsAnnotationParam] = field(
+    param: list[ClassDocParam] = field(
         default_factory=list,
         metadata={
             "type": "Element",
@@ -40,12 +37,6 @@ class ClassAnnotationsAnnotation:
         },
     )
     qualifiers: None | str = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-        },
-    )
-    keywords: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",

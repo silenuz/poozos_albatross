@@ -2,17 +2,25 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from .class_doc_param import ClassDocParam
+
 
 @dataclass(slots=True, kw_only=True)
-class ClassAnnotationsAnnotationParam:
+class ClassDocSignal:
     class Meta:
         global_type = False
 
-    index: None | int = field(
+    param: list[ClassDocParam] = field(
+        default_factory=list,
+        metadata={
+            "type": "Element",
+        },
+    )
+    description: str = field(
         default=None,
         metadata={
-            "type": "Attribute",
-        },
+            "type": "Element",
+        }
     )
     name: None | str = field(
         default=None,
@@ -20,28 +28,31 @@ class ClassAnnotationsAnnotationParam:
             "type": "Attribute",
         },
     )
-    type_value: None | str = field(
-        default=None,
-        metadata={
-            "name": "type",
-            "type": "Attribute",
-        },
-    )
-    enum: None | str = field(
+    is_deprecated: None | bool = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    is_bitfield: None | bool = field(
+    is_experimental: None | bool = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    default: None | str = field(
+    deprecated: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
+    experimental: None | str = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+
+    def __post_init__(self):
+        if self.description is None:
+            self.description = ""

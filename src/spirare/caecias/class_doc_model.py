@@ -2,81 +2,85 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from spirare.caecias.class_doc_annotations import ClassAnnotations
-from spirare.caecias.class_doc_constants import ClassConstants
-from spirare.caecias.class_doc_constructors import ClassConstructors
-from spirare.caecias.class_doc_members import ClassMembers
-from spirare.caecias.class_doc_methods import ClassMethods
-from spirare.caecias.class_doc_operators import ClassOperators
-from spirare.caecias.class_doc_signals import ClassSignals
-from spirare.caecias.class_doc_theme_items import ClassThemeItems
-from spirare.caecias.class_doc_tutorials import ClassTutorials
+from .class_doc_annotation import ClassDocAnnotation
+from .class_doc_constant import ClassDocConstant
+from .class_doc_constructor import ClassDocConstructor
+from .class_doc_member import ClassDocMember
+from .class_doc_method import ClassDocMethod
+from .class_doc_operator import ClassDocOperator
+from .class_doc_signal import ClassDocSignal
+from .class_doc_theme_item import ClassDocThemeItem
+from .class_doc_tutorials_link import ClassTutorialsLink
 
 
 @dataclass(slots=True, kw_only=True)
-class ExtensionDocModel:
+class ClassDocModel:
     class Meta:
         name = "class"
 
     brief_description: str = field(
+        default=None,
         metadata={
             "type": "Element",
         }
     )
     description: str = field(
+        default=None,
         metadata={
             "type": "Element",
         }
     )
-    tutorials: ClassTutorials = field(
-        metadata={
-            "type": "Element",
-        }
-    )
-    constructors: None | ClassConstructors = field(
-        default=None,
+    tutorials: list[ClassTutorialsLink] = field(
+        default_factory=list,
         metadata={
             "type": "Element",
         },
     )
-    methods: None | ClassMethods = field(
-        default=None,
+
+    constructors: list[ClassDocConstructor] = field(
+        default_factory=list,
         metadata={
             "type": "Element",
         },
     )
-    members: None | ClassMembers = field(
-        default=None,
+    methods: list[ClassDocMethod] = field(
+        default_factory=list,
         metadata={
             "type": "Element",
         },
     )
-    signals: None | ClassSignals = field(
-        default=None,
+    members: list[ClassDocMember] = field(
+        default_factory=list,
         metadata={
             "type": "Element",
         },
     )
-    constants: None | ClassConstants = field(
-        default=None,
+    signals: list[ClassDocSignal] = field(
+        default_factory=list,
         metadata={
             "type": "Element",
         },
     )
-    annotations: None | ClassAnnotations = field(
-        default=None,
+    constants: list[ClassDocConstant] = field(
+        default_factory=list,
         metadata={
             "type": "Element",
         },
     )
-    theme_items: None | ClassThemeItems = field(
-        default=None,
+    annotations: list[ClassDocAnnotation] = field(
+        default_factory=list,
         metadata={
             "type": "Element",
         },
     )
-    operators: None | ClassOperators = field(
-        default=None,
+    theme_items: list[ClassDocThemeItem] = field(
+        default_factory=list,
+        metadata={
+            "type": "Element",
+        },
+    )
+    operators: list[ClassDocOperator] = field(
+        default_factory=list,
         metadata={
             "type": "Element",
         },
@@ -135,3 +139,11 @@ class ExtensionDocModel:
             "type": "Attribute",
         },
     )
+
+    def __post_init__(self):
+        if self.description is None:
+            self.description = ""
+        if self.brief_description is None:
+            self.brief_description = ""
+        if self.tutorials is None:
+            self.tutorials = []

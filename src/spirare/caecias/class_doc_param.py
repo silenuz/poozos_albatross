@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 
 @dataclass(slots=True, kw_only=True)
-class ClassSignalsSignalParam:
+class ClassDocParam:
     class Meta:
         global_type = False
 
@@ -27,7 +27,19 @@ class ClassSignalsSignalParam:
             "type": "Attribute",
         },
     )
-    keywords: None | str = field(
+    enum: None | str = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+    is_bitfield: None | bool = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+    default: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",

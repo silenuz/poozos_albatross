@@ -2,27 +2,23 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from spirare.caecias.class_doc_constructors_constructor_param import (
-    ClassConstructorsConstructorParam,
-)
-from spirare.caecias.class_doc_constructors_constructor_return import (
-    ClassConstructorsConstructorReturn,
-)
+from .class_doc_param import ClassDocParam
+from .class_doc_return import ClassDocReturn
 
 
 @dataclass(slots=True, kw_only=True)
-class ClassConstructorsConstructor:
+class ClassDocOperator:
     class Meta:
         global_type = False
 
-    return_value: None | ClassConstructorsConstructorReturn = field(
+    return_value: None | ClassDocReturn = field(
         default=None,
         metadata={
             "name": "return",
             "type": "Element",
         },
     )
-    param: list[ClassConstructorsConstructorParam] = field(
+    param: list[ClassDocParam] = field(
         default_factory=list,
         metadata={
             "type": "Element",

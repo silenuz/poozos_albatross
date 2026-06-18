@@ -1,83 +1,30 @@
-from spirare.caecias.class_doc_annotations import ClassAnnotations
-from spirare.caecias.class_doc_annotations_annotation import (
-    ClassAnnotationsAnnotation,
-)
-from spirare.caecias.class_doc_annotations_annotation_param import (
-    ClassAnnotationsAnnotationParam,
-)
-from spirare.caecias.class_doc_annotations_annotation_return import (
-    ClassAnnotationsAnnotationReturn,
-)
-from spirare.caecias.class_doc_constants import ClassConstants
-from spirare.caecias.class_doc_constants_constant import ClassConstantsConstant
-from spirare.caecias.class_doc_constructors import ClassConstructors
-from spirare.caecias.class_doc_constructors_constructor import (
-    ClassConstructorsConstructor,
-)
-from spirare.caecias.class_doc_constructors_constructor_param import (
-    ClassConstructorsConstructorParam,
-)
-from spirare.caecias.class_doc_constructors_constructor_return import (
-    ClassConstructorsConstructorReturn,
-)
-from spirare.caecias.class_doc_members import ClassMembers
-from spirare.caecias.class_doc_members_member import ClassMembersMember
-from spirare.caecias.class_doc_methods import ClassMethods
-from spirare.caecias.class_doc_methods_method import ClassMethodsMethod
-from spirare.caecias.class_doc_methods_method_param import ClassMethodsMethodParam
-from spirare.caecias.class_doc_methods_method_return import (
-    ClassMethodsMethodReturn,
-)
-from spirare.caecias.class_doc_methods_method_returns_error import (
-    ClassMethodsMethodReturnsError,
-)
-from spirare.caecias.class_doc_model import ExtensionDocModel
-from spirare.caecias.class_doc_operators import ClassOperators
-from spirare.caecias.class_doc_operators_operator import ClassOperatorsOperator
-from spirare.caecias.class_doc_operators_operator_param import (
-    ClassOperatorsOperatorParam,
-)
-from spirare.caecias.class_doc_operators_operator_return import (
-    ClassOperatorsOperatorReturn,
-)
-from spirare.caecias.class_doc_signals import ClassSignals
-from spirare.caecias.class_doc_signals_signal import ClassSignalsSignal
-from spirare.caecias.class_doc_signals_signal_param import ClassSignalsSignalParam
-from spirare.caecias.class_doc_theme_items import ClassThemeItems
-from spirare.caecias.class_doc_theme_items_theme_item import (
-    ClassThemeItemsThemeItem,
-)
-from spirare.caecias.class_doc_tutorials import ClassTutorials
-from spirare.caecias.class_doc_tutorials_link import ClassTutorialsLink
+from .class_doc_annotation import ClassDocAnnotation
+from .class_doc_constant import ClassDocConstant
+from .class_doc_constructor import ClassDocConstructor
+from .class_doc_member import ClassDocMember
+from .class_doc_method import ClassDocMethod
+from .class_doc_operator import ClassDocOperator
+from .class_doc_param import ClassDocParam
+from .class_doc_return import ClassDocReturn
+from .class_doc_returns_error import ClassDocReturnsError
+from .class_doc_signal import ClassDocSignal
+from .class_doc_theme_item import ClassDocThemeItem
+from .class_doc_tutorials_link import ClassTutorialsLink
+from .class_doc_model import ClassDocModel
+from .extension_doc import ExtensionDocModel
 
 __all__ = [
-    "ClassAnnotations",
-    "ClassAnnotationsAnnotation",
-    "ClassAnnotationsAnnotationParam",
-    "ClassAnnotationsAnnotationReturn",
-    "ClassConstants",
-    "ClassConstantsConstant",
-    "ClassConstructors",
-    "ClassConstructorsConstructor",
-    "ClassConstructorsConstructorParam",
-    "ClassConstructorsConstructorReturn",
-    "ClassMembers",
-    "ClassMembersMember",
-    "ClassMethods",
-    "ClassMethodsMethod",
-    "ClassMethodsMethodParam",
-    "ClassMethodsMethodReturn",
-    "ClassMethodsMethodReturnsError",
-    "ExtensionDocModel",
-    "ClassOperators",
-    "ClassOperatorsOperator",
-    "ClassOperatorsOperatorParam",
-    "ClassOperatorsOperatorReturn",
-    "ClassSignals",
-    "ClassSignalsSignal",
-    "ClassSignalsSignalParam",
-    "ClassThemeItems",
-    "ClassThemeItemsThemeItem",
-    "ClassTutorials",
-    "ClassTutorialsLink",
-]
+    'ClassDocAnnotation',
+    'ClassDocConstant',
+    'ClassDocConstructor',
+    'ClassDocMember',
+    'ClassDocMethod',
+    'ClassDocOperator',
+    'ClassDocParam',
+    'ClassDocReturn',
+    'ClassDocReturnsError',
+    'ClassDocSignal',
+    'ClassDocThemeItem',
+    'ClassTutorialsLink',
+    'ClassDocModel',
+    'ExtensionDocModel']

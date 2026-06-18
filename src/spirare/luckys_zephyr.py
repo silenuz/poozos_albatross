@@ -179,6 +179,12 @@ class LuckyZephyr:
                 result.append(memberdef)
         return result
 
+    def get_definition_by_name(self,name:str)->MemberDefinitionModel:
+        return self.get_definition_by_tag('name', name)
+
+    def get_definition_by_qualified(self, qualified_name:str)->MemberDefinitionModel:
+        return self.get_definition_by_tag('qualifiedname', qualified_name)
+
     def get_definition_by_tag(self, tag: str, value: str) -> MemberDefinitionModel:
         member_def_node = self.find_by_child_tag(tag, value)
         if member_def_node is not None:
@@ -473,7 +479,10 @@ class EnumValueModel(BriefDescriptionModel,DetailedDescriptionModel):
 
     @property
     def initializer_value(self) -> str:
-        return self.initializer.split(" ")[1].strip()
+        if self.initializer is not None:
+            return self.initializer.split(" ")[1].strip()
+        else:
+            return None
 
 
 @dataclass(slots=True)
