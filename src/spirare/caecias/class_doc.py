@@ -1,22 +1,30 @@
-from __future__ import annotations
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+"""
+@Project: poozos_albatross
+@Date: 6/19/26
+@File: doc_class
+
+@Author: Phosphor (horuuendillus@gmail.com)
+"""
+from __future__ import annotations
 from dataclasses import dataclass, field
 
-from .class_doc_annotation import ClassDocAnnotation
-from .class_doc_constant import ClassDocConstant
-from .class_doc_constructor import ClassDocConstructor
-from .class_doc_member import ClassDocMember
-from .class_doc_method import ClassDocMethod
-from .class_doc_operator import ClassDocOperator
-from .class_doc_signal import ClassDocSignal
-from .class_doc_theme_item import ClassDocThemeItem
-from .class_doc_tutorials_link import ClassTutorialsLink
-
+from .class_doc_elements import *
 
 @dataclass(slots=True, kw_only=True)
-class ClassDocModel:
-    class Meta:
-        name = "class"
+class ExtensionDocModel:
+
+    class_doc: list[ClassDocModel] = field(
+        default_factory=list,
+        metadata={
+            "type": "Element",
+        },
+    )
+
+@dataclass(slots=True, kw_only=True)
+class ClassDocModel(MethodTagBase):
 
     brief_description: str = field(
         default=None,
@@ -109,30 +117,6 @@ class ClassDocModel:
             "type": "Attribute",
         },
     )
-    is_deprecated: None | bool = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-        },
-    )
-    is_experimental: None | bool = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-        },
-    )
-    deprecated: None | str = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-        },
-    )
-    experimental: None | str = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-        },
-    )
     keywords: None | str = field(
         default=None,
         metadata={
@@ -147,3 +131,5 @@ class ClassDocModel:
             self.brief_description = ""
         if self.tutorials is None:
             self.tutorials = []
+
+
