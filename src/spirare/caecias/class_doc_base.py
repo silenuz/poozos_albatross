@@ -12,7 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 @dataclass(kw_only=True)
-class MemberQualifierBase:
+class DocQualifierBase:
     enum: None | str = field(
         default=None,
         metadata={
@@ -26,15 +26,52 @@ class MemberQualifierBase:
         },
     )
 
+@dataclass(slots=True, kw_only=True)
+class DocReturnBase(DocQualifierBase):
+
+    type_value: None | str = field(
+        default=None,
+        metadata={
+            "name": "type",
+            "type": "Attribute",
+        },
+    )
+
+@dataclass(slots=True, kw_only=True)
+class DocParameterBase(DocReturnBase):
+
+    index: None | int = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+    name: None | str = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+
+    default: None | str = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
+
+
+
 @dataclass(kw_only=True)
 class MethodBase:
-    param: list[ClassDocParameter] = field(
+    param: list[DocParameterBase] = field(
         default_factory=list,
         metadata={
             "type": "Element",
         },
     )
     description: str = field(
+        default="",
         metadata={
             "type": "Element",
         }
@@ -54,7 +91,7 @@ class MethodReturnBase(MethodBase):
             "type": "Attribute",
         },
     )
-    return_value: None | ClassDocReturn = field(
+    return_value: None | DocReturnBase = field(
         default=None,
         metadata={
             "name": "return",

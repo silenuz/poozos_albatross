@@ -17,7 +17,7 @@ class ClassDocAnnotation(MethodReturnKeyword):
     pass
 
 @dataclass(slots=True, kw_only=True)
-class ClassDocConstant(MemberBase, MemberQualifierBase):
+class ClassDocConstant(MemberBase, DocQualifierBase):
 
     value_attribute: None | str = field(
         default=None,
@@ -69,7 +69,7 @@ class ClassDocMember(ClassDocConstant):
 
 
 @dataclass(slots=True, kw_only=True)
-class ClassDocMethod(MethodReturnKeyword,MethodTagBase):
+class ClassDocMethod(MethodReturnKeyword, MethodTagBase):
 
     returns_error: list[ClassDocReturnsError] = field(
         default_factory=list,
@@ -84,12 +84,12 @@ class ClassDocOperator(MethodReturnBase):
     pass
 
 @dataclass(slots=True, kw_only=True)
-class ClassDocParameter(MethodParameterBase):
+class ClassDocParameter(DocParameterBase):
     pass
 
 
 @dataclass(slots=True, kw_only=True)
-class ClassDocReturn(MemberQualifierBase):
+class ClassDocReturn(DocQualifierBase):
 
     type_value: None | str = field(
         default=None,
@@ -112,7 +112,7 @@ class ClassDocReturnsError:
 
 
 @dataclass(slots=True, kw_only=True)
-class ClassDocSignal(MethodBase,MethodTagBase):
+class ClassDocSignal(MethodBase, MethodTagBase):
     pass
 
 
