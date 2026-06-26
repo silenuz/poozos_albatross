@@ -8,22 +8,23 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
-from argestes.doc_base import ClassDocReturn, ClassDocParameter, ClassDocReturnError, DocParameters, \
-    DocReturnErrorsList
-from .class_doc_operator import ClassDocOperator
-from .class_doc_constructor import ClassDocConstructor
-from .class_doc_constant import ClassDocConstant
-from .class_doc_annotation import ClassDocAnnotation
-from .class_doc_member import ClassDocMember
-from .class_doc_method import ClassDocMethod
-from .class_doc_signal import ClassDocSignal
-from .class_doc_theme_item import ClassDocThemeItem
+from .doc_base import ClassDocReturn, ClassDocParameter, ClassDocReturnError, DocParameters, \
+    DocReturnErrorsList, ClassDocTutorialLink,DocTutorials
+from .class_doc_operator import ClassDocOperator, DocOperators
+from .class_doc_constructor import ClassDocConstructor, DocConstructors
+from .class_doc_constant import ClassDocConstant, DocConstants
+from .class_doc_annotation import ClassDocAnnotation,DocAnnotations
+from .class_doc_member import ClassDocMember,DocMembers
+from .class_doc_method import ClassDocMethod,DocMethods
+from .class_doc_signal import ClassDocSignal,DocSignals
+from .class_doc_theme_item import ClassDocThemeItem, DocThemeItems
 
 __all__ = [
     'ClassDocReturn',
     'ClassDocParameter',
     'ClassDocConstructor',
     'ClassDocOperator',
+    'ClassDocReturnError',
     'DocReturnErrorsList',
     'DocParameters',
     'ClassDocReturn',
@@ -33,4 +34,15 @@ __all__ = [
     'ClassDocMethod',
     'ClassDocSignal',
     'ClassDocThemeItem',
+    'ClassDocTutorialLink',
+    'DocTutorials',
+    'DocAnnotations',
+    'DocMembers',
+    'DocConstructors',
+    'DocOperators',
+    'DocThemeItems',
+    'DocSignals',
+    'DocMethods',
+    'DocConstants'
+
 ]
