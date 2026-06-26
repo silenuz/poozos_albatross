@@ -1,5 +1,21 @@
 IMPORTANT
 =========
+
+Update:
+So I spent most of last week modeling the class doc xml only to wake up Monday not liking it (see the caecias package).
+
+I spent this week re-doing things and the result is the new models in the argestes package.  
+Unfortunately there is little to no documentation yet, as I just reached stability. Currently, the 
+model can be created from the root node of the class doc xml using element tree, later it will be able to
+load the file directly.
+
+The model can also round trip itself to json and back.  I've started work on it being able to write the
+model back to the class doc xml, and should have that finished Monday.
+
+Then I'll integrate the new models with Eurus, and start on finishing up the remaining items to generate
+class documentation from source code, to which you might ask why bother modeling things, well there is an answer,
+but's Friday and early enough that the sun is still shinning so that can wait.
+
 Major rewrites and refactorings,  again !
 
 Except for the few remaining methods that are Godot specific in LuckyZephyr that need to be decoupled, I like the current 

@@ -1,0 +1,82 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+@Project: godot_doc_model
+@Date: 6/23/26
+@File: ClassDocThemeItem
+
+@Author: Phosphor (horuuendillus@gmail.com)
+"""
+from xml.etree.ElementTree import Element
+
+from argestes.doc_base import ModelCollection, JsonBase, GodotBase
+
+
+class ClassDocThemeItem(JsonBase, GodotBase):
+    __slots__ = ("name", "text", "data_type", "type_value", "default", "keywords", "deprecated", "experimental")
+    name: str
+    text: str
+    data_type: str
+    type_value: str
+    default: str
+    keywords: str
+    deprecated: str
+    experimental: str
+
+    def __init__(self, name: str, text: str = None, data_type: str = None, type_value: str = None,
+                 default: str = None, keywords: str = None, deprecated: str = None, experimental: str = None):
+        self.name = name
+        self.text = text
+        self.data_type = data_type
+        self.type_value = type_value
+        self.default = default
+        self.keywords = keywords
+        self.deprecated = deprecated
+        self.experimental = experimental
+
+    def to_dict(self) -> dict:
+        values = dict()
+        if self.name is not None:
+            values['name'] = self.name
+        if self.text is not None:
+            values['text'] = self.text
+        if self.data_type is not None:
+            values['data_type'] = self.data_type
+        if self.type_value is not None:
+            values['type_value'] = self.type_value
+        if self.default is not None:
+            values['default'] = self.default
+        if self.keywords is not None:
+            values['keywords'] = self.keywords
+        if self.deprecated is not None:
+            values['deprecated'] = self.deprecated
+        if self.experimental is not None:
+            values['experimental'] = self.experimental
+        return values
+
+
+class DocThemeItems(ModelCollection):
+    def __init__(self, initlist=None):
+        super().__init__(ClassDocThemeItem, initlist)
+
+    def new(self, **kwargs) -> ClassDocThemeItem:
+        theme_item = ClassDocThemeItem(**kwargs)
+        self.append(theme_item)
+        return theme_item
+
+    def to_dict(self) -> dict:
+        result = dict()
+        result['theme_items'] = []
+        for theme_item in self.data:
+            result['theme_items'].append(theme_item.to_dict())
+        return result
+
+    @classmethod
+    def from_json(cls, json_str: str):
+        return super().from_json(ClassDocThemeItem, json_str)
+
+    @classmethod
+    def from_xml(cls, element: Element):
+        initial_list = [ClassDocThemeItem.from_xml(e) for e in element]
+        return cls(initial_list)

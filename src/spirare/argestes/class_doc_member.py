@@ -1,0 +1,74 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+@Project: poozos_albatross
+@Date: 6/22/26
+@File: ClassDocMember
+
+@Author: Phosphor (horuuendillus@gmail.com)
+"""
+from xml.etree.ElementTree import Element
+
+from argestes.doc_base import ConstantMemberBase, ModelCollection, JsonBase, GodotBase
+
+
+class ClassDocMember(ConstantMemberBase,JsonBase, GodotBase):
+    __slots__ = ('type_value','getter','setter','overrides','default')
+    type_value: str
+    getter: str
+    setter: str
+    overrides: str
+    default: str
+    def __init__(self, name: str, type_value: str = None,getter:str=None,setter:str = None,text: str = None,
+                 overrides:str=None, default:str=None,enum: str = None, is_bitfield: bool = None,
+                 keywords: str = None, is_deprecated: bool = None, is_experimental: bool = None,
+                 deprecated: str = None, experimental: str = None):
+        super().__init__(name=name, text=text, enum=enum, is_bitfield=is_bitfield, keywords=keywords,
+                         is_deprecated=is_deprecated, is_experimental=is_experimental, deprecated=deprecated,
+                         experimental=experimental)
+        self.type_value = type_value
+        self.getter = getter
+        self.setter = setter
+        self.overrides = overrides
+        self.default = default
+
+    def to_dict(self) -> dict:
+        values = dict()
+        if self.type_value is not None:
+            values['type_value'] = self.type_value
+        if self.getter is not None:
+            values['getter'] = self.getter
+        if self.setter is not None:
+            values['setter'] = self.setter
+        if self.overrides is not None:
+            values['overrides'] = self.overrides
+        if self.default is not None:
+            values['default'] = self.default
+        values.update(super().to_dict())
+        return values
+
+class DocMembers(ModelCollection):
+    def __init__(self,initlist=None):
+        super().__init__(ClassDocMember, initlist)
+
+    def new(self, **kwargs) -> ClassDocMember:
+        member = ClassDocMember(**kwargs)
+        self.append(member)
+        return member
+
+    def to_dict(self) -> dict:
+        result = dict()
+        result['members'] = []
+        for member in self.data:
+            result['members'].append(member.to_dict())
+        return result
+
+    @classmethod
+    def from_json(cls, json_str: str):
+        return super().from_json(ClassDocMember, json_str)
+
+    @classmethod
+    def from_xml(cls, element:Element):
+        initial_list = [ClassDocMember.from_xml(e) for e in element]
+        return cls(initial_list)
