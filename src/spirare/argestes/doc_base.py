@@ -6,7 +6,7 @@
 @Date: 6/21/26
 @File: doc_base
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from __future__ import annotations
 import json

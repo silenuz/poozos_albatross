@@ -6,7 +6,7 @@
 @Date: 6/19/26
 @File: doc_class
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 
 from .class_doc_annotation import DocAnnotations

@@ -6,7 +6,7 @@
 @Date: 5/29/26
 @File: gen_example_config
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 import configparser
 import os

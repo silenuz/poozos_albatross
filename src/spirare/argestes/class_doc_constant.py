@@ -6,11 +6,11 @@
 @Date: 6/22/26
 @File: ClassDocConstant
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
 
-from argestes.doc_base import ConstantMemberBase, JsonBase, ModelCollection, GodotBase
+from .doc_base import ConstantMemberBase, JsonBase, ModelCollection, GodotBase
 
 
 class ClassDocConstant(ConstantMemberBase,JsonBase, GodotBase):

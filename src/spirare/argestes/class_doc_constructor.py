@@ -6,11 +6,11 @@
 @Date: 6/22/26
 @File: ClassDocConstructor
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
 
-from argestes.doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase
+from .doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase
 
 
 class ClassDocConstructor(MethodReturnBase,JsonBase, GodotBase):

@@ -6,11 +6,11 @@
 @Date: 6/22/26
 @File: ClassDocMember
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
 
-from argestes.doc_base import ConstantMemberBase, ModelCollection, JsonBase, GodotBase
+from .doc_base import ConstantMemberBase, ModelCollection, JsonBase, GodotBase
 
 
 class ClassDocMember(ConstantMemberBase,JsonBase, GodotBase):

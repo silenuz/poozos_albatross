@@ -6,12 +6,12 @@
 @Date: 6/22/26
 @File: ClassDocSignal
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree import ElementTree as Et
 from xml.etree.ElementTree import Element
 
-from argestes.doc_base import MethodBase, ClassDocParameter, JsonBase, ModelCollection, GodotBase, DocParameters
+from .doc_base import MethodBase, JsonBase, ModelCollection, GodotBase, DocParameters
 
 
 class ClassDocSignal(MethodBase,JsonBase,GodotBase):

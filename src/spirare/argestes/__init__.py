@@ -6,7 +6,7 @@
 @Date: 6/22/26
 @File: __init__.py
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from argestes.doc_base import ClassDocReturn, ClassDocParameter, ClassDocReturnError, DocParameters, \
     DocReturnErrorsList

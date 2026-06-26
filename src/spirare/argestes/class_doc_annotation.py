@@ -6,12 +6,12 @@
 @Date: 6/22/26
 @File: ClassDocAnnotation
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
 
-from argestes.doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase
-from argestes.doc_base import ClassDocReturn
+from .doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase
+from .doc_base import ClassDocReturn
 
 
 class ClassDocAnnotation(MethodReturnBase,JsonBase,GodotBase):

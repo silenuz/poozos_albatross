@@ -6,11 +6,11 @@
 @Date: 6/22/26
 @File: ClassDocOperator
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
 
-from argestes.doc_base import MethodReturnBase, ClassDocParameter, ModelCollection, JsonBase, GodotBase, DocParameters
+from .doc_base import MethodReturnBase, ClassDocParameter, ModelCollection, JsonBase, GodotBase, DocParameters
 
 
 class ClassDocOperator(MethodReturnBase,JsonBase,GodotBase):
