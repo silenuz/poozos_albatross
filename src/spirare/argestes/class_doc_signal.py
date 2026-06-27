@@ -11,7 +11,7 @@
 from xml.etree import ElementTree as Et
 from xml.etree.ElementTree import Element
 
-from .doc_base import MethodBase, JsonBase, ModelCollection, GodotBase, DocParameters
+from .doc_base import MethodBase, JsonBase, ModelCollection, GodotBase, DocParameters, DocDescription
 
 
 class ClassDocSignal(MethodBase,JsonBase,GodotBase):
@@ -21,7 +21,7 @@ class ClassDocSignal(MethodBase,JsonBase,GodotBase):
     is_experimental: bool
     experimental: str
 
-    def __init__(self,name:str,description:str=None, parameters:DocParameters=None,
+    def __init__(self,name:str,description:DocDescription=DocDescription(), parameters:DocParameters=None,
                  is_deprecated: bool=None, deprecated: str = None, is_experimental: bool=None,
                  experimental: str=None) -> None:
         super().__init__(name=name,description=description,parameters=parameters)

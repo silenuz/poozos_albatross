@@ -269,7 +269,7 @@ class MethodReturnBase(MethodBase):
     __slots__ = 'return_value'
     return_value: ClassDocReturn
 
-    def __init__(self, name: str, description: str = None,qualifiers:str = None,
+    def __init__(self, name: str, description: DocDescription=DocDescription(),qualifiers:str = None,
                  parameters: DocParameters = None, return_value: ClassDocReturn = None) -> None:
         super().__init__(name=name, description=description, qualifiers=qualifiers,parameters=parameters)
         self.return_value = return_value

@@ -10,7 +10,7 @@
 """
 from xml.etree.ElementTree import Element
 
-from .doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase
+from .doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase, DocDescription
 from .doc_base import ClassDocReturn
 
 
@@ -18,7 +18,7 @@ class ClassDocAnnotation(MethodReturnBase,JsonBase,GodotBase):
     __slots__ = ['keywords']
     keywords: str
 
-    def __init__(self, name: str, description: str = None,qualifiers:str=None,
+    def __init__(self, name: str, description: DocDescription=DocDescription(),qualifiers:str=None,
                  parameters: DocParameters = None,return_value: ClassDocReturn = None, keywords:str=None):
         MethodReturnBase.__init__(self, name=name, description=description, qualifiers=qualifiers,parameters=parameters, return_value=return_value)
         self.keywords = keywords

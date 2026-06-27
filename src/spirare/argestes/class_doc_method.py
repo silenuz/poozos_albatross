@@ -12,7 +12,7 @@ from xml.etree.ElementTree import Element
 
 from . import ClassDocReturn
 from .class_doc_annotation import ClassDocAnnotation
-from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, JsonBase, GodotBase
+from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, JsonBase, GodotBase, DocDescription
 
 
 class ClassDocMethod(ClassDocAnnotation,JsonBase,GodotBase):
@@ -23,7 +23,7 @@ class ClassDocMethod(ClassDocAnnotation,JsonBase,GodotBase):
     deprecated: str
     experimental: str
 
-    def __init__(self, name: str, description: str = None,qualifiers:str=None, parameters: DocParameters = None,
+    def __init__(self, name: str, description: DocDescription=DocDescription(),qualifiers:str=None, parameters: DocParameters = None,
                  return_value: ClassDocReturn = None, returns_errors: DocReturnErrorsList = None,
                  keywords:str=None, is_deprecated: bool = None, is_experimental: bool = None,
                  deprecated:str = None, experimental:str = None):

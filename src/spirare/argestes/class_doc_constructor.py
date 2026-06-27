@@ -10,7 +10,7 @@
 """
 from xml.etree.ElementTree import Element
 
-from .doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase
+from .doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase, DocDescription
 
 
 class ClassDocConstructor(MethodReturnBase,JsonBase, GodotBase):
@@ -23,7 +23,7 @@ class ClassDocConstructor(MethodReturnBase,JsonBase, GodotBase):
     """
     __slots__ = ()
 
-    def __init__(self, name:str, description:str = None,qualifiers:str=None, parameters: DocParameters = None):
+    def __init__(self, name:str, description:DocDescription=DocDescription(),qualifiers:str=None, parameters: DocParameters = None):
         MethodReturnBase.__init__(self, name=name, description=description,qualifiers=qualifiers, parameters=parameters)
 
 
