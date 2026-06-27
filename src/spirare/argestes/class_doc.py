@@ -89,7 +89,7 @@ class ClassDocModel(JsonBase,GodotBase):
     keywords:str
     """The value of the keywords attribute for this class element."""
 
-    def __init__(self, name: str, brief_description: DocBriefDescription = DocBriefDescription, description: DocDescription = DocDescription, annotations: DocAnnotations = None,
+    def __init__(self, name: str, brief_description: DocBriefDescription = DocBriefDescription(), description: DocDescription = DocDescription(), annotations: DocAnnotations = None,
                  constructors: DocConstructors = None, constants:DocConstants=None,members:DocMembers=None , methods: DocMethods = None, operators: DocOperators=None,
                  signals: DocSignals=None, theme_items: DocThemeItems=None, keywords: str = None, tutorials: str = None,
                  inherits: str = None, api_type: str=None, version: float = None, is_deprecated: bool = None, is_experimental: bool = None,
