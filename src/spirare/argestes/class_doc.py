@@ -21,33 +21,73 @@ from .doc_base import JsonBase, GodotBase, DocTutorials, DocBriefDescription, Do
 
 
 class ClassDocModel(JsonBase,GodotBase):
+    """
+    This class represents a model of the root class element of the Godot doc xml.
+
+    :param str name: The value of the name attribute for this class element.
+    :param DocBriefDescription brief_description: The value of the brief_description element for this class element.
+    :param DocDescription description: The value of the description element for this class element.
+    :param DocAnnotations annotations: The value of the annotations element for this class element.
+    :param DocConstants constants: The value of the constants element for this class element.
+    :param DocConstructors constructors: The value of the constructors element for this class element.
+    :param DocMembers members: The value of the members element for this class element.
+    :param DocMethods methods: The value of the methods element for this class element.
+    :param DocOperators operators: The value of the operators element for this class element.
+    :param DocSignals signals: The value of the signals element for this class element.
+    :param DocThemeItems theme_items: The value of the theme_items element for this class element.
+    :param DocTutorials tutorials: The value of the tutorials element for this class element.
+    :param str inherits: The value of the inherits attribute for this class element.
+    :param str api_type: The value of the api_type attribute for this class element.
+    :param float version: The value of the version attribute for this class element.
+    :param bool is_deprecated: The value of the is_deprecated attribute for this class element.
+    :param bool is_experimental: The value of the is_experimental attribute for this class element.
+    :param str deprecated: The value of the deprecated attribute for this class element.
+    :param str experimental: The value of the experimental attribute for this class element.
+    :param str keywords: The value of the keywords attribute for this class element.
+    """
     __slots__ = ('name', 'brief_description', 'description', 'tutorials', 'annotations', 'constructors','methods',
                  'members','signals','constants','operators','theme_items','inherits','api_type','version',
                  'is_deprecated','is_experimental','deprecated','experimental','keywords')
     name: str
+    """The value of the name attribute for this class element."""
     brief_description: DocBriefDescription
+    """The value of the brief_description element for this class element."""
     description: DocDescription
+    """The value of the description element for this class element."""
     annotations: DocAnnotations
+    """The value of the annotations element for this class element."""
     constants: DocConstants
+    """The value of the constants element for this class element."""
     constructors:DocConstructors
+    """The value of the constructors element for this class element."""
     members:DocMembers
+    """The value of the members element for this class element."""
     methods: DocMethods
+    """The value of the methods element for this class element."""
     operators: DocOperators
+    """The value of the operators element for this class element."""
     signals: DocSignals
+    """The value of the signals element for this class element."""
     theme_items: DocThemeItems
-    ######
-    # placeholders
-    ##########################
+    """The value of the theme_items element for this class element."""
     tutorials: DocTutorials
-    ##########################
+    """The value of the tutorials element for this class element."""
     inherits:str
+    """The value of the inherits attribute for this class element."""
     api_type:str
+    """The value of the api_type attribute for this class element."""
     version:float
+    """The value of the version attribute for this class element."""
     is_deprecated:bool
+    """The value of the is_deprecated attribute for this class element."""
     is_experimental:bool
+    """The value of the is_experimental attribute for this class element."""
     deprecated:str
+    """The value of the deprecated attribute for this class element."""
     experimental:str
+    """The value of the experimental attribute for this class element."""
     keywords:str
+    """The value of the keywords attribute for this class element."""
 
     def __init__(self, name: str, brief_description: DocBriefDescription = DocBriefDescription, description: DocDescription = DocDescription, annotations: DocAnnotations = None,
                  constructors: DocConstructors = None, constants:DocConstants=None,members:DocMembers=None , methods: DocMethods = None, operators: DocOperators=None,
@@ -55,25 +95,45 @@ class ClassDocModel(JsonBase,GodotBase):
                  inherits: str = None, api_type: str=None, version: float = None, is_deprecated: bool = None, is_experimental: bool = None,
                  deprecated: str = None, experimental: str = None) -> None:
         self.name = name
+        """The value of the name attribute for this class element."""
         self.brief_description = brief_description
+        """The value of the brief_description element for this class element."""
         self.description = description
+        """The value of the description element for this class element."""
         self.annotations = annotations
+        """The value of the annotations element for this class element."""
         self.constructors = constructors
+        """The value of the constructors element for this class element."""
         self.constants = constants
+        """The value of the constants element for this class element."""
         self.members = members
+        """The value of the members element for this class element."""
         self.methods = methods
+        """The value of the methods element for this class element."""
         self.operators = operators
+        """The value of the operators element for this class element."""
         self.signals = signals
+        """The value of the operators element for this class element."""
         self.theme_items = theme_items
+        """The value of the theme_items element for this class element."""
         self.keywords = keywords
+        """The value of the keywords attribute for this class element."""
         self.tutorials = tutorials
+        """The value of the tutorials element for this class element."""
         self.inherits = inherits
+        """The value of the inherits attribute for this class element."""
         self.api_type = api_type
+        """The value of the api_type attribute for this class element."""
         self.version = version
+        """The value of the version attribute for this class element."""
         self.is_deprecated = is_deprecated
+        """The value of the is_deprecated attribute for this class element."""
         self.is_experimental = is_experimental
+        """The value of the is_experimental attribute for this class element."""
         self.deprecated = deprecated
+        """The value of the deprecated attribute for this class element."""
         self.experimental = experimental
+        """The value of the experimental attribute for this class element."""
 
     def to_dict(self) -> dict:
         result = dict()
