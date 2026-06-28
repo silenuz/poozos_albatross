@@ -327,8 +327,17 @@ class ModelCollection(UserList):
 
 
 class ClassDocReturn(DocQualifierBase,JsonBase,GodotBase):
+    """
+    This class represents a model of the method return element of the class docs
+    Note: type_value is used as the attribute here because type is a soft keyword in python.
+
+    :param str enum: The value of the enum attribute for return element.
+    :param bool is_bitfield: The value of the is_bitfield attribute for return element.
+    :param str type_value: The value of the type attribute for return element.
+    """
     __slots__ = 'type_value'
     type_value: str
+    """The value of the type attribute for return element."""
 
     def __init__(self, type_value: str = None, enum: str = None, is_bitfield: bool = False) -> None:
         super().__init__(enum, is_bitfield)
@@ -343,10 +352,23 @@ class ClassDocReturn(DocQualifierBase,JsonBase,GodotBase):
 
 
 class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
+    """
+    This class represents a model of the class doc's parameter element, used in signals, methods, etc...
+    
+    :param str enum: The value of the enum attribute for the parameter element.
+    :param bool is_bitfield: The value of the is_bitfield attribute for the parameter element.
+    :param str type_value: The value of the type_value attribute for the parameter element.
+    :param str index: The value of the index attribute for the parameter element.
+    :param str name: The value of the name attribute for the parameter element.
+    :param str default: The value of the default attribute for the parameter element.
+    """
     __slots__ = ('index', 'name', 'default')
     index: str
+    """The value of the index attribute for the parameter element."""
     name: str
+    """The value of the name attribute for the parameter element."""
     default: str
+    """ The value of the default attribute for the parameter element."""
 
     def __init__(self, name: str, index: str = None, default: str = None, type_value: str = None, enum: str = None,
         is_bitfield: bool = None) -> None:
@@ -367,8 +389,14 @@ class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
         return result
 
 class ClassDocReturnError(JsonBase,GodotBase):
+    """
+    This class represents a model of the return error element of the class docs
+
+    :param int number: The value of the number attribute for this element.
+    """
     __slots__ = 'number'
     number: int
+    """The value of the number attribute for this element"""
 
     def __init__(self, number: int) -> None:
         self.number = number
@@ -379,9 +407,18 @@ class ClassDocReturnError(JsonBase,GodotBase):
 
 
 class ClassDocTutorialLink(JsonBase, GodotBase):
+    """
+    This class represents a model of the class doc's tutorial link element
+
+    :param str text: The value of the text attribute for this element, in this case a tutorial link..
+    :param str title: The value of the title attribute for this element.
+
+    """
     __slots__ = ('text','title')
     text: str
+    """URL link to the tutorial"""
     title: str
+    """The title of the tutorial"""
 
     def __init__(self, text: str=None, title: str=None) -> None:
         self.text = text

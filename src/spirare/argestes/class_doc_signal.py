@@ -15,6 +15,18 @@ from .doc_base import MethodBase, JsonBase, ModelCollection, GodotBase, DocParam
 
 
 class ClassDocSignal(MethodBase,JsonBase,GodotBase):
+    """
+    This class represents a model of the class doc's signal element
+    
+    :param str name: The value of the name attribute for the signal element.
+    :param DocDescription description: The value of the description element for the signal element.
+    :param str qualifiers: The value of the qualifiers attribute for the signal element.
+    :param DocParameters parameters: The value of the parameters element for the signal element.
+    :param bool is_deprecated: The value of the is_deprecated attribute for the signal element.
+    :param str deprecated: The value of the deprecated attribute for the signal element.
+    :param bool is_experimental: The value of the is_experimental attribute for the signal element.
+    :param str experimental: The value of the experimental attribute for the signal element.
+    """
     __slots__ = ('is_deprecated', 'deprecated','is_experimental','experimental')
     is_deprecated: bool
     deprecated: str

@@ -16,11 +16,13 @@ from .doc_base import MethodReturnBase, ClassDocParameter, ModelCollection, Json
 
 class ClassDocOperator(MethodReturnBase,JsonBase,GodotBase):
     """
-    Class DocOperator
-
-    :param name:  Name of the operator
-    :param description:  Description of the operator (default None)
-    :param parameters:  Parameters for the operator (default None)
+    This class represents a model of the class doc's operator element
+    
+    :param str name: The value of the name attribute for the operator element.
+    :param DocDescription description: The value of the description element for the operator element.
+    :param str qualifiers: The value of the qualifiers attribute for the operator element.
+    :param DocParameters parameters: The value of the parameters element for the operator element.
+    :param ClassDocReturn return_value: The value of the return_value element for the operator element.
     """
     __slots__ = ()
 
