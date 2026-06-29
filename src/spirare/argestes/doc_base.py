@@ -113,6 +113,17 @@ class GodotBase:
                     setattr(class_object, e.tag, child)
         return class_object
 
+    def to_xml(self):
+        values = self.to_dict()
+        element = Et.Element('element')
+        for key,value in values.items():
+            if key == 'text':
+                element.text = value
+            else:
+                element.set(key,value)
+        return element
+
+
 class DocQualifierBase:
     __slots__ = ('enum', 'is_bitfield')
     enum: str
@@ -257,7 +268,7 @@ class MethodBase:
         if self.name is not None:
             result['name'] = self.name
         if self.description is not None:
-            result['description'] = self.description
+            result.update(self.description.to_dict())
         if self.qualifiers is not None:
             result['qualifiers'] = self.qualifiers
         if self.parameters is not None:
@@ -350,6 +361,12 @@ class ClassDocReturn(DocQualifierBase,JsonBase,GodotBase):
         result.update(super().to_dict())
         return result
 
+    def to_xml_doc(self)->Et.Element:
+        base_element = self.to_xml()
+        base_element.tag = 'return'
+        return base_element
+
+
 
 class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
     """
@@ -388,6 +405,11 @@ class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
         result.update(super().to_dict())
         return result
 
+    def to_xml_doc(self)->Et.Element:
+        base_element = self.to_xml()
+        base_element.tag = 'param'
+        return base_element
+
 class ClassDocReturnError(JsonBase,GodotBase):
     """
     This class represents a model of the return error element of the class docs
@@ -405,6 +427,11 @@ class ClassDocReturnError(JsonBase,GodotBase):
         result = dict()
         result['number'] = self.number
 
+
+    def to_xml_doc(self)->Et.Element:
+        base_element = self.to_xml()
+        base_element.tag = 'returns_error'
+        return base_element
 
 class ClassDocTutorialLink(JsonBase, GodotBase):
     """
@@ -431,6 +458,11 @@ class ClassDocTutorialLink(JsonBase, GodotBase):
         if self.title is not None:
             result['title'] = self.title
         return result
+
+    def to_xml_doc(self)->Et.Element:
+        base_element = self.to_xml()
+        base_element.tag = 'link'
+        return base_element
 
 
 class DocReturnErrorsList(ModelCollection):
@@ -474,6 +506,12 @@ class DocParameters(ModelCollection):
         for parameter in self.data:
             result['parameters'].append(parameter.to_dict())
         return result
+
+    def to_xml_doc(self)->list[Et.Element]:
+        elements = []
+        for parameter in self.data:
+            elements.append(parameter.to_xml_doc())
+        return elements
 
     @classmethod
     def from_json(cls, json_str: str):

@@ -9,6 +9,7 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
+from xml.etree import ElementTree as Et
 
 from . import ClassDocReturn
 from .class_doc_annotation import ClassDocAnnotation
@@ -63,6 +64,10 @@ class ClassDocMethod(ClassDocAnnotation,JsonBase,GodotBase):
             values['experimental'] = self.experimental
         return values
 
+    def to_xml_doc(self)->Et.Element:
+        base_element = self.to_xml()
+        base_element.tag = 'method'
+        return base_element
 
 class DocMethods(ModelCollection):
     def __init__(self,initlist=None):
@@ -79,6 +84,12 @@ class DocMethods(ModelCollection):
         for method in self.data:
             result['methods'].append(method.to_dict())
         return result
+
+    def to_xml_doc(self)->Element:
+        element = Et.Element('methods')
+        for method in self.data:
+           Et.SubElement(element,method.to_xml_doc())
+        return element
 
     @classmethod
     def from_json(cls, json_str: str):
