@@ -33,7 +33,7 @@ class ClassDocSignal(MethodBase,JsonBase,GodotBase):
     is_experimental: bool
     experimental: str
 
-    def __init__(self,name:str,description:DocDescription=DocDescription(), parameters:DocParameters=None,
+    def __init__(self,name:str,description:DocDescription=None, parameters:DocParameters=None,
                  is_deprecated: bool=None, deprecated: str = None, is_experimental: bool=None,
                  experimental: str=None) -> None:
         super().__init__(name=name,description=description,parameters=parameters)

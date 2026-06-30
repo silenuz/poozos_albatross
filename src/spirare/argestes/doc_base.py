@@ -107,7 +107,9 @@ class GodotBase:
                     class_object.parameters = DocParameters()
                 class_object.parameters.append(ClassDocParameter.from_xml(e))
             else:
-                attr_type = class_object.__annotations__.get(e.tag)
+                attr_type = typing.get_type_hints(class_object.__class__).get(e.tag)
+                print("Element Tag:: ", e.tag)
+                print("Attribute Type:: ", attr_type)
                 if attr_type is not None:
                     child = attr_type.from_xml(e)
                     setattr(class_object, e.tag, child)
@@ -124,21 +126,22 @@ class GodotBase:
                 #attr_type = self.__annotations__.get(key)
                 if attr_type is not None and not getattr(attr_type, '__module__', None) == 'builtins':
                     attr_instance = getattr(self, key, None)
-                    print(attr_type)
+                    #print(attr_type)
                     if attr_type == DocParameters:
                         params = attr_instance.to_xml_doc()
                         if isinstance(params,Et.Element):
                             element.append(params)
                         else:
                             for param in params:
-                                print("append parameter")
+                                #print("append parameter")
                                 element.append(param)
                     elif hasattr(attr_instance, 'to_xml_doc'):
-                        print("append element")
+                        #print("append element")
                         sub_element = attr_instance.to_xml_doc()
-                        element.append(sub_element)
+                        if sub_element is not None:
+                            element.append(sub_element)
                 else:
-                    print("key:: ", key)
+                    #print("key:: ", key)
                     element.set(key,str(value))
         return element
 
@@ -176,6 +179,13 @@ class DescriptionBase:
     def to_dict(self) -> dict:
         return {self._element_name: self.text}
 
+    def to_xml_doc(self):
+        if self.text:
+            element = Et.Element(self._element_name)
+            element.text = self.text
+            return element
+        return None
+
     @classmethod
     def from_xml(cls,element: Et.Element):
         return cls(text=element.text)
@@ -192,10 +202,6 @@ class DocBriefDescription(DescriptionBase):
         super().__init__(text)
         self._element_name = 'brief_description'
 
-    def to_xml_doc(self):
-        element = Et.Element(self._element_name)
-        element.text = 'some text'
-        return element
 
 class DocDescription(DescriptionBase):
     __slots__ = ()
@@ -204,10 +210,6 @@ class DocDescription(DescriptionBase):
         super().__init__(text)
         self._element_name = 'description'
 
-    def to_xml_doc(self):
-        element = Et.Element(self._element_name)
-        element.text = 'some text'
-        return element
 
 class MemberBase(DocQualifierBase):
     __slots__ = ('name', 'text')
@@ -285,15 +287,15 @@ class MethodBase:
     qualifiers: str
     parameters: DocParameters
 
-    def __init__(self, name: str, description: DocDescription = DocDescription(), qualifiers:str = None, parameters: DocParameters = None) -> None:
+    def __init__(self, name: str, description: DocDescription = None, qualifiers:str = None, parameters: DocParameters = None) -> None:
         self.name = name
         self.description = description
         self.qualifiers = qualifiers
         self.parameters = parameters
 
-    def __post_init__(self):
-        if isinstance(self.description,str):
-            self.description = DocDescription(text=self.description)
+    # def __post_init__(self):
+    #     if isinstance(self.description,str):
+    #         self.description = DocDescription(text=self.description)
 
 
     def to_dict(self) -> dict:
@@ -313,7 +315,7 @@ class MethodReturnBase(MethodBase):
     __slots__ = 'return_value'
     return_value: ClassDocReturn
 
-    def __init__(self, name: str, description: DocDescription=DocDescription(),qualifiers:str = None,
+    def __init__(self, name: str, description: DocDescription=None,qualifiers:str = None,
                  parameters: DocParameters = None, return_value: ClassDocReturn = None) -> None:
         super().__init__(name=name, description=description, qualifiers=qualifiers,parameters=parameters)
         self.return_value = return_value
