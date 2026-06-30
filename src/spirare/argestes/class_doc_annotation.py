@@ -9,6 +9,7 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
+from xml.etree import ElementTree as Et
 
 from .doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase, DocDescription
 from .doc_base import ClassDocReturn
@@ -39,6 +40,11 @@ class ClassDocAnnotation(MethodReturnBase,JsonBase,GodotBase):
             values['keywords'] = self.keywords
         return values
 
+    def to_xml_doc(self)->Element:
+        base_element = self._to_xml()
+        base_element.tag = 'annotation'
+        return base_element
+
 class DocAnnotations(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocAnnotation, initlist)
@@ -58,6 +64,12 @@ class DocAnnotations(ModelCollection):
     @classmethod
     def from_json(cls, json_str: str):
         return super().from_json(ClassDocAnnotation, json_str)
+
+    def to_xml_doc(self)->Element:
+        element = Et.Element('annotations')
+        for annotation in self.data:
+          element.append(annotation.to_xml_doc())
+        return element
 
     @classmethod
     def from_xml(cls, element:Element):

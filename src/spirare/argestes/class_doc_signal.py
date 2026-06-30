@@ -54,6 +54,11 @@ class ClassDocSignal(MethodBase,JsonBase,GodotBase):
             result['experimental'] = self.experimental
         return result
 
+    def to_xml_doc(self)->Element:
+        base_element = self._to_xml()
+        base_element.tag = 'signal'
+        return base_element
+
 class DocSignals(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocSignal, initlist)
@@ -69,6 +74,14 @@ class DocSignals(ModelCollection):
         for signal in self.data:
             result['signals'].append(signal.to_dict())
         return result
+
+
+    def to_xml_doc(self)->Element:
+        element = Et.Element('signals')
+        for signal in self.data:
+          element.append(signal.to_xml_doc())
+        return element
+
 
     @classmethod
     def from_json(cls, json_str: str):

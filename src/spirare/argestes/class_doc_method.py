@@ -65,7 +65,7 @@ class ClassDocMethod(ClassDocAnnotation,JsonBase,GodotBase):
         return values
 
     def to_xml_doc(self)->Et.Element:
-        base_element = self.to_xml()
+        base_element = self._to_xml()
         base_element.tag = 'method'
         return base_element
 
@@ -88,7 +88,7 @@ class DocMethods(ModelCollection):
     def to_xml_doc(self)->Element:
         element = Et.Element('methods')
         for method in self.data:
-           Et.SubElement(element,method.to_xml_doc())
+          element.append(method.to_xml_doc())
         return element
 
     @classmethod

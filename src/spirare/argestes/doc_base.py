@@ -113,14 +113,33 @@ class GodotBase:
                     setattr(class_object, e.tag, child)
         return class_object
 
-    def to_xml(self):
+    def _to_xml(self):
         values = self.to_dict()
         element = Et.Element('element')
         for key,value in values.items():
             if key == 'text':
                 element.text = value
             else:
-                element.set(key,value)
+                attr_type = typing.get_type_hints(self.__class__).get(key)
+                #attr_type = self.__annotations__.get(key)
+                if attr_type is not None and not getattr(attr_type, '__module__', None) == 'builtins':
+                    attr_instance = getattr(self, key, None)
+                    print(attr_type)
+                    if attr_type == DocParameters:
+                        params = attr_instance.to_xml_doc()
+                        if isinstance(params,Et.Element):
+                            element.append(params)
+                        else:
+                            for param in params:
+                                print("append parameter")
+                                element.append(param)
+                    elif hasattr(attr_instance, 'to_xml_doc'):
+                        print("append element")
+                        sub_element = attr_instance.to_xml_doc()
+                        element.append(sub_element)
+                else:
+                    print("key:: ", key)
+                    element.set(key,str(value))
         return element
 
 
@@ -173,6 +192,10 @@ class DocBriefDescription(DescriptionBase):
         super().__init__(text)
         self._element_name = 'brief_description'
 
+    def to_xml_doc(self):
+        element = Et.Element(self._element_name)
+        element.text = 'some text'
+        return element
 
 class DocDescription(DescriptionBase):
     __slots__ = ()
@@ -180,6 +203,11 @@ class DocDescription(DescriptionBase):
     def __init__(self, text: str = ''):
         super().__init__(text)
         self._element_name = 'description'
+
+    def to_xml_doc(self):
+        element = Et.Element(self._element_name)
+        element.text = 'some text'
+        return element
 
 class MemberBase(DocQualifierBase):
     __slots__ = ('name', 'text')
@@ -262,6 +290,11 @@ class MethodBase:
         self.description = description
         self.qualifiers = qualifiers
         self.parameters = parameters
+
+    def __post_init__(self):
+        if isinstance(self.description,str):
+            self.description = DocDescription(text=self.description)
+
 
     def to_dict(self) -> dict:
         result = dict()
@@ -362,7 +395,7 @@ class ClassDocReturn(DocQualifierBase,JsonBase,GodotBase):
         return result
 
     def to_xml_doc(self)->Et.Element:
-        base_element = self.to_xml()
+        base_element = self._to_xml()
         base_element.tag = 'return'
         return base_element
 
@@ -406,7 +439,7 @@ class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
         return result
 
     def to_xml_doc(self)->Et.Element:
-        base_element = self.to_xml()
+        base_element = self._to_xml()
         base_element.tag = 'param'
         return base_element
 
@@ -429,7 +462,7 @@ class ClassDocReturnError(JsonBase,GodotBase):
 
 
     def to_xml_doc(self)->Et.Element:
-        base_element = self.to_xml()
+        base_element = self._to_xml()
         base_element.tag = 'returns_error'
         return base_element
 
@@ -460,7 +493,7 @@ class ClassDocTutorialLink(JsonBase, GodotBase):
         return result
 
     def to_xml_doc(self)->Et.Element:
-        base_element = self.to_xml()
+        base_element = self._to_xml()
         base_element.tag = 'link'
         return base_element
 

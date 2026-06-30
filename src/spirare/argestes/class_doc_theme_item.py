@@ -9,6 +9,7 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
+from xml.etree import ElementTree as Et
 
 from .doc_base import ModelCollection, JsonBase, GodotBase
 
@@ -67,6 +68,11 @@ class ClassDocThemeItem(JsonBase, GodotBase):
             values['experimental'] = self.experimental
         return values
 
+    def to_xml_doc(self)->Element:
+        base_element = self._to_xml()
+        base_element.tag = 'theme_item'
+        return base_element
+
 
 class DocThemeItems(ModelCollection):
     def __init__(self, initlist=None):
@@ -83,6 +89,14 @@ class DocThemeItems(ModelCollection):
         for theme_item in self.data:
             result['theme_items'].append(theme_item.to_dict())
         return result
+
+
+    def to_xml_doc(self)->Element:
+        element = Et.Element('theme_items')
+        for theme_item in self.data:
+          element.append(theme_item.to_xml_doc())
+        return element
+
 
     @classmethod
     def from_json(cls, json_str: str):

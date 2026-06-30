@@ -8,6 +8,7 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
+from xml.etree.ElementTree import Element
 
 from .class_doc_annotation import DocAnnotations
 from .class_doc_constant import DocConstants
@@ -91,7 +92,7 @@ class ClassDocModel(JsonBase,GodotBase):
 
     def __init__(self, name: str, brief_description: DocBriefDescription = DocBriefDescription(), description: DocDescription = DocDescription(), annotations: DocAnnotations = None,
                  constructors: DocConstructors = None, constants:DocConstants=None,members:DocMembers=None , methods: DocMethods = None, operators: DocOperators=None,
-                 signals: DocSignals=None, theme_items: DocThemeItems=None, keywords: str = None, tutorials: str = None,
+                 signals: DocSignals=None, theme_items: DocThemeItems=None, keywords: str = None, tutorials:DocTutorials = DocTutorials(),
                  inherits: str = None, api_type: str=None, version: float = None, is_deprecated: bool = None, is_experimental: bool = None,
                  deprecated: str = None, experimental: str = None) -> None:
         self.name = name
@@ -135,31 +136,36 @@ class ClassDocModel(JsonBase,GodotBase):
         self.experimental = experimental
         """The value of the experimental attribute for this class element."""
 
+    def __post_init__(self):
+        if isinstance(self.description, str):
+            self.description = DocDescription(text=self.description)
+        if isinstance(self.brief_description, str):
+            self.brief_description = DocBriefDescription(text=self.brief_description)
+
     def to_dict(self) -> dict:
         result = dict()
         result['name'] = self.name
         result.update(self.brief_description.to_dict())
         result.update(self.description.to_dict())
-        if self.annotations is not None:
-            result.update(self.annotations.to_dict())
+        result.update(self.tutorials.to_dict())
         if self.constructors is not None:
             result.update(self.constructors.to_dict())
-        if self.constants is not None:
-            result.update(self.constants.to_dict())
-        if self.members is not None:
-            result.update(self.members.to_dict())
         if self.methods is not None:
             result.update(self.methods.to_dict())
-        if self.operators is not None:
-            result.update(self.operators.to_dict())
+        if self.members is not None:
+            result.update(self.members.to_dict())
         if self.signals is not None:
             result.update(self.signals.to_dict())
+        if self.constants is not None:
+            result.update(self.constants.to_dict())
+        if self.operators is not None:
+            result.update(self.operators.to_dict())
         if self.theme_items is not None:
-            result.update( self.theme_items.to_dict())
+            result.update(self.theme_items.to_dict())
+        if self.annotations is not None:
+            result.update(self.annotations.to_dict())
         if self.keywords is not None:
             result['keywords'] = self.keywords
-        if self.tutorials is not None:
-            result.update(self.tutorials.to_dict())
         if self.inherits is not None:
             result['inherits'] = self.inherits
         if self.api_type is not None:
@@ -175,6 +181,12 @@ class ClassDocModel(JsonBase,GodotBase):
         if self.experimental is not None:
             result['experimental'] = self.experimental
         return result
+
+    def to_xml_doc(self) -> Element:
+        base_element = self._to_xml()
+        base_element.tag = 'class'
+        return base_element
+
 
 class ExtensionDocModel:
     class_doc: list[ClassDocModel]

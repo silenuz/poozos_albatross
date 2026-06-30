@@ -9,6 +9,7 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
+from xml.etree import ElementTree as Et
 
 from .doc_base import ConstantMemberBase, JsonBase, ModelCollection, GodotBase
 
@@ -45,6 +46,11 @@ class ClassDocConstant(ConstantMemberBase,JsonBase, GodotBase):
         result['value'] = self.value
         return result
 
+    def to_xml_doc(self)->Element:
+        base_element = self._to_xml()
+        base_element.tag = 'constant'
+        return base_element
+
 class DocConstants(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocConstant, initlist)
@@ -60,6 +66,13 @@ class DocConstants(ModelCollection):
         for constant in self.data:
             result['constants'].append(constant.to_dict())
         return result
+
+
+    def to_xml_doc(self)->Element:
+        element = Et.Element('constants')
+        for constant in self.data:
+          element.append(constant.to_xml_doc())
+        return element
 
     @classmethod
     def from_json(cls, json_str: str):

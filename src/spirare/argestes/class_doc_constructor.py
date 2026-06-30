@@ -9,6 +9,7 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from xml.etree.ElementTree import Element
+from xml.etree import ElementTree as Et
 
 from .doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase, DocDescription
 
@@ -29,6 +30,11 @@ class ClassDocConstructor(MethodReturnBase,JsonBase, GodotBase):
         MethodReturnBase.__init__(self, name=name, description=description,qualifiers=qualifiers, parameters=parameters)
 
 
+    def to_xml_doc(self)->Element:
+        base_element = self._to_xml()
+        base_element.tag = 'constructor'
+        return base_element
+
 class DocConstructors(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocConstructor, initlist)
@@ -44,6 +50,13 @@ class DocConstructors(ModelCollection):
         for constructor in self.data:
             result['constructors'].append(constructor.to_dict())
         return result
+
+    def to_xml_doc(self)->Element:
+        element = Et.Element('constructors')
+        for constructor in self.data:
+          element.append(constructor.to_xml_doc())
+        return element
+
 
     @classmethod
     def from_json(cls, json_str: str):
