@@ -76,7 +76,7 @@ class JsonBase:
         return  cls(**kwargs)
 
     def to_json(self):
-        return json.dumps(self.to_dict())
+        return json.dumps(self.to_dict(),indent=4)
 
 class GodotBase:
     attribute_map = dict()
@@ -108,8 +108,6 @@ class GodotBase:
                 class_object.parameters.append(ClassDocParameter.from_xml(e))
             else:
                 attr_type = typing.get_type_hints(class_object.__class__).get(e.tag)
-                print("Element Tag:: ", e.tag)
-                print("Attribute Type:: ", attr_type)
                 if attr_type is not None:
                     child = attr_type.from_xml(e)
                     setattr(class_object, e.tag, child)
@@ -180,11 +178,10 @@ class DescriptionBase:
         return {self._element_name: self.text}
 
     def to_xml_doc(self):
-        if self.text:
-            element = Et.Element(self._element_name)
-            element.text = self.text
-            return element
-        return None
+        element = Et.Element(self._element_name)
+        element.text = self.text
+        return element
+
 
     @classmethod
     def from_xml(cls,element: Et.Element):

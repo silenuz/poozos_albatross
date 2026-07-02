@@ -8,7 +8,10 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
+import json
 from xml.etree.ElementTree import Element
+from xml.etree import ElementTree as Et
+from pathlib import Path
 
 from .class_doc_annotation import DocAnnotations
 from .class_doc_constant import DocConstants
@@ -187,6 +190,22 @@ class ClassDocModel(JsonBase,GodotBase):
         base_element.tag = 'class'
         return base_element
 
+
+    @classmethod
+    def from_file(cls, file_path: Path) -> 'ClassDocModel':
+        if isinstance(file_path, str):
+            file_path = Path(file_path)
+        ext = file_path.suffix
+        if ext == '.xml':
+            tree = Et.parse(str(file_path))
+            root = tree.getroot()
+            return cls.from_xml(root)
+        elif ext == '.json':
+            with open(file_path, "r", encoding="utf-8") as file:
+                data = file_path.read_text()
+                return cls.from_json(data)
+        else:
+            raise TypeError(f'Unsupported file extension: {ext}')
 
 class ExtensionDocModel:
     class_doc: list[ClassDocModel]
