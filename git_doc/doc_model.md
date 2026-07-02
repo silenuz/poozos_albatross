@@ -6,6 +6,9 @@ The class documentation model is fairly simple in design.  Classes model element
 There is an exception for type attributes, where type in the class documentation is mapped to type_value in the model, due to the
 fact that type is a soft keyword in python.
 
+The model incorporates the entire XSD for the class documentation, even objects like constructors 
+that would be rare in an extension. 
+
 Usage:
 ------
 The model can be created from either an XML root element from the Godot class documentation:
@@ -45,3 +48,5 @@ the new JSON files and creates a new XML class document from each of the JSON fi
 Model Documentation:
 --------------------
 
+More here soon.
+Some information [here](./argestes/class_docs/class_doc.md)

@@ -87,7 +87,7 @@ class GodotBase:
         parts = [element.text or ""]
         for child in element:
             # encoding="unicode" returns a standard python string instead of bytes
-            parts.append(Et.tostring(child, encoding="unicode"))
+            parts.append(Et.tostring(child, encoding="unicode").strip())
         return "".join(parts).strip()
 
     @classmethod
