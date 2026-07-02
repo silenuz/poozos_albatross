@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="TrafficLight" inherits="Control" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		A classic code example from [i]Godotcon 2024[/i]
+	</brief_description>
+	<description>
+		[s]stolen[/s] [b]borrowed[/b] from [i]Godotcon 2024[/i] [br] [br] The class [u]must inherit[/u] from a Godot built in class (like [Object], [Node], [Sprite2D], or [Resource]). Godot does not support multiple inheritance for GDExtension classes.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="_get_next_light" qualifiers="virtual const">
+			<return type="int" enum="TrafficLightType" />
+			<param index="0" name="previous_light" type="int" enum="TrafficLightType" />
+			<description>
+			</description>
+		</method>
+		<method name="show_next_light">
+			<return type="void" />
+			<description>
+				Function used by the GDVirtual method _get_next_light. Used to set the next state of the TrafficLight .
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="caution_texture" type="Texture2D" setter="set_caution_texture" getter="get_caution_texture">
+			The [Texture2D] used for displaying the Caution state
+		</member>
+		<member name="go_texture" type="Texture2D" setter="set_go_texture" getter="get_go_texture">
+			The [Texture2D] used for displaying the Go state
+		</member>
+		<member name="light_type" type="int" setter="set_light_type" getter="get_light_type" enum="TrafficLightType" default="5">
+			The current,state of the traffic light (Go, Caution, Stop ), see [enum TrafficLight.TrafficLightType]
+		</member>
+		<member name="stop_texture" type="Texture2D" setter="set_stop_texture" getter="get_stop_texture">
+			The [Texture2D] used for displaying the Stop state
+		</member>
+	</members>
+	<signals>
+		<signal name="light_changed">
+			<param index="0" name="light_type" type="int" enum="TrafficLightType" />
+			<description>
+				This signal is emitted when the state of the Traffic Light changes. Test to make sure this second paragraph is read as part of the signal description
+			</description>
+		</signal>
+		<signal name="light_changing">
+			<param index="0" name="current_light_type" type="int" enum="TrafficLightType" />
+			<param index="1" name="new_light_type" type="int" enum="TrafficLightType" />
+			<description>
+				this signal is emitted when the light is about to change. The signal parameter indicate the current state and what the new state will be
+			</description>
+		</signal>
+	</signals>
+	<constants>
+		<constant name="TRAFFIC_LIGHT_GO" value="5" enum="TrafficLightType">
+			Represents a light indicating Go
+		</constant>
+		<constant name="TRAFFIC_LIGHT_CAUTION" value="50" enum="TrafficLightType">
+			Represents a light indicating Caution
+		</constant>
+		<constant name="TRAFFIC_LIGHT_STOP" value="500" enum="TrafficLightType">
+			Represents a light indicating Stop
+		</constant>
+	</constants>
+</class>
