@@ -1,10 +1,11 @@
 Model Overview
 ==============
 
-The class documentation model is fairly simple in design.  Classes model elements, and class attributes are element attributes.
+The class documentation model is fairly basic in design.  Classes model elements, and class attributes are element attributes.
 
 There is an exception for type attributes, where type in the class documentation is mapped to type_value in the model, due to the
-fact that type is a soft keyword in python.
+fact that type is a soft keyword in python and parameters are stored as nested lists, otherwise the model trys to mirror the XML as much
+as possible.
 
 The model incorporates the entire XSD for the class documentation, even objects like constructors 
 that would be rare in an extension. 
@@ -49,4 +50,4 @@ Model Documentation:
 --------------------
 
 More here soon.
-Some information [here](./argestes/class_docs/class_doc.md)
+Some information [here](./argestes/class_doc.md)

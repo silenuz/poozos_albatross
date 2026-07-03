@@ -2,25 +2,18 @@ IMPORTANT
 =========
 
 Update:
-So I spent most of last week modeling the class doc xml only to wake up Monday not liking it (see the caecias package).
-
-I spent this week re-doing things and the result is the new models in the argestes package.  
-Unfortunately there is little to no documentation yet, as I just reached stability. Currently, the 
-model can be created from the root node of the class doc xml using element tree, later it will be able to
-load the file directly.
-
-The model can also round trip itself to json and back.  I've started work on it being able to write the
-model back to the class doc xml, and should have that finished Monday.
+-------
+For the most part the model can serialize / deserialize to and from XML and JSON.  However, while documenting the code I 
+noticed I missed implementing to_xml_doc on two of the list elements DocReturnErrorsList and DocTutorialsList so currently
+these are not serialized correctly, and  Monday I will add the missing methods.
 
 Then I'll integrate the new models with Eurus, and start on finishing up the remaining items to generate
-class documentation from source code, to which you might ask why bother modeling things, well there is an answer,
-but's Friday and early enough that the sun is still shinning so that can wait.
+class documentation from source code.
 
-Major rewrites and refactorings,  again !
+Note all sample scripts are now in the bin directory and markdown docs in the docs directory, as a result
+some markdown links may be broken, I will ensure these are fixed early next week.
 
-Except for the few remaining methods that are Godot specific in LuckyZephyr that need to be decoupled, I like the current 
-architecture as the logic for each specific use is isolated and independent.  LuckZephyr can basically now be used 
-generically to parse Doxygen xml for any project.
+Sample model usage can be found [here](./docs/doc_model.md)
 
 Same for [PoozosNotus](docs/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
 
