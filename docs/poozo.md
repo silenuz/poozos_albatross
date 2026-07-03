@@ -10,7 +10,7 @@ Usage:
 Unfortunately neither the summator nor traffic light implementations are complete, traffic light has properties but no methods
 and summator has methods but no properties, so I apologise for the samples switching between the different files.
 
-All the usage samples are in the [poozo_sample.py](poozo_sample.py).  The sample script uses the source code in the examples
+All the usage samples are in the [poozo_sample.py](../bin/poozo_sample.py).  The sample script uses the source code in the examples
 directory for parsing.
 
 Get bound methods:

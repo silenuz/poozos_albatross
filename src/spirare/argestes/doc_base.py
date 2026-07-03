@@ -9,56 +9,10 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from __future__ import annotations
-import json
 import typing
 from collections import UserList
 import xml.etree.ElementTree as Et
-
 import json
-
-
-# class JsonBase:
-#     @classmethod
-#     def from_json(cls, json_data: str):
-#         # 1. Parse the JSON string into a raw Python dictionary
-#         raw_data = json.loads(json_data)
-#
-#         # 2. Extract top-level primitive attributes for the constructor
-#         init_kwargs = {}
-#         for key, value in raw_data.items():
-#
-#         # Create the base object instance
-#         class_object = cls(**init_kwargs)
-#
-#         # 3. Process complex types (nested objects and custom lists) using type hints
-#         for key, value in raw_data.items():
-#             mapped_key = cls.attribute_map.get(key, key) if hasattr(cls, 'attribute_map') else key
-#             attr_type = cls.__annotations__.get(mapped_key)
-#
-#             if isinstance(attr_type, str):
-#                 import sys
-#                 current_module = sys.modules[cls.__module__]
-#                 attr_type = getattr(current_module, attr_type, None)
-#
-#             if attr_type is not None:
-#                 # If it's a custom list class (like DocParameters) or nested object
-#                 if hasattr(attr_type, 'from_json'):
-#                     # If the child class has a from_json method, delegate to it
-#                     child_instance = attr_type.from_json(json.dumps(value))
-#                     setattr(class_object, mapped_key, child_instance)
-#                 else:
-#                     # Otherwise, try passing the raw list/dict straight into its constructor
-#                     # (e.g., DocParameters(value))
-#                     try:
-#                         child_instance = attr_type(value)
-#                         setattr(class_object, mapped_key, child_instance)
-#                     except TypeError:
-#                         pass
-#
-#         return class_object
-#
-#     def to_json(self):
-#         return json.dumps(self.to_dict())
 
 
 class JsonBase:
@@ -145,15 +99,30 @@ class GodotBase:
 
 
 class DocQualifierBase:
+    """
+    Base class for elements with enum and is_bitfield attributes
+
+    :param str enum: enum attribute value
+    :param bool is_bitfield: is_bitfield attribute value
+    """
     __slots__ = ('enum', 'is_bitfield')
     enum: str
+    """The value of the enum attribute for this element"""
     is_bitfield: bool
+    """The value of the is_bitfield attribute for this element"""
 
     def __init__(self, enum: str = None, is_bitfield: bool = False) -> None:
         self.enum = enum
+        """enum attribute value"""
         self.is_bitfield = is_bitfield
+        """is_bitfield attribute value"""
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         values = dict()
         if self.enum is not None:
             values['enum'] = self.enum
@@ -163,21 +132,39 @@ class DocQualifierBase:
 
 
 class DescriptionBase:
+    """
+    Base class for description elements such as description and brief_description
+
+    :param str text: the text value of the element
+    """
     __slots__ = ('text','_element_name')
     text: str
+    """The text value of the element"""
     _element_name: str
+    """The name of the element, used by child class to set element tag"""
 
     def __init__(self, text: str = '') -> None:
         self.text = text
+        """The text value of the element"""
 
     def __post_init__(self) -> None:
         if self.text is None:
             self.text = ''
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         return {self._element_name: self.text}
 
     def to_xml_doc(self):
+        """
+        Return the contents of the description as a Godot documentation XML element
+
+        :return: this description object as a Godot XML element, the tag is based on the _element_name attribute
+        """
         element = Et.Element(self._element_name)
         element.text = self.text
         return element
@@ -185,14 +172,31 @@ class DescriptionBase:
 
     @classmethod
     def from_xml(cls,element: Et.Element):
+        """
+        Creates a description object from a Godot XML element
+
+        :param element: The description or brief_description element to create the model from
+        :return: A new description object with the values from the Godot XML element
+        """
         return cls(text=element.text)
 
     @classmethod
     def from_json(cls,json_data: str):
+        """
+        Creates a description object from a JSON string
+
+        :param json_data: The description or brief_description JSON content to create the model from
+        :return: A new description object with the values from the JSON content
+        """
         return cls(text=json_data)
 
 
 class DocBriefDescription(DescriptionBase):
+    """
+    Model for brief_description elements
+
+    :param str text: the text value of the brief_description element
+    """
     __slots__ = ()
 
     def __init__(self, text: str = ''):
@@ -201,6 +205,11 @@ class DocBriefDescription(DescriptionBase):
 
 
 class DocDescription(DescriptionBase):
+    """
+    Model for description elements
+
+    :param str text: the text value of the description element
+    """
     __slots__ = ()
 
     def __init__(self, text: str = ''):
@@ -209,17 +218,34 @@ class DocDescription(DescriptionBase):
 
 
 class MemberBase(DocQualifierBase):
+    """
+    Base class extending qualifiers
+
+    :param str enum: The value of the enum attribute for this element.
+    :param bool is_bitfield: The value of the is_bitfield attribute for this element.
+    :param str name: The value of the name attribute for this element.
+    :param str text: The text value for this element.
+    """
     __slots__ = ('name', 'text')
     name: str
+    """The value of the name attribute for this element."""
     text: str
+    """The text value for this element"""
 
     def __init__(self, name: str, text: str = None, enum: str = None,
                  is_bitfield: bool = False) -> None:
         super().__init__(enum=enum, is_bitfield=is_bitfield)
         self.name = name
+        """The value of the name attribute for this element."""
         self.text = text
+        """The text value for this element"""
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         values = dict()
         if self.name is not None:
             values['name'] = self.name
@@ -230,22 +256,47 @@ class MemberBase(DocQualifierBase):
 
 
 class MemberBaseTags(MemberBase):
+    """
+    Base class extending MemberBase
+
+    :param str enum: The value of the enum attribute for this element.
+    :param bool is_bitfield: The value of the is_bitfield attribute for this element.
+    :param str name: The value of the name attribute for this element.
+    :param str text: The text value for this element.
+    :param bool is_deprecated: The value of the is_deprecated attribute for this element.
+    :param bool is_experimental: The value of the is_experimental attribute for this element.
+    :param str deprecated: The value of the deprecated attribute for this element.
+    :param str experimental: The value of the experimental attribute for this element.
+    """
     __slots__ = ('is_deprecated', 'is_experimental', 'deprecated', 'experimental')
     is_deprecated: bool
+    """The value of the is_deprecated attribute for this element"""
     is_experimental: bool
+    """The value of the is_experimental attribute for this element"""
     deprecated: str
+    """The value of the deprecated attribute for this element"""
     experimental: str
+    """The value of the experimental attribute for this element"""
 
     def __init__(self, name: str, text: str = None, enum: str = None, is_bitfield: bool = False,
                  is_deprecated: bool = False, is_experimental: bool = False,
                  deprecated: str = None, experimental: str = None) -> None:
         super().__init__(name=name, text=text, enum=enum, is_bitfield=is_bitfield)
         self.is_deprecated = is_deprecated
+        """The value of the is_deprecated attribute for this element"""
         self.is_experimental = is_experimental
+        """The value of the is_experimental attribute for this element"""
         self.deprecated = deprecated
+        """The value of the deprecated attribute for this element"""
         self.experimental = experimental
+        """The value of the experimental attribute for this element"""
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         values = super().to_dict()
         if self.is_deprecated is not None:
             values['is_deprecated'] = self.is_deprecated
@@ -259,8 +310,22 @@ class MemberBaseTags(MemberBase):
 
 
 class ConstantMemberBase(MemberBaseTags):
+    """
+    Base class extending MemberBaseTags
+
+    :param str enum: The value of the enum attribute for this element.
+    :param bool is_bitfield: The value of the is_bitfield attribute for this element.
+    :param str name: The value of the name attribute for this element.
+    :param str text: The value of the text attribute for this element.
+    :param bool is_deprecated: The value of the is_deprecated attribute for this element.
+    :param bool is_experimental: The value of the is_experimental attribute for this element.
+    :param str deprecated: The value of the deprecated attribute for this element.
+    :param str experimental: The value of the experimental attribute for this element.
+    :param str keywords: The value of the keywords attribute for this element.
+    """
     __slots__ = 'keywords'
     keywords: str
+    """The value of the keywords attribute for this element"""
 
     def __init__(self, name: str, text: str = None, enum: str = None, is_bitfield: bool = False,
                  keywords: str = None, is_deprecated: bool = False, is_experimental: bool = False,
@@ -269,8 +334,14 @@ class ConstantMemberBase(MemberBaseTags):
                          is_deprecated=is_deprecated, is_experimental=is_experimental, deprecated=deprecated,
                          experimental=experimental)
         self.keywords = keywords
+        """The value of the keywords attribute for this element"""
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         values = super().to_dict()
         if self.keywords is not None:
             values['keywords'] = self.keywords
@@ -278,24 +349,45 @@ class ConstantMemberBase(MemberBaseTags):
 
 
 class MethodBase:
+    """
+    Base class for method and method like elements
+
+    :param str name: The value of the name attribute for this element.
+    :param DocDescription description: The value of the description element for this element.
+    :param str qualifiers: The value of the qualifiers attribute for this element.
+    :param DocParameters parameters: The value of the parameters element for this element.
+    """
     __slots__ = ('name', 'description', 'qualifiers','parameters')
     name: str
+    """The value of the name attribute for this element"""
     description: DocDescription
+    """The value of the description element for this element"""
     qualifiers: str
+    """The value of the qualifiers attribute for this element"""
     parameters: DocParameters
+    """The DocParameters list representing the param elements for this element"""
 
     def __init__(self, name: str, description: DocDescription = None, qualifiers:str = None, parameters: DocParameters = None) -> None:
         self.name = name
+        """The value of the name attribute for this element"""
         self.description = description
+        """The value of the description element for this element"""
         self.qualifiers = qualifiers
+        """The value of the qualifiers attribute for this element"""
         self.parameters = parameters
+        """The DocParameters list representing the param elements for this element"""
 
-    # def __post_init__(self):
-    #     if isinstance(self.description,str):
-    #         self.description = DocDescription(text=self.description)
+    def __post_init__(self):
+        if isinstance(self.description,str):
+            self.description = DocDescription(text=self.description)
 
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         result = dict()
         if self.name is not None:
             result['name'] = self.name
@@ -309,15 +401,32 @@ class MethodBase:
 
 
 class MethodReturnBase(MethodBase):
+    """
+    Base class extending MethodBase with a return element
+
+    :param str name: The value of the name attribute for this element.
+    :param DocDescription description: The value of the description element for this element.
+    :param str qualifiers: The value of the qualifiers attribute for this element.
+    :param DocParameters parameters: The value of the parameters element for this element.
+    :param ClassDocReturn return_value: The value of the return_value element for this element.
+    """
     __slots__ = 'return_value'
     return_value: ClassDocReturn
+    """The value of the return_value element for this element"""
 
     def __init__(self, name: str, description: DocDescription=None,qualifiers:str = None,
                  parameters: DocParameters = None, return_value: ClassDocReturn = None) -> None:
         super().__init__(name=name, description=description, qualifiers=qualifiers,parameters=parameters)
         self.return_value = return_value
+        """The value of the return_value element for this element"""
+
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         values = dict()
         if self.return_value is not None:
             values['return_value'] = self.return_value.to_dict()
@@ -385,8 +494,14 @@ class ClassDocReturn(DocQualifierBase,JsonBase,GodotBase):
     def __init__(self, type_value: str = None, enum: str = None, is_bitfield: bool = False) -> None:
         super().__init__(enum, is_bitfield)
         self.type_value = type_value
+        """The value of the type attribute for return element."""
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         result = dict()
         if self.type_value is not None:
             result['type_value'] = self.type_value
@@ -394,6 +509,11 @@ class ClassDocReturn(DocQualifierBase,JsonBase,GodotBase):
         return result
 
     def to_xml_doc(self)->Et.Element:
+        """
+        Return the contents of the return object as a Godot documentation XML element
+
+        :return: this return object as a Godot XML element
+        """
         base_element = self._to_xml()
         base_element.tag = 'return'
         return base_element
@@ -412,10 +532,10 @@ class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
     :param str default: The value of the default attribute for the parameter element.
     """
     __slots__ = ('index', 'name', 'default')
-    index: str
-    """The value of the index attribute for the parameter element."""
     name: str
     """The value of the name attribute for the parameter element."""
+    index: str
+    """The value of the index attribute for the parameter element."""
     default: str
     """ The value of the default attribute for the parameter element."""
 
@@ -423,10 +543,18 @@ class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
         is_bitfield: bool = None) -> None:
         super().__init__(type_value=type_value, enum=enum, is_bitfield=is_bitfield)
         self.name = name
+        """The value of the name attribute for the parameter element."""
         self.index = index
+        """The value of the index attribute for the parameter element."""
         self.default = default
+        """ The value of the default attribute for the parameter element."""
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         result = dict()
         if self.name is not None:
             result['name'] = self.name
@@ -438,6 +566,11 @@ class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
         return result
 
     def to_xml_doc(self)->Et.Element:
+        """
+        Return the contents of the parameter (param) object as a Godot documentation XML element
+
+        :return: this parameter object as a Godot XML element
+        """
         base_element = self._to_xml()
         base_element.tag = 'param'
         return base_element
@@ -454,13 +587,24 @@ class ClassDocReturnError(JsonBase,GodotBase):
 
     def __init__(self, number: int) -> None:
         self.number = number
+        """The value of the number attribute for this element"""
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         result = dict()
         result['number'] = self.number
 
 
     def to_xml_doc(self)->Et.Element:
+        """
+        Return the contents of the returns_error object as a Godot documentation XML element
+
+        :return: this return_errors object as a Godot XML element
+        """
         base_element = self._to_xml()
         base_element.tag = 'returns_error'
         return base_element
@@ -481,9 +625,16 @@ class ClassDocTutorialLink(JsonBase, GodotBase):
 
     def __init__(self, text: str=None, title: str=None) -> None:
         self.text = text
+        """URL link to the tutorial"""
         self.title = title
+        """The title of the tutorial"""
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         result = dict()
         if self.text is not None:
             result['text'] = self.text
@@ -492,6 +643,11 @@ class ClassDocTutorialLink(JsonBase, GodotBase):
         return result
 
     def to_xml_doc(self)->Et.Element:
+        """
+        Return the contents of the tutorial link object as a Godot documentation XML element
+
+        :return: this link object as a Godot XML element
+        """
         base_element = self._to_xml()
         base_element.tag = 'link'
         return base_element
@@ -507,11 +663,26 @@ class DocReturnErrorsList(ModelCollection):
         return error
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         result = dict()
         result['returns_error'] = []
         for error in self.data:
             result['returns_error'].append(error.to_dict())
         return result
+
+    def to_xml_doc(self)->list[Et.Element]:
+        """
+        todo: fix missing implementation for this method
+        :return:
+        """
+        elements = []
+        for parameter in self.data:
+            elements.append(parameter.to_xml_doc())
+        return elements
 
     @classmethod
     def from_json(cls, json_str: str):
@@ -533,6 +704,11 @@ class DocParameters(ModelCollection):
         return parameter
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         result = dict()
         result['parameters'] = []
         for parameter in self.data:
@@ -540,6 +716,11 @@ class DocParameters(ModelCollection):
         return result
 
     def to_xml_doc(self)->list[Et.Element]:
+        """
+        Return the contents of this list of parameters, as a list of Godot XML param elements
+
+        :return: this list object as a list of XML param elements
+        """
         elements = []
         for parameter in self.data:
             elements.append(parameter.to_xml_doc())
@@ -556,6 +737,9 @@ class DocParameters(ModelCollection):
 
 
 class DocTutorials(ModelCollection):
+    """
+    todo: fix missing implementation for this method (to_xml doc)
+    """
     def __init__(self,initlist=None):
         super().__init__(ClassDocTutorialLink, initlist)
 
@@ -565,6 +749,11 @@ class DocTutorials(ModelCollection):
         return link
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of this object.
+
+        :return: a dictionary of values for this object
+        """
         result = dict()
         result['tutorials'] = []
         for parameter in self.data:

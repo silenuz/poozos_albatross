@@ -14,7 +14,7 @@ Never get out of the boat.
 """
 import json
 import typing
-
+from xml.etree import ElementTree as Et
 
 class Zucaritas:
     # map of attributes that were renamed, currently just type is renamed because it shadows a soft keyword in python

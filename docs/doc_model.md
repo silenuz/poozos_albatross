@@ -38,7 +38,7 @@ class_doc_model = ClassDocModel.from_file(file)
 
 Sample Script:
 --------------
-There is a sample script demonstrating the above usage of the model [here](model_sample.py). In the samples folder are
+There is a sample script demonstrating the above usage of the model [here](../bin/model_sample.py). In the samples folder are
 two godot class documentation files.  One for Summator and one for TrafficLight, these have the full XML content for 
 the classes with the current properties not generated from source code, having been filled in by Godot's doctool.
 

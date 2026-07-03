@@ -22,7 +22,7 @@ Except for the few remaining methods that are Godot specific in LuckyZephyr that
 architecture as the logic for each specific use is isolated and independent.  LuckZephyr can basically now be used 
 generically to parse Doxygen xml for any project.
 
-Same for [PoozosNotus](git_doc/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
+Same for [PoozosNotus](docs/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
 
 And there is one holdout method for getting signal data from Doxygen, all class methods return data class objects that model 
 the information from the source file whether it's Doxygen with LZ or cpp files with PN.
@@ -46,12 +46,12 @@ This module can be used when using scons to build the Doxygen XML.
 
 Current Status: ALPHA (Almost beta)
 ===================================
-Currently, the source code parser [PoozoNotus](git_doc/poozo.md) can extract methods, enum constants, integer constants, properties
+Currently, the source code parser [PoozoNotus](docs/poozo.md) can extract methods, enum constants, integer constants, properties
 and signals.
 AFAIK these all now export properly to the Godot documentation format.  
 
 In some cases the source code parser may fail, or may encounter something it doesn't recognize yet like GDVirtual.  
-If this happens, instructions to merge missing elements can be found [here](git_doc/merge_missing.md).
+If this happens, instructions to merge missing elements can be found [here](docs/merge_missing.md).
 
 Processing of code blocks in description fields almost working (see bug above), see [Codeblocks](#codeblocks).
 
@@ -60,7 +60,7 @@ Contents:
 This repository contains 4 python modules:
 
 - luckys_zephyr.py : contains LuckyZephyr class that parses and searches the Doxygen XML, this class is used by the above to parse the source XML
-- poozos_notus.py contains [PoozosNotus](git_doc/poozo.md) class to parse cpp source code containing binding declarations for a GDExtension 
+- poozos_notus.py contains [PoozosNotus](docs/poozo.md) class to parse cpp source code containing binding declarations for a GDExtension 
 - aerify_did.py : script to generate Godot class documentation using LuckyZephyr to query the Doxygen XML and PoozosNotus to scrape the source code.
 - waft_gogo.py : script to generate a build profile based on include statements, using LuckyZephyr to parse the Doxygen XML
 
@@ -83,7 +83,7 @@ The Scripts:
 ============
 Information about how the scripts work will eventually be here.  
 
-Information about basic usage of the poozo_notus module can be found [here](git_doc/poozo.md).
+Information about basic usage of the poozo_notus module can be found [here](docs/poozo.md).
 
 Notes:
 ======
