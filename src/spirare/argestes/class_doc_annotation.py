@@ -35,6 +35,11 @@ class ClassDocAnnotation(MethodReturnBase,Zucaritas):
         self.keywords = keywords
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this annotation element model instance.
+
+       :return: a dictionary of values for this annotation model instance.
+       """
         values = super().to_dict()
         if self.keywords is not None:
             values['keywords'] = self.keywords

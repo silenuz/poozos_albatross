@@ -43,6 +43,11 @@ class ClassDocSignal(MethodBase,Zucaritas):
         self.experimental = experimental
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this signal element model instance.
+
+       :return: a dictionary of values for this signal model instance.
+       """
         result = super().to_dict()
         if self.is_deprecated is not None:
             result['is_deprecated'] = self.is_deprecated

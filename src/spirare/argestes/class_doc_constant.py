@@ -42,6 +42,11 @@ class ClassDocConstant(ConstantMemberBase,Zucaritas):
         self.value = value
 
     def to_dict(self):
+        """
+       Returns a dictionary of the values for this constant element model instance.
+
+       :return: a dictionary of values for this constant model instance.
+       """
         result = super().to_dict()
         result['value'] = self.value
         return result

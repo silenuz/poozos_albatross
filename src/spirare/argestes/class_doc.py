@@ -146,6 +146,11 @@ class ClassDocModel(Zucaritas):
             self.brief_description = DocBriefDescription(text=self.brief_description)
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this class doc root element model instance.
+
+       :return: a dictionary of values for this class doc root model instance.
+       """
         result = dict()
         result['name'] = self.name
         result.update(self.brief_description.to_dict())

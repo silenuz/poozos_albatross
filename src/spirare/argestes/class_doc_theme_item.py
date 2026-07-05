@@ -49,6 +49,11 @@ class ClassDocThemeItem(Zucaritas):
         self.experimental = experimental
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this theme_item element model instance.
+
+       :return: a dictionary of values for this theme_item model instance.
+       """
         values = dict()
         if self.name is not None:
             values['name'] = self.name

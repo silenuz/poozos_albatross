@@ -20,7 +20,7 @@ class Zucaritas:
     Cereal base for top level objects, providing serialization and deserialization between XML and JSON,
     for Godot documentation elements.
 
-    “Facts are meaningless. You can use facts to prove anything that’s even remotely true.”
+    "Never get out of the boat!"
     """
     attribute_map = dict()
     """ map of attributes that were renamed, currently just type is renamed because it shadows a soft keyword in python"""
@@ -28,6 +28,12 @@ class Zucaritas:
 
     @classmethod
     def from_json(cls, json_data):
+        """
+        Create a model of this element from a JSON string
+
+        :param json_data: JSON string with element data
+        :return: A model of the element created from the JSON string
+        """
         raw_args = json.loads(json_data)
         kwargs = {}
         for key, value in raw_args.items():
@@ -39,10 +45,22 @@ class Zucaritas:
 
         return cls(**kwargs)
 
-    def to_json(self):
+    def to_json(self)->str:
+        """
+        Returns the model of this element as a JSON string
+
+        :return: A JSON string with element data
+        """
         return json.dumps(self.to_dict(), indent=4)
 
     def get_inner_markup(self, element: Et.Element) -> str:
+        """
+        Gets the text content of an XML element  by iterating the markup and creating a single
+        string
+
+        :param element: The element with .text content to parse
+        :return: a string with the text content of the element passed as an argument
+        """
         # 1. Grab the initial text chunk before any child tag
         parts = [element.text or ""]
         for child in element:
@@ -52,6 +70,12 @@ class Zucaritas:
 
     @classmethod
     def from_xml(cls, element: Et.Element):
+        """
+        Creates this model from a Godot class documentation XML element
+
+        :param element: The element represented by this model
+        :return: A model created from the XML documentation element
+        """
         kwargs = dict()
         for key, value in element.attrib.items():
             if not 'http' in key:
@@ -73,7 +97,13 @@ class Zucaritas:
                     setattr(class_object, e.tag, child)
         return class_object
 
-    def _to_xml(self):
+    def _to_xml(self)->Et.Element:
+        """
+        Internal method used to convert this model to generic XML, so the child class can apply
+        the appropriate tags in their to_xml_doc implementation.
+
+        :return: a generic XML element named element based on the model data
+        """
         values = self.to_dict()
         element = Et.Element('element')
         for key, value in values.items():
@@ -144,7 +174,9 @@ class DescriptionBase:
 
     :param str text: the text value of the element
 
-    "1. Cover for me"
+    "1. Cover for me
+     2. Oh, good idea boss!
+     3. It was like that when I got here."
     """
     __slots__ = ('text', '_element_name')
     text: str
@@ -205,7 +237,7 @@ class DocBriefDescription(DescriptionBase):
 
     :param str text: the text value of the brief_description element
 
-    "2. Oh, good idea boss!"
+    “Facts are meaningless. You can use facts to prove anything that’s even remotely true.”
     """
     __slots__ = ()
 
@@ -220,7 +252,7 @@ class DocDescription(DescriptionBase):
 
     :param str text: the text value of the description element
 
-    "3. It was like that when I got here."
+    "Well, excuse me for having enormous flaws I don't work on"
     """
     __slots__ = ()
 

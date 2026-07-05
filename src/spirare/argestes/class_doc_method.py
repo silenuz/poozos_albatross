@@ -51,6 +51,11 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
         self.experimental = experimental
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this method element model instance.
+
+       :return: a dictionary of values for this method model instance.
+       """
         values = super().to_dict()
         if self.returns_errors is not None:
             values.update(self.returns_errors.to_dict())

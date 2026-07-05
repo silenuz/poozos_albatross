@@ -53,6 +53,11 @@ class ClassDocMember(ConstantMemberBase,Zucaritas):
         self.default = default
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this member element model instance.
+
+       :return: a dictionary of values for this member model instance.
+       """
         values = dict()
         if self.type_value is not None:
             values['type_value'] = self.type_value

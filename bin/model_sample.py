@@ -47,6 +47,8 @@ for file in files:
 
 files = output_folder.glob('*.json')
 
+## create model from json for all the json files created above
+## dump the model back to xml
 for file in files:
     ### instead of loading json first and then creating the model
     ### in this instance the model will be created directly from the file
