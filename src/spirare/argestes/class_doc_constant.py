@@ -28,6 +28,8 @@ class ClassDocConstant(ConstantMemberBase,Zucaritas):
     :param str experimental: The value of the experimental attribute for the constant element.
     :param str keywords: The value of the keywords attribute for the constant element.
     :param str value: The value of the value attribute for the constant element.
+
+    "Gentlemen, you can't fight in here!  This is the War Room!"
     """
     __slots__ = 'value'
     value: str

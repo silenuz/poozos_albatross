@@ -24,6 +24,8 @@ class ClassDocOperator(MethodReturnBase,Zucaritas):
     :param str qualifiers: The value of the qualifiers attribute for the operator element.
     :param DocParameters parameters: The value of the parameters element for the operator element.
     :param ClassDocReturn return_value: The value of the return_value element for the operator element.
+
+    "What we've got here is failure to communicate"
     """
     __slots__ = ()
 

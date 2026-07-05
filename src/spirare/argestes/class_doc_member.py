@@ -32,6 +32,8 @@ class ClassDocMember(ConstantMemberBase,Zucaritas):
     :param str setter: The value of the setter attribute for the member element.
     :param str overrides: The value of the overrides attribute for the member element.
     :param str default: The value of the default attribute for the member element.
+
+    "Open the pod bay doors, please, HAL"
     """
     __slots__ = ('type_value','getter','setter','overrides','default')
     type_value: str

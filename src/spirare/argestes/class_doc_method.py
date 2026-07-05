@@ -31,6 +31,8 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
     :param bool is_experimental: The value of the is_experimental attribute for the method element.
     :param str deprecated: The value of the deprecated attribute for the method element.
     :param str experimental: The value of the experimental attribute for the method element.
+
+    "Oh no it wasn't the airplanes.  It was Beauty that killed the Beast."
     """
     __slots__ = ('returns_errors','is_deprecated','is_experimental','deprecated','experimental')
     returns_errors: DocReturnErrorsList

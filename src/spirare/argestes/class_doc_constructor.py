@@ -23,6 +23,8 @@ class ClassDocConstructor(MethodReturnBase,Zucaritas):
     :param str qualifiers: The value of the qualifiers attribute for the constructor element.
     :param DocParameters parameters: The value of the parameters element for the constructor element.
     :param ClassDocReturn return_value: The value of the return_value element for the constructor element.
+
+    "Soylent Green is people!"
     """
     __slots__ = ()
 

@@ -48,6 +48,8 @@ class ClassDocModel(Zucaritas):
     :param str deprecated: The value of the deprecated attribute for this class element.
     :param str experimental: The value of the experimental attribute for this class element.
     :param str keywords: The value of the keywords attribute for this class element.
+
+    "Your going to need a bigger boat"
     """
     __slots__ = ('name', 'brief_description', 'description', 'tutorials', 'annotations', 'constructors','methods',
                  'members','signals','constants','operators','theme_items','inherits','api_type','version',

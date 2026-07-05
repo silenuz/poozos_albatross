@@ -26,6 +26,8 @@ class ClassDocThemeItem(Zucaritas):
     :param str keywords: The value of the keywords attribute for the theme_item element.
     :param str deprecated: The value of the deprecated attribute for the theme_item element.
     :param str experimental: The value of the experimental attribute for the theme_item element.
+
+    "There's no place like home"
     """
     __slots__ = ("name", "text", "data_type", "type_value", "default", "keywords", "deprecated", "experimental")
     name: str

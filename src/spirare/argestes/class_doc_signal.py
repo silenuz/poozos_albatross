@@ -26,6 +26,8 @@ class ClassDocSignal(MethodBase,Zucaritas):
     :param str deprecated: The value of the deprecated attribute for the signal element.
     :param bool is_experimental: The value of the is_experimental attribute for the signal element.
     :param str experimental: The value of the experimental attribute for the signal element.
+
+    "Well here's another nice mess you've gotten me into"
     """
     __slots__ = ('is_deprecated', 'deprecated','is_experimental','experimental')
     is_deprecated: bool
