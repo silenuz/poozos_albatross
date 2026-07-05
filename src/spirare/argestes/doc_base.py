@@ -15,39 +15,42 @@ import xml.etree.ElementTree as Et
 import json
 
 
-class JsonBase:
+class Zucaritas:
+    """
+    Cereal base for top level objects, providing serialization and deserialization between XML and JSON
+    """
+    attribute_map = dict()
+    """ map of attributes that were renamed, currently just type is renamed because it shadows a soft keyword in python"""
+    attribute_map['type'] = 'type_value'
+
     @classmethod
     def from_json(cls, json_data):
         raw_args = json.loads(json_data)
-        kwargs={}
-        for key,value in raw_args.items():
+        kwargs = {}
+        for key, value in raw_args.items():
             attrib_type = typing.get_type_hints(cls).get(key)
             if attrib_type is not None and hasattr(attrib_type, 'from_json'):
                 kwargs[key] = attrib_type.from_json(value)
             else:
                 kwargs[key] = value
 
-        return  cls(**kwargs)
+        return cls(**kwargs)
 
     def to_json(self):
-        return json.dumps(self.to_dict(),indent=4)
+        return json.dumps(self.to_dict(), indent=4)
 
-class GodotBase:
-    attribute_map = dict()
-    attribute_map['type'] = 'type_value'
-
-    def get_inner_markup(self,element: Et.Element) -> str:
+    def get_inner_markup(self, element: Et.Element) -> str:
         # 1. Grab the initial text chunk before any child tag
         parts = [element.text or ""]
         for child in element:
             # encoding="unicode" returns a standard python string instead of bytes
-            parts.append(Et.tostring(child, encoding="unicode").strip())
+            parts.append(Et.tostring(child, encoding="unicode"))
         return "".join(parts).strip()
 
     @classmethod
-    def from_xml(cls, element:Et.Element):
+    def from_xml(cls, element: Et.Element):
         kwargs = dict()
-        for key,value in element.attrib.items():
+        for key, value in element.attrib.items():
             if not 'http' in key:
                 if key in cls.attribute_map:
                     key = cls.attribute_map[key]
@@ -61,7 +64,7 @@ class GodotBase:
                     class_object.parameters = DocParameters()
                 class_object.parameters.append(ClassDocParameter.from_xml(e))
             else:
-                attr_type = typing.get_type_hints(class_object.__class__).get(e.tag)
+                attr_type = class_object.__annotations__.get(e.tag)
                 if attr_type is not None:
                     child = attr_type.from_xml(e)
                     setattr(class_object, e.tag, child)
@@ -70,31 +73,30 @@ class GodotBase:
     def _to_xml(self):
         values = self.to_dict()
         element = Et.Element('element')
-        for key,value in values.items():
+        for key, value in values.items():
             if key == 'text':
                 element.text = value
             else:
                 attr_type = typing.get_type_hints(self.__class__).get(key)
-                #attr_type = self.__annotations__.get(key)
+                # attr_type = self.__annotations__.get(key)
                 if attr_type is not None and not getattr(attr_type, '__module__', None) == 'builtins':
                     attr_instance = getattr(self, key, None)
-                    #print(attr_type)
+                    print(attr_type)
                     if attr_type == DocParameters:
                         params = attr_instance.to_xml_doc()
-                        if isinstance(params,Et.Element):
+                        if isinstance(params, Et.Element):
                             element.append(params)
                         else:
                             for param in params:
-                                #print("append parameter")
+                                print("append parameter")
                                 element.append(param)
                     elif hasattr(attr_instance, 'to_xml_doc'):
-                        #print("append element")
+                        print("append element")
                         sub_element = attr_instance.to_xml_doc()
-                        if sub_element is not None:
-                            element.append(sub_element)
+                        element.append(sub_element)
                 else:
-                    #print("key:: ", key)
-                    element.set(key,str(value))
+                    print("key:: ", key)
+                    element.set(key, str(value))
         return element
 
 
@@ -137,7 +139,7 @@ class DescriptionBase:
 
     :param str text: the text value of the element
     """
-    __slots__ = ('text','_element_name')
+    __slots__ = ('text', '_element_name')
     text: str
     """The text value of the element"""
     _element_name: str
@@ -169,9 +171,8 @@ class DescriptionBase:
         element.text = self.text
         return element
 
-
     @classmethod
-    def from_xml(cls,element: Et.Element):
+    def from_xml(cls, element: Et.Element):
         """
         Creates a description object from a Godot XML element
 
@@ -181,7 +182,7 @@ class DescriptionBase:
         return cls(text=element.text)
 
     @classmethod
-    def from_json(cls,json_data: str):
+    def from_json(cls, json_data: str):
         """
         Creates a description object from a JSON string
 
@@ -357,7 +358,7 @@ class MethodBase:
     :param str qualifiers: The value of the qualifiers attribute for this element.
     :param DocParameters parameters: The value of the parameters element for this element.
     """
-    __slots__ = ('name', 'description', 'qualifiers','parameters')
+    __slots__ = ('name', 'description', 'qualifiers', 'parameters')
     name: str
     """The value of the name attribute for this element"""
     description: DocDescription
@@ -367,7 +368,8 @@ class MethodBase:
     parameters: DocParameters
     """The DocParameters list representing the param elements for this element"""
 
-    def __init__(self, name: str, description: DocDescription = None, qualifiers:str = None, parameters: DocParameters = None) -> None:
+    def __init__(self, name: str, description: DocDescription = None, qualifiers: str = None,
+                 parameters: DocParameters = None) -> None:
         self.name = name
         """The value of the name attribute for this element"""
         self.description = description
@@ -378,9 +380,8 @@ class MethodBase:
         """The DocParameters list representing the param elements for this element"""
 
     def __post_init__(self):
-        if isinstance(self.description,str):
+        if isinstance(self.description, str):
             self.description = DocDescription(text=self.description)
-
 
     def to_dict(self) -> dict:
         """
@@ -414,12 +415,11 @@ class MethodReturnBase(MethodBase):
     return_value: ClassDocReturn
     """The value of the return_value element for this element"""
 
-    def __init__(self, name: str, description: DocDescription=None,qualifiers:str = None,
+    def __init__(self, name: str, description: DocDescription = None, qualifiers: str = None,
                  parameters: DocParameters = None, return_value: ClassDocReturn = None) -> None:
-        super().__init__(name=name, description=description, qualifiers=qualifiers,parameters=parameters)
+        super().__init__(name=name, description=description, qualifiers=qualifiers, parameters=parameters)
         self.return_value = return_value
         """The value of the return_value element for this element"""
-
 
     def to_dict(self) -> dict:
         """
@@ -433,6 +433,7 @@ class MethodReturnBase(MethodBase):
         values.update(super().to_dict())
         return values
 
+
 class ModelCollection(UserList):
     """A generic, reusable list that enforces types.  DO NOT USE DIRECTLY
     if your expecting from_json to work as it's meant to return a subclass
@@ -442,7 +443,7 @@ class ModelCollection(UserList):
         self.model_cls = model_cls  # Dynamically remember what type of object this list holds
         super().__init__(initlist)
         #if initlist is not None:
-            #self.extend(initlist)
+        #self.extend(initlist)
 
     # Intercept mutations to enforce the correct model type
     def append(self, item):
@@ -466,11 +467,10 @@ class ModelCollection(UserList):
 
     @classmethod
     def from_json(cls, model_cls, json_str: str):
-        data_list = json_str# json.loads(json_str)
+        data_list = json_str  # json.loads(json_str)
         # return cls(model_cls, [model_cls.from_dict(d) for d in data_list])
-        initial_list =  [model_cls.from_json(json.dumps(d)) for d in data_list]
+        initial_list = [model_cls.from_json(json.dumps(d)) for d in data_list]
         return cls(initial_list)
-
 
 
 #########################################################################################################################
@@ -478,7 +478,7 @@ class ModelCollection(UserList):
 #########################################################################################################################
 
 
-class ClassDocReturn(DocQualifierBase,JsonBase,GodotBase):
+class ClassDocReturn(DocQualifierBase, Zucaritas):
     """
     This class represents a model of the method return element of the class docs
     Note: type_value is used as the attribute here because type is a soft keyword in python.
@@ -508,7 +508,7 @@ class ClassDocReturn(DocQualifierBase,JsonBase,GodotBase):
         result.update(super().to_dict())
         return result
 
-    def to_xml_doc(self)->Et.Element:
+    def to_xml_doc(self) -> Et.Element:
         """
         Return the contents of the return object as a Godot documentation XML element
 
@@ -519,8 +519,7 @@ class ClassDocReturn(DocQualifierBase,JsonBase,GodotBase):
         return base_element
 
 
-
-class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
+class ClassDocParameter(ClassDocReturn, Zucaritas):
     """
     This class represents a model of the class doc's parameter element, used in signals, methods, etc...
     
@@ -540,7 +539,7 @@ class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
     """ The value of the default attribute for the parameter element."""
 
     def __init__(self, name: str, index: str = None, default: str = None, type_value: str = None, enum: str = None,
-        is_bitfield: bool = None) -> None:
+                 is_bitfield: bool = None) -> None:
         super().__init__(type_value=type_value, enum=enum, is_bitfield=is_bitfield)
         self.name = name
         """The value of the name attribute for the parameter element."""
@@ -565,7 +564,7 @@ class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
         result.update(super().to_dict())
         return result
 
-    def to_xml_doc(self)->Et.Element:
+    def to_xml_doc(self) -> Et.Element:
         """
         Return the contents of the parameter (param) object as a Godot documentation XML element
 
@@ -575,7 +574,8 @@ class ClassDocParameter(ClassDocReturn,JsonBase,GodotBase):
         base_element.tag = 'param'
         return base_element
 
-class ClassDocReturnError(JsonBase,GodotBase):
+
+class ClassDocReturnError(Zucaritas):
     """
     This class represents a model of the return error element of the class docs
 
@@ -598,8 +598,7 @@ class ClassDocReturnError(JsonBase,GodotBase):
         result = dict()
         result['number'] = self.number
 
-
-    def to_xml_doc(self)->Et.Element:
+    def to_xml_doc(self) -> Et.Element:
         """
         Return the contents of the returns_error object as a Godot documentation XML element
 
@@ -609,7 +608,8 @@ class ClassDocReturnError(JsonBase,GodotBase):
         base_element.tag = 'returns_error'
         return base_element
 
-class ClassDocTutorialLink(JsonBase, GodotBase):
+
+class ClassDocTutorialLink(Zucaritas):
     """
     This class represents a model of the class doc's tutorial link element
 
@@ -617,13 +617,13 @@ class ClassDocTutorialLink(JsonBase, GodotBase):
     :param str title: The value of the title attribute for this element.
 
     """
-    __slots__ = ('text','title')
+    __slots__ = ('text', 'title')
     text: str
     """URL link to the tutorial"""
     title: str
     """The title of the tutorial"""
 
-    def __init__(self, text: str=None, title: str=None) -> None:
+    def __init__(self, text: str = None, title: str = None) -> None:
         self.text = text
         """URL link to the tutorial"""
         self.title = title
@@ -642,7 +642,7 @@ class ClassDocTutorialLink(JsonBase, GodotBase):
             result['title'] = self.title
         return result
 
-    def to_xml_doc(self)->Et.Element:
+    def to_xml_doc(self) -> Et.Element:
         """
         Return the contents of the tutorial link object as a Godot documentation XML element
 
@@ -674,14 +674,14 @@ class DocReturnErrorsList(ModelCollection):
             result['returns_error'].append(error.to_dict())
         return result
 
-    def to_xml_doc(self)->list[Et.Element]:
+    def to_xml_doc(self) -> list[Et.Element]:
         """
         todo: fix missing implementation for this method
         :return:
         """
         elements = []
-        for parameter in self.data:
-            elements.append(parameter.to_xml_doc())
+        for return_error in self.data:
+            elements.append(return_error.to_xml_doc())
         return elements
 
     @classmethod
@@ -695,7 +695,7 @@ class DocReturnErrorsList(ModelCollection):
 
 
 class DocParameters(ModelCollection):
-    def __init__(self,initlist=None):
+    def __init__(self, initlist=None):
         super().__init__(ClassDocParameter, initlist)
 
     def new(self, **kwargs) -> ClassDocParameter:
@@ -715,7 +715,7 @@ class DocParameters(ModelCollection):
             result['parameters'].append(parameter.to_dict())
         return result
 
-    def to_xml_doc(self)->list[Et.Element]:
+    def to_xml_doc(self) -> list[Et.Element]:
         """
         Return the contents of this list of parameters, as a list of Godot XML param elements
 
@@ -737,10 +737,7 @@ class DocParameters(ModelCollection):
 
 
 class DocTutorials(ModelCollection):
-    """
-    todo: fix missing implementation for this method (to_xml doc)
-    """
-    def __init__(self,initlist=None):
+    def __init__(self, initlist=None):
         super().__init__(ClassDocTutorialLink, initlist)
 
     def new(self, **kwargs) -> ClassDocTutorialLink:
@@ -759,6 +756,12 @@ class DocTutorials(ModelCollection):
         for parameter in self.data:
             result['tutorials'].append(parameter.to_dict())
         return result
+
+    def to_xml_doc(self) -> Et.Element:
+        element = Et.Element('tutorials')
+        for tutorial_link in self.data:
+            element.append(tutorial_link.to_xml_doc())
+        return element
 
     @classmethod
     def from_json(cls, json_str: str):
