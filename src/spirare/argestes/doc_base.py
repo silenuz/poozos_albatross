@@ -282,7 +282,7 @@ class MemberBaseTags(MemberBase):
     :param str deprecated: The value of the deprecated attribute for this element.
     :param str experimental: The value of the experimental attribute for this element.
 
-    "If something goes wrong at the plant, blame the guy who can’t speak English."
+    "Trying is the first step towards failure"
     """
     __slots__ = ('is_deprecated', 'is_experimental', 'deprecated', 'experimental')
     is_deprecated: bool
