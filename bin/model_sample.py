@@ -29,6 +29,7 @@ if not output_folder.exists():
 
 ## Vector3i.xml has operators and constructors
 ## ScrollContainer.xml has theme items
+## PackedDataContainer.xml, ConfigFile.xml have returns_error
 ## can't find annotations anywhere ?
 files = input_folder.glob('*.xml')
 

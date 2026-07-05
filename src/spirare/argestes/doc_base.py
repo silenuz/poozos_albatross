@@ -17,7 +17,10 @@ import json
 
 class Zucaritas:
     """
-    Cereal base for top level objects, providing serialization and deserialization between XML and JSON
+    Cereal base for top level objects, providing serialization and deserialization between XML and JSON,
+    for Godot documentation elements.
+
+    “Facts are meaningless. You can use facts to prove anything that’s even remotely true.”
     """
     attribute_map = dict()
     """ map of attributes that were renamed, currently just type is renamed because it shadows a soft keyword in python"""
@@ -64,7 +67,7 @@ class Zucaritas:
                     class_object.parameters = DocParameters()
                 class_object.parameters.append(ClassDocParameter.from_xml(e))
             else:
-                attr_type = class_object.__annotations__.get(e.tag)
+                attr_type = typing.get_type_hints(class_object.__class__).get(e.tag)
                 if attr_type is not None:
                     child = attr_type.from_xml(e)
                     setattr(class_object, e.tag, child)
@@ -81,21 +84,21 @@ class Zucaritas:
                 # attr_type = self.__annotations__.get(key)
                 if attr_type is not None and not getattr(attr_type, '__module__', None) == 'builtins':
                     attr_instance = getattr(self, key, None)
-                    print(attr_type)
+                    # print(attr_type)
                     if attr_type == DocParameters:
                         params = attr_instance.to_xml_doc()
                         if isinstance(params, Et.Element):
                             element.append(params)
                         else:
                             for param in params:
-                                print("append parameter")
+                                # print("append parameter")
                                 element.append(param)
                     elif hasattr(attr_instance, 'to_xml_doc'):
-                        print("append element")
+                        # print("append element")
                         sub_element = attr_instance.to_xml_doc()
-                        element.append(sub_element)
+                        if sub_element is not None:
+                            element.append(sub_element)
                 else:
-                    print("key:: ", key)
                     element.set(key, str(value))
         return element
 
@@ -106,6 +109,8 @@ class DocQualifierBase:
 
     :param str enum: enum attribute value
     :param bool is_bitfield: is_bitfield attribute value
+
+    "Operator! Give me the number for 911!"
     """
     __slots__ = ('enum', 'is_bitfield')
     enum: str
@@ -138,6 +143,8 @@ class DescriptionBase:
     Base class for description elements such as description and brief_description
 
     :param str text: the text value of the element
+
+    "1. Cover for me"
     """
     __slots__ = ('text', '_element_name')
     text: str
@@ -197,6 +204,8 @@ class DocBriefDescription(DescriptionBase):
     Model for brief_description elements
 
     :param str text: the text value of the brief_description element
+
+    "2. Oh, good idea boss!"
     """
     __slots__ = ()
 
@@ -210,6 +219,8 @@ class DocDescription(DescriptionBase):
     Model for description elements
 
     :param str text: the text value of the description element
+
+    "3. It was like that when I got here."
     """
     __slots__ = ()
 
@@ -226,6 +237,8 @@ class MemberBase(DocQualifierBase):
     :param bool is_bitfield: The value of the is_bitfield attribute for this element.
     :param str name: The value of the name attribute for this element.
     :param str text: The text value for this element.
+
+    "Oh, people can come up with statistics to prove anything, Kent. 14% of people know that."
     """
     __slots__ = ('name', 'text')
     name: str
@@ -268,6 +281,8 @@ class MemberBaseTags(MemberBase):
     :param bool is_experimental: The value of the is_experimental attribute for this element.
     :param str deprecated: The value of the deprecated attribute for this element.
     :param str experimental: The value of the experimental attribute for this element.
+
+    "If something goes wrong at the plant, blame the guy who can’t speak English."
     """
     __slots__ = ('is_deprecated', 'is_experimental', 'deprecated', 'experimental')
     is_deprecated: bool
@@ -323,6 +338,9 @@ class ConstantMemberBase(MemberBaseTags):
     :param str deprecated: The value of the deprecated attribute for this element.
     :param str experimental: The value of the experimental attribute for this element.
     :param str keywords: The value of the keywords attribute for this element.
+
+    " I think Smithers picked me because of my motivational skills.
+    Everyone says they have to work a lot harder when I’m around."
     """
     __slots__ = 'keywords'
     keywords: str
@@ -357,6 +375,8 @@ class MethodBase:
     :param DocDescription description: The value of the description element for this element.
     :param str qualifiers: The value of the qualifiers attribute for this element.
     :param DocParameters parameters: The value of the parameters element for this element.
+
+    "If something’s hard to do, then it’s not worth doing"
     """
     __slots__ = ('name', 'description', 'qualifiers', 'parameters')
     name: str
@@ -410,6 +430,8 @@ class MethodReturnBase(MethodBase):
     :param str qualifiers: The value of the qualifiers attribute for this element.
     :param DocParameters parameters: The value of the parameters element for this element.
     :param ClassDocReturn return_value: The value of the return_value element for this element.
+
+    " ‘To Start Press Any Key’. Where’s the ANY key?"
     """
     __slots__ = 'return_value'
     return_value: ClassDocReturn
@@ -435,9 +457,11 @@ class MethodReturnBase(MethodBase):
 
 
 class ModelCollection(UserList):
-    """A generic, reusable list that enforces types.  DO NOT USE DIRECTLY
+    """
+    A generic, reusable list that enforces types.  DO NOT USE DIRECTLY
     if your expecting from_json to work as it's meant to return a subclass
-    of this class"""
+    of this class
+    """
 
     def __init__(self, model_cls, initlist=None):
         self.model_cls = model_cls  # Dynamically remember what type of object this list holds
@@ -486,6 +510,8 @@ class ClassDocReturn(DocQualifierBase, Zucaritas):
     :param str enum: The value of the enum attribute for return element.
     :param bool is_bitfield: The value of the is_bitfield attribute for return element.
     :param str type_value: The value of the type attribute for return element.
+
+
     """
     __slots__ = 'type_value'
     type_value: str
