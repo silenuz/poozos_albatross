@@ -11,10 +11,10 @@
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
-from .doc_base import ConstantMemberBase, JsonBase, ModelCollection, GodotBase
+from .doc_base import ConstantMemberBase, ModelCollection, Zucaritas
 
 
-class ClassDocConstant(ConstantMemberBase,JsonBase, GodotBase):
+class ClassDocConstant(ConstantMemberBase,Zucaritas):
     """
     This class represents a model of the godot docs constant element
     

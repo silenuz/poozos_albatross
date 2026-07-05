@@ -21,10 +21,10 @@ from .class_doc_method import DocMethods
 from .class_doc_operator import DocOperators
 from .class_doc_signal import DocSignals
 from .class_doc_theme_item import DocThemeItems
-from .doc_base import JsonBase, GodotBase, DocTutorials, DocBriefDescription, DocDescription
+from .doc_base import DocTutorials, DocBriefDescription, DocDescription, Zucaritas
 
 
-class ClassDocModel(JsonBase,GodotBase):
+class ClassDocModel(Zucaritas):
     """
     This class represents a model of the root class element of the Godot doc xml.
 

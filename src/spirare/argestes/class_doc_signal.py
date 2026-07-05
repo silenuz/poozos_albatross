@@ -11,10 +11,10 @@
 from xml.etree import ElementTree as Et
 from xml.etree.ElementTree import Element
 
-from .doc_base import MethodBase, JsonBase, ModelCollection, GodotBase, DocParameters, DocDescription
+from .doc_base import MethodBase,ModelCollection, DocParameters, DocDescription, Zucaritas
 
 
-class ClassDocSignal(MethodBase,JsonBase,GodotBase):
+class ClassDocSignal(MethodBase,Zucaritas):
     """
     This class represents a model of the class doc's signal element
     

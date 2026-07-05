@@ -11,10 +11,10 @@
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
-from .doc_base import MethodReturnBase, ModelCollection, DocParameters, JsonBase, GodotBase, DocDescription
+from .doc_base import MethodReturnBase, ModelCollection, DocParameters, DocDescription, Zucaritas
 
 
-class ClassDocConstructor(MethodReturnBase,JsonBase, GodotBase):
+class ClassDocConstructor(MethodReturnBase,Zucaritas):
     """
     This class represents a model of the class docs constructor element
     

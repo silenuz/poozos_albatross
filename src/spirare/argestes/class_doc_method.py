@@ -13,10 +13,10 @@ from xml.etree import ElementTree as Et
 
 from . import ClassDocReturn
 from .class_doc_annotation import ClassDocAnnotation
-from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, JsonBase, GodotBase, DocDescription
+from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, DocDescription, Zucaritas
 
 
-class ClassDocMethod(ClassDocAnnotation,JsonBase,GodotBase):
+class ClassDocMethod(ClassDocAnnotation,Zucaritas):
     """
     This class represents a model of the class doc's method element
     

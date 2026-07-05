@@ -11,11 +11,11 @@
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
-from .doc_base import MethodReturnBase, ClassDocParameter, ModelCollection, JsonBase, GodotBase, DocParameters, \
-    DocDescription
+from .doc_base import MethodReturnBase, ClassDocParameter, ModelCollection, DocParameters, \
+    DocDescription, Zucaritas
 
 
-class ClassDocOperator(MethodReturnBase,JsonBase,GodotBase):
+class ClassDocOperator(MethodReturnBase,Zucaritas):
     """
     This class represents a model of the class doc's operator element
     

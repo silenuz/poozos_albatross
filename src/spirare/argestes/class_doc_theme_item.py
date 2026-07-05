@@ -11,10 +11,10 @@
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
-from .doc_base import ModelCollection, JsonBase, GodotBase
+from .doc_base import ModelCollection, Zucaritas
 
 
-class ClassDocThemeItem(JsonBase, GodotBase):
+class ClassDocThemeItem(Zucaritas):
     """
     This class represents a model of the class doc's theme_item element
     
