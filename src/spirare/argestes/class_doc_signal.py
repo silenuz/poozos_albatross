@@ -36,9 +36,9 @@ class ClassDocSignal(MethodBase,Zucaritas):
     experimental: str
 
     def __init__(self,name:str,description:DocDescription=DocDescription(), parameters:DocParameters=None,
-                 is_deprecated: bool=None, deprecated: str = None, is_experimental: bool=None,
+                 qualifiers: str = None, is_deprecated: bool=None, deprecated: str = None, is_experimental: bool=None,
                  experimental: str=None) -> None:
-        super().__init__(name=name,description=description,parameters=parameters)
+        super().__init__(name=name,description=description,parameters=parameters,qualifiers=qualifiers)
         self.is_deprecated = is_deprecated
         self.deprecated = deprecated
         self.is_experimental = is_experimental
