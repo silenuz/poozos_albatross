@@ -11,6 +11,7 @@
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
+from . import ClassDocReturn
 from .doc_base import MethodReturnBase, ClassDocParameter, ModelCollection, DocParameters, \
     DocDescription, Zucaritas
 
@@ -29,8 +30,10 @@ class ClassDocOperator(MethodReturnBase,Zucaritas):
     """
     __slots__ = ()
 
-    def __init__(self, name:str, description:DocDescription=DocDescription(),qualifiers:str=None ,parameters: DocParameters = None):
-        MethodReturnBase.__init__(self, name=name, description=description,qualifiers=qualifiers, parameters=parameters)
+    def __init__(self, name:str, description:DocDescription=DocDescription(),qualifiers:str=None ,
+                 return_value: ClassDocReturn = None,parameters: DocParameters = None):
+        MethodReturnBase.__init__(self, name=name, description=description,qualifiers=qualifiers,
+                                  parameters=parameters,return_value=return_value)
 
 
     def to_xml_doc(self)->Element:
