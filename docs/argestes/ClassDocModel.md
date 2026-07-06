@@ -33,7 +33,7 @@ ClassDocModel
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | dict | to_dict |  |
 | Element | to_xml_doc |  |

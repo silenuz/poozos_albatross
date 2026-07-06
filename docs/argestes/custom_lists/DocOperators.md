@@ -3,7 +3,7 @@ DocOperators
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocOperator | new |  |
 | dict | to_dict |  |

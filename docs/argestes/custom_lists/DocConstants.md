@@ -3,7 +3,7 @@ DocConstants
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocConstant | new |  |
 | dict | to_dict |  |

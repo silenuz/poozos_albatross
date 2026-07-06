@@ -3,7 +3,7 @@ DocMembers
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocMember | new |  |
 | dict | to_dict |  |

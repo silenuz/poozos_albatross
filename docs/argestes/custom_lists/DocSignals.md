@@ -3,7 +3,7 @@ DocSignals
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocSignal | new |  |
 | dict | to_dict |  |

@@ -23,7 +23,7 @@ Everyone says they have to work a lot harder when I’m around."
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | dict | to_dict |  |
 

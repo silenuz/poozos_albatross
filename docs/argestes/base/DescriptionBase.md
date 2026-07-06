@@ -16,7 +16,7 @@ DescriptionBase
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | dict | to_dict |  |
 | None | to_xml_doc |  |

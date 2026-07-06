@@ -3,7 +3,7 @@ DocThemeItems
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocThemeItem | new |  |
 | dict | to_dict |  |

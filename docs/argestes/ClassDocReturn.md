@@ -15,7 +15,7 @@ Note: type_value is used as the attribute here because type is a soft keyword in
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | dict | to_dict |  |
 | Et.Element | to_xml_doc |  |

@@ -3,7 +3,7 @@ DocAnnotations
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocAnnotation | new |  |
 | dict | to_dict |  |

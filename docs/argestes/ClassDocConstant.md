@@ -23,7 +23,7 @@ ClassDocConstant
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | None | to_dict |  |
 | Element | to_xml_doc |  |

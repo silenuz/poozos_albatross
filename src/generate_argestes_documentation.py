@@ -166,7 +166,7 @@ def generate_output():
             has_methods = True
             section_title = '## Methods:'
             doc_content.append(f'\n\n{section_title}\n')
-            method_table = make_markdown_table(['type','name'],class_doc['methods'])
+            method_table = make_markdown_table(['Return','Name'],class_doc['methods'])
             doc_content.append(f'\n{method_table}')
         if has_params:
             section_title = '## Attribute Descriptions:'

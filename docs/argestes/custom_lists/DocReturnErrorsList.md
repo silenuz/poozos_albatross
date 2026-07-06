@@ -3,7 +3,7 @@ DocReturnErrorsList
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocReturnError | new |  |
 | dict | to_dict |  |

@@ -3,7 +3,7 @@ DocTutorials
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocTutorialLink | new |  |
 | dict | to_dict |  |

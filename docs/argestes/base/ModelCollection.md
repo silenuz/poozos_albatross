@@ -7,7 +7,7 @@ of this class
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | None | append |  |
 | None | insert |  |

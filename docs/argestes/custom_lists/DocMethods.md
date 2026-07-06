@@ -3,7 +3,7 @@ DocMethods
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocMethod | new |  |
 | dict | to_dict |  |

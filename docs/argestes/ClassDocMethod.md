@@ -24,7 +24,7 @@ ClassDocMethod
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | dict | to_dict |  |
 | Et.Element | to_xml_doc |  |

@@ -3,7 +3,7 @@ DocConstructors
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocConstructor | new |  |
 | dict | to_dict |  |

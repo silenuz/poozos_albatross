@@ -18,7 +18,7 @@ ClassDocConstructor
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | Element | to_xml_doc |  |
 

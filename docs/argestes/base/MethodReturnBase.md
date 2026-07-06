@@ -18,7 +18,7 @@ MethodReturnBase
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | dict | to_dict |  |
 

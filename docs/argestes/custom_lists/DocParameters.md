@@ -3,7 +3,7 @@ DocParameters
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | ClassDocParameter | new |  |
 | dict | to_dict |  |

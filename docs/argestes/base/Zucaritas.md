@@ -8,7 +8,7 @@ for Godot documentation elements.
 
 ## Methods:
 
-| type | name |
+| Return | Name |
 | --- | --- |
 | None | from_json |  |
 | str | to_json |  |
