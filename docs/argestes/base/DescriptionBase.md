@@ -19,7 +19,7 @@ DescriptionBase
 | Return | Name |
 | --- | --- |
 | dict | to_dict |  |
-| None | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 | None | from_xml |  |
 | None | from_json |  |
 

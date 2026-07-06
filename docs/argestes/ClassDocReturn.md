@@ -18,7 +18,7 @@ Note: type_value is used as the attribute here because type is a soft keyword in
 | Return | Name |
 | --- | --- |
 | dict | to_dict |  |
-| Et.Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 
 ## Attribute Descriptions:
 

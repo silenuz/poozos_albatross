@@ -13,7 +13,7 @@ import typing
 from collections import UserList
 import xml.etree.ElementTree as Et
 import json
-
+import xml
 
 class Zucaritas:
     """
@@ -53,7 +53,7 @@ class Zucaritas:
         """
         return json.dumps(self.to_dict(), indent=4)
 
-    def get_inner_markup(self, element: Et.Element) -> str:
+    def get_inner_markup(self,element: xml.etree.ElementTree.Element) -> str:
         """
         Gets the text content of an XML element  by iterating the markup and creating a single
         string
@@ -69,7 +69,7 @@ class Zucaritas:
         return "".join(parts).strip()
 
     @classmethod
-    def from_xml(cls, element: Et.Element):
+    def from_xml(cls,element: xml.etree.ElementTree.Element):
         """
         Creates this model from a Godot class documentation XML element
 
@@ -97,7 +97,7 @@ class Zucaritas:
                     setattr(class_object, e.tag, child)
         return class_object
 
-    def _to_xml(self)->Et.Element:
+    def _to_xml(self)->xml.etree.ElementTree.Element:
         """
         Internal method used to convert this model to generic XML, so the child class can apply
         the appropriate tags in their to_xml_doc implementation.
@@ -200,7 +200,7 @@ class DescriptionBase:
         """
         return {self._element_name: self.text}
 
-    def to_xml_doc(self):
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         """
         Return the contents of the description as a Godot documentation XML element
 
@@ -211,7 +211,7 @@ class DescriptionBase:
         return element
 
     @classmethod
-    def from_xml(cls, element: Et.Element):
+    def from_xml(cls,element: xml.etree.ElementTree.Element):
         """
         Creates a description object from a Godot XML element
 
@@ -566,7 +566,7 @@ class ClassDocReturn(DocQualifierBase, Zucaritas):
         result.update(super().to_dict())
         return result
 
-    def to_xml_doc(self) -> Et.Element:
+    def to_xml_doc(self) -> xml.etree.ElementTree.Element:
         """
         Return the contents of the return object as a Godot documentation XML element
 
@@ -622,7 +622,7 @@ class ClassDocParameter(ClassDocReturn, Zucaritas):
         result.update(super().to_dict())
         return result
 
-    def to_xml_doc(self) -> Et.Element:
+    def to_xml_doc(self) -> xml.etree.ElementTree.Element:
         """
         Return the contents of the parameter (param) object as a Godot documentation XML element
 
@@ -656,7 +656,7 @@ class ClassDocReturnError(Zucaritas):
         result = dict()
         result['number'] = self.number
 
-    def to_xml_doc(self) -> Et.Element:
+    def to_xml_doc(self) -> xml.etree.ElementTree.Element:
         """
         Return the contents of the returns_error object as a Godot documentation XML element
 
@@ -700,7 +700,7 @@ class ClassDocTutorialLink(Zucaritas):
             result['title'] = self.title
         return result
 
-    def to_xml_doc(self) -> Et.Element:
+    def to_xml_doc(self) -> xml.etree.ElementTree.Element:
         """
         Return the contents of the tutorial link object as a Godot documentation XML element
 
@@ -732,7 +732,7 @@ class DocReturnErrorsList(ModelCollection):
             result['returns_error'].append(error.to_dict())
         return result
 
-    def to_xml_doc(self) -> list[Et.Element]:
+    def to_xml_doc(self) -> list[xml.etree.ElementTree.Element]:
         """
         todo: fix missing implementation for this method
         :return:
@@ -747,7 +747,7 @@ class DocReturnErrorsList(ModelCollection):
         return super().from_json(ClassDocReturnError, json_str)
 
     @classmethod
-    def from_xml(cls, element: Et.Element):
+    def from_xml(cls,element: xml.etree.ElementTree.Element):
         initial_list = [ClassDocReturnError.from_xml(e) for e in element]
         return cls(initial_list)
 
@@ -773,7 +773,7 @@ class DocParameters(ModelCollection):
             result['parameters'].append(parameter.to_dict())
         return result
 
-    def to_xml_doc(self) -> list[Et.Element]:
+    def to_xml_doc(self) -> list[xml.etree.ElementTree.Element]:
         """
         Return the contents of this list of parameters, as a list of Godot XML param elements
 
@@ -789,7 +789,7 @@ class DocParameters(ModelCollection):
         return super().from_json(ClassDocParameter, json_str)
 
     @classmethod
-    def from_xml(cls, element: Et.Element):
+    def from_xml(cls,element: xml.etree.ElementTree.Element):
         initial_list = [ClassDocParameter.from_xml(e) for e in element]
         return cls(initial_list)
 
@@ -815,7 +815,7 @@ class DocTutorials(ModelCollection):
             result['tutorials'].append(parameter.to_dict())
         return result
 
-    def to_xml_doc(self) -> Et.Element:
+    def to_xml_doc(self) -> xml.etree.ElementTree.Element:
         element = Et.Element('tutorials')
         for tutorial_link in self.data:
             element.append(tutorial_link.to_xml_doc())
@@ -826,6 +826,6 @@ class DocTutorials(ModelCollection):
         return super().from_json(ClassDocTutorialLink, json_str)
 
     @classmethod
-    def from_xml(cls, element: Et.Element):
+    def from_xml(cls,element: xml.etree.ElementTree.Element):
         initial_list = [ClassDocTutorialLink.from_xml(e) for e in element]
         return cls(initial_list)

@@ -7,7 +7,7 @@ DocTutorials
 | --- | --- |
 | ClassDocTutorialLink | new |  |
 | dict | to_dict |  |
-| Et.Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 | None | from_json |  |
 | None | from_xml |  |
 

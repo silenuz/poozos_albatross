@@ -20,7 +20,7 @@ ClassDocParameter
 | Return | Name |
 | --- | --- |
 | dict | to_dict |  |
-| Et.Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 
 ## Attribute Descriptions:
 
