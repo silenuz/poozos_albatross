@@ -13,3 +13,18 @@ of this class
 | None | insert |  |
 | str | to_json |  |
 | None | from_json |  |
+
+## Method Descriptions:
+
+### append
+
+Method Not Documented Yet
+### insert
+
+Method Not Documented Yet
+### to_json
+
+Method Not Documented Yet
+### from_json
+
+Method Not Documented Yet

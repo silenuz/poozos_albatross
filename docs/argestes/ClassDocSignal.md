@@ -52,3 +52,14 @@ The value of the is_experimental attribute for the signal element.
 ### experimental
 
 The value of the experimental attribute for the signal element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary of the values for this signal element model instance.
+
+:return: a dictionary of values for this signal model instance.
+### to_xml_doc
+
+Method Not Documented Yet

@@ -14,7 +14,7 @@ ClassDocOperator
 | [DocDescription](./custom_lists/DocDescription.md) | [description](#description) | DocDescription() |
 | str | [qualifiers](#qualifiers) | None |
 | [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
-| [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) |  |
+| [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) | None |
 
 ## Methods:
 
@@ -39,3 +39,9 @@ The value of the parameters element for the operator element.
 ### return_value
 
 The value of the return_value element for the operator element.
+
+## Method Descriptions:
+
+### to_xml_doc
+
+Method Not Documented Yet

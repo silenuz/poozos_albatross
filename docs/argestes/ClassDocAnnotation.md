@@ -42,3 +42,18 @@ The value of the return_value element for the annotation element.
 ### keywords
 
 The value of the keywords attribute for the annotation element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary of the values for this annotation element model instance.
+
+:return: a dictionary of values for this annotation model instance.
+### to_xml_doc
+
+Create a Godot class doc element for this annotation model instance.
+
+Schema:
+
+:return:

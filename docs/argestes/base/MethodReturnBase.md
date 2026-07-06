@@ -39,3 +39,11 @@ The value of the parameters element for this element.
 ### return_value
 
 The value of the return_value element for this element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary representation of this object.
+
+:return: a dictionary of values for this object

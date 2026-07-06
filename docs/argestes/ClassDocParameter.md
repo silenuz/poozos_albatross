@@ -42,3 +42,16 @@ The value of the name attribute for the parameter element.
 ### default
 
 The value of the default attribute for the parameter element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary representation of this object.
+
+:return: a dictionary of values for this object
+### to_xml_doc
+
+Return the contents of the parameter (param) object as a Godot documentation XML element
+
+:return: this parameter object as a Godot XML element

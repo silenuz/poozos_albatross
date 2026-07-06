@@ -64,3 +64,14 @@ The value of the deprecated attribute for the method element.
 ### experimental
 
 The value of the experimental attribute for the method element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary of the values for this method element model instance.
+
+:return: a dictionary of values for this method model instance.
+### to_xml_doc
+
+Method Not Documented Yet

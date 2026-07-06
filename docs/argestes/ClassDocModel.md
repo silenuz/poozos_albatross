@@ -101,3 +101,17 @@ The value of the experimental attribute for this class element.
 ### keywords
 
 The value of the keywords attribute for this class element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary of the values for this class doc root element model instance.
+
+:return: a dictionary of values for this class doc root model instance.
+### to_xml_doc
+
+Method Not Documented Yet
+### from_file
+
+Method Not Documented Yet

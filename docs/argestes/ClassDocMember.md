@@ -76,3 +76,14 @@ The value of the overrides attribute for the member element.
 ### default
 
 The value of the default attribute for the member element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary of the values for this member element model instance.
+
+:return: a dictionary of values for this member model instance.
+### to_xml_doc
+
+Method Not Documented Yet

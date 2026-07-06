@@ -60,3 +60,14 @@ The value of the keywords attribute for the constant element.
 ### value
 
 The value of the value attribute for the constant element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary of the values for this constant element model instance.
+
+:return: a dictionary of values for this constant model instance.
+### to_xml_doc
+
+Method Not Documented Yet

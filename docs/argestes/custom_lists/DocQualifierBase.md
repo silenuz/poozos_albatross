@@ -27,3 +27,11 @@ enum attribute value
 ### is_bitfield
 
 is_bitfield attribute value
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary representation of this object.
+
+:return: a dictionary of values for this object

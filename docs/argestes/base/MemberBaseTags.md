@@ -51,3 +51,11 @@ The value of the deprecated attribute for this element.
 ### experimental
 
 The value of the experimental attribute for this element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary representation of this object.
+
+:return: a dictionary of values for this object

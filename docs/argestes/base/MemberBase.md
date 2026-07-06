@@ -35,3 +35,11 @@ The value of the name attribute for this element.
 ### text
 
 The text value for this element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary representation of this object.
+
+:return: a dictionary of values for this object

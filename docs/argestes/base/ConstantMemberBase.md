@@ -56,3 +56,11 @@ The value of the experimental attribute for this element.
 ### keywords
 
 The value of the keywords attribute for this element.
+
+## Method Descriptions:
+
+### to_dict
+
+Returns a dictionary representation of this object.
+
+:return: a dictionary of values for this object

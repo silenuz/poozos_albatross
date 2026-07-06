@@ -6,13 +6,16 @@
 @Date: 7/2/26
 @File: gen_docs
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
+
+“Life is full of questions. Idiots are full of answers.”
+
+todo: this script has become a mess.  If i'm going to include I should at least make it a little less Ugly
 """
 import ast
-import os
 import re
-from os import MFD_ALLOW_SEALING
 from pathlib import Path
+
 
 # Get the absolute path to this script
 script_path = Path(__file__).resolve()
@@ -121,6 +124,9 @@ def extract_docs_from_file(filepath: Path, rel_path: Path):
                             method_values['type'] = 'None'
                         if method_doc:
                             method_values['description'] = method_doc
+                        else:
+                            method_values['description'] = 'Method Not Documented Yet'
+
                         classes[child.name]['methods'][sub_child.name] = method_values
 
 
@@ -177,6 +183,18 @@ def generate_output():
                 print("Title: " , section_title)
                 doc_content.append(f'{section_title}')
                 description = parameter['description'].strip()
+                print("Description: ",description)
+                doc_content.append(f'\n{description}')
+                print("\n".join(doc_content))
+        if has_methods:
+            section_title = '## Method Descriptions:'
+            doc_content.append(f'\n\n{section_title}\n')
+            for meth in class_doc['methods']:
+                method = class_doc['methods'][meth]
+                section_title = f'\n### {method['name']}\n'
+                print("Title: " , section_title)
+                doc_content.append(f'{section_title}')
+                description = method['description'].strip()
                 print("Description: ",description)
                 doc_content.append(f'\n{description}')
                 print("\n".join(doc_content))
