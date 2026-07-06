@@ -11,12 +11,15 @@
 import ast
 import os
 import re
+from os import MFD_ALLOW_SEALING
 from pathlib import Path
 
 # Get the absolute path to this script
 script_path = Path(__file__).resolve()
 PACKAGE_DIR = script_path.parent / 'spirare' / 'argestes'
-OUTPUT_DIR = script_path.parent / 'docs' / 'argestes'
+OUTPUT_DIR = script_path.parent.parent / 'docs' / 'argestes'
+BASE_DIRECTORY = OUTPUT_DIR / 'base'
+LIST_DIRECTORY = OUTPUT_DIR / 'custom_lists'
 classes = dict()
 
 
@@ -49,7 +52,8 @@ def process_class_definition(class_name: str, docstring: str):
             if not 'parameters' in classes[class_name]:
                 classes[class_name]['parameters'] = dict()
             parameter_values = dict()
-            parameter_values['name'] = name
+            parameter_values['name'] = f'[{name}](#{name})'
+            parameter_values['title'] = name
             parameter_values['description'] = description
             parameter_values['type'] = type_value
             classes[class_name]['parameters'][name] = parameter_values
@@ -58,7 +62,7 @@ def process_class_definition(class_name: str, docstring: str):
             if not 'description' in classes[class_name]:
                 classes[class_name]['description'] = value
             else:
-                classes[class_name]['description'] += ' ' + value
+                classes[class_name]['description'] += '\n' + value
 
 
 def extract_docs_from_file(filepath: Path, rel_path: Path):
@@ -106,13 +110,18 @@ def extract_docs_from_file(filepath: Path, rel_path: Path):
                                     classes[child.name]['parameters'][arg_name]['default'] = ast.unparse(default_node)
                     elif not sub_child.name.startswith("_"):
                         if 'methods' not in classes[child.name]:
-                            classes[child.name]['methods'] = []
+                            classes[child.name]['methods'] = dict()
                         method_doc = ast.get_docstring(sub_child)
                         method_values = dict()
                         method_values['name'] = sub_child.name
+                        if sub_child.returns:
+                            return_type_string = ast.unparse(sub_child.returns)
+                            method_values['type'] = return_type_string
+                        else:
+                            method_values['type'] = 'None'
                         if method_doc:
                             method_values['description'] = method_doc
-                        classes[child.name]['methods'].append(method_values)
+                        classes[child.name]['methods'][sub_child.name] = method_values
 
 
 def make_markdown_table(columns, rows)->str:
@@ -142,15 +151,44 @@ def generate_output():
         class_doc = classes[class_item]
         doc_content.append(f'{class_item}\n' )
         doc_content.append('=' * len(class_item))
+        has_params = False
+        has_methods = False
+
         if 'description' in class_doc:
             doc_content.append(f"\n\n {class_doc['description']}")
         if 'parameters' in class_doc:
-            section_title = 'Attributes / Parameters:'
+            has_params = True
+            section_title = '## Attributes / Parameters:'
             doc_content.append(f'\n\n{section_title}\n')
-            doc_content.append('-' * len(section_title))
             attribute_table = make_markdown_table(['Type','Name','Default'],class_doc['parameters'])
             doc_content.append(f'\n{attribute_table}')
-        print("".join(doc_content))
+        if 'methods' in class_doc:
+            has_methods = True
+            section_title = '## Methods:'
+            doc_content.append(f'\n\n{section_title}\n')
+            method_table = make_markdown_table(['type','name'],class_doc['methods'])
+            doc_content.append(f'\n{method_table}')
+        if has_params:
+            section_title = '## Attribute Descriptions:'
+            doc_content.append(f'\n\n{section_title}\n')
+            for param in class_doc['parameters']:
+                parameter = class_doc['parameters'][param]
+                section_title = f'\n### {parameter['title']}\n'
+                print("Title: " , section_title)
+                doc_content.append(f'{section_title}')
+                description = parameter['description'].strip()
+                print("Description: ",description)
+                doc_content.append(f'\n{description}')
+                print("\n".join(doc_content))
+
+        if class_item.startswith('Class'):
+            file = OUTPUT_DIR / f'{class_item}.md'
+        elif class_item.startswith('Doc'):
+            file = LIST_DIRECTORY / f'{class_item}.md'
+        else:
+            file = BASE_DIRECTORY / f'{class_item}.md'
+
+        file.write_text("".join(doc_content), encoding="utf-8")
 
 def generate_docs():
     pkg_path = PACKAGE_DIR

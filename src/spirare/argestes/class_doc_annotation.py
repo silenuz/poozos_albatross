@@ -4,7 +4,7 @@
 """
 @Project: poozos_albatross
 @Date: 6/22/26
-@File: ClassDocAnnotation
+@File: ClassDocAnnotation.md
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
@@ -28,11 +28,13 @@ class ClassDocAnnotation(MethodReturnBase,Zucaritas):
     """
     __slots__ = ['keywords']
     keywords: str
+    """The value of the keywords attribute for the annotation element."""
 
     def __init__(self, name: str, description: DocDescription=DocDescription(),qualifiers:str=None,
                  parameters: DocParameters = None,return_value: ClassDocReturn = None, keywords:str=None):
         MethodReturnBase.__init__(self, name=name, description=description, qualifiers=qualifiers,parameters=parameters, return_value=return_value)
         self.keywords = keywords
+        """The value of the keywords attribute for the annotation element."""
 
     def to_dict(self) -> dict:
         """
@@ -46,6 +48,13 @@ class ClassDocAnnotation(MethodReturnBase,Zucaritas):
         return values
 
     def to_xml_doc(self)->Element:
+        """
+        Create a Godot class doc element for this annotation model instance.
+
+        Schema:
+
+        :return:
+        """
         base_element = self._to_xml()
         base_element.tag = 'annotation'
         return base_element
