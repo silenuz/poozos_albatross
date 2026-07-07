@@ -9,6 +9,7 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 import json
+import xml
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 from pathlib import Path
@@ -192,7 +193,12 @@ class ClassDocModel(Zucaritas):
             result['experimental'] = self.experimental
         return result
 
-    def to_xml_doc(self) -> Element:
+    def to_xml_doc(self) -> xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc root element for this model instance.
+
+        :return: A Godot class doc root element for this model instance.
+        """
         base_element = self._to_xml()
         base_element.tag = 'class'
         return base_element

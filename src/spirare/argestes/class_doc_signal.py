@@ -8,6 +8,7 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
+import xml
 from xml.etree import ElementTree as Et
 from xml.etree.ElementTree import Element
 
@@ -61,7 +62,7 @@ class ClassDocSignal(MethodBase,Zucaritas):
             result['experimental'] = self.experimental
         return result
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         base_element = self._to_xml()
         base_element.tag = 'signal'
         return base_element
@@ -83,7 +84,7 @@ class DocSignals(ModelCollection):
         return result
 
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         element = Et.Element('signals')
         for signal in self.data:
           element.append(signal.to_xml_doc())
@@ -95,6 +96,6 @@ class DocSignals(ModelCollection):
         return super().from_json(ClassDocSignal, json_str)
 
     @classmethod
-    def from_xml(cls, element:Element):
+    def from_xml(cls, element:xml.etree.ElementTree.Element):
         initial_list = [ClassDocSignal.from_xml(e) for e in element]
         return cls(initial_list)

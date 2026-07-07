@@ -8,6 +8,7 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
+import xml
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
@@ -47,13 +48,11 @@ class ClassDocAnnotation(MethodReturnBase,Zucaritas):
             values['keywords'] = self.keywords
         return values
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         """
         Create a Godot class doc element for this annotation model instance.
 
-        Schema:
-
-        :return:
+        :return: A Godot class doc element for this annotation model instance.
         """
         base_element = self._to_xml()
         base_element.tag = 'annotation'
@@ -79,14 +78,14 @@ class DocAnnotations(ModelCollection):
     def from_json(cls, json_str: str):
         return super().from_json(ClassDocAnnotation, json_str)
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         element = Et.Element('annotations')
         for annotation in self.data:
           element.append(annotation.to_xml_doc())
         return element
 
     @classmethod
-    def from_xml(cls, element:Element):
+    def from_xml(cls, element:xml.etree.ElementTree.Element):
         initial_list = [ClassDocAnnotation.from_xml(e) for e in element]
         return cls(initial_list)
 

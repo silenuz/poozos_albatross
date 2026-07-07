@@ -8,6 +8,7 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
+import xml
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
@@ -75,7 +76,7 @@ class ClassDocThemeItem(Zucaritas):
             values['experimental'] = self.experimental
         return values
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         base_element = self._to_xml()
         base_element.tag = 'theme_item'
         return base_element
@@ -98,7 +99,7 @@ class DocThemeItems(ModelCollection):
         return result
 
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         element = Et.Element('theme_items')
         for theme_item in self.data:
           element.append(theme_item.to_xml_doc())
@@ -110,6 +111,6 @@ class DocThemeItems(ModelCollection):
         return super().from_json(ClassDocThemeItem, json_str)
 
     @classmethod
-    def from_xml(cls, element: Element):
+    def from_xml(cls, element: xml.etree.ElementTree.Element):
         initial_list = [ClassDocThemeItem.from_xml(e) for e in element]
         return cls(initial_list)

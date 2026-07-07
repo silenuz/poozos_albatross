@@ -8,6 +8,7 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
+import xml
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
@@ -36,7 +37,7 @@ class ClassDocOperator(MethodReturnBase,Zucaritas):
                                   parameters=parameters,return_value=return_value)
 
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         base_element = self._to_xml()
         base_element.tag = 'operator'
         return base_element
@@ -58,7 +59,7 @@ class DocOperators(ModelCollection):
         return result
 
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         element = Et.Element('operators')
         for operator in self.data:
           element.append(operator.to_xml_doc())
@@ -69,6 +70,6 @@ class DocOperators(ModelCollection):
         return super().from_json(ClassDocOperator, json_str)
 
     @classmethod
-    def from_xml(cls, element: Element):
+    def from_xml(cls, element: xml.etree.ElementTree.Element):
         initial_list = [ClassDocOperator.from_xml(e) for e in element]
         return cls(initial_list)

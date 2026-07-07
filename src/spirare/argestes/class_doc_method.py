@@ -8,6 +8,7 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
+import xml
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
@@ -70,7 +71,7 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
             values['experimental'] = self.experimental
         return values
 
-    def to_xml_doc(self)->Et.Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         base_element = self._to_xml()
         base_element.tag = 'method'
         return base_element
@@ -91,7 +92,7 @@ class DocMethods(ModelCollection):
             result['methods'].append(method.to_dict())
         return result
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         element = Et.Element('methods')
         for method in self.data:
           element.append(method.to_xml_doc())
@@ -102,6 +103,6 @@ class DocMethods(ModelCollection):
         return super().from_json(ClassDocMethod, json_str)
 
     @classmethod
-    def from_xml(cls, element: Element):
+    def from_xml(cls, element: xml.etree.ElementTree.Element):
         initial_list = [ClassDocMethod.from_xml(e) for e in element]
         return cls(initial_list)

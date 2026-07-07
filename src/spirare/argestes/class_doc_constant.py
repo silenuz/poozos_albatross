@@ -8,6 +8,7 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
+import xml
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
@@ -53,7 +54,12 @@ class ClassDocConstant(ConstantMemberBase,Zucaritas):
         result['value'] = self.value
         return result
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this constant model instance.
+
+        :return: A Godot class doc element for this constant model instance.
+        """
         base_element = self._to_xml()
         base_element.tag = 'constant'
         return base_element
@@ -75,7 +81,7 @@ class DocConstants(ModelCollection):
         return result
 
 
-    def to_xml_doc(self)->Element:
+    def to_xml_doc(self)->xml.etree.ElementTree.Element:
         element = Et.Element('constants')
         for constant in self.data:
           element.append(constant.to_xml_doc())
@@ -86,6 +92,6 @@ class DocConstants(ModelCollection):
         return super().from_json(ClassDocConstant, json_str)
 
     @classmethod
-    def from_xml(cls, element:Element):
+    def from_xml(cls, element:xml.etree.ElementTree.Element):
         initial_list = [ClassDocConstant.from_xml(e) for e in element]
         return cls(initial_list)
