@@ -27,9 +27,9 @@ While this project's source code is unlicensed, the doxygen.py module is not my 
 under the GNU Lesser General Public License version 2.1.  A copy of said license has been provided in the support directory.
 This module can be used when using scons to build the Doxygen XML.  
 
-The project now includes portions of the class.xsd file in the documentation.  These portions are derived from Godot's 
-main source repository and are distributed under the MIT license, and attributed to "Juan Linietsky, Ariel Manzur and 
-the Godot community.
+The project now includes portions of the class.xsd file in the class reference documentation for the doc model.  
+These portions are derived from Godot's main source repository and are distributed under the MIT license, 
+and attributed to "Juan Linietsky, Ariel Manzur and the Godot community".
 
 Current Status: BETA
 ===================================
