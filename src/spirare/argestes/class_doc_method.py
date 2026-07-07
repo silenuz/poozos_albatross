@@ -72,6 +72,11 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
         return values
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this method model instance.
+
+        :return: A Godot class doc element for this method model instance.
+        """
         base_element = self._to_xml()
         base_element.tag = 'method'
         return base_element

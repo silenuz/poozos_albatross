@@ -37,7 +37,11 @@ class ClassDocConstructor(MethodReturnBase,Zucaritas):
 
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this constructor model instance.
 
+        :return: A Godot class doc element for this constructor model instance.
+        """
         base_element = self._to_xml()
         base_element.tag = 'constructor'
         return base_element
