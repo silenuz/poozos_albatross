@@ -50,4 +50,5 @@ Model Documentation:
 --------------------
 
 More here soon.
-Some information [here](./argestes/class_doc.md)
+
+Class reference will be [here](argestes/ClassDocModel.md)

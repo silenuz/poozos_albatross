@@ -3,30 +3,20 @@ IMPORTANT
 
 Update:
 -------
-For the most part the model can serialize / deserialize to and from XML and JSON.  However, while documenting the code I 
-noticed I missed implementing to_xml_doc on two of the list elements DocReturnErrorsList and DocTutorialsList so currently
-these are not serialized correctly, and  Monday I will add the missing methods.
+For the most part the model can serialize / deserialize to and from XML and JSON, and should now be fully working.
 
 Then I'll integrate the new models with Eurus, and start on finishing up the remaining items to generate
 class documentation from source code.
-
-Note all sample scripts are now in the bin directory and markdown docs in the docs directory, as a result
-some markdown links may be broken, I will ensure these are fixed early next week.
 
 Sample model usage can be found [here](./docs/doc_model.md)
 
 Same for [PoozosNotus](docs/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
 
-And there is one holdout method for getting signal data from Doxygen, all class methods return data class objects that model 
-the information from the source file whether it's Doxygen with LZ or cpp files with PN.
 
 Current Known Bugs:
 -------------------
 Code blocks are currently formatted incorrectly if they contain tabs as someone ignored white space markup when
-writing the parser for code blocks.
-
-Signal parser now handles multiple paragraph descriptions however I forgot to add the line breaks to the output.
- 
+writing the parser for code blocks. 
 
 Description:
 ============
@@ -37,7 +27,7 @@ While this project's source code is unlicensed, the doxygen.py module is not my 
 under the GNU Lesser General Public License version 2.1.  A copy of said license has been provided in the support directory.
 This module can be used when using scons to build the Doxygen XML.  
 
-Current Status: ALPHA (Almost beta)
+Current Status: BETA
 ===================================
 Currently, the source code parser [PoozoNotus](docs/poozo.md) can extract methods, enum constants, integer constants, properties
 and signals.
