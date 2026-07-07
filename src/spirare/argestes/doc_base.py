@@ -90,6 +90,10 @@ class Zucaritas:
                 if class_object.parameters is None:
                     class_object.parameters = DocParameters()
                 class_object.parameters.append(ClassDocParameter.from_xml(e))
+            elif e.tag == 'returns_error':
+                if class_object.returns_error is None:
+                    class_object.returns_error = DocReturnErrorsList()
+                class_object.returns_error.append(ClassDocReturnError.from_xml(e))
             else:
                 attr_type = typing.get_type_hints(class_object.__class__).get(e.tag)
                 if attr_type is not None:
@@ -123,6 +127,10 @@ class Zucaritas:
                             for param in params:
                                 # print("append parameter")
                                 element.append(param)
+                    elif attr_type == DocReturnErrorsList:
+                        errors = attr_instance.to_xml_doc()
+                        for error in errors:
+                            element.append(error)
                     elif hasattr(attr_instance, 'to_xml_doc'):
                         # print("append element")
                         sub_element = attr_instance.to_xml_doc()
@@ -655,6 +663,7 @@ class ClassDocReturnError(Zucaritas):
         """
         result = dict()
         result['number'] = self.number
+        return result
 
     def to_xml_doc(self) -> xml.etree.ElementTree.Element:
         """
@@ -729,6 +738,8 @@ class DocReturnErrorsList(ModelCollection):
         result = dict()
         result['returns_error'] = []
         for error in self.data:
+            value = error.to_dict()
+            print("Error Value:: " , value)
             result['returns_error'].append(error.to_dict())
         return result
 

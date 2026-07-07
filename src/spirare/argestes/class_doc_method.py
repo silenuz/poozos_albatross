@@ -11,9 +11,8 @@
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
-from . import ClassDocReturn
 from .class_doc_annotation import ClassDocAnnotation
-from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, DocDescription, Zucaritas
+from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, DocDescription, Zucaritas, ClassDocReturn
 
 
 class ClassDocMethod(ClassDocAnnotation,Zucaritas):
@@ -34,19 +33,19 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
 
     "Oh no it wasn't the airplanes.  It was Beauty that killed the Beast."
     """
-    __slots__ = ('returns_errors','is_deprecated','is_experimental','deprecated','experimental')
-    returns_errors: DocReturnErrorsList
+    __slots__ = ('returns_error','is_deprecated','is_experimental','deprecated','experimental')
+    returns_error: DocReturnErrorsList
     is_deprecated: bool
     is_experimental: bool
     deprecated: str
     experimental: str
 
     def __init__(self, name: str, description: DocDescription=DocDescription(),qualifiers:str=None, parameters: DocParameters = None,
-                 return_value: ClassDocReturn = None, returns_errors: DocReturnErrorsList = None,
+                 return_value: ClassDocReturn = None, returns_error: DocReturnErrorsList = None,
                  keywords:str=None, is_deprecated: bool = None, is_experimental: bool = None,
                  deprecated:str = None, experimental:str = None):
         ClassDocAnnotation.__init__(self, name=name, description=description, qualifiers=qualifiers,parameters=parameters,return_value=return_value,keywords=keywords)
-        self.returns_errors = returns_errors
+        self.returns_error = returns_error
         self.is_deprecated = is_deprecated
         self.is_experimental = is_experimental
         self.deprecated = deprecated
@@ -59,8 +58,8 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
        :return: a dictionary of values for this method model instance.
        """
         values = super().to_dict()
-        if self.returns_errors is not None:
-            values.update(self.returns_errors.to_dict())
+        if self.returns_error is not None:
+            values.update(self.returns_error.to_dict())
         if self.is_deprecated is not None:
             values['is_deprecated'] = self.is_deprecated
         if self.is_experimental is not None:

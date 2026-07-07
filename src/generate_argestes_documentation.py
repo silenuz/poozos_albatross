@@ -10,7 +10,7 @@
 
 “Life is full of questions. Idiots are full of answers.”
 
-todo: this script has become a mess.  If i'm going to include I should at least make it a little less Ugly
+todo: this script has become a mess.  If i'm going to include it, I should at least make it a little less Ugly
 """
 import ast
 import re
