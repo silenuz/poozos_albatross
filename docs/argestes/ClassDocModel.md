@@ -36,7 +36,7 @@ ClassDocModel
 | Return | Name |
 | --- | --- |
 | dict | to_dict |  |
-| Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 | 'ClassDocModel' | from_file |  |
 
 ## Attribute Descriptions:
@@ -111,7 +111,9 @@ Returns a dictionary of the values for this class doc root element model instanc
 :return: a dictionary of values for this class doc root model instance.
 ### to_xml_doc
 
-Method Not Documented Yet
+Create a Godot class doc root element for this model instance.
+
+:return: A Godot class doc root element for this model instance.
 ### from_file
 
 Method Not Documented Yet

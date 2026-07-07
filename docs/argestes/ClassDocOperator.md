@@ -20,7 +20,7 @@ ClassDocOperator
 
 | Return | Name |
 | --- | --- |
-| Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 
 ## Attribute Descriptions:
 
@@ -44,4 +44,6 @@ The value of the return_value element for the operator element.
 
 ### to_xml_doc
 
-Method Not Documented Yet
+Create a Godot class doc element for this operator model instance.
+
+:return: A Godot class doc element for this operator model instance.

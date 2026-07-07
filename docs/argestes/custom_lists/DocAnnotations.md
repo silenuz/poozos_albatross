@@ -8,7 +8,7 @@ DocAnnotations
 | ClassDocAnnotation | new |  |
 | dict | to_dict |  |
 | None | from_json |  |
-| Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 | None | from_xml |  |
 
 ## Method Descriptions:

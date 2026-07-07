@@ -30,7 +30,7 @@ ClassDocMember
 | Return | Name |
 | --- | --- |
 | dict | to_dict |  |
-| Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 
 ## Attribute Descriptions:
 
@@ -86,4 +86,6 @@ Returns a dictionary of the values for this member element model instance.
 :return: a dictionary of values for this member model instance.
 ### to_xml_doc
 
-Method Not Documented Yet
+Create a Godot class doc element for this member model instance.
+
+:return: A Godot class doc element for this member model instance.

@@ -20,7 +20,7 @@ ClassDocAnnotation
 | Return | Name |
 | --- | --- |
 | dict | to_dict |  |
-| Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 
 ## Attribute Descriptions:
 
@@ -54,6 +54,4 @@ Returns a dictionary of the values for this annotation element model instance.
 
 Create a Godot class doc element for this annotation model instance.
 
-Schema:
-
-:return:
+:return: A Godot class doc element for this annotation model instance.

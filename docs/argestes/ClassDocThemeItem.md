@@ -24,7 +24,7 @@ ClassDocThemeItem
 | Return | Name |
 | --- | --- |
 | dict | to_dict |  |
-| Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 
 ## Attribute Descriptions:
 
@@ -62,4 +62,6 @@ Returns a dictionary of the values for this theme_item element model instance.
 :return: a dictionary of values for this theme_item model instance.
 ### to_xml_doc
 
-Method Not Documented Yet
+Create a Godot class doc element for this theme_item model instance.
+
+:return: A Godot class doc element for this theme_item model instance.

@@ -16,7 +16,7 @@ ClassDocMethod
 | [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
 | [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) | None |
 | str | [keywords](#keywords) | None |
-| [DocReturnErrorsList](./custom_lists/DocReturnErrorsList.md) | [returns_errors](#returns_errors) | None |
+| [DocReturnErrorsList](./custom_lists/DocReturnErrorsList.md) | [returns_errors](#returns_errors) |  |
 | bool | [is_deprecated](#is_deprecated) | None |
 | bool | [is_experimental](#is_experimental) | None |
 | str | [deprecated](#deprecated) | None |
@@ -27,7 +27,7 @@ ClassDocMethod
 | Return | Name |
 | --- | --- |
 | dict | to_dict |  |
-| Et.Element | to_xml_doc |  |
+| xml.etree.ElementTree.Element | to_xml_doc |  |
 
 ## Attribute Descriptions:
 
@@ -74,4 +74,6 @@ Returns a dictionary of the values for this method element model instance.
 :return: a dictionary of values for this method model instance.
 ### to_xml_doc
 
-Method Not Documented Yet
+Create a Godot class doc element for this method model instance.
+
+:return: A Godot class doc element for this method model instance.
