@@ -76,6 +76,12 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
         base_element.tag = 'method'
         return base_element
 
+
+############################################################################################
+###                         Methods List Model                                           ###
+###########################################################################################
+
+
 class DocMethods(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocMethod, initlist)

@@ -80,6 +80,12 @@ class ClassDocMember(ConstantMemberBase,Zucaritas):
         base_element.tag = 'member'
         return base_element
 
+
+############################################################################################
+###                         Members List Model                                           ###
+###########################################################################################
+
+
 class DocMembers(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocMember, initlist)

@@ -58,6 +58,10 @@ class ClassDocAnnotation(MethodReturnBase,Zucaritas):
         base_element.tag = 'annotation'
         return base_element
 
+############################################################################################
+###                         Annotations List Model                                      ###
+###########################################################################################
+
 class DocAnnotations(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocAnnotation, initlist)

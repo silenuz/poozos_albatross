@@ -64,6 +64,12 @@ class ClassDocConstant(ConstantMemberBase,Zucaritas):
         base_element.tag = 'constant'
         return base_element
 
+
+############################################################################################
+###                         Constants List Model                                         ###
+###########################################################################################
+
+
 class DocConstants(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocConstant, initlist)

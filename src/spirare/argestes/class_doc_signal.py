@@ -67,6 +67,12 @@ class ClassDocSignal(MethodBase,Zucaritas):
         base_element.tag = 'signal'
         return base_element
 
+
+############################################################################################
+###                         Signals List Model                                          ###
+###########################################################################################
+
+
 class DocSignals(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocSignal, initlist)

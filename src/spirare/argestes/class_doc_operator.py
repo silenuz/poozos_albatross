@@ -42,6 +42,12 @@ class ClassDocOperator(MethodReturnBase,Zucaritas):
         base_element.tag = 'operator'
         return base_element
 
+
+############################################################################################
+###                         Operators List Model                                         ###
+###########################################################################################
+
+
 class DocOperators(ModelCollection):
     def __init__(self,initlist=None):
         super().__init__(ClassDocOperator, initlist)

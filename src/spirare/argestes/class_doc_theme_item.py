@@ -82,6 +82,12 @@ class ClassDocThemeItem(Zucaritas):
         return base_element
 
 
+
+############################################################################################
+###                         ThemeItems List Model                                      ###
+###########################################################################################
+
+
 class DocThemeItems(ModelCollection):
     def __init__(self, initlist=None):
         super().__init__(ClassDocThemeItem, initlist)
