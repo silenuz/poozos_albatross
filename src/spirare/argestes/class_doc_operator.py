@@ -54,15 +54,31 @@ class ClassDocOperator(MethodReturnBase,Zucaritas):
 
 
 class DocOperators(ModelCollection):
+    """
+    This class models the operators element, and contains a list of ClassDocOperator instances.
+
+    :param list initlist: A list of ClassDocOperator instances.
+    """
     def __init__(self,initlist=None):
         super().__init__(ClassDocOperator, initlist)
 
     def new(self, **kwargs) -> ClassDocOperator:
+        """
+        Creates a new ClassDocOperator instance and adds it to the list.
+
+        :param kwargs: Keyword arguments for the new ClassDocOperator instance.
+        :return: The new ClassDocOperator instance.
+        """
         operator = ClassDocOperator(**kwargs)
         self.append(operator)
         return operator
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this operators' element model instance.
+
+       :return: a dictionary of values for this operators' model instance.
+       """
         result = dict()
         result['operators'] = []
         for method in self.data:
@@ -71,6 +87,11 @@ class DocOperators(ModelCollection):
 
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this operators list instance.
+
+        :return: A Godot class doc element for this operators list instance.
+        """
         element = Et.Element('operators')
         for operator in self.data:
           element.append(operator.to_xml_doc())

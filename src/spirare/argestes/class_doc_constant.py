@@ -34,6 +34,7 @@ class ClassDocConstant(ConstantMemberBase,Zucaritas):
     """
     __slots__ = 'value'
     value: str
+    """The value of the value attribute for the constant element."""
 
     def __init__(self, name:str, value: str = None,text:str = None,enum:str = None, is_bitfield:bool = None,
                  keywords: str = None,is_deprecated:bool=None,is_experimental:bool=None,
@@ -43,6 +44,7 @@ class ClassDocConstant(ConstantMemberBase,Zucaritas):
                          is_deprecated=is_deprecated,is_experimental=is_experimental,deprecated=deprecated,
                          experimental=experimental)
         self.value = value
+        """The value of the value attribute for the constant element."""
 
     def to_dict(self):
         """
@@ -71,15 +73,31 @@ class ClassDocConstant(ConstantMemberBase,Zucaritas):
 
 
 class DocConstants(ModelCollection):
+    """
+    This class models the constants element, and contains a list of ClassDocConstant instances.
+
+    :param list initlist: A list of ClassDocConstant instances.
+    """
     def __init__(self,initlist=None):
         super().__init__(ClassDocConstant, initlist)
 
     def new(self, **kwargs) -> ClassDocConstant:
+        """
+        Creates a new ClassDocConstant instance and adds it to the list.
+
+        :param kwargs: Keyword arguments for the new ClassDocConstant instance.
+        :return: The new ClassDocConstant instance.
+        """
         constant = ClassDocConstant(**kwargs)
         self.append(constant)
         return constant
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this constants' element model instance.
+
+       :return: a dictionary of values for this constants' model instance.
+       """
         result = dict()
         result['constants'] = []
         for constant in self.data:
@@ -88,6 +106,11 @@ class DocConstants(ModelCollection):
 
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this constants list instance.
+
+        :return: A Godot class doc element for this constants list instance.
+        """
         element = Et.Element('constants')
         for constant in self.data:
           element.append(constant.to_xml_doc())

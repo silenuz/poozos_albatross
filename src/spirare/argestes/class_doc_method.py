@@ -88,15 +88,31 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
 
 
 class DocMethods(ModelCollection):
+    """
+    This class models the methods element, and contains a list of ClassDocMethod instances.
+
+    :param list initlist: A list of ClassDocMethod instances.
+    """
     def __init__(self,initlist=None):
         super().__init__(ClassDocMethod, initlist)
 
     def new(self, **kwargs) -> ClassDocMethod:
+        """
+        Creates a new ClassDocMethod instance and adds it to the list.
+
+        :param kwargs: Keyword arguments for the new ClassDocMethod instance.
+        :return: The new ClassDocMethod instance.
+        """
         method = ClassDocMethod(**kwargs)
         self.append(method)
         return method
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this methods' element model instance.
+
+       :return: a dictionary of values for this methods' model instance.
+       """
         result = dict()
         result['methods'] = []
         for method in self.data:
@@ -104,6 +120,11 @@ class DocMethods(ModelCollection):
         return result
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this methods list instance.
+
+        :return: A Godot class doc element for this methods list instance.
+        """
         element = Et.Element('methods')
         for method in self.data:
           element.append(method.to_xml_doc())

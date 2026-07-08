@@ -94,15 +94,31 @@ class ClassDocThemeItem(Zucaritas):
 
 
 class DocThemeItems(ModelCollection):
+    """
+    This class models the theme_items element, and contains a list of ClassDocThemeItem instances.
+
+    :param list initlist: A list of ClassDocThemeItem instances.
+    """
     def __init__(self, initlist=None):
         super().__init__(ClassDocThemeItem, initlist)
 
     def new(self, **kwargs) -> ClassDocThemeItem:
+        """
+        Creates a new ClassDocThemeItem instance and adds it to the list.
+
+        :param kwargs: Keyword arguments for the new ClassDocThemeItem instance.
+        :return: The new ClassDocThemeItem instance.
+        """
         theme_item = ClassDocThemeItem(**kwargs)
         self.append(theme_item)
         return theme_item
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this theme_items' element model instance.
+
+       :return: a dictionary of values for this theme_items' model instance.
+       """
         result = dict()
         result['theme_items'] = []
         for theme_item in self.data:
@@ -111,6 +127,11 @@ class DocThemeItems(ModelCollection):
 
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this theme_items list instance.
+
+        :return: A Godot class doc element for this theme_items list instance.
+        """
         element = Et.Element('theme_items')
         for theme_item in self.data:
           element.append(theme_item.to_xml_doc())

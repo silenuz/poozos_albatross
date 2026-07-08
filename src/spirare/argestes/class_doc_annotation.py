@@ -63,15 +63,31 @@ class ClassDocAnnotation(MethodReturnBase,Zucaritas):
 ###########################################################################################
 
 class DocAnnotations(ModelCollection):
+    """
+    This class models the annotations element, and contains a list of ClassDocAnnotation instances.
+
+    :param list initlist: A list of ClassDocAnnotation instances.
+    """
     def __init__(self,initlist=None):
         super().__init__(ClassDocAnnotation, initlist)
 
     def new(self, **kwargs) -> ClassDocAnnotation:
+        """
+        Creates a new ClassDocAnnotation instance and adds it to the list.
+
+        :param kwargs: Keyword arguments for the new ClassDocAnnotation instance.
+        :return: The new ClassDocAnnotation instance.
+        """
         annotation = ClassDocAnnotation(**kwargs)
         self.append(annotation)
         return annotation
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this annotations' element model instance.
+
+       :return: a dictionary of values for this annotations' model instance.
+       """
         result = dict()
         result['annotations'] = []
         for annotation in self.data:
@@ -83,6 +99,11 @@ class DocAnnotations(ModelCollection):
         return super().from_json(ClassDocAnnotation, json_str)
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this annotations list instance.
+
+        :return: A Godot class doc element for this annotations list instance.
+        """
         element = Et.Element('annotations')
         for annotation in self.data:
           element.append(annotation.to_xml_doc())

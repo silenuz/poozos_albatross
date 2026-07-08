@@ -53,15 +53,31 @@ class ClassDocConstructor(MethodReturnBase,Zucaritas):
 
 
 class DocConstructors(ModelCollection):
+    """
+    This class models the constructors element, and contains a list of ClassDocConstructor instances.
+
+    :param list initlist: A list of ClassDocConstructor instances.
+    """
     def __init__(self,initlist=None):
         super().__init__(ClassDocConstructor, initlist)
 
     def new(self, **kwargs) -> ClassDocConstructor:
+        """
+        Creates a new ClassDocConstructor instance and adds it to the list.
+
+        :param kwargs: Keyword arguments for the new ClassDocConstructor instance.
+        :return: The new ClassDocConstructor instance.
+        """
         constructor = ClassDocConstructor(**kwargs)
         self.append(constructor)
         return constructor
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this constructors' element model instance.
+
+       :return: a dictionary of values for this constructors' model instance.
+       """
         result = dict()
         result['constructors'] = []
         for constructor in self.data:
@@ -69,6 +85,11 @@ class DocConstructors(ModelCollection):
         return result
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this constructors list instance.
+
+        :return: A Godot class doc element for this constructors' list instance.
+        """
         element = Et.Element('constructors')
         for constructor in self.data:
           element.append(constructor.to_xml_doc())

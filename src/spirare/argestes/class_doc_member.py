@@ -92,15 +92,31 @@ class ClassDocMember(ConstantMemberBase,Zucaritas):
 
 
 class DocMembers(ModelCollection):
+    """
+    This class models the members element, and contains a list of ClassDocMember instances.
+
+    :param list initlist: A list of ClassDocMember instances.
+    """
     def __init__(self,initlist=None):
         super().__init__(ClassDocMember, initlist)
 
     def new(self, **kwargs) -> ClassDocMember:
+        """
+        Creates a new ClassDocMember instance and adds it to the list.
+
+        :param kwargs: Keyword arguments for the new ClassDocMember instance.
+        :return: The new ClassDocMember instance.
+        """
         member = ClassDocMember(**kwargs)
         self.append(member)
         return member
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this members' element model instance.
+
+       :return: a dictionary of values for this members' model instance.
+       """
         result = dict()
         result['members'] = []
         for member in self.data:
@@ -109,6 +125,11 @@ class DocMembers(ModelCollection):
 
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this members list instance.
+
+        :return: A Godot class doc element for this members list instance.
+        """
         element = Et.Element('members')
         for member in self.data:
           element.append(member.to_xml_doc())

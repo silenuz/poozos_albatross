@@ -79,15 +79,31 @@ class ClassDocSignal(MethodBase,Zucaritas):
 
 
 class DocSignals(ModelCollection):
+    """
+    This class models the signals element, and contains a list of ClassDocSignal instances.
+
+    :param list initlist: A list of ClassDocSignal instances.
+    """
     def __init__(self,initlist=None):
         super().__init__(ClassDocSignal, initlist)
 
     def new(self, **kwargs) -> ClassDocSignal:
+        """
+        Creates a new ClassDocSignal instance and adds it to the list.
+
+        :param kwargs: Keyword arguments for the new ClassDocSignal instance.
+        :return: The new ClassDocSignal instance.
+        """
         signal = ClassDocSignal(**kwargs)
         self.append(signal)
         return signal
 
     def to_dict(self) -> dict:
+        """
+       Returns a dictionary of the values for this signals' element model instance.
+
+       :return: a dictionary of values for this signals' model instance.
+       """
         result = dict()
         result['signals'] = []
         for signal in self.data:
@@ -96,6 +112,11 @@ class DocSignals(ModelCollection):
 
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
+        """
+        Create a Godot class doc element for this signals list instance.
+
+        :return: A Godot class doc element for this signals list instance.
+        """
         element = Et.Element('signals')
         for signal in self.data:
           element.append(signal.to_xml_doc())
