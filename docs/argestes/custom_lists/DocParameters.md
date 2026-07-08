@@ -32,3 +32,5 @@ Method Not Documented Yet
 ### from_xml
 
 Method Not Documented Yet
+## Schema
+

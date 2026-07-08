@@ -45,7 +45,7 @@ The value of the is_bitfield attribute for the member element.
 The value of the name attribute for the member element.
 ### text
 
-The value of the text attribute for the member element.
+The text value of the member element.
 ### is_deprecated
 
 The value of the is_deprecated attribute for the member element.
@@ -63,7 +63,7 @@ The value of the experimental attribute for the member element.
 The value of the keywords attribute for the member element.
 ### type_value
 
-The value of the type_value attribute for the member element.
+The value of the type attribute for the member element.
 ### getter
 
 The value of the getter attribute for the member element.
@@ -89,3 +89,29 @@ Returns a dictionary of the values for this member element model instance.
 Create a Godot class doc element for this member model instance.
 
 :return: A Godot class doc element for this member model instance.
+## Schema
+
+```xml
+<xs:element  name="member">
+    <xs:complexType>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name"></xs:attribute>
+                <xs:attribute type="xs:string" name="type"></xs:attribute>
+                <xs:attribute type="xs:string" name="setter"></xs:attribute>
+                <xs:attribute type="xs:string" name="getter"></xs:attribute>
+                <xs:attribute type="xs:string" name="overrides" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="enum" use="optional"></xs:attribute>
+                <xs:attribute type="xs:boolean" name="is_bitfield" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="default" use="optional"></xs:attribute>
+                <xs:attribute type="xs:boolean" name="is_deprecated" use="optional"></xs:attribute>
+                <xs:attribute type="xs:boolean" name="is_experimental" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="deprecated" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="experimental" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="keywords" use="optional"></xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:element>
+        
+```

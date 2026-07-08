@@ -44,3 +44,5 @@ Returns a dictionary representation of this object.
 Return the contents of the return object as a Godot documentation XML element
 
 :return: this return object as a Godot XML element
+## Schema
+

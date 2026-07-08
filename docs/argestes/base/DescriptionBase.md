@@ -53,3 +53,5 @@ Creates a description object from a JSON string
 
 :param json_data: The description or brief_description JSON content to create the model from
 :return: A new description object with the values from the JSON content
+## Schema
+

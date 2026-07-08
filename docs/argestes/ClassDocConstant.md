@@ -73,3 +73,25 @@ Returns a dictionary of the values for this constant element model instance.
 Create a Godot class doc element for this constant model instance.
 
 :return: A Godot class doc element for this constant model instance.
+## Schema
+
+```xml
+<xs:element  name="constant" maxOccurs="unbounded" minOccurs="0">
+    <xs:complexType>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name"></xs:attribute>
+                <xs:attribute type="xs:string" name="value"></xs:attribute>
+                <xs:attribute type="xs:string" name="enum" use="optional"></xs:attribute>
+                <xs:attribute type="xs:boolean" name="is_bitfield" use="optional"></xs:attribute>
+                <xs:attribute type="xs:boolean" name="is_deprecated" use="optional"></xs:attribute>
+                <xs:attribute type="xs:boolean" name="is_experimental" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="deprecated" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="experimental" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="keywords" use="optional"></xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:element>
+        
+```

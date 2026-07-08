@@ -41,3 +41,5 @@ Creates this model from a Godot class documentation XML element
 
 :param element: The element represented by this model
 :return: A model created from the XML documentation element
+## Schema
+

@@ -39,3 +39,5 @@ Returns a dictionary representation of this object.
 Return the contents of the tutorial link object as a Godot documentation XML element
 
 :return: this link object as a Godot XML element
+## Schema
+

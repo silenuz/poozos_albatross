@@ -117,3 +117,5 @@ Create a Godot class doc root element for this model instance.
 ### from_file
 
 Method Not Documented Yet
+## Schema
+

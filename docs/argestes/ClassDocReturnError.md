@@ -35,3 +35,5 @@ Returns a dictionary representation of this object.
 Return the contents of the returns_error object as a Godot documentation XML element
 
 :return: this return_errors object as a Godot XML element
+## Schema
+

@@ -17,3 +17,5 @@ DocBriefDescription
 ### text
 
 the text value of the brief_description element
+## Schema
+

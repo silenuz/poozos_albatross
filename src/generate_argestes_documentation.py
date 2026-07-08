@@ -151,6 +151,18 @@ def make_markdown_table(columns, rows)->str:
     return "\n".join([header_line, separator_line] + body_lines)
 
 
+def insert_schema(class_name, doc_content):
+    section_title = '## Schema'
+    doc_content.append(f'\n{section_title}\n\n')
+    stub_folder = OUTPUT_DIR / 'schema'
+    file = next(stub_folder.glob(f'{class_name}.xsd_stub'),None)
+    if file is not None:
+        content = file.read_text()
+        doc_content.append('```xml\n')
+        doc_content.append(f'{content}\n')
+        doc_content.append('```')
+
+
 def generate_output():
     for class_item in classes:
         doc_content = []
@@ -198,6 +210,7 @@ def generate_output():
                 print("Description: ",description)
                 doc_content.append(f'\n{description}')
                 print("\n".join(doc_content))
+        insert_schema(class_item,doc_content)
 
         if class_item.startswith('Class'):
             file = OUTPUT_DIR / f'{class_item}.md'

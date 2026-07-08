@@ -17,3 +17,5 @@ DocDescription
 ### text
 
 the text value of the description element
+## Schema
+

@@ -55,3 +55,5 @@ Returns a dictionary representation of this object.
 Return the contents of the parameter (param) object as a Godot documentation XML element
 
 :return: this parameter object as a Godot XML element
+## Schema
+

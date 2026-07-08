@@ -59,3 +59,5 @@ The value of the experimental attribute for this element.
 Returns a dictionary representation of this object.
 
 :return: a dictionary of values for this object
+## Schema
+

@@ -28,3 +28,5 @@ Method Not Documented Yet
 ### from_json
 
 Method Not Documented Yet
+## Schema
+

@@ -35,3 +35,5 @@ is_bitfield attribute value
 Returns a dictionary representation of this object.
 
 :return: a dictionary of values for this object
+## Schema
+

@@ -39,7 +39,7 @@ The value of the text attribute for the theme_item element.
 The value of the data_type attribute for the theme_item element.
 ### type_value
 
-The value of the type_value attribute for the theme_item element.
+The value of the type attribute for the theme_item element.
 ### default
 
 The value of the default attribute for the theme_item element.
@@ -65,3 +65,23 @@ Returns a dictionary of the values for this theme_item element model instance.
 Create a Godot class doc element for this theme_item model instance.
 
 :return: A Godot class doc element for this theme_item model instance.
+## Schema
+
+```xml
+<xs:element  name="theme_item" maxOccurs="unbounded" minOccurs="0">
+    <xs:complexType>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="name"></xs:attribute>
+                <xs:attribute type="xs:string" name="data_type"></xs:attribute>
+                <xs:attribute type="xs:string" name="type"></xs:attribute>
+                <xs:attribute type="xs:string" name="default" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="deprecated" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="experimental" use="optional"></xs:attribute>
+                <xs:attribute type="xs:string" name="keywords" use="optional"></xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:element>
+        
+```

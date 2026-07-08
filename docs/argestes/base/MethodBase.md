@@ -43,3 +43,5 @@ The value of the parameters element for this element.
 Returns a dictionary representation of this object.
 
 :return: a dictionary of values for this object
+## Schema
+

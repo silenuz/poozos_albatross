@@ -65,3 +65,31 @@ Returns a dictionary of the values for this signal element model instance.
 Create a Godot class doc element for this signal model instance.
 
 :return: A Godot class doc element for this signal model instance.
+## Schema
+
+```xml
+<xs:element  name="signal" maxOccurs="unbounded" minOccurs="0">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="param" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:sequence></xs:sequence>
+                    </xs:sequence>
+                    <xs:attribute type="xs:byte" name="index"></xs:attribute>
+                    <xs:attribute type="xs:string" name="name"></xs:attribute>
+                    <xs:attribute type="xs:string" name="type"></xs:attribute>
+                    <xs:attribute type="xs:string" name="keywords" use="optional"></xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element type="xs:string" name="description"></xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="optional"></xs:attribute>
+        <xs:attribute type="xs:boolean" name="is_deprecated" use="optional"></xs:attribute>
+        <xs:attribute type="xs:boolean" name="is_experimental" use="optional"></xs:attribute>
+        <xs:attribute type="xs:string" name="deprecated" use="optional"></xs:attribute>
+        <xs:attribute type="xs:string" name="experimental" use="optional"></xs:attribute>
+    </xs:complexType>
+</xs:element>
+        
+```
