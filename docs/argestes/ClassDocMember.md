@@ -91,6 +91,10 @@ Create a Godot class doc element for this member model instance.
 :return: A Godot class doc element for this member model instance.
 ## Schema
 
+The following schema definition is derived from Godot's main source repository, and is distributed under the MIT license.
+
+Attribution: Juan Linietsky, Ariel Manzur and the Godot community
+
 ```xml
 <xs:element  name="member">
     <xs:complexType>

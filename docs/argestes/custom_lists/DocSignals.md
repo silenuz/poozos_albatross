@@ -55,6 +55,10 @@ Create a new DocSignals instance from a JSON string.
 Method Not Documented Yet
 ## Schema
 
+The following schema definition is derived from Godot's main source repository, and is distributed under the MIT license.
+
+Attribution: Juan Linietsky, Ariel Manzur and the Godot community
+
 ```xml
 <xs:element  name="signals" minOccurs="0">
     <xs:complexType>

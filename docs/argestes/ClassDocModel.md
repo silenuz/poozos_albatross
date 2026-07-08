@@ -119,6 +119,10 @@ Create a Godot class doc root element for this model instance.
 Method Not Documented Yet
 ## Schema
 
+The following schema definition is derived from Godot's main source repository, and is distributed under the MIT license.
+
+Attribution: Juan Linietsky, Ariel Manzur and the Godot community
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"

@@ -157,6 +157,8 @@ def insert_schema(class_name, doc_content):
     stub_folder = OUTPUT_DIR / 'schema'
     file = next(stub_folder.glob(f'{class_name}.xsd_stub'),None)
     if file is not None:
+        doc_content.append(f"The following schema definition is derived from Godot's main source repository, and is distributed under the MIT license.\n\n")
+        doc_content.append("Attribution: Juan Linietsky, Ariel Manzur and the Godot community\n\n")
         content = file.read_text()
         doc_content.append('```xml\n')
         doc_content.append(f'{content}\n')
