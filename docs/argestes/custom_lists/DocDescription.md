@@ -1,10 +1,9 @@
 DocDescription
 ==============
 
- Model for description elements
+ Model for description [element](#schema)s
 
 
-"Well, excuse me for having enormous flaws I don't work on"
 
 ## Attributes / Parameters:
 

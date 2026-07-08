@@ -31,6 +31,8 @@ def process_class_definition(class_name: str, docstring: str):
     output: list[str] = []
     for value in values:
         print("Value:: " + value)
+        if value.startswith('"') and value.endswith('"'):
+            continue
         if value.startswith(':param'):
             value = value.replace(":param ", "").strip()
             attribs = value.split(":")
@@ -50,6 +52,7 @@ def process_class_definition(class_name: str, docstring: str):
                 type_value = type
 
             description = attribs[1]
+            ## Pretty sure this is dead code, how can I tell in this mess?
             new_value = f'* Parameter: **{name}** \n\t- Type: {type_value} \n\t- Description: {description}'
             output.append(new_value)
             if not 'parameters' in classes[class_name]:
@@ -61,11 +64,10 @@ def process_class_definition(class_name: str, docstring: str):
             parameter_values['type'] = type_value
             classes[class_name]['parameters'][name] = parameter_values
         else:
-            print("Is Description")
             if not 'description' in classes[class_name]:
-                classes[class_name]['description'] = value
+                classes[class_name]['description'] = value.replace('element','[element](#schema)')
             else:
-                classes[class_name]['description'] += '\n' + value
+                classes[class_name]['description'] += '\n' + value.replace('element','[element](#schema)')
 
 
 def extract_docs_from_file(filepath: Path, rel_path: Path):

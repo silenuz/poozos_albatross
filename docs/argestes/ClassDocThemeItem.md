@@ -1,10 +1,9 @@
 ClassDocThemeItem
 =================
 
- This class represents a model of the class doc's theme_item element
+ This class represents a model of the class doc's theme_item [element](#schema)
 
 
-"There's no place like home"
 
 ## Attributes / Parameters:
 

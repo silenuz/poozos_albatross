@@ -4,7 +4,6 @@ MemberBaseTags
  Base class extending MemberBase
 
 
-"Trying is the first step towards failure"
 
 ## Attributes / Parameters:
 

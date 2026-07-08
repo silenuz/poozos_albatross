@@ -1,10 +1,9 @@
 MethodBase
 ==========
 
- Base class for method and method like elements
+ Base class for method and method like [element](#schema)s
 
 
-"If something’s hard to do, then it’s not worth doing"
 
 ## Attributes / Parameters:
 

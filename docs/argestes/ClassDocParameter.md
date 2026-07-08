@@ -1,7 +1,7 @@
 ClassDocParameter
 =================
 
- This class represents a model of the class doc's parameter element, used in signals, methods, etc...
+ This class represents a model of the class doc's parameter [element](#schema), used in signals, methods, etc...
 
 
 ## Attributes / Parameters:

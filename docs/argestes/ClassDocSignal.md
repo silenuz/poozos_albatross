@@ -1,10 +1,9 @@
 ClassDocSignal
 ==============
 
- This class represents a model of the class doc's signal element
+ This class represents a model of the class doc's signal [element](#schema)
 
 
-"Well here's another nice mess you've gotten me into"
 
 ## Attributes / Parameters:
 

@@ -1,7 +1,7 @@
 DocMembers
 ==========
 
- This class models the members element, and contains a list of ClassDocMember instances.
+ This class models the members [element](#schema), and contains a list of ClassDocMember instances.
 
 
 ## Attributes / Parameters:

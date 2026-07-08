@@ -1,10 +1,9 @@
 DocQualifierBase
 ================
 
- Base class for elements with enum and is_bitfield attributes
+ Base class for [element](#schema)s with enum and is_bitfield attributes
 
 
-"Operator! Give me the number for 911!"
 
 ## Attributes / Parameters:
 

@@ -1,7 +1,7 @@
 ClassDocTutorialLink
 ====================
 
- This class represents a model of the class doc's tutorial link element
+ This class represents a model of the class doc's tutorial link [element](#schema)
 
 
 ## Attributes / Parameters:

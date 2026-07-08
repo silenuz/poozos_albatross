@@ -1,10 +1,9 @@
 ClassDocModel
 =============
 
- This class represents a model of the root class element of the Godot doc xml.
+ This class represents a model of the root class [element](#schema) of the Godot doc xml.
 
 
-"Your going to need a bigger boat"
 
 ## Attributes / Parameters:
 

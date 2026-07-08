@@ -1,7 +1,7 @@
 DocAnnotations
 ==============
 
- This class models the annotations element, and contains a list of ClassDocAnnotation instances.
+ This class models the annotations [element](#schema), and contains a list of ClassDocAnnotation instances.
 
 
 ## Attributes / Parameters:

@@ -1,7 +1,7 @@
 ClassDocReturnError
 ===================
 
- This class represents a model of the return error element of the class docs
+ This class represents a model of the return error [element](#schema) of the class docs
 
 
 ## Attributes / Parameters:

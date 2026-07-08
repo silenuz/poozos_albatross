@@ -1,7 +1,7 @@
 ClassDocReturn
 ==============
 
- This class represents a model of the method return element of the class docs
+ This class represents a model of the method return [element](#schema) of the class docs
 Note: type_value is used as the attribute here because type is a soft keyword in python.
 
 

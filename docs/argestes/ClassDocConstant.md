@@ -1,10 +1,9 @@
 ClassDocConstant
 ================
 
- This class represents a model of the godot docs constant element
+ This class represents a model of the godot docs constant [element](#schema)
 
 
-"Gentlemen, you can't fight in here!  This is the War Room!"
 
 ## Attributes / Parameters:
 

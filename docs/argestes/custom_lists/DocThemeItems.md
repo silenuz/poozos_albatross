@@ -1,7 +1,7 @@
 DocThemeItems
 =============
 
- This class models the theme_items element, and contains a list of ClassDocThemeItem instances.
+ This class models the theme_items [element](#schema), and contains a list of ClassDocThemeItem instances.
 
 
 ## Attributes / Parameters:

@@ -1,7 +1,7 @@
 DocBriefDescription
 ===================
 
- Model for brief_description elements
+ Model for brief_description [element](#schema)s
 
 
 “Facts are meaningless. You can use facts to prove anything that’s even remotely true.”

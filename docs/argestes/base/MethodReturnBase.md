@@ -1,10 +1,9 @@
 MethodReturnBase
 ================
 
- Base class extending MethodBase with a return element
+ Base class extending MethodBase with a return [element](#schema)
 
 
-" ‘To Start Press Any Key’. Where’s the ANY key?"
 
 ## Attributes / Parameters:
 

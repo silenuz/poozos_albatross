@@ -1,10 +1,9 @@
 ClassDocMember
 ==============
 
- This class represents a model of the class doc's member element
+ This class represents a model of the class doc's member [element](#schema)
     
 
-"Open the pod bay doors, please, HAL"
 
 ## Attributes / Parameters:
 

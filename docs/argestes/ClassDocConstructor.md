@@ -1,10 +1,9 @@
 ClassDocConstructor
 ===================
 
- This class represents a model of the class docs constructor element
+ This class represents a model of the class docs constructor [element](#schema)
 
 
-"Soylent Green is people!"
 
 ## Attributes / Parameters:
 

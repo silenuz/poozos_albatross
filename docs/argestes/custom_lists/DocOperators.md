@@ -1,7 +1,7 @@
 DocOperators
 ============
 
- This class models the operators element, and contains a list of ClassDocOperator instances.
+ This class models the operators [element](#schema), and contains a list of ClassDocOperator instances.
 
 
 ## Attributes / Parameters:

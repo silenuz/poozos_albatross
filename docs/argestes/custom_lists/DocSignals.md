@@ -1,7 +1,7 @@
 DocSignals
 ==========
 
- This class models the signals element, and contains a list of ClassDocSignal instances.
+ This class models the signals [element](#schema), and contains a list of ClassDocSignal instances.
 
 
 ## Attributes / Parameters:

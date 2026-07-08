@@ -1,10 +1,9 @@
 ClassDocOperator
 ================
 
- This class represents a model of the class doc's operator element
+ This class represents a model of the class doc's operator [element](#schema)
 
 
-"What we've got here is failure to communicate"
 
 ## Attributes / Parameters:
 

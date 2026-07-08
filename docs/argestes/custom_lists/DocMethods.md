@@ -1,7 +1,7 @@
 DocMethods
 ==========
 
- This class models the methods element, and contains a list of ClassDocMethod instances.
+ This class models the methods [element](#schema), and contains a list of ClassDocMethod instances.
 
 
 ## Attributes / Parameters:

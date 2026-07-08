@@ -1,7 +1,7 @@
 DocConstants
 ============
 
- This class models the constants element, and contains a list of ClassDocConstant instances.
+ This class models the constants [element](#schema), and contains a list of ClassDocConstant instances.
 
 
 ## Attributes / Parameters:

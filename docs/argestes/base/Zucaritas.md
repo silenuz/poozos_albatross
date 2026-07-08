@@ -2,9 +2,8 @@ Zucaritas
 =========
 
  Cereal base for top level objects, providing serialization and deserialization between XML and JSON,
-for Godot documentation elements.
+for Godot documentation [element](#schema)s.
 
-"Never get out of the boat!"
 
 ## Methods:
 

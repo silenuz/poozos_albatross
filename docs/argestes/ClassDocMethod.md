@@ -1,10 +1,9 @@
 ClassDocMethod
 ==============
 
- This class represents a model of the class doc's method element
+ This class represents a model of the class doc's method [element](#schema)
 
 
-"Oh no it wasn't the airplanes.  It was Beauty that killed the Beast."
 
 ## Attributes / Parameters:
 

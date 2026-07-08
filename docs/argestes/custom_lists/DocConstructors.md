@@ -1,7 +1,7 @@
 DocConstructors
 ===============
 
- This class models the constructors element, and contains a list of ClassDocConstructor instances.
+ This class models the constructors [element](#schema), and contains a list of ClassDocConstructor instances.
 
 
 ## Attributes / Parameters:

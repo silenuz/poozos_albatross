@@ -4,7 +4,6 @@ MemberBase
  Base class extending qualifiers
 
 
-"Oh, people can come up with statistics to prove anything, Kent. 14% of people know that."
 
 ## Attributes / Parameters:
 

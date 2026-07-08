@@ -1,7 +1,7 @@
 ClassDocAnnotation
 ==================
 
- This class represents a model of the class docs annotation element
+ This class represents a model of the class docs annotation [element](#schema)
 
 
 ## Attributes / Parameters:

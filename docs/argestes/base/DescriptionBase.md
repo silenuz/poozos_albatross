@@ -1,7 +1,7 @@
 DescriptionBase
 ===============
 
- Base class for description elements such as description and brief_description
+ Base class for description [element](#schema)s such as description and brief_description
 
 
 "1. Cover for me
