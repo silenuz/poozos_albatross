@@ -22,7 +22,7 @@ class ClassDocThemeItem(Zucaritas):
     :param str name: The value of the name attribute for the theme_item element.
     :param str text: The value of the text attribute for the theme_item element.
     :param str data_type: The value of the data_type attribute for the theme_item element.
-    :param str type_value: The value of the type_value attribute for the theme_item element.
+    :param str type_value: The value of the type attribute for the theme_item element.
     :param str default: The value of the default attribute for the theme_item element.
     :param str keywords: The value of the keywords attribute for the theme_item element.
     :param str deprecated: The value of the deprecated attribute for the theme_item element.
@@ -32,24 +32,40 @@ class ClassDocThemeItem(Zucaritas):
     """
     __slots__ = ("name", "text", "data_type", "type_value", "default", "keywords", "deprecated", "experimental")
     name: str
+    """The value of the name attribute for the theme_item element."""
     text: str
+    """The text value for this element."""
     data_type: str
+    """The value of the data_type attribute for the theme_item element"""
     type_value: str
+    """The value of the type attribute for the theme_item element."""
     default: str
+    """The value of the default attribute for the theme_item element."""
     keywords: str
+    """The value of the keywords attribute for the theme_item element"""
     deprecated: str
+    """The value of the deprecated attribute for the theme_item element"""
     experimental: str
+    """The value of the experimental attribute for the theme_item element"""
 
     def __init__(self, name: str, text: str = None, data_type: str = None, type_value: str = None,
                  default: str = None, keywords: str = None, deprecated: str = None, experimental: str = None):
         self.name = name
+        """The value of the name attribute for the theme_item element."""
         self.text = text
+        """The text value for this element."""
         self.data_type = data_type
+        """The value of the data_type attribute for the theme_item element"""
         self.type_value = type_value
+        """The value of the type attribute for the theme_item element."""
         self.default = default
+        """The value of the default attribute for the theme_item element."""
         self.keywords = keywords
+        """The value of the keywords attribute for the theme_item element"""
         self.deprecated = deprecated
+        """The value of the deprecated attribute for the theme_item element"""
         self.experimental = experimental
+        """The value of the experimental attribute for the theme_item element"""
 
     def to_dict(self) -> dict:
         """
@@ -139,7 +155,13 @@ class DocThemeItems(ModelCollection):
 
 
     @classmethod
-    def from_json(cls, json_str: str):
+    def from_json(cls, json_str: str)->'DocThemeItems':
+        """
+        Create a new DocThemeItems instance from a JSON string.
+
+        :param json_str: the JSON string containing the theme_items' data.
+        :return: A new DocThemeItems instance.
+        """
         return super().from_json(ClassDocThemeItem, json_str)
 
     @classmethod

@@ -131,7 +131,13 @@ class DocMethods(ModelCollection):
         return element
 
     @classmethod
-    def from_json(cls, json_str: str):
+    def from_json(cls, json_str: str)->'DocMethods':
+        """
+        Create a new DocMethods instance from a JSON string.
+
+        :param json_str: the JSON string containing the methods' data.
+        :return: A new DocMethods instance.
+        """
         return super().from_json(ClassDocMethod, json_str)
 
     @classmethod

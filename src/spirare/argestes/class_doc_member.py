@@ -22,13 +22,13 @@ class ClassDocMember(ConstantMemberBase,Zucaritas):
     :param str enum: The value of the enum attribute for the member element.
     :param bool is_bitfield: The value of the is_bitfield attribute for the member element.
     :param str name: The value of the name attribute for the member element.
-    :param str text: The value of the text attribute for the member element.
+    :param str text: The text value of the member element.
     :param bool is_deprecated: The value of the is_deprecated attribute for the member element.
     :param bool is_experimental: The value of the is_experimental attribute for the member element.
     :param str deprecated: The value of the deprecated attribute for the member element.
     :param str experimental: The value of the experimental attribute for the member element.
     :param str keywords: The value of the keywords attribute for the member element.
-    :param str type_value: The value of the type_value attribute for the member element.
+    :param str type_value: The value of the type attribute for the member element.
     :param str getter: The value of the getter attribute for the member element.
     :param str setter: The value of the setter attribute for the member element.
     :param str overrides: The value of the overrides attribute for the member element.
@@ -38,10 +38,17 @@ class ClassDocMember(ConstantMemberBase,Zucaritas):
     """
     __slots__ = ('type_value','getter','setter','overrides','default')
     type_value: str
+    """The value of the type attribute for the member element"""
     getter: str
+    """The value of the getter attribute for the member element"""
     setter: str
+    """The value of the setter attribute for the member element"""
     overrides: str
+    """The value of the overrides attribute for the member element"""
     default: str
+    """The value of the default attribute for the member element"""
+
+
     def __init__(self, name: str, type_value: str = None,getter:str=None,setter:str = None,text: str = None,
                  overrides:str=None, default:str=None,enum: str = None, is_bitfield: bool = None,
                  keywords: str = None, is_deprecated: bool = None, is_experimental: bool = None,
@@ -50,10 +57,15 @@ class ClassDocMember(ConstantMemberBase,Zucaritas):
                          is_deprecated=is_deprecated, is_experimental=is_experimental, deprecated=deprecated,
                          experimental=experimental)
         self.type_value = type_value
+        """The value of the type attribute for the member element"""
         self.getter = getter
+        """The value of the getter attribute for the member element"""
         self.setter = setter
+        """The value of the setter attribute for the member element"""
         self.overrides = overrides
+        """The value of the overrides attribute for the member element"""
         self.default = default
+        """The value of the default attribute for the member element"""
 
     def to_dict(self) -> dict:
         """
@@ -136,7 +148,13 @@ class DocMembers(ModelCollection):
         return element
 
     @classmethod
-    def from_json(cls, json_str: str):
+    def from_json(cls, json_str: str)->'DocMembers':
+        """
+        Create a new DocMembers instance from a JSON string.
+
+        :param json_str: the JSON string containing the members' data.
+        :return: A new DocMembers instance.
+        """
         return super().from_json(ClassDocMember, json_str)
 
     @classmethod

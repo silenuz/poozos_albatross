@@ -98,7 +98,13 @@ class DocOperators(ModelCollection):
         return element
 
     @classmethod
-    def from_json(cls, json_str: str):
+    def from_json(cls, json_str: str)->'DocOperators':
+        """
+        Create a new DocOperators instance from a JSON string.
+
+        :param json_str: the JSON string containing the operators' data.
+        :return: A new DocOperators instance.
+        """
         return super().from_json(ClassDocOperator, json_str)
 
     @classmethod

@@ -124,7 +124,13 @@ class DocSignals(ModelCollection):
 
 
     @classmethod
-    def from_json(cls, json_str: str):
+    def from_json(cls, json_str: str)->'DocSignals':
+        """
+        Create a new DocSignals instance from a JSON string.
+
+        :param json_str: the JSON string containing the signals' data.
+        :return: A new DocSignals instance.
+        """
         return super().from_json(ClassDocSignal, json_str)
 
     @classmethod

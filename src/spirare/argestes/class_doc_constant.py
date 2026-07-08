@@ -117,7 +117,13 @@ class DocConstants(ModelCollection):
         return element
 
     @classmethod
-    def from_json(cls, json_str: str):
+    def from_json(cls, json_str: str)->'DocConstants':
+        """
+        Create a new DocConstants instance from a JSON string.
+
+        :param json_str: the JSON string containing the constants' data.
+        :return: A new DocConstants instance.
+        """
         return super().from_json(ClassDocConstant, json_str)
 
     @classmethod

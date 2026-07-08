@@ -95,7 +95,13 @@ class DocAnnotations(ModelCollection):
         return result
 
     @classmethod
-    def from_json(cls, json_str: str):
+    def from_json(cls, json_str: str)->'DocAnnotations':
+        """
+        Create a new DocAnnotations instance from a JSON string.
+
+        :param json_str: the JSON string containing the annotations' data.
+        :return: A new DocAnnotations instance.
+        """
         return super().from_json(ClassDocAnnotation, json_str)
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:

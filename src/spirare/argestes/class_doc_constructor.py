@@ -97,7 +97,13 @@ class DocConstructors(ModelCollection):
 
 
     @classmethod
-    def from_json(cls, json_str: str):
+    def from_json(cls, json_str: str)->'DocConstructors':
+        """
+        Create a new DocConstructors instance from a JSON string.
+
+        :param json_str: the JSON string containing the constructors' data.
+        :return: A new DocConstructors instance.
+        """
         return super().from_json(ClassDocConstructor, json_str)
 
     @classmethod
