@@ -141,6 +141,7 @@ class ClassDocModel(Zucaritas):
         """The value of the deprecated attribute for this class element."""
         self.experimental = experimental
         """The value of the experimental attribute for this class element."""
+        self.__post_init__()
 
     def __post_init__(self):
         if isinstance(self.description, str):
