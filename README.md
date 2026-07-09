@@ -6,12 +6,17 @@ Update:
 For the most part the model can serialize / deserialize to and from XML and JSON, and should now be fully working.
 
 Then I'll integrate the new models with Eurus, and start on finishing up the remaining items to generate
-class documentation from source code.
+class documentation from source code.   
+
+On the topic of Eurus, I just realized it wasn't part of the repo, and I've been writing about it for a while.  Really hope
+not too many people have actually seen this.
 
 Sample model usage can be found [here](./docs/doc_model.md)
 
 Same for [PoozosNotus](docs/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
 
+“Idiot.”
+“That fact is well established and adds nothing to the plot.”
 
 Current Known Bugs:
 -------------------
