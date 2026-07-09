@@ -26,7 +26,7 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
     :param DocParameters parameters: The value of the parameters element for the method element.
     :param ClassDocReturn return_value: The value of the return_value element for the method element.
     :param str keywords: The value of the keywords attribute for the method element.
-    :param DocReturnErrorsList returns_errors: The value of the returns_errors element for the method element.
+    :param DocReturnErrorsList returns_error: The value of the returns_error element for the method element.
     :param bool is_deprecated: The value of the is_deprecated attribute for the method element.
     :param bool is_experimental: The value of the is_experimental attribute for the method element.
     :param str deprecated: The value of the deprecated attribute for the method element.
