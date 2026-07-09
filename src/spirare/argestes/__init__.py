@@ -18,8 +18,10 @@ from .class_doc_member import ClassDocMember,DocMembers
 from .class_doc_method import ClassDocMethod,DocMethods
 from .class_doc_signal import ClassDocSignal,DocSignals
 from .class_doc_theme_item import ClassDocThemeItem, DocThemeItems
+from .class_doc import ClassDocModel
 
 __all__ = [
+    'ClassDocModel',
     'ClassDocReturn',
     'ClassDocParameter',
     'ClassDocConstructor',

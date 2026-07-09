@@ -599,7 +599,7 @@ class ClassDocParameter(ClassDocReturn, Zucaritas):
     __slots__ = ('index', 'name', 'default')
     name: str
     """The value of the name attribute for the parameter element."""
-    index: str
+    index: str  ## todo: check if this is string or int
     """The value of the index attribute for the parameter element."""
     default: str
     """ The value of the default attribute for the parameter element."""
