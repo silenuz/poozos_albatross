@@ -31,7 +31,7 @@ or from a JSON string (uses a Path object):
 ```
 
 Either type source type can be read directly from a file using ```from_file(path)```.  If the extension is unrecognized it will 
-raise a value error.
+raise a type error.
 
 ```python
 class_doc_model = ClassDocModel.from_file(file)
