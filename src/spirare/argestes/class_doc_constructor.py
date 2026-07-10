@@ -13,7 +13,7 @@ from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
 from . import ClassDocReturn
-from .doc_base import MethodReturnBase, ModelCollection, DocParameters, DocDescription, Zucaritas
+from .doc_base import MethodReturnBase, ModelCollection, DocParameters, Description, Zucaritas
 
 
 class ClassDocConstructor(MethodReturnBase,Zucaritas):
@@ -21,7 +21,7 @@ class ClassDocConstructor(MethodReturnBase,Zucaritas):
     This class represents a model of the class docs constructor element
     
     :param str name: The value of the name attribute for the constructor element.
-    :param DocDescription description: The value of the description element for the constructor element.
+    :param Description description: The value of the description element for the constructor element.
     :param str qualifiers: The value of the qualifiers attribute for the constructor element.
     :param DocParameters parameters: The value of the parameters element for the constructor element.
     :param ClassDocReturn return_value: The value of the return_value element for the constructor element.
@@ -30,8 +30,8 @@ class ClassDocConstructor(MethodReturnBase,Zucaritas):
     """
     __slots__ = ()
 
-    def __init__(self, name:str, description:DocDescription=DocDescription(),qualifiers:str=None,
-                 parameters: DocParameters = None,return_value: ClassDocReturn = None):
+    def __init__(self, name:str, description:Description=Description(), qualifiers:str=None,
+                 parameters: DocParameters = None, return_value: ClassDocReturn = None):
         MethodReturnBase.__init__(self, name=name, description=description,qualifiers=qualifiers,
                                   parameters=parameters, return_value=return_value)
 

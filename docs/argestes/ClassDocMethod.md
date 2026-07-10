@@ -10,12 +10,12 @@ ClassDocMethod
 | Type | Name | Default |
 | --- | --- | --- |
 | str | [name](#name) |  |
-| [DocDescription](./custom_lists/DocDescription.md) | [description](#description) | DocDescription() |
+| Description | [description](#description) | Description() |
 | str | [qualifiers](#qualifiers) | None |
 | [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
 | [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) | None |
 | str | [keywords](#keywords) | None |
-| [DocReturnErrorsList](./custom_lists/DocReturnErrorsList.md) | [returns_errors](#returns_errors) |  |
+| [DocReturnErrorsList](./custom_lists/DocReturnErrorsList.md) | [returns_error](#returns_error) | None |
 | bool | [is_deprecated](#is_deprecated) | None |
 | bool | [is_experimental](#is_experimental) | None |
 | str | [deprecated](#deprecated) | None |
@@ -48,9 +48,9 @@ The value of the return_value element for the method element.
 ### keywords
 
 The value of the keywords attribute for the method element.
-### returns_errors
+### returns_error
 
-The value of the returns_errors element for the method element.
+The value of the returns_error element for the method element.
 ### is_deprecated
 
 The value of the is_deprecated attribute for the method element.

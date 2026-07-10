@@ -9,7 +9,7 @@ ClassDocAnnotation
 | Type | Name | Default |
 | --- | --- | --- |
 | str | [name](#name) |  |
-| [DocDescription](./custom_lists/DocDescription.md) | [description](#description) | DocDescription() |
+| Description | [description](#description) | Description() |
 | str | [qualifiers](#qualifiers) | None |
 | [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
 | [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) | None |

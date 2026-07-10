@@ -22,7 +22,7 @@ from .class_doc_method import DocMethods
 from .class_doc_operator import DocOperators
 from .class_doc_signal import DocSignals
 from .class_doc_theme_item import DocThemeItems
-from .doc_base import DocTutorials, DocBriefDescription, DocDescription, Zucaritas
+from .doc_base import DocTutorials, BriefDescription, Description, Zucaritas
 
 
 class ClassDocModel(Zucaritas):
@@ -30,8 +30,8 @@ class ClassDocModel(Zucaritas):
     This class represents a model of the root class element of the Godot doc xml.
 
     :param str name: The value of the name attribute for this class element.
-    :param DocBriefDescription brief_description: The value of the brief_description element for this class element.
-    :param DocDescription description: The value of the description element for this class element.
+    :param BriefDescription brief_description: The value of the brief_description element for this class element.
+    :param Description description: The value of the description element for this class element.
     :param DocAnnotations annotations: The value of the annotations element for this class element.
     :param DocConstants constants: The value of the constants element for this class element.
     :param DocConstructors constructors: The value of the constructors element for this class element.
@@ -57,9 +57,9 @@ class ClassDocModel(Zucaritas):
                  'is_deprecated','is_experimental','deprecated','experimental','keywords')
     name: str
     """The value of the name attribute for this class element."""
-    brief_description: DocBriefDescription
+    brief_description: BriefDescription
     """The value of the brief_description element for this class element."""
-    description: DocDescription
+    description: Description
     """The value of the description element for this class element."""
     annotations: DocAnnotations
     """The value of the annotations element for this class element."""
@@ -96,8 +96,8 @@ class ClassDocModel(Zucaritas):
     keywords:str
     """The value of the keywords attribute for this class element."""
 
-    def __init__(self, name: str, brief_description: DocBriefDescription = DocBriefDescription(), description: DocDescription = DocDescription(), annotations: DocAnnotations = None,
-                 constructors: DocConstructors = None, constants:DocConstants=None,members:DocMembers=None , methods: DocMethods = None, operators: DocOperators=None,
+    def __init__(self, name: str, brief_description: BriefDescription = BriefDescription(), description: Description = Description(), annotations: DocAnnotations = None,
+                 constructors: DocConstructors = None, constants:DocConstants=None, members:DocMembers=None, methods: DocMethods = None, operators: DocOperators=None,
                  signals: DocSignals=None, theme_items: DocThemeItems=None, keywords: str = None, tutorials:DocTutorials = DocTutorials(),
                  inherits: str = None, api_type: str=None, version: float = None, is_deprecated: bool = None, is_experimental: bool = None,
                  deprecated: str = None, experimental: str = None) -> None:
@@ -145,9 +145,9 @@ class ClassDocModel(Zucaritas):
 
     def __post_init__(self):
         if isinstance(self.description, str):
-            self.description = DocDescription(text=self.description)
+            self.description = Description(text=self.description)
         if isinstance(self.brief_description, str):
-            self.brief_description = DocBriefDescription(text=self.brief_description)
+            self.brief_description = BriefDescription(text=self.brief_description)
 
     def to_dict(self) -> dict:
         """

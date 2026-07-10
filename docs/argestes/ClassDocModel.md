@@ -10,8 +10,8 @@ ClassDocModel
 | Type | Name | Default |
 | --- | --- | --- |
 | str | [name](#name) |  |
-| [DocBriefDescription](./custom_lists/DocBriefDescription.md) | [brief_description](#brief_description) | DocBriefDescription() |
-| [DocDescription](./custom_lists/DocDescription.md) | [description](#description) | DocDescription() |
+| BriefDescription | [brief_description](#brief_description) | BriefDescription() |
+| Description | [description](#description) | Description() |
 | [DocAnnotations](./custom_lists/DocAnnotations.md) | [annotations](#annotations) | None |
 | [DocConstants](./custom_lists/DocConstants.md) | [constants](#constants) | None |
 | [DocConstructors](./custom_lists/DocConstructors.md) | [constructors](#constructors) | None |

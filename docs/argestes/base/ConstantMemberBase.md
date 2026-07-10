@@ -4,7 +4,7 @@ ConstantMemberBase
  Base class extending MemberBaseTags
 
 
-" I think Smithers picked me because of my motivational skills.
+"I think Smithers picked me because of my motivational skills.
 Everyone says they have to work a lot harder when I’m around."
 
 ## Attributes / Parameters:

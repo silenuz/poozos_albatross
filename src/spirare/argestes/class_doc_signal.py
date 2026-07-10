@@ -12,7 +12,7 @@ import xml
 from xml.etree import ElementTree as Et
 from xml.etree.ElementTree import Element
 
-from .doc_base import MethodBase,ModelCollection, DocParameters, DocDescription, Zucaritas
+from .doc_base import MethodBase,ModelCollection, DocParameters, Description, Zucaritas
 
 
 class ClassDocSignal(MethodBase,Zucaritas):
@@ -20,7 +20,7 @@ class ClassDocSignal(MethodBase,Zucaritas):
     This class represents a model of the class doc's signal element
     
     :param str name: The value of the name attribute for the signal element.
-    :param DocDescription description: The value of the description element for the signal element.
+    :param Description description: The value of the description element for the signal element.
     :param str qualifiers: The value of the qualifiers attribute for the signal element.
     :param DocParameters parameters: The value of the parameters element for the signal element.
     :param bool is_deprecated: The value of the is_deprecated attribute for the signal element.
@@ -36,7 +36,7 @@ class ClassDocSignal(MethodBase,Zucaritas):
     is_experimental: bool
     experimental: str
 
-    def __init__(self,name:str,description:DocDescription=DocDescription(), parameters:DocParameters=None,
+    def __init__(self, name:str, description:Description=Description(), parameters:DocParameters=None,
                  qualifiers: str = None, is_deprecated: bool=None, deprecated: str = None, is_experimental: bool=None,
                  experimental: str=None) -> None:
         super().__init__(name=name,description=description,parameters=parameters,qualifiers=qualifiers)

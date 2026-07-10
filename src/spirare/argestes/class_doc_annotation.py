@@ -12,7 +12,7 @@ import xml
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
-from .doc_base import MethodReturnBase, ModelCollection, DocParameters,DocDescription, Zucaritas
+from .doc_base import MethodReturnBase, ModelCollection, DocParameters,Description, Zucaritas
 from .doc_base import ClassDocReturn
 
 
@@ -21,7 +21,7 @@ class ClassDocAnnotation(MethodReturnBase,Zucaritas):
     This class represents a model of the class docs annotation element
     
     :param str name: The value of the name attribute for the annotation element.
-    :param DocDescription description: The value of the description element for the annotation element.
+    :param Description description: The value of the description element for the annotation element.
     :param str qualifiers: The value of the qualifiers attribute for the annotation element.
     :param DocParameters parameters: The value of the parameters element for the annotation element.
     :param ClassDocReturn return_value: The value of the return_value element for the annotation element.
@@ -31,8 +31,8 @@ class ClassDocAnnotation(MethodReturnBase,Zucaritas):
     keywords: str
     """The value of the keywords attribute for the annotation element."""
 
-    def __init__(self, name: str, description: DocDescription=DocDescription(),qualifiers:str=None,
-                 parameters: DocParameters = None,return_value: ClassDocReturn = None, keywords:str=None):
+    def __init__(self, name: str, description: Description=Description(), qualifiers:str=None,
+                 parameters: DocParameters = None, return_value: ClassDocReturn = None, keywords:str=None):
         MethodReturnBase.__init__(self, name=name, description=description, qualifiers=qualifiers,parameters=parameters, return_value=return_value)
         self.keywords = keywords
         """The value of the keywords attribute for the annotation element."""

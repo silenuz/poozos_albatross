@@ -13,7 +13,7 @@ from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
 from .class_doc_annotation import ClassDocAnnotation
-from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, DocDescription, Zucaritas, ClassDocReturn
+from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, Description, Zucaritas, ClassDocReturn
 
 
 class ClassDocMethod(ClassDocAnnotation,Zucaritas):
@@ -21,7 +21,7 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
     This class represents a model of the class doc's method element
     
     :param str name: The value of the name attribute for the method element.
-    :param DocDescription description: The value of the description element for the method element.
+    :param Description description: The value of the description element for the method element.
     :param str qualifiers: The value of the qualifiers attribute for the method element.
     :param DocParameters parameters: The value of the parameters element for the method element.
     :param ClassDocReturn return_value: The value of the return_value element for the method element.
@@ -41,7 +41,7 @@ class ClassDocMethod(ClassDocAnnotation,Zucaritas):
     deprecated: str
     experimental: str
 
-    def __init__(self, name: str, description: DocDescription=DocDescription(),qualifiers:str=None, parameters: DocParameters = None,
+    def __init__(self, name: str, description: Description=Description(), qualifiers:str=None, parameters: DocParameters = None,
                  return_value: ClassDocReturn = None, returns_error: DocReturnErrorsList = None,
                  keywords:str=None, is_deprecated: bool = None, is_experimental: bool = None,
                  deprecated:str = None, experimental:str = None):

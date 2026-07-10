@@ -141,7 +141,7 @@ class Zucaritas:
         return element
 
 
-class DocQualifierBase:
+class QualifierBase:
     """
     Base class for elements with enum and is_bitfield attributes
 
@@ -239,7 +239,7 @@ class DescriptionBase:
         return cls(text=json_data)
 
 
-class DocBriefDescription(DescriptionBase):
+class BriefDescription(DescriptionBase):
     """
     Model for brief_description elements
 
@@ -254,7 +254,7 @@ class DocBriefDescription(DescriptionBase):
         self._element_name = 'brief_description'
 
 
-class DocDescription(DescriptionBase):
+class Description(DescriptionBase):
     """
     Model for description elements
 
@@ -269,7 +269,7 @@ class DocDescription(DescriptionBase):
         self._element_name = 'description'
 
 
-class MemberBase(DocQualifierBase):
+class MemberBase(QualifierBase):
     """
     Base class extending qualifiers
 
@@ -412,7 +412,7 @@ class MethodBase:
     Base class for method and method like elements
 
     :param str name: The value of the name attribute for this element.
-    :param DocDescription description: The value of the description element for this element.
+    :param Description description: The value of the description element for this element.
     :param str qualifiers: The value of the qualifiers attribute for this element.
     :param DocParameters parameters: The value of the parameters element for this element.
 
@@ -421,14 +421,14 @@ class MethodBase:
     __slots__ = ('name', 'description', 'qualifiers', 'parameters')
     name: str
     """The value of the name attribute for this element"""
-    description: DocDescription
+    description: Description
     """The value of the description element for this element"""
     qualifiers: str
     """The value of the qualifiers attribute for this element"""
     parameters: DocParameters
     """The DocParameters list representing the param elements for this element"""
 
-    def __init__(self, name: str, description: DocDescription = None, qualifiers: str = None,
+    def __init__(self, name: str, description: Description = None, qualifiers: str = None,
                  parameters: DocParameters = None) -> None:
         self.name = name
         """The value of the name attribute for this element"""
@@ -441,7 +441,7 @@ class MethodBase:
 
     def __post_init__(self):
         if isinstance(self.description, str):
-            self.description = DocDescription(text=self.description)
+            self.description = Description(text=self.description)
 
     def to_dict(self) -> dict:
         """
@@ -466,7 +466,7 @@ class MethodReturnBase(MethodBase):
     Base class extending MethodBase with a return element
 
     :param str name: The value of the name attribute for this element.
-    :param DocDescription description: The value of the description element for this element.
+    :param Description description: The value of the description element for this element.
     :param str qualifiers: The value of the qualifiers attribute for this element.
     :param DocParameters parameters: The value of the parameters element for this element.
     :param ClassDocReturn return_value: The value of the return_value element for this element.
@@ -477,7 +477,7 @@ class MethodReturnBase(MethodBase):
     return_value: ClassDocReturn
     """The value of the return_value element for this element"""
 
-    def __init__(self, name: str, description: DocDescription = None, qualifiers: str = None,
+    def __init__(self, name: str, description: Description = None, qualifiers: str = None,
                  parameters: DocParameters = None, return_value: ClassDocReturn = None) -> None:
         super().__init__(name=name, description=description, qualifiers=qualifiers, parameters=parameters)
         self.return_value = return_value
@@ -542,7 +542,7 @@ class ModelCollection(UserList):
 #########################################################################################################################
 
 
-class ClassDocReturn(DocQualifierBase, Zucaritas):
+class ClassDocReturn(QualifierBase, Zucaritas):
     """
     This class represents a model of the method return element of the class docs
     Note: type_value is used as the attribute here because type is a soft keyword in python.

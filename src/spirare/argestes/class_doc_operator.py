@@ -14,7 +14,7 @@ from xml.etree import ElementTree as Et
 
 from . import ClassDocReturn
 from .doc_base import MethodReturnBase, ClassDocParameter, ModelCollection, DocParameters, \
-    DocDescription, Zucaritas
+    Description, Zucaritas
 
 
 class ClassDocOperator(MethodReturnBase,Zucaritas):
@@ -22,7 +22,7 @@ class ClassDocOperator(MethodReturnBase,Zucaritas):
     This class represents a model of the class doc's operator element
     
     :param str name: The value of the name attribute for the operator element.
-    :param DocDescription description: The value of the description element for the operator element.
+    :param Description description: The value of the description element for the operator element.
     :param str qualifiers: The value of the qualifiers attribute for the operator element.
     :param DocParameters parameters: The value of the parameters element for the operator element.
     :param ClassDocReturn return_value: The value of the return_value element for the operator element.
@@ -31,8 +31,8 @@ class ClassDocOperator(MethodReturnBase,Zucaritas):
     """
     __slots__ = ()
 
-    def __init__(self, name:str, description:DocDescription=DocDescription(),qualifiers:str=None ,
-                 return_value: ClassDocReturn = None,parameters: DocParameters = None):
+    def __init__(self, name:str, description:Description=Description(), qualifiers:str=None,
+                 return_value: ClassDocReturn = None, parameters: DocParameters = None):
         MethodReturnBase.__init__(self, name=name, description=description,qualifiers=qualifiers,
                                   parameters=parameters,return_value=return_value)
 

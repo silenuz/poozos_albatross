@@ -63,6 +63,8 @@ class Eurus:
         self.property_methods_set.clear()
         description = self.lz.get_class_detail()
         brief = self.lz.get_class_brief()
+        # Note a string passed as brief or detailed description to init should work.  On post init the model will convert
+        # the string to the appropriate description object
         self.class_model = ClassDocModel(brief_description=brief, description=description, name=self.lz.class_name)
         self.__doxy_map_properties()
         self.__doxy_map_methods()
