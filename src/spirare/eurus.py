@@ -15,7 +15,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol, TypeVar
 
-from .argestes import ClassDocModel, ClassDocConstant, ClassDocMethod, ClassDocMember, ClassDocSignal, ClassDocParameter
+from .argestes import ClassDocModel, ClassDocConstant, ClassDocMethod, ClassDocMember, ClassDocSignal, \
+    ClassDocParameter, ClassDocReturn, Description, DocConstants, DocMethods, DocMembers, DocSignals
 from .argestes.class_doc import ExtensionDocModel # todo: add this to init imports for package
 from .luckys_zephyr import LuckyZephyr, EnumValueModel, XRefSectionModel
 from .poozos_notus import PoozoNotus, PropertyInfoModel
@@ -91,46 +92,45 @@ class Eurus:
                 if enumerator_value.initializer_value is not None:
                     initial_value = enumerator_value.initializer_value
                     index = int(initial_value)
-                constant.value_attribute = str(index)
+                constant.value = str(index)
                 if enumerator_value.detaileddescription is not None:
-                    constant.value = enumerator_value.detaileddescription
+                    constant.text = enumerator_value.detaileddescription
                 self.class_model.constants.append(constant)
-                print(constant)
                 index += 1
 
     def __doxy_map_integer_constants(self):
         bound_constants = self.poozo.get_bound_constants(self.lz.class_name)
-        constants: list[ClassDocConstant] = []
+        constants: DocConstants = DocConstants()
         for bound_constant in bound_constants:
             member_definition = self.lz.get_definition_by_name(bound_constant.p_value)
             # godot docs need a value attribute for the constant
             if member_definition is not None and member_definition.initializer_value is not None:
-                constant = ClassDocConstant()
-                constant.name = bound_constant.p_name
+                constant = ClassDocConstant(name=bound_constant.p_name)
                 if bound_constant.p_enum:
                     constant.enum = bound_constant.p_enum
-                constant.value_attribute = member_definition.initializer_value
-                constant.value = member_definition.detaileddescription
+                constant.value = member_definition.initializer_value
+                constant.text = member_definition.detaileddescription
+                print("Constant Text is :: " + constant.text)
                 constants.append(constant)
         self.class_model.constants = constants
 
     def __doxy_map_methods(self):
         bound_methods = self.poozo.get_bound_methods()
-        methods: list[ClassDocMethod] = []
+        methods: DocMethods = DocMethods()
         for bound_method in bound_methods:
             if bound_method.name not in self.property_methods_set:
                 member_definition = self.lz.get_definition_by_qualified(bound_method.qualified_method_name)
                 method = ClassDocMethod()
                 if member_definition is not None:
                     method.name = member_definition.name
-                    method.return_value = member_definition.type
-                    method.description = member_definition.detaileddescription
+                    method.return_value = ClassDocReturn(type_value=member_definition.type)
+                    method.description = Description(text=member_definition.detaileddescription)
                     methods.append(method)
         self.class_model.methods = methods
 
     def __doxy_map_properties(self):
         bound_properties = self.poozo.get_bound_properties()
-        members: list[ClassDocMember] = []
+        members: DocMembers = DocMembers()
         for bound_property in bound_properties:
             member_definition = self.lz.get_definition_by_name(bound_property.field)
             member = ClassDocMember(member_definition.name)
@@ -155,15 +155,15 @@ class Eurus:
             data = SignalXRefDataModel.from_reference_item(signal_ref,self.lz)
             signal_data[data.name] = data
 
-        signals: list[ClassDocSignal] = []
+        signals: DocSignals = DocSignals()
         for bound_signal in bound_signals:
             signal = ClassDocSignal(bound_signal.name)
-            signal.description = 'something'
+            signal.description = Description('something')
             signal_parameters = bound_signal.argument_info
             if len(signal_parameters) > 0:
                 for signal_parameter_info in signal_parameters:
                     parameter = ClassDocParameter(signal_parameter_info.name)
-                    parameter.index = signal_parameter_info.index
+                    parameter.index = str(signal_parameter_info.index)
                     parameter.name = signal_parameter_info.name
                     parameter.type_value = signal_parameter_info.variant_type_name
                     specified_type = signal_parameter_info.get_hint_type()

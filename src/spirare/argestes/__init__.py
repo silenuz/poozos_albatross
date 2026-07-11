@@ -9,7 +9,7 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 from .doc_base import ClassDocReturn, ClassDocParameter, ClassDocReturnError, DocParameters, \
-    DocReturnErrorsList, ClassDocTutorialLink,DocTutorials
+    DocReturnErrorsList, ClassDocTutorialLink,DocTutorials,Description,BriefDescription
 from .class_doc_operator import ClassDocOperator, DocOperators
 from .class_doc_constructor import ClassDocConstructor, DocConstructors
 from .class_doc_constant import ClassDocConstant, DocConstants
@@ -45,6 +45,7 @@ __all__ = [
     'DocThemeItems',
     'DocSignals',
     'DocMethods',
-    'DocConstants'
-
+    'DocConstants',
+    'Description',
+    'BriefDescription',
 ]
