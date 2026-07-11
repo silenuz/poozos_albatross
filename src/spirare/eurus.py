@@ -15,6 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol, TypeVar
 
+from . import luckys_zephyr
 from .argestes import ClassDocModel, ClassDocConstant, ClassDocMethod, ClassDocMember, ClassDocSignal, \
     ClassDocParameter, ClassDocReturn, Description, DocConstants, DocMethods, DocMembers, DocSignals
 from .argestes.class_doc import ExtensionDocModel # todo: add this to init imports for package
@@ -110,7 +111,6 @@ class Eurus:
                     constant.enum = bound_constant.p_enum
                 constant.value = member_definition.initializer_value
                 constant.text = member_definition.detaileddescription
-                print("Constant Text is :: " + constant.text)
                 constants.append(constant)
         self.class_model.constants = constants
 
@@ -135,7 +135,7 @@ class Eurus:
             member_definition = self.lz.get_definition_by_name(bound_property.field)
             member = ClassDocMember(member_definition.name)
             if member_definition.detaileddescription is not None:
-                member.value = member_definition.detaileddescription
+                member.text = member_definition.detaileddescription
             member.getter = bound_property.getter
             member.setter = bound_property.setter
             assign_value(bound_property.info,member_definition.type,member)
@@ -152,7 +152,7 @@ class Eurus:
         signal_data: dict[str, SignalXRefDataModel] = {}
         signals_ref = self.lz.get_xref_items('Signal')
         for signal_ref in signals_ref:
-            data = SignalXRefDataModel.from_reference_item(signal_ref,self.lz)
+            data = SignalXRefDataModel.from_reference_item(signal_ref)
             signal_data[data.name] = data
 
         signals: DocSignals = DocSignals()
@@ -210,7 +210,7 @@ class SignalXRefDataModel:
         paragraphs = paragraph_block.findall('para')
         description_parts = []
         for paragraph in paragraphs[1:]:
-            para = lz.get_inner_markup(paragraph)
+            para = luckys_zephyr.get_inner_markup(paragraph)
             if para:
                 description_parts.append('<para>' + para + '</para>')
 
@@ -222,7 +222,7 @@ class SignalXRefDataModel:
 
 
     @classmethod
-    def from_reference_item(cls, xrefitem: XRefSectionModel,lz_data:LuckyZephyr) -> "SignalXRefDataModel":
+    def from_reference_item(cls, xrefitem: XRefSectionModel) -> "SignalXRefDataModel":
         paragraph_block = xrefitem.node_description.find('.//parblock')
         paragraphs = paragraph_block.findall('para')
         name_node = paragraphs[0]
