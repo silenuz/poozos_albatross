@@ -56,7 +56,11 @@ for file in files:
     class_doc = ClassDocModel.from_file(file)
     xml_element = class_doc.to_xml_doc()
     Et.indent(xml_element,"    ")
+    Et.register_namespace('xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+    xsi_namespace = "{http://www.w3.org/2001/XMLSchema-instance}"
+    xml_element.set(xsi_namespace + "noNamespaceSchemaLocation",
+             "https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd")
     tree = Et.ElementTree(xml_element)
     file_name = file.stem + '.xml'
     file_path = output_folder / file_name
-    tree.write(str(file_path),encoding="utf-8",short_empty_elements=False)
+    tree.write(str(file_path),encoding="utf-8",short_empty_elements=False,xml_declaration=True)
