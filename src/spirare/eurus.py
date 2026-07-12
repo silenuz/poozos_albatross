@@ -120,9 +120,8 @@ class Eurus:
         for bound_method in bound_methods:
             if bound_method.name not in self.property_methods_set:
                 member_definition = self.lz.get_definition_by_qualified(bound_method.qualified_method_name)
-                method = ClassDocMethod()
+                method = ClassDocMethod(name=bound_method.name)
                 if member_definition is not None:
-                    method.name = member_definition.name
                     method.return_value = ClassDocReturn(type_value=member_definition.type)
                     method.description = Description(text=member_definition.detaileddescription)
                     methods.append(method)

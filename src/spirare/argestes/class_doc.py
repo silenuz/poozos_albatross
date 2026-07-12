@@ -160,21 +160,21 @@ class ClassDocModel(Zucaritas):
         result.update(self.brief_description.to_dict())
         result.update(self.description.to_dict())
         result.update(self.tutorials.to_dict())
-        if self.constructors is not None:
+        if self.constructors is not None and len(self.constructors) > 0:
             result.update(self.constructors.to_dict())
-        if self.methods is not None:
+        if self.methods is not None and len(self.methods) > 0:
             result.update(self.methods.to_dict())
-        if self.members is not None:
+        if self.members is not None and len(self.members) > 0:
             result.update(self.members.to_dict())
-        if self.signals is not None:
+        if self.signals is not None and len(self.signals) > 0:
             result.update(self.signals.to_dict())
-        if self.constants is not None:
+        if self.constants is not None and len(self.constants) > 0:
             result.update(self.constants.to_dict())
-        if self.operators is not None:
+        if self.operators is not None and len(self.operators) > 0:
             result.update(self.operators.to_dict())
-        if self.theme_items is not None:
+        if self.theme_items is not None and len(self.theme_items) > 0:
             result.update(self.theme_items.to_dict())
-        if self.annotations is not None:
+        if self.annotations is not None and len(self.annotations) > 0:
             result.update(self.annotations.to_dict())
         if self.keywords is not None:
             result['keywords'] = self.keywords
@@ -223,3 +223,6 @@ class ClassDocModel(Zucaritas):
 
 class ExtensionDocModel:
     class_doc: list[ClassDocModel]
+
+    def __init__(self) -> None:
+        self.class_doc = []

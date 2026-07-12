@@ -25,6 +25,7 @@ class Zucaritas:
     attribute_map = dict()
     """ map of attributes that were renamed, currently just type is renamed because it shadows a soft keyword in python"""
     attribute_map['type'] = 'type_value'
+    attribute_map['type_value'] = 'type'
 
     @classmethod
     def from_json(cls, json_data):
@@ -111,6 +112,8 @@ class Zucaritas:
         values = self.to_dict()
         element = Et.Element('element')
         for key, value in values.items():
+            if key in self.attribute_map:
+                key = self.attribute_map[key]
             if key == 'text':
                 element.text = value
             else:
