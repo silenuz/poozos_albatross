@@ -26,6 +26,8 @@ class Zucaritas:
     """ map of attributes that were renamed, currently just type is renamed because it shadows a soft keyword in python"""
     attribute_map['type'] = 'type_value'
     attribute_map['type_value'] = 'type'
+    attribute_map['return'] = 'return_value'
+    attribute_map['return_value'] = 'return'
 
     @classmethod
     def from_json(cls, json_data):
@@ -79,27 +81,34 @@ class Zucaritas:
         """
         kwargs = dict()
         for key, value in element.attrib.items():
+            print("KEY:: " , key)
             if not 'http' in key:
                 if key in cls.attribute_map:
+                    print('Key in map :: ' , key)
                     key = cls.attribute_map[key]
                 kwargs[key] = value
         class_object = cls(**kwargs)
         if element.text is not None and hasattr(class_object, 'text'):
             class_object.text = class_object.get_inner_markup(element)
         for e in element:
-            if e.tag == 'param':
+            tag = e.tag
+            if tag in cls.attribute_map:
+                tag = cls.attribute_map[tag]
+            if tag == 'param':
                 if class_object.parameters is None:
                     class_object.parameters = DocParameters()
                 class_object.parameters.append(ClassDocParameter.from_xml(e))
-            elif e.tag == 'returns_error':
+            elif tag == 'returns_error':
                 if class_object.returns_error is None:
                     class_object.returns_error = DocReturnErrorsList()
                 class_object.returns_error.append(ClassDocReturnError.from_xml(e))
             else:
-                attr_type = typing.get_type_hints(class_object.__class__).get(e.tag)
+                if tag == 'return':
+                    print("RETURN ELEMENT!")
+                attr_type = typing.get_type_hints(class_object.__class__).get(tag)
                 if attr_type is not None:
                     child = attr_type.from_xml(e)
-                    setattr(class_object, e.tag, child)
+                    setattr(class_object, tag, child)
         return class_object
 
     def _to_xml(self)->xml.etree.ElementTree.Element:
