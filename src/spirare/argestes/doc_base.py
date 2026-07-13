@@ -126,14 +126,18 @@ class Zucaritas:
         values = self.to_dict()
         element = Et.Element('element')
         for key, value in values.items():
+            print("KEY:: " , key)
+            key_original = key
+            if key in self.attribute_map:
+                key = self.attribute_map[key]
             if key == 'text':
                 element.text = value
             else:
-                attr_type = typing.get_type_hints(self.__class__).get(key)
+                attr_type = typing.get_type_hints(self.__class__).get(key_original)
                 # attr_type = self.__annotations__.get(key)
                 if attr_type is not None and not getattr(attr_type, '__module__', None) == 'builtins':
-                    attr_instance = getattr(self, key, None)
-                    print("TYPE::" , attr_type)
+                    attr_instance = getattr(self, key_original, None)
+                    print(attr_type)
                     if attr_type == DocParameters:
                         params = attr_instance.to_xml_doc()
                         if isinstance(params, Et.Element):
@@ -147,7 +151,7 @@ class Zucaritas:
                         for error in errors:
                             element.append(error)
                     elif hasattr(attr_instance, 'to_xml_doc'):
-                        #print("append element" , attr_instance.to_xml_doc)
+                        print("append element" , attr_instance.to_xml_doc)
                         sub_element = attr_instance.to_xml_doc()
                         if sub_element is not None:
                             element.append(sub_element)
