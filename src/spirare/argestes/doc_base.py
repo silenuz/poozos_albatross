@@ -37,7 +37,12 @@ class Zucaritas:
         :param json_data: JSON string with element data
         :return: A model of the element created from the JSON string
         """
-        raw_args = json.loads(json_data)
+        if isinstance(json_data, str):
+            raw_args = json.loads(json_data)
+        elif isinstance(json_data, dict):
+            raw_args = json_data
+        else:
+            raise TypeError("Unknown data format passed to from_json method")
         kwargs = {}
         for key, value in raw_args.items():
             attrib_type = typing.get_type_hints(cls).get(key)
@@ -81,10 +86,10 @@ class Zucaritas:
         """
         kwargs = dict()
         for key, value in element.attrib.items():
-            print("KEY:: " , key)
+            #print("KEY:: " , key)
             if not 'http' in key:
                 if key in cls.attribute_map:
-                    print('Key in map :: ' , key)
+                    #print('Key in map :: ' , key)
                     key = cls.attribute_map[key]
                 kwargs[key] = value
         class_object = cls(**kwargs)
@@ -121,8 +126,6 @@ class Zucaritas:
         values = self.to_dict()
         element = Et.Element('element')
         for key, value in values.items():
-            if key in self.attribute_map:
-                key = self.attribute_map[key]
             if key == 'text':
                 element.text = value
             else:
@@ -130,7 +133,7 @@ class Zucaritas:
                 # attr_type = self.__annotations__.get(key)
                 if attr_type is not None and not getattr(attr_type, '__module__', None) == 'builtins':
                     attr_instance = getattr(self, key, None)
-                    # print(attr_type)
+                    print("TYPE::" , attr_type)
                     if attr_type == DocParameters:
                         params = attr_instance.to_xml_doc()
                         if isinstance(params, Et.Element):
@@ -144,7 +147,7 @@ class Zucaritas:
                         for error in errors:
                             element.append(error)
                     elif hasattr(attr_instance, 'to_xml_doc'):
-                        # print("append element")
+                        #print("append element" , attr_instance.to_xml_doc)
                         sub_element = attr_instance.to_xml_doc()
                         if sub_element is not None:
                             element.append(sub_element)
@@ -503,6 +506,7 @@ class MethodReturnBase(MethodBase):
         """
         values = dict()
         if self.return_value is not None:
+            #values['return_value'] = self.return_value.to_dict()
             values['return_value'] = self.return_value.to_dict()
         values.update(super().to_dict())
         return values
