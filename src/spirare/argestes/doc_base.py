@@ -37,12 +37,7 @@ class Zucaritas:
         :param json_data: JSON string with element data
         :return: A model of the element created from the JSON string
         """
-        if isinstance(json_data, str):
-            raw_args = json.loads(json_data)
-        elif isinstance(json_data, dict):
-            raw_args = json_data
-        else:
-            raise TypeError("Unknown data format passed to from_json method")
+        raw_args = json.loads(json_data)
         kwargs = {}
         for key, value in raw_args.items():
             attrib_type = typing.get_type_hints(cls).get(key)
@@ -550,6 +545,8 @@ class ModelCollection(UserList):
     @classmethod
     def from_json(cls, model_cls, json_str: str):
         data_list = json_str  # json.loads(json_str)
+        print("Model Class: ", model_cls.__name__)
+        print("Data: ", data_list)
         # return cls(model_cls, [model_cls.from_dict(d) for d in data_list])
         initial_list = [model_cls.from_json(json.dumps(d)) for d in data_list]
         return cls(initial_list)

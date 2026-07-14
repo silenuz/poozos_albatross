@@ -5,6 +5,9 @@ Update:
 -------
 For the most part the model can serialize / deserialize to and from XML and JSON, and should now be fully working.
 
+In the off chance someone is actually using this stuff, there is currently a bug in to or from json that concerning the return element for methods.
+Am currently working on it.
+
 Then I'll integrate the new models with Eurus, and start on finishing up the remaining items to generate
 class documentation from source code.   
 
