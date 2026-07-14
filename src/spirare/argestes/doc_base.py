@@ -577,7 +577,7 @@ class ClassDocReturn(QualifierBase, Zucaritas):
     type_value: str
     """The value of the type attribute for return element."""
 
-    def __init__(self, type_value: str = None, enum: str = None, is_bitfield: bool = False) -> None:
+    def __init__(self, type_value: str = None, enum: str = None, is_bitfield: bool = None) -> None:
         super().__init__(enum, is_bitfield)
         self.type_value = type_value
         """The value of the type attribute for return element."""
