@@ -108,8 +108,6 @@ class Zucaritas:
                     class_object.returns_error = DocReturnErrorsList()
                 class_object.returns_error.append(ClassDocReturnError.from_xml(e))
             else:
-                if tag == 'return':
-                    print("RETURN ELEMENT!")
                 attr_type = typing.get_type_hints(class_object.__class__).get(tag)
                 if attr_type is not None:
                     child = attr_type.from_xml(e)
@@ -126,7 +124,7 @@ class Zucaritas:
         values = self.to_dict()
         element = Et.Element('element')
         for key, value in values.items():
-            print("KEY:: " , key)
+            #print("KEY:: " , key)
             key_original = key
             if key in self.attribute_map:
                 key = self.attribute_map[key]
@@ -137,7 +135,7 @@ class Zucaritas:
                 # attr_type = self.__annotations__.get(key)
                 if attr_type is not None and not getattr(attr_type, '__module__', None) == 'builtins':
                     attr_instance = getattr(self, key_original, None)
-                    print(attr_type)
+                    #print(attr_type)
                     if attr_type == DocParameters:
                         params = attr_instance.to_xml_doc()
                         if isinstance(params, Et.Element):
@@ -151,7 +149,7 @@ class Zucaritas:
                         for error in errors:
                             element.append(error)
                     elif hasattr(attr_instance, 'to_xml_doc'):
-                        print("append element" , attr_instance.to_xml_doc)
+                        #print("append element" , attr_instance.to_xml_doc)
                         sub_element = attr_instance.to_xml_doc()
                         if sub_element is not None:
                             element.append(sub_element)
