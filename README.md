@@ -6,7 +6,13 @@ Update:
 For the most part the model can serialize / deserialize to and from XML and JSON, and should now be fully working.
 
 In the off chance someone is actually using this stuff, there is currently a bug in to or from json that concerning the return element for methods.
-Am currently working on it.
+Am currently working on it.  Okay turns out it's because I stored the value in the json as a dict, and yesterday when I added the 
+feature to create model objects from a dict it went away.  So now I'm trying to remember yesterday morning, to see
+if maybe this is how I intended it to work?  Damn heat, brain's melting and my memory with it, and as Truman said 
+"Never kick a fresh turd on a hot day."
+
+So for the interim I'm just going to add the feature back to create from a dict as it solves the problem and was 
+something I wanted anyway, and I'll revisit the return element to/from json if I decide differently.
 
 Then I'll integrate the new models with Eurus, and start on finishing up the remaining items to generate
 class documentation from source code.   
