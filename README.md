@@ -5,8 +5,10 @@ Update:
 -------
 For the most part the model can serialize / deserialize to and from XML and JSON, and should now be fully working.
 
-In the off chance someone is actually using this stuff, there is currently a bug in to or from json that concerning the return element for methods.
-Am currently working on it.  Okay turns out it's because I stored the value in the json as a dict, and yesterday when I added the 
+In the off chance someone is actually following the progress of this project,  there is currently a bug in to or
+from json concerning the return element for methods.Am currently working on it.  
+
+Okay turns out it's because I stored the value in the json as a dict, and yesterday when I added the 
 feature to create model objects from a dict it went away.  So now I'm trying to remember yesterday morning, to see
 if maybe this is how I intended it to work?  Damn heat, brain's melting and my memory with it, and as Truman said 
 "Never kick a fresh turd on a hot day."
