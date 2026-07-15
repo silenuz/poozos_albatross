@@ -3,6 +3,12 @@ IMPORTANT
 
 Update:
 -------
+I wanted the merge working before finishing Eurus so that the new version of the doc generation scripts could also 
+update the class docs, but in working on the merge, the shoddy job I did when I added the return element 
+fix the first time, was all too evident.  Anyway as a result very little progress has been made so far on what I wanted to actually accomplish this week,
+and in all likelihood, given the current weather I'll likely only finish the model merge code, and possibly get some
+documentation done.  
+
 For the most part the model can serialize / deserialize to and from XML and JSON, and should now be fully working.
 
 In the off chance someone is actually following the progress of this project,  there is currently a ~~bug~~ *new feature* in to or

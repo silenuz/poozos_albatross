@@ -23,7 +23,8 @@ class Zucaritas:
     "Never get out of the boat!"
     """
     attribute_map = dict()
-    """ map of attributes that were renamed, currently just type is renamed because it shadows a soft keyword in python"""
+    """ map of attributes that were renamed, currently just type and return are renamed 
+    because of shadowing either a keyword or soft keyword in python"""
     attribute_map['type'] = 'type_value'
     attribute_map['type_value'] = 'type'
     attribute_map['return'] = 'return_value'
