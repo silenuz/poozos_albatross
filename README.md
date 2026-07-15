@@ -7,20 +7,8 @@ I wanted the merge working before finishing Eurus so that the new version of the
 update the class docs, but in working on the merge, the shoddy job I did when I added the return element 
 fix the first time, was all too evident.  Anyway as a result very little progress has been made so far on what I wanted to actually accomplish this week,
 and in all likelihood, given the current weather I'll likely only finish the model merge code, and possibly get some
-documentation done.  
-
-For the most part the model can serialize / deserialize to and from XML and JSON, and should now be fully working.
-
-In the off chance someone is actually following the progress of this project,  there is currently a ~~bug~~ *new feature* in to or
-from json concerning the return element for methods.Am currently working on it.  
-
-Okay turns out it's because I stored the value in the json as a dict, and yesterday when I added the 
-feature to create model objects from a dict it went away.  So now I'm trying to remember yesterday morning, to see
-if maybe this is how I intended it to work?  Damn heat, brain's melting and my memory with it, and as Truman said 
-"Never kick a fresh turd on a hot day."
-
-So for the interim I'm just going to add the feature back to create from a dict as it solves the problem and was 
-something I wanted anyway, and I'll revisit the return element to/from json if I decide differently.
+documentation done.  However, AFAIK all bugs regarding the return element for methods and whatnot have been fixed,
+which should mean the model now fully works except for lack of merge.
 
 Then I'll integrate the new models with Eurus, and start on finishing up the remaining items to generate
 class documentation from source code.   
