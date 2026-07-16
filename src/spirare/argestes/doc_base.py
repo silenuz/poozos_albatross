@@ -470,12 +470,13 @@ class MethodBase:
         result = dict()
         if self.name is not None:
             result['name'] = self.name
+        if self.parameters is not None:
+            result.update(self.parameters.to_dict())
         if self.description is not None:
             result.update(self.description.to_dict())
         if self.qualifiers is not None:
             result['qualifiers'] = self.qualifiers
-        if self.parameters is not None:
-            result.update(self.parameters.to_dict())
+
         return result
 
 
