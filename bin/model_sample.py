@@ -64,3 +64,18 @@ for file in files:
     file_name = file.stem + '.xml'
     file_path = output_folder / file_name
     tree.write(str(file_path),encoding="utf-8",short_empty_elements=False,xml_declaration=True)
+
+
+merge_file_incomplete = script_path.parent.parent / 'example' / 'doc_classes_generated' / 'TrafficLight.xml'
+merge_file_new_information = input_folder / 'TrafficLight.xml'
+
+### to merge models simply use the models merge method
+class_doc_incomplete = ClassDocModel.from_file(merge_file_incomplete)
+class_doc_new_information = ClassDocModel.from_file(merge_file_new_information)
+new_model = class_doc_incomplete.merge(class_doc_new_information)
+xml_element = new_model.to_xml_doc()
+Et.indent(xml_element, "    ")
+tree = Et.ElementTree(xml_element)
+file_name = 'TrafficLightMergedContent.xml'
+file_path = output_folder / file_name
+tree.write(str(file_path), encoding="utf-8", short_empty_elements=False, xml_declaration=True)
