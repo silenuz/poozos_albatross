@@ -32,8 +32,9 @@ or from a JSON string (uses a Path object):
     class_doc_model = ClassDocModel.from_json(data)
 ```
 
-Either type source type can be read directly from a file using ```from_file(path)```.  If the extension is unrecognized it will 
-raise a type error.
+Either type source type can be read directly from a file using ```from_file```, which accepts either a string containing the
+path to the file, or a Path object representing the file.  The method checks if the arg is a string and if so creates a Path from it.
+If the extension is unrecognized it will raise a type error.
 
 ```python
 class_doc_model = ClassDocModel.from_file(file)
