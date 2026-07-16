@@ -8,6 +8,9 @@
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
+from __future__ import annotations
+
+import copy
 import json
 import xml
 from xml.etree.ElementTree import Element
@@ -149,6 +152,40 @@ class ClassDocModel(Zucaritas):
         if isinstance(self.brief_description, str):
             self.brief_description = BriefDescription(text=self.brief_description)
 
+    def __merge_dict(self,target_dict: dict,new_content_dict:dict) -> dict:
+        result_dict = copy.deepcopy(target_dict)
+
+        for key in target_dict.keys() | new_content_dict.keys():
+            target_value = target_dict.get(key)
+            new_value = new_content_dict.get(key)
+            if new_value is None:
+                continue
+            elif new_value is not None and target_value is None:
+                result_dict[key] = copy.deepcopy(new_value)
+            else:
+                if isinstance(target_value, dict):
+                    self.__merge_dict(result_dict[key], new_value)
+                elif isinstance(target_value, list):
+                    new_list = []
+                    old_list = result_dict[key]
+                    update_list = new_value
+                    for item in update_list:
+                        match = None
+                        for item_old in old_list:
+                            if item_old['name'] == item['name']:
+                                match = item_old
+                                break
+                        if match is not None:
+                            new_item = self.__merge_dict(match, item)
+                            new_list.append(new_item)
+                        else:
+                            new_list.append(copy.deepcopy(item))
+                    result_dict[key] = new_list
+                else:
+                    result_dict[key] = target_value
+        return result_dict
+
+
     def to_dict(self) -> dict:
         """
        Returns a dictionary of the values for this class doc root element model instance.
@@ -203,6 +240,19 @@ class ClassDocModel(Zucaritas):
         base_element = self._to_xml()
         base_element.tag = 'class'
         return base_element
+
+    def merge(self, new_content_model: ClassDocModel) -> ClassDocModel:
+        """
+        Merge content of the new content model with the content of this model instance.
+
+        :param new_content_model: The ClassDocModel instance that contains teh new or updated information that is to be merged with
+            this instance.
+        :return: A new ClassDocModel instance that contains the merged content.
+        """
+        target_dict = self.to_dict()
+        new_content_dict = new_content_model.to_dict()
+        result_dict = self.__merge_dict(target_dict, new_content_dict)
+        return ClassDocModel.from_json(json.dumps(result_dict))
 
 
     @classmethod

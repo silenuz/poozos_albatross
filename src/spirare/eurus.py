@@ -7,6 +7,8 @@
 @File: eurus
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
+
+"Say 'hello' to my little friend!"
 """
 from __future__ import annotations
 

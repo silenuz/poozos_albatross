@@ -31,9 +31,7 @@ class PoozoNotus:
     """
     Class for parsing cpp source code to catalog any bindings.
 
-    "aut, gelidas hibernus aquas cum
-    fuderit Auster,
-    securum somnos igne iuvante sequi" - Tibullus
+    "A boy's best friend is his mother"
     """
 
     def get_bound_constants(self, class_name: str) -> list[IntegerConstantModel]:
