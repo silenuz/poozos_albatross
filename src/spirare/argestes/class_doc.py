@@ -152,38 +152,59 @@ class ClassDocModel(Zucaritas):
         if isinstance(self.brief_description, str):
             self.brief_description = BriefDescription(text=self.brief_description)
 
-    def __merge_dict(self,target_dict: dict,new_content_dict:dict) -> dict:
-        result_dict = copy.deepcopy(target_dict)
+    def __merge_lists(self, original_list, update_list):
+        """
+        Merges update_list into old_list.
+        Updates dictionaries with matching 'name' keys and appends new ones.
+        """
+        # map original list by name attribute
+        list_map = {
+            item['name']: item
+            for item in original_list
+            if isinstance(item, dict) and 'name' in item
+        }
 
-        for key in target_dict.keys() | new_content_dict.keys():
-            target_value = target_dict.get(key)
-            new_value = new_content_dict.get(key)
-            if new_value is None:
+        for update_item in update_list:
+            if not isinstance(update_item, dict) or 'name' not in update_item:
                 continue
-            elif new_value is not None and target_value is None:
-                result_dict[key] = copy.deepcopy(new_value)
-            else:
-                if isinstance(target_value, dict):
-                    self.__merge_dict(result_dict[key], new_value)
-                elif isinstance(target_value, list):
-                    new_list = []
-                    old_list = result_dict[key]
-                    update_list = new_value
-                    for item in update_list:
-                        match = None
-                        for item_old in old_list:
-                            if item_old['name'] == item['name']:
-                                match = item_old
-                                break
-                        if match is not None:
-                            new_item = self.__merge_dict(match, item)
-                            new_list.append(new_item)
-                        else:
-                            new_list.append(copy.deepcopy(item))
-                    result_dict[key] = new_list
+            id_value = update_item['name']
+            if id_value in list_map:
+                self.__merge_dict(list_map[id_value], update_item)
+
+        new_items = [
+            item for item in update_list
+            if isinstance(item, dict) and item.get('name') not in list_map
+        ]
+
+        original_list.extend(new_items)
+        return original_list
+
+    def __merge_dict(self, original_dict: dict, dict_with_updates: dict) -> dict:
+        """
+        Merges the content of the dictionary with updates, into the original dictionary.
+
+        :param original_dict: The original dictionary of values
+        :param dict_with_updates:  The dictionary with updated values
+        :return: original dictionary with the updated values
+        """
+        # If either side is missing or not a dictionary, return the new data
+        if not isinstance(original_dict, dict):
+            return dict_with_updates
+        if not isinstance(dict_with_updates, dict):
+            return original_dict
+
+        for key, value in dict_with_updates.items():
+            if key in original_dict:
+                if isinstance(original_dict[key], dict) and isinstance(value, dict):
+                    original_dict[key] = self.__merge_dict(original_dict[key], value)
+                elif isinstance(original_dict[key], list) and isinstance(value, list):
+                    original_dict[key] = self.__merge_lists(original_dict[key], value)
                 else:
-                    result_dict[key] = target_value
-        return result_dict
+                    original_dict[key] = value
+            else:
+                original_dict[key] = value
+
+        return original_dict
 
 
     def to_dict(self) -> dict:
