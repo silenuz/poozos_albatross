@@ -1,5 +1,5 @@
-Model Overview
-==============
+# Model Overview
+
 
 The class documentation model is fairly basic in design.  Classes model elements, and class attributes are element attributes.
 
@@ -10,8 +10,10 @@ as possible.
 The model incorporates the entire XSD for the class documentation, even objects like constructors 
 that would be rare in an extension. 
 
-Usage:
-------
+## Usage:
+
+### Serialization:
+
 The model can be created from either an XML root element from the Godot class documentation:
 
 ```python
@@ -37,8 +39,20 @@ raise a type error.
 class_doc_model = ClassDocModel.from_file(file)
 ```
 
-Sample Script:
---------------
+### Merge Models:
+
+```python
+merge_file_incomplete = Path('path/to/original/file')
+merge_file_new_information = Path('path/to/new/file')
+
+### to merge models simply use the models merge method
+class_doc_incomplete = ClassDocModel.from_file(merge_file_incomplete)
+class_doc_new_information = ClassDocModel.from_file(merge_file_new_information)
+new_model = class_doc_incomplete.merge(class_doc_new_information)
+```
+
+## Sample Script:
+
 There is a sample script demonstrating the above usage of the model [here](../bin/model_sample.py). In the samples folder are
 two godot class documentation files.  One for Summator and one for TrafficLight, these have the full XML content for 
 the classes with the current properties not generated from source code, having been filled in by Godot's doctool.

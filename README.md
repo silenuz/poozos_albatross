@@ -3,6 +3,10 @@ IMPORTANT
 
 Update:
 -------
+The current code contains some small cosmetic fixes (elements rearranged to conform to xsd order, still plenty to go),
+and now also contains the initial implementation for a merge of models.  It's barely tested so it still counts as 
+unfinished.  If anyone actually visits this repo, I added an example to the sample usage found [here](./docs/doc_model.md).
+
 I wanted the merge working before finishing Eurus so that the new version of the doc generation scripts could also 
 update the class docs, but in working on the merge, the shoddy job I did when I added the return element 
 fix the first time, was all too evident.  Anyway as a result very little progress has been made so far on what I wanted to actually accomplish this week,
