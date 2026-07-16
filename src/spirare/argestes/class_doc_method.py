@@ -92,6 +92,8 @@ class DocMethods(ModelCollection):
     This class models the methods element, and contains a list of ClassDocMethod instances.
 
     :param list initlist: A list of ClassDocMethod instances.
+
+    "Any sufficiently advanced bug is indistinguishable from a feature." - Rich Kulawiec
     """
     def __init__(self,initlist=None):
         super().__init__(ClassDocMethod, initlist)

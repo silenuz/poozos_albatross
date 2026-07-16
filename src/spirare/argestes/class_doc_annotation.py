@@ -26,6 +26,8 @@ class ClassDocAnnotation(MethodReturnBase,Zucaritas):
     :param DocParameters parameters: The value of the parameters element for the annotation element.
     :param ClassDocReturn return_value: The value of the return_value element for the annotation element.
     :param str keywords: The value of the keywords attribute for the annotation element.
+
+    ""I shall call you ageless, faceless, gender-neutral, culturally ambiguous, adventurer person. AFGNCAAP for short."
     """
     __slots__ = ['keywords']
     keywords: str
@@ -67,6 +69,8 @@ class DocAnnotations(ModelCollection):
     This class models the annotations element, and contains a list of ClassDocAnnotation instances.
 
     :param list initlist: A list of ClassDocAnnotation instances.
+
+    "It's pitch black. You're likely to be eaten by a grue."
     """
     def __init__(self,initlist=None):
         super().__init__(ClassDocAnnotation, initlist)

@@ -57,6 +57,13 @@ class DocConstructors(ModelCollection):
     This class models the constructors element, and contains a list of ClassDocConstructor instances.
 
     :param list initlist: A list of ClassDocConstructor instances.
+
+    "A computer, to print out a fact,
+    Will divide, multiply, and subtract.
+        But this output can be
+        No more than debris,
+    If the input was short of exact.
+		-- Gigo"
     """
     def __init__(self,initlist=None):
         super().__init__(ClassDocConstructor, initlist)

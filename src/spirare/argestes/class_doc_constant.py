@@ -77,6 +77,8 @@ class DocConstants(ModelCollection):
     This class models the constants element, and contains a list of ClassDocConstant instances.
 
     :param list initlist: A list of ClassDocConstant instances.
+
+    "It's dangerous to go alone.  Take this!"
     """
     def __init__(self,initlist=None):
         super().__init__(ClassDocConstant, initlist)

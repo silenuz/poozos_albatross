@@ -108,6 +108,11 @@ class DocMembers(ModelCollection):
     This class models the members element, and contains a list of ClassDocMember instances.
 
     :param list initlist: A list of ClassDocMember instances.
+
+    "We don't need no indirection
+    We don't need no flow control
+    No data typing or declarations
+    Did you leave the lists alone?"
     """
     def __init__(self,initlist=None):
         super().__init__(ClassDocMember, initlist)
