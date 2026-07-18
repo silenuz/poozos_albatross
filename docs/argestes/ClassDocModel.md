@@ -10,8 +10,8 @@ ClassDocModel
 | Type | Name | Default |
 | --- | --- | --- |
 | str | [name](#name) |  |
-| BriefDescription | [brief_description](#brief_description) | BriefDescription() |
-| Description | [description](#description) | Description() |
+| [BriefDescription](BriefDescription.md) | [brief_description](#brief_description) | BriefDescription() |
+| [Description](Description.md) | [description](#description) | Description() |
 | [DocAnnotations](./custom_lists/DocAnnotations.md) | [annotations](#annotations) | None |
 | [DocConstants](./custom_lists/DocConstants.md) | [constants](#constants) | None |
 | [DocConstructors](./custom_lists/DocConstructors.md) | [constructors](#constructors) | None |
@@ -36,6 +36,7 @@ ClassDocModel
 | --- | --- |
 | dict | to_dict |  |
 | xml.etree.ElementTree.Element | to_xml_doc |  |
+| ClassDocModel | merge |  |
 | 'ClassDocModel' | from_file |  |
 
 ## Attribute Descriptions:
@@ -113,6 +114,13 @@ Returns a dictionary of the values for this class doc root element model instanc
 Create a Godot class doc root element for this model instance.
 
 :return: A Godot class doc root element for this model instance.
+### merge
+
+Merge content of the new content model with the content of this model instance.
+
+:param new_content_model: The ClassDocModel instance that contains teh new or updated information that is to be merged with
+    this instance.
+:return: A new ClassDocModel instance that contains the merged content.
 ### from_file
 
 Method Not Documented Yet

@@ -4,6 +4,11 @@ DocMembers
  This class models the members [element](#schema), and contains a list of ClassDocMember instances.
 
 
+"We don't need no indirection
+We don't need no flow control
+No data typing or declarations
+Did you leave the lists alone?"
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |

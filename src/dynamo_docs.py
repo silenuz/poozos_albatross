@@ -43,7 +43,7 @@ class DocAttribute:
         attribs = value.split(":")
         name = re.search(r'(\w+):', value).group(1)
         type = attribs[0].split(' ')[0]
-        if type.startswith("Class"):
+        if type.startswith(("Class","Brief","Description")):
             if class_name.startswith("Doc"):
                 type_value = f'[{type}](../{type}.md)'
             else:

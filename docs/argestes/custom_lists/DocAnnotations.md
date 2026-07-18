@@ -4,6 +4,7 @@ DocAnnotations
  This class models the annotations [element](#schema), and contains a list of ClassDocAnnotation instances.
 
 
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |

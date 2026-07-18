@@ -4,12 +4,13 @@ ClassDocAnnotation
  This class represents a model of the class docs annotation [element](#schema)
 
 
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
 | str | [name](#name) |  |
-| Description | [description](#description) | Description() |
+| [Description](Description.md) | [description](#description) | Description() |
 | str | [qualifiers](#qualifiers) | None |
 | [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
 | [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) | None |

@@ -10,7 +10,7 @@ Note: type_value is used as the attribute here because type is a soft keyword in
 | Type | Name | Default |
 | --- | --- | --- |
 | str | [enum](#enum) | None |
-| bool | [is_bitfield](#is_bitfield) | False |
+| bool | [is_bitfield](#is_bitfield) | None |
 | str | [type_value](#type_value) | None |
 
 ## Methods:

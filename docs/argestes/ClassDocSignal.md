@@ -10,7 +10,7 @@ ClassDocSignal
 | Type | Name | Default |
 | --- | --- | --- |
 | str | [name](#name) |  |
-| Description | [description](#description) | Description() |
+| [Description](Description.md) | [description](#description) | Description() |
 | str | [qualifiers](#qualifiers) | None |
 | [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
 | bool | [is_deprecated](#is_deprecated) | None |

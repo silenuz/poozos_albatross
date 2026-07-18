@@ -4,6 +4,13 @@ DocConstructors
  This class models the constructors [element](#schema), and contains a list of ClassDocConstructor instances.
 
 
+"A computer, to print out a fact,
+Will divide, multiply, and subtract.
+    But this output can be
+    No more than debris,
+If the input was short of exact.
+            -- Gigo"
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |

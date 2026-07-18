@@ -38,7 +38,7 @@ def process_class_definition(class_name: str, docstring: str):
             attribs = value.split(":")
             name = re.search(r'(\w+):', value).group(1)
             type = attribs[0].split(' ')[0]
-            if type.startswith("Class"):
+            if type.startswith(("Class","Brief","Description")):
                 if class_name.startswith("Doc"):
                     type_value = f'[{type}](../{type}.md)'
                 else:
@@ -216,7 +216,7 @@ def generate_output():
                 print("\n".join(doc_content))
         insert_schema(class_item,doc_content)
 
-        if class_item.startswith('Class'):
+        if class_item.startswith(('Class',"Brief","Description")):
             file = OUTPUT_DIR / f'{class_item}.md'
         elif class_item.startswith('Doc'):
             file = LIST_DIRECTORY / f'{class_item}.md'

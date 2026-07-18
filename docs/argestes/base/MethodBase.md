@@ -10,7 +10,7 @@ MethodBase
 | Type | Name | Default |
 | --- | --- | --- |
 | str | [name](#name) |  |
-| Description | [description](#description) | None |
+| [Description](Description.md) | [description](#description) | None |
 | str | [qualifiers](#qualifiers) | None |
 | [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
 

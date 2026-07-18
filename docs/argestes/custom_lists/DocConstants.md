@@ -4,6 +4,7 @@ DocConstants
  This class models the constants [element](#schema), and contains a list of ClassDocConstant instances.
 
 
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |

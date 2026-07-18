@@ -4,6 +4,8 @@ DocMethods
  This class models the methods [element](#schema), and contains a list of ClassDocMethod instances.
 
 
+"Any sufficiently advanced bug is indistinguishable from a feature." - Rich Kulawiec
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
