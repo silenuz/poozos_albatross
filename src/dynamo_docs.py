@@ -29,7 +29,7 @@ def extract_docs_from_file(filepath: Path, rel_path: Path):
     try:
         node = ast.parse(filepath.read_text(encoding="utf-8"), filename=str(filepath))
     except (SyntaxError, UnicodeDecodeError):
-        return ""
+        print('fubar file read ' , str(filepath))
 
     # Leave this for now, not sure I'll use the module level docstrings or not
     module_name = ".".join(rel_path.with_suffix("").parts)
@@ -42,7 +42,7 @@ def extract_docs_from_file(filepath: Path, rel_path: Path):
             class_def = DocClass(name=child.name,module_name=module_name)
             class_doc = ast.get_docstring(child)
             if class_doc:
-                class_def.set_from_ast(class_doc)
+                class_def.set_from_docstring(class_doc)
 
             # Methods inside the class
             for sub_child in child.body:
@@ -51,6 +51,7 @@ def extract_docs_from_file(filepath: Path, rel_path: Path):
                         args_node = sub_child.args
                         offset = len(args_node.args) - len(args_node.defaults)
                         for i, default_node in enumerate(args_node.defaults):
+
                             arg_name = args_node.args[offset + i].arg
                             if 'parameters' in classes[child.name] and arg_name in classes[child.name]['parameters']:
                                 if isinstance(default_node, ast.Constant):
@@ -104,6 +105,7 @@ class DocAttribute:
     name: str
     description: str = ""
     type_value: str = ""
+    default_value: str = ""
 
     @property
     def title(self):
@@ -130,14 +132,64 @@ class DocAttribute:
         description = attribs[1]
         return DocAttribute(name=name, type_value=type_value, description=description)
 
+    def __eq__(self, other):
+        if isinstance(other, DocAttribute):
+            return  self.name == other.name
+        return False
+
+
+@dataclass
+class DocArg:
+    name: str
+    description: str = ""
+    type_value: str = ""
+    default_value: str = ""
+
+    @classmethod
+    def from_ast(cls, value:str,class_name:str) -> DocAttribute:
+        pass
+
+    def __eq__(self, other):
+        if isinstance(other, DocAttribute):
+            return  self.name == other.name
+        return False
+
+@dataclass
+class DocMethod:
+    name: str
+    description: str = ""
+    args: list[DocArg] = field(default_factory=list)
+
+    @classmethod
+    def from_ast(cls, ast_def: ast.FunctionDef) ->DocMethod:
+        name = ast_def.name
+        description = ast.get_docstring(ast_def)
+
+
+
 @dataclass
 class DocClass:
     name: str
     module_name: str
     description: str = ""
     doc_attributes: list[DocAttribute] = field(default_factory=list)
+    doc_methods: list[DocMethod] = field(default_factory=list)
 
-    def set_from_ast(self, docstring:str):
+    @classmethod
+    def from_ast(cls, class_def: ast.ClassDef, module_name:str= "") -> DocClass:
+        name = class_def.name
+        module_name = module_name
+        doc_string = ast.get_docstring(class_def)
+        new_class_doc = cls(name=name, module_name=module_name)
+        if doc_string:
+            new_class_doc.set_from_docstring(doc_string)
+        for def_node in class_def.body:
+            if isinstance(def_node, (ast.FunctionDef,ast.AsyncFunctionDef)):
+                method_doc = DocMethod.from_ast(def_node)
+                new_class_doc.doc_methods.append(method_doc)
+
+
+    def set_from_docstring(self, docstring:str):
         values = docstring.split("\n")
         output: list[str] = []
         for value in values:
@@ -148,3 +200,8 @@ class DocClass:
                 self.doc_attributes.append(doc_attribute)
             else:
                self.description += '\n' + value
+
+    def set_default_attribute_value(self,attribute_name:str, value:str):
+        attribute_match = next((attrib for attrib in self.doc_attributes if attrib.name == attribute_name), None)
+        if attribute_match is not None:
+            attribute_match.default_value = value
