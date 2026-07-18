@@ -20,81 +20,7 @@ from pathlib import Path
 
 # Get the absolute path to this script
 script_path = Path(__file__).resolve()
-PACKAGE_DIR = script_path.parent / 'spirare'
-
-classes = dict()
-
-def extract_docs_from_file(filepath: Path, rel_path: Path):
-    """Parses a Python file using AST to extract module, class, and function docstrings."""
-    try:
-        node = ast.parse(filepath.read_text(encoding="utf-8"), filename=str(filepath))
-    except (SyntaxError, UnicodeDecodeError):
-        print('fubar file read ' , str(filepath))
-
-    # Leave this for now, not sure I'll use the module level docstrings or not
-    module_name = ".".join(rel_path.with_suffix("").parts)
-    mod_doc = ast.get_docstring(node)
-
-    # 2. Walk through top-level elements
-    for child in node.body:
-        # Classes
-        if isinstance(child, ast.ClassDef):
-            class_def = DocClass(name=child.name,module_name=module_name)
-            class_doc = ast.get_docstring(child)
-            if class_doc:
-                class_def.set_from_docstring(class_doc)
-
-            # Methods inside the class
-            for sub_child in child.body:
-                if isinstance(sub_child, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                    if sub_child.name.startswith("__init"):
-                        args_node = sub_child.args
-                        offset = len(args_node.args) - len(args_node.defaults)
-                        for i, default_node in enumerate(args_node.defaults):
-
-                            arg_name = args_node.args[offset + i].arg
-                            if 'parameters' in classes[child.name] and arg_name in classes[child.name]['parameters']:
-                                if isinstance(default_node, ast.Constant):
-                                    classes[child.name]['parameters'][arg_name]['default'] = default_node.value
-                                else:
-                                    classes[child.name]['parameters'][arg_name]['default'] = ast.unparse(default_node)
-                    elif not sub_child.name.startswith("_"):
-                        if 'methods' not in classes[child.name]:
-                            classes[child.name]['methods'] = dict()
-                        method_doc = ast.get_docstring(sub_child)
-                        method_values = dict()
-                        method_values['name'] = sub_child.name
-                        if sub_child.returns:
-                            return_type_string = ast.unparse(sub_child.returns)
-                            method_values['type'] = return_type_string
-                        else:
-                            method_values['type'] = 'None'
-                        if method_doc:
-                            method_values['description'] = method_doc
-                        else:
-                            method_values['description'] = 'Method Not Documented Yet'
-
-                        classes[child.name]['methods'][sub_child.name] = method_values
-
-
-def generate_docs():
-    pkg_path = PACKAGE_DIR
-
-    if not pkg_path.exists():
-        print(f"Error: Folder '{PACKAGE_DIR}' not found.")
-        return
-
-    for file_path in pkg_path.rglob("*.py"):
-        if file_path.name.startswith("_"):
-            continue
-
-        # Get path relative to the parent of the package directory
-        rel_path = file_path.relative_to(pkg_path.parent)
-        extract_docs_from_file(file_path, rel_path)
-        generate_output()
-
-if __name__ == "__main__":
-    generate_docs()
+PACKAGE_DIR = script_path.parent / 'spirare' / 'argestes'
 
 ########################################################################################################################
 ###                                          Data objects                                                            ###
@@ -145,9 +71,6 @@ class DocArg:
     type_value: str = ""
     default_value: str = ""
 
-    @classmethod
-    def from_ast(cls, value:str,class_name:str) -> DocAttribute:
-        pass
 
     def __eq__(self, other):
         if isinstance(other, DocAttribute):
@@ -164,6 +87,26 @@ class DocMethod:
     def from_ast(cls, ast_def: ast.FunctionDef) ->DocMethod:
         name = ast_def.name
         description = ast.get_docstring(ast_def)
+        new_doc_method = cls(name=name, description=description)
+        args_node = ast_def.args
+        arg_count = len(args_node.args)
+        default_arg_start_index = arg_count - len(args_node.defaults)
+
+        for index in range(arg_count):
+            arg_node = args_node.args[index]
+            arg_name = arg_node.arg
+            arg_type = ''
+            if arg_node.annotation:
+                arg_type = ast.unparse(arg_node.annotation)
+            arg_default = ""
+            if index >= default_arg_start_index:
+                default_node = args_node.defaults[index - default_arg_start_index]
+                if isinstance(default_node, ast.Constant):
+                    arg_default = default_node.value
+                else:
+                    arg_default = ast.unparse(default_node)
+            new_doc_method.args.append(DocArg(name=arg_name, type_value=arg_type, default_value=arg_default))
+        return new_doc_method
 
 
 
@@ -186,7 +129,12 @@ class DocClass:
         for def_node in class_def.body:
             if isinstance(def_node, (ast.FunctionDef,ast.AsyncFunctionDef)):
                 method_doc = DocMethod.from_ast(def_node)
+                if method_doc.name.startswith("__init"):
+                    for arg in method_doc.args:
+                        if arg.default_value:
+                            new_class_doc.set_default_attribute_value(arg.name, arg.default_value)
                 new_class_doc.doc_methods.append(method_doc)
+        return new_class_doc
 
 
     def set_from_docstring(self, docstring:str):
@@ -205,3 +153,50 @@ class DocClass:
         attribute_match = next((attrib for attrib in self.doc_attributes if attrib.name == attribute_name), None)
         if attribute_match is not None:
             attribute_match.default_value = value
+
+#######################################################################################################################
+###                                         Generator                                                               ###
+#######################################################################################################################
+
+classes = dict()
+
+def extract_docs_from_file(filepath: Path, rel_path: Path):
+    """Parses a Python file using AST to extract module, class, and function docstrings."""
+    try:
+        node = ast.parse(filepath.read_text(encoding="utf-8"), filename=str(filepath))
+    except (SyntaxError, UnicodeDecodeError):
+        print('fubar file read ' , str(filepath))
+
+    # Leave this for now, not sure I'll use the module level docstrings or not
+    module_name = ".".join(rel_path.with_suffix("").parts)
+    mod_doc = ast.get_docstring(node)
+
+    # 2. Walk through top-level elements
+    for child in node.body:
+        # Classes
+        if isinstance(child, ast.ClassDef):
+            class_def = DocClass.from_ast(child,module_name)
+            classes[class_def.name] = class_def
+
+
+def generate_docs():
+    pkg_path = PACKAGE_DIR
+
+    if not pkg_path.exists():
+        print(f"Error: Folder '{PACKAGE_DIR}' not found.")
+        return
+
+    for file_path in pkg_path.rglob("*.py"):
+        if file_path.name.startswith("_"):
+            continue
+
+        # Get path relative to the parent of the package directory
+        rel_path = file_path.relative_to(pkg_path.parent)
+        extract_docs_from_file(file_path, rel_path)
+    print(classes)
+        #generate_output()
+
+if __name__ == "__main__":
+    generate_docs()
+
+
