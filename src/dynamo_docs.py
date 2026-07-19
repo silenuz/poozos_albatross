@@ -136,6 +136,13 @@ class DocClass:
                 new_class_doc.doc_methods.append(method_doc)
         return new_class_doc
 
+    @property
+    def has_methods(self) -> bool:
+        return len(self.doc_methods) > 0
+
+    @property
+    def has_attributes(self) -> bool:
+        return len(self.doc_attributes) > 0
 
     def set_from_docstring(self, docstring:str):
         values = docstring.split("\n")
@@ -158,7 +165,41 @@ class DocClass:
 ###                                         Generator                                                               ###
 #######################################################################################################################
 
-classes = dict()
+classes : list[DocClass] = []
+
+def make_markdown_table(columns, rows)->str:
+    # Create the header row
+    header_line = "| " + " | ".join(columns) + " |"
+    # Create the separator row
+    separator_line = "| " + " | ".join(["---"] * len(columns)) + " |"
+    items = []
+    for row in rows:
+        param = rows[row]
+        if 'default' in param:
+            i = [param['type'], param['name'], param['default']]
+            items.append(i)
+        else:
+            i = [param['type'], param['name'],""]
+            items.append(i)
+
+    body_lines = ["| " + " | ".join(map(str, item)) + " |" for item in items]
+
+    # Combine everything into a single Markdown string
+    return "\n".join([header_line, separator_line] + body_lines)
+
+
+def insert_schema(class_name, doc_content):
+    section_title = '## Schema'
+    doc_content.append(f'\n{section_title}\n\n')
+    stub_folder = OUTPUT_DIR / 'schema'
+    file = next(stub_folder.glob(f'{class_name}.xsd_stub'),None)
+    if file is not None:
+        doc_content.append(f"The following schema definition is derived from Godot's main source repository, and is distributed under the MIT license.\n\n")
+        doc_content.append("Attribution: Juan Linietsky, Ariel Manzur and the Godot community\n\n")
+        content = file.read_text()
+        doc_content.append('```xml\n')
+        doc_content.append(f'{content}\n')
+        doc_content.append('```')
 
 def extract_docs_from_file(filepath: Path, rel_path: Path):
     """Parses a Python file using AST to extract module, class, and function docstrings."""
@@ -176,7 +217,50 @@ def extract_docs_from_file(filepath: Path, rel_path: Path):
         # Classes
         if isinstance(child, ast.ClassDef):
             class_def = DocClass.from_ast(child,module_name)
-            classes[class_def.name] = class_def
+            classes.append(class_def)
+
+
+def generate_output():
+    for class_item in classes:
+        doc_content = [f'# {class_item.name}\n']
+        if 'description' in class_item.description:
+            doc_content.append(f"\n\n {class_item.description}")
+        if class_item.has_attributes:
+            section_title = '## Attributes / Parameters:'
+            doc_content.append(f'\n\n{section_title}\n')
+            attribute_table = make_markdown_table(['Type','Name','Default'],class_item.doc_attributes)
+            doc_content.append(f'\n{attribute_table}')
+        if class_item.has_methods:
+            section_title = '## Methods:'
+            doc_content.append(f'\n\n{section_title}\n')
+            method_table = make_markdown_table(['Return','Name'],class_item.doc_methods)
+            doc_content.append(f'\n{method_table}')
+        if class_item.has_attributes:
+            section_title = '## Attribute Descriptions:'
+            doc_content.append(f'\n\n{section_title}\n')
+            for parameter in class_item.doc_attributes:
+                section_title = f'\n### {parameter.name}\n'
+                doc_content.append(f'{section_title}')
+                description = parameter.description
+                doc_content.append(f'\n{description}')
+        if class_item.has_methods:
+            section_title = '## Method Descriptions:'
+            doc_content.append(f'\n\n{section_title}\n')
+            for method in class_item.doc_methods:
+                section_title = f'\n### {method.name}\n'
+                doc_content.append(f'{section_title}')
+                description = method.description.strip()
+                doc_content.append(f'\n{description}')
+        insert_schema(class_item,doc_content)
+
+        if class_item.startswith(('Class',"Brief","Description")):
+            file = OUTPUT_DIR / f'{class_item}.md'
+        elif class_item.startswith('Doc'):
+            file = LIST_DIRECTORY / f'{class_item}.md'
+        else:
+            file = BASE_DIRECTORY / f'{class_item}.md'
+
+        file.write_text("".join(doc_content), encoding="utf-8")
 
 
 def generate_docs():
