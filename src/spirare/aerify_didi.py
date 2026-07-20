@@ -584,7 +584,7 @@ def set_signal_data(godot_root: et.Element, lz_data: LuckyZephyr):
         parameters = bound_signals[signal].argument_info
         if len(parameters) > 0:
             for bound_parameter in parameters:
-                parameter_node = et.SubElement(signal_node, "parameter")
+                parameter_node = et.SubElement(signal_node, "param")
                 parameter_node.set("index", bound_parameter.index_string)
                 parameter_node.set("name", bound_parameter.name)
                 parameter_node.set("type", bound_parameter.variant_type_name)
