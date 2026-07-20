@@ -19,7 +19,7 @@ from typing import Protocol, TypeVar
 
 from . import luckys_zephyr
 from .argestes import ClassDocModel, ClassDocConstant, ClassDocMethod, ClassDocMember, ClassDocSignal, \
-    ClassDocParameter, ClassDocReturn, Description, DocConstants, DocMethods, DocMembers, DocSignals
+    ClassDocParameter, ClassDocReturn, Description, DocConstants, DocMethods, DocMembers, DocSignals, DocParameters
 from .argestes.class_doc import ExtensionDocModel # todo: add this to init imports for package
 from .luckys_zephyr import LuckyZephyr, EnumValueModel, XRefSectionModel
 from .poozos_notus import PoozoNotus, PropertyInfoModel
@@ -159,9 +159,11 @@ class Eurus:
         signals: DocSignals = DocSignals()
         for bound_signal in bound_signals:
             signal = ClassDocSignal(bound_signal.name)
-            signal.description = Description('something')
+            data = signal_data[bound_signal.name]
+            signal.description = Description(data.description)
             signal_parameters = bound_signal.argument_info
             if len(signal_parameters) > 0:
+                signal.parameters = DocParameters()
                 for signal_parameter_info in signal_parameters:
                     parameter = ClassDocParameter(signal_parameter_info.name)
                     parameter.index = str(signal_parameter_info.index)
@@ -170,6 +172,10 @@ class Eurus:
                     specified_type = signal_parameter_info.get_hint_type()
                     if specified_type is not None:
                         assign_value(signal_parameter_info,signal_parameter_info.class_name,parameter)
+                    signal.parameters.append(parameter)
+            signals.append(signal)
+            if len(signals) >0:
+                self.class_model.signals = signals
 
 
 #########################################################################################################
