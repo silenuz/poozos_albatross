@@ -21,6 +21,7 @@ from pathlib import Path
 # Get the absolute path to this script
 script_path = Path(__file__).resolve()
 PACKAGE_DIR = script_path.parent / 'spirare' / 'argestes'
+OUTPUT_DIR = script_path.parent.parent / 'docs' / 'argestes-test'
 
 ########################################################################################################################
 ###                                          Data objects                                                            ###
@@ -81,12 +82,16 @@ class DocArg:
 class DocMethod:
     name: str
     description: str = ""
+    type_value: str = ""
     args: list[DocArg] = field(default_factory=list)
+
 
     @classmethod
     def from_ast(cls, ast_def: ast.FunctionDef) ->DocMethod:
         name = ast_def.name
         description = ast.get_docstring(ast_def)
+        if description is None:
+            description = "Not Documented Yet"
         new_doc_method = cls(name=name, description=description)
         args_node = ast_def.args
         arg_count = len(args_node.args)
@@ -144,9 +149,17 @@ class DocClass:
     def has_attributes(self) -> bool:
         return len(self.doc_attributes) > 0
 
+
+    def file_path(self,output_directory:Path) -> Path:
+        if self.name.startswith(('Class','Description','Brief')):
+            return output_directory / f'{self.name}.md'
+        elif self.name.startswith('Doc'):
+            return  output_directory / 'lists' / f'{self.name}.md'
+        else:
+            return output_directory / 'base' / f'{self.name}.md'
+
     def set_from_docstring(self, docstring:str):
         values = docstring.split("\n")
-        output: list[str] = []
         for value in values:
             if value.startswith('"') and value.endswith('"'):
                 continue
@@ -174,12 +187,12 @@ def make_markdown_table(columns, rows)->str:
     separator_line = "| " + " | ".join(["---"] * len(columns)) + " |"
     items = []
     for row in rows:
-        param = rows[row]
-        if 'default' in param:
-            i = [param['type'], param['name'], param['default']]
+        param = row
+        if hasattr(param,'default_value'):
+            i = [param.type_value, param.name, param.default_value]
             items.append(i)
         else:
-            i = [param['type'], param['name'],""]
+            i = [param.type_value, param.name,""]
             items.append(i)
 
     body_lines = ["| " + " | ".join(map(str, item)) + " |" for item in items]
@@ -252,14 +265,9 @@ def generate_output():
                 description = method.description.strip()
                 doc_content.append(f'\n{description}')
         insert_schema(class_item,doc_content)
-
-        if class_item.startswith(('Class',"Brief","Description")):
-            file = OUTPUT_DIR / f'{class_item}.md'
-        elif class_item.startswith('Doc'):
-            file = LIST_DIRECTORY / f'{class_item}.md'
-        else:
-            file = BASE_DIRECTORY / f'{class_item}.md'
-
+        file = class_item.file_path(OUTPUT_DIR)
+        if not file.parent.exists():
+            file.parent.mkdir()
         file.write_text("".join(doc_content), encoding="utf-8")
 
 
@@ -277,8 +285,7 @@ def generate_docs():
         # Get path relative to the parent of the package directory
         rel_path = file_path.relative_to(pkg_path.parent)
         extract_docs_from_file(file_path, rel_path)
-    print(classes)
-        #generate_output()
+        generate_output()
 
 if __name__ == "__main__":
     generate_docs()
