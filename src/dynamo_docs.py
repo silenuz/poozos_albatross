@@ -201,11 +201,11 @@ def make_markdown_table(columns, rows)->str:
     return "\n".join([header_line, separator_line] + body_lines)
 
 
-def insert_schema(class_name, doc_content):
+def insert_schema(class_item: DocClass, doc_content):
     section_title = '## Schema'
     doc_content.append(f'\n{section_title}\n\n')
     stub_folder = OUTPUT_DIR / 'schema'
-    file = next(stub_folder.glob(f'{class_name}.xsd_stub'),None)
+    file = next(stub_folder.glob(f'{class_item.name}.xsd_stub'),None)
     if file is not None:
         doc_content.append(f"The following schema definition is derived from Godot's main source repository, and is distributed under the MIT license.\n\n")
         doc_content.append("Attribution: Juan Linietsky, Ariel Manzur and the Godot community\n\n")

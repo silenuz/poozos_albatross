@@ -3,25 +3,13 @@ IMPORTANT
 
 Update:
 -------
-The current code contains some small cosmetic fixes (elements rearranged to conform to xsd order, still plenty to go),
-and now also contains the initial implementation for a merge of models.  It's barely tested so it still counts as 
-unfinished.  If anyone actually visits this repo, I added an example to the sample usage found [here](./docs/doc_model.md).
+Model merge still needs testing, but while testing found bug in original doc generator that tagged param elements in 
+signals as parameter instead, this is now remedied.
 
-I wanted the merge working before finishing Eurus so that the new version of the doc generation scripts could also 
-update the class docs, but in working on the merge, the shoddy job I did when I added the return element 
-fix the first time, was all too evident.  Anyway as a result very little progress has been made so far on what I wanted to actually accomplish this week,
-and in all likelihood, given the current weather I'll likely only finish the model merge code, and possibly get some
-documentation done.  However, AFAIK all bugs regarding the return element for methods and whatnot have been fixed,
-which should mean the model now fully works except for lack of merge.
+Eurus is now capable of building the model with the same information as the original aerify script.  
 
-Then I'll integrate the new models with Eurus, and start on finishing up the remaining items to generate
-class documentation from source code.   
-
-On the topic of Eurus, I just realized it wasn't part of the repo, and I've been writing about it for a while.  Really hope
-no one has actually seen this.
-
-I imagine next week will be split between getting the model docs up to date, and writing code to add merging 
-capability to the document generation now that the model is done.
+This week will be split between getting the model docs up to date, working on the merge capability, and flushing out
+Eurus so the model also includes the information missing in the original scripts.
 
 Sample model usage can be found [here](./docs/doc_model.md)
 
