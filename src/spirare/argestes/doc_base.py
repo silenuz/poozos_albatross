@@ -102,12 +102,14 @@ class Zucaritas:
                 tag = cls.attribute_map[tag]
             if tag == 'param':
                 if class_object.parameters is None:
-                    class_object.parameters = DocParameters()
-                class_object.parameters.append(ClassDocParameter.from_xml(e))
+                    attr_type = typing.get_type_hints(class_object.__class__).get('parameters')
+                    class_object.parameters = attr_type()
+                class_object.parameters.new_item_from_xml(e)
             elif tag == 'returns_error':
                 if class_object.returns_error is None:
-                    class_object.returns_error = DocReturnErrorsList()
-                class_object.returns_error.append(ClassDocReturnError.from_xml(e))
+                    attr_type = typing.get_type_hints(class_object.__class__).get('returns_error')
+                    class_object.returns_error = attr_type()
+                class_object.returns_error.new_item_from_xml(e)
             else:
                 attr_type = typing.get_type_hints(class_object.__class__).get(tag)
                 if attr_type is not None:
@@ -136,7 +138,7 @@ class Zucaritas:
                 # attr_type = self.__annotations__.get(key)
                 if attr_type is not None and not getattr(attr_type, '__module__', None) == 'builtins':
                     attr_instance = getattr(self, key_original, None)
-                    #print(attr_type)
+                    object_name = getattr(attr_type,'__name__',str(attr_type))
                     if attr_type == DocParameters:
                         params = attr_instance.to_xml_doc()
                         if isinstance(params, Et.Element):
@@ -548,6 +550,10 @@ class ModelCollection(UserList):
 
     def to_json(self) -> str:
         return json.dumps([item.to_dict() for item in self.data])
+
+    def new_item_from_xml(self, element: xml.etree.ElementTree.Element)->None:
+        item = self.model_cls.from_xml(element)
+        self.append(item)
 
     @classmethod
     def from_json(cls, model_cls, json_str: str):
