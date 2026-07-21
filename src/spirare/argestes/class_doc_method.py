@@ -13,7 +13,8 @@ from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
 from .class_doc_annotation import ClassDocAnnotation
-from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, Description, Zucaritas, ClassDocReturn
+from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, Description, ClassDocReturn
+from .zucaritas import Zucaritas
 
 
 class ClassDocMethod(ClassDocAnnotation,Zucaritas):

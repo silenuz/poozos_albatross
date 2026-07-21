@@ -10,7 +10,7 @@
 """
 from __future__ import annotations
 
-import copy
+
 import json
 import xml
 from xml.etree.ElementTree import Element
@@ -25,7 +25,8 @@ from .class_doc_method import DocMethods
 from .class_doc_operator import DocOperators
 from .class_doc_signal import DocSignals
 from .class_doc_theme_item import DocThemeItems
-from .doc_base import DocTutorials, BriefDescription, Description, Zucaritas
+from .doc_base import DocTutorials, BriefDescription, Description
+from .zucaritas import Zucaritas
 
 
 class ClassDocModel(Zucaritas):

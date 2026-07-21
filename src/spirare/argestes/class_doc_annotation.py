@@ -12,8 +12,8 @@ import xml
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
-from .doc_base import MethodReturnBase, ModelCollection, DocParameters,Description, Zucaritas
-from .doc_base import ClassDocReturn
+from .doc_base import MethodReturnBase, ModelCollection, DocParameters,Description, ClassDocReturn
+from .zucaritas import Zucaritas
 
 
 class ClassDocAnnotation(MethodReturnBase,Zucaritas):

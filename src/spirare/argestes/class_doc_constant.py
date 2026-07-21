@@ -12,7 +12,8 @@ import xml
 from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
-from .doc_base import ConstantMemberBase, ModelCollection, Zucaritas
+from .doc_base import ConstantMemberBase, ModelCollection
+from .zucaritas import Zucaritas
 
 
 class ClassDocConstant(ConstantMemberBase,Zucaritas):

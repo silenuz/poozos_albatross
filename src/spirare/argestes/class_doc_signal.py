@@ -12,7 +12,8 @@ import xml
 from xml.etree import ElementTree as Et
 from xml.etree.ElementTree import Element
 
-from .doc_base import MethodBase,ModelCollection, DocParameters, Description, Zucaritas
+from .doc_base import MethodBase,ModelCollection, DocParameters, Description
+from .zucaritas import Zucaritas
 
 
 class ClassDocSignal(MethodBase,Zucaritas):

@@ -13,8 +13,9 @@ from xml.etree.ElementTree import Element
 from xml.etree import ElementTree as Et
 
 from . import ClassDocReturn
-from .doc_base import MethodReturnBase, ClassDocParameter, ModelCollection, DocParameters, \
-    Description, Zucaritas
+from .doc_base import MethodReturnBase, ModelCollection, DocParameters, \
+    Description
+from .zucaritas import Zucaritas
 
 
 class ClassDocOperator(MethodReturnBase,Zucaritas):
