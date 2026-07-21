@@ -59,12 +59,7 @@ class DocConstructors(ModelCollection):
 
     :param list initlist: A list of ClassDocConstructor instances.
 
-    "A computer, to print out a fact,
-    Will divide, multiply, and subtract.
-        But this output can be
-        No more than debris,
-    If the input was short of exact.
-		-- Gigo"
+    "Didn't you learn anything in the last game? You can't expose bare human to the harshness of space!"
     """
     def __init__(self,initlist=None):
         super().__init__(ClassDocConstructor, initlist)

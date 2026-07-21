@@ -59,6 +59,8 @@ class DocOperators(ModelCollection):
     This class models the operators element, and contains a list of ClassDocOperator instances.
 
     :param list initlist: A list of ClassDocOperator instances.
+
+    ""The book is written in simple words, and was obviously intended for Fighters."
     """
     def __init__(self,initlist=None):
         super().__init__(ClassDocOperator, initlist)

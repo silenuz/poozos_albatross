@@ -84,6 +84,8 @@ class DocSignals(ModelCollection):
     This class models the signals element, and contains a list of ClassDocSignal instances.
 
     :param list initlist: A list of ClassDocSignal instances.
+
+    "Snake?  Snake? SNAKE?"
     """
     def __init__(self,initlist=None):
         super().__init__(ClassDocSignal, initlist)

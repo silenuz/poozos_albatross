@@ -110,10 +110,7 @@ class DocMembers(ModelCollection):
 
     :param list initlist: A list of ClassDocMember instances.
 
-    "We don't need no indirection
-    We don't need no flow control
-    No data typing or declarations
-    Did you leave the lists alone?"
+    "Careful! Combining those items might cause a rip in the space-time continuum, a tear in the very fabric of space itself! (Or not.)"
     """
     def __init__(self,initlist=None):
         super().__init__(ClassDocMember, initlist)

@@ -115,6 +115,8 @@ class DocThemeItems(ModelCollection):
     This class models the theme_items element, and contains a list of ClassDocThemeItem instances.
 
     :param list initlist: A list of ClassDocThemeItem instances.
+
+    “Did I ever tell you the definition of insanity?”
     """
     def __init__(self, initlist=None):
         super().__init__(ClassDocThemeItem, initlist)
