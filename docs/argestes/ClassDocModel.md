@@ -1,39 +1,39 @@
-ClassDocModel
-=============
-
- This class represents a model of the root class [element](#schema) of the Godot doc xml.
-
+# ClassDocModel
 
 
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | [name](#name) |  |
-| [BriefDescription](BriefDescription.md) | [brief_description](#brief_description) | BriefDescription() |
-| [Description](Description.md) | [description](#description) | Description() |
-| [DocAnnotations](./custom_lists/DocAnnotations.md) | [annotations](#annotations) | None |
-| [DocConstants](./custom_lists/DocConstants.md) | [constants](#constants) | None |
-| [DocConstructors](./custom_lists/DocConstructors.md) | [constructors](#constructors) | None |
-| [DocMembers](./custom_lists/DocMembers.md) | [members](#members) | None |
-| [DocMethods](./custom_lists/DocMethods.md) | [methods](#methods) | None |
-| [DocOperators](./custom_lists/DocOperators.md) | [operators](#operators) | None |
-| [DocSignals](./custom_lists/DocSignals.md) | [signals](#signals) | None |
-| [DocThemeItems](./custom_lists/DocThemeItems.md) | [theme_items](#theme_items) | None |
-| [DocTutorials](./custom_lists/DocTutorials.md) | [tutorials](#tutorials) | DocTutorials() |
-| str | [inherits](#inherits) | None |
-| str | [api_type](#api_type) | None |
-| float | [version](#version) | None |
-| bool | [is_deprecated](#is_deprecated) | None |
-| bool | [is_experimental](#is_experimental) | None |
-| str | [deprecated](#deprecated) | None |
-| str | [experimental](#experimental) | None |
-| str | [keywords](#keywords) | None |
+| str | name |  |
+| [BriefDescription](BriefDescription.md) | brief_description | BriefDescription() |
+| [Description](Description.md) | description | Description() |
+| [DocAnnotations](./lists/DocAnnotations.md) | annotations | None |
+| [DocConstants](./lists/DocConstants.md) | constants | None |
+| [DocConstructors](./lists/DocConstructors.md) | constructors | None |
+| [DocMembers](./lists/DocMembers.md) | members | None |
+| [DocMethods](./lists/DocMethods.md) | methods | None |
+| [DocOperators](./lists/DocOperators.md) | operators | None |
+| [DocSignals](./lists/DocSignals.md) | signals | None |
+| [DocThemeItems](./lists/DocThemeItems.md) | theme_items | None |
+| [DocTutorials](./lists/DocTutorials.md) | tutorials | DocTutorials() |
+| str | inherits | None |
+| str | api_type | None |
+| float | version | None |
+| bool | is_deprecated | None |
+| bool | is_experimental | None |
+| str | deprecated | None |
+| str | experimental | None |
+| str | keywords | None |
 
 ## Methods:
 
 | Return | Name |
 | --- | --- |
+| None | __init__ |  |
+| None | __post_init__ |  |
+| None | __merge_lists |  |
+| dict | __merge_dict |  |
 | dict | to_dict |  |
 | xml.etree.ElementTree.Element | to_xml_doc |  |
 | ClassDocModel | merge |  |
@@ -43,67 +43,84 @@ ClassDocModel
 
 ### name
 
-The value of the name attribute for this class element.
+ The value of the name attribute for this class element.
 ### brief_description
 
-The value of the brief_description element for this class element.
+ The value of the brief_description element for this class element.
 ### description
 
-The value of the description element for this class element.
+ The value of the description element for this class element.
 ### annotations
 
-The value of the annotations element for this class element.
+ The value of the annotations element for this class element.
 ### constants
 
-The value of the constants element for this class element.
+ The value of the constants element for this class element.
 ### constructors
 
-The value of the constructors element for this class element.
+ The value of the constructors element for this class element.
 ### members
 
-The value of the members element for this class element.
+ The value of the members element for this class element.
 ### methods
 
-The value of the methods element for this class element.
+ The value of the methods element for this class element.
 ### operators
 
-The value of the operators element for this class element.
+ The value of the operators element for this class element.
 ### signals
 
-The value of the signals element for this class element.
+ The value of the signals element for this class element.
 ### theme_items
 
-The value of the theme_items element for this class element.
+ The value of the theme_items element for this class element.
 ### tutorials
 
-The value of the tutorials element for this class element.
+ The value of the tutorials element for this class element.
 ### inherits
 
-The value of the inherits attribute for this class element.
+ The value of the inherits attribute for this class element.
 ### api_type
 
-The value of the api_type attribute for this class element.
+ The value of the api_type attribute for this class element.
 ### version
 
-The value of the version attribute for this class element.
+ The value of the version attribute for this class element.
 ### is_deprecated
 
-The value of the is_deprecated attribute for this class element.
+ The value of the is_deprecated attribute for this class element.
 ### is_experimental
 
-The value of the is_experimental attribute for this class element.
+ The value of the is_experimental attribute for this class element.
 ### deprecated
 
-The value of the deprecated attribute for this class element.
+ The value of the deprecated attribute for this class element.
 ### experimental
 
-The value of the experimental attribute for this class element.
+ The value of the experimental attribute for this class element.
 ### keywords
 
-The value of the keywords attribute for this class element.
+ The value of the keywords attribute for this class element.
 
 ## Method Descriptions:
 
+### __init__
+
+Not Documented Yet
+### __post_init__
+
+Not Documented Yet
+### __merge_lists
+
+Merges update_list into old_list.
+Updates dictionaries with matching 'name' keys and appends new ones.
+### __merge_dict
+
+Merges the content of the dictionary with updates, into the original dictionary.
+
+:param original_dict: The original dictionary of values
+:param dict_with_updates:  The dictionary with updated values
+:return: original dictionary with the updated values
 ### to_dict
 
 Returns a dictionary of the values for this class doc root element model instance.
@@ -123,7 +140,7 @@ Merge content of the new content model with the content of this model instance.
 :return: A new ClassDocModel instance that contains the merged content.
 ### from_file
 
-Method Not Documented Yet
+Not Documented Yet
 ## Schema
 
 The following schema definition is derived from Godot's main source repository, and is distributed under the MIT license.

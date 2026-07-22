@@ -1,20 +1,18 @@
-ClassDocTutorialLink
-====================
-
- This class represents a model of the class doc's tutorial link [element](#schema)
+# ClassDocTutorialLink
 
 
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | [text](#text) | None |
-| str | [title](#title) | None |
+| str | text | None |
+| str | title | None |
 
 ## Methods:
 
 | Return | Name |
 | --- | --- |
+| None | __init__ |  |
 | dict | to_dict |  |
 | xml.etree.ElementTree.Element | to_xml_doc |  |
 
@@ -22,13 +20,16 @@ ClassDocTutorialLink
 
 ### text
 
-The value of the text attribute for this element, in this case a tutorial link..
+ The value of the text attribute for this element, in this case a tutorial link..
 ### title
 
-The value of the title attribute for this element.
+ The value of the title attribute for this element.
 
 ## Method Descriptions:
 
+### __init__
+
+Not Documented Yet
 ### to_dict
 
 Returns a dictionary representation of this object.

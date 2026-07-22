@@ -1,27 +1,24 @@
-ClassDocSignal
-==============
-
- This class represents a model of the class doc's signal [element](#schema)
-
+# ClassDocSignal
 
 
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | [name](#name) |  |
-| [Description](Description.md) | [description](#description) | Description() |
-| str | [qualifiers](#qualifiers) | None |
-| [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
-| bool | [is_deprecated](#is_deprecated) | None |
-| str | [deprecated](#deprecated) | None |
-| bool | [is_experimental](#is_experimental) | None |
-| str | [experimental](#experimental) | None |
+| str | name |  |
+| [Description](Description.md) | description | Description() |
+| str | qualifiers | None |
+| [DocParameters](./lists/DocParameters.md) | parameters | None |
+| bool | is_deprecated | None |
+| str | deprecated | None |
+| bool | is_experimental | None |
+| str | experimental | None |
 
 ## Methods:
 
 | Return | Name |
 | --- | --- |
+| None | __init__ |  |
 | dict | to_dict |  |
 | xml.etree.ElementTree.Element | to_xml_doc |  |
 
@@ -29,31 +26,34 @@ ClassDocSignal
 
 ### name
 
-The value of the name attribute for the signal element.
+ The value of the name attribute for the signal element.
 ### description
 
-The value of the description element for the signal element.
+ The value of the description element for the signal element.
 ### qualifiers
 
-The value of the qualifiers attribute for the signal element.
+ The value of the qualifiers attribute for the signal element.
 ### parameters
 
-The value of the parameters element for the signal element.
+ The value of the parameters element for the signal element.
 ### is_deprecated
 
-The value of the is_deprecated attribute for the signal element.
+ The value of the is_deprecated attribute for the signal element.
 ### deprecated
 
-The value of the deprecated attribute for the signal element.
+ The value of the deprecated attribute for the signal element.
 ### is_experimental
 
-The value of the is_experimental attribute for the signal element.
+ The value of the is_experimental attribute for the signal element.
 ### experimental
 
-The value of the experimental attribute for the signal element.
+ The value of the experimental attribute for the signal element.
 
 ## Method Descriptions:
 
+### __init__
+
+Not Documented Yet
 ### to_dict
 
 Returns a dictionary of the values for this signal element model instance.

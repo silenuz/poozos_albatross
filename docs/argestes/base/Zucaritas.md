@@ -1,8 +1,4 @@
-Zucaritas
-=========
-
- Cereal base for top level objects, providing serialization and deserialization between XML and JSON,
-for Godot documentation [element](#schema)s.
+# Zucaritas
 
 
 ## Methods:
@@ -13,6 +9,7 @@ for Godot documentation [element](#schema)s.
 | str | to_json |  |
 | str | get_inner_markup |  |
 | None | from_xml |  |
+| xml.etree.ElementTree.Element | _to_xml |  |
 
 ## Method Descriptions:
 
@@ -40,5 +37,11 @@ Creates this model from a Godot class documentation XML element
 
 :param element: The element represented by this model
 :return: A model created from the XML documentation element
+### _to_xml
+
+Internal method used to convert this model to generic XML, so the child class can apply
+the appropriate tags in their to_xml_doc implementation.
+
+:return: a generic XML element named element based on the model data
 ## Schema
 

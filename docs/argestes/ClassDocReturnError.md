@@ -1,19 +1,17 @@
-ClassDocReturnError
-===================
-
- This class represents a model of the return error [element](#schema) of the class docs
+# ClassDocReturnError
 
 
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| int | [number](#number) |  |
+| int | number |  |
 
 ## Methods:
 
 | Return | Name |
 | --- | --- |
+| None | __init__ |  |
 | dict | to_dict |  |
 | xml.etree.ElementTree.Element | to_xml_doc |  |
 
@@ -21,10 +19,13 @@ ClassDocReturnError
 
 ### number
 
-The value of the number attribute for this element.
+ The value of the number attribute for this element.
 
 ## Method Descriptions:
 
+### __init__
+
+Not Documented Yet
 ### to_dict
 
 Returns a dictionary representation of this object.

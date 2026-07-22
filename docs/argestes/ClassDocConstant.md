@@ -1,29 +1,26 @@
-ClassDocConstant
-================
-
- This class represents a model of the godot docs constant [element](#schema)
-
+# ClassDocConstant
 
 
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | [enum](#enum) | None |
-| bool | [is_bitfield](#is_bitfield) | None |
-| str | [name](#name) |  |
-| str | [text](#text) | None |
-| bool | [is_deprecated](#is_deprecated) | None |
-| bool | [is_experimental](#is_experimental) | None |
-| str | [deprecated](#deprecated) | None |
-| str | [experimental](#experimental) | None |
-| str | [keywords](#keywords) | None |
-| str | [value](#value) | None |
+| str | enum | None |
+| bool | is_bitfield | None |
+| str | name |  |
+| str | text | None |
+| bool | is_deprecated | None |
+| bool | is_experimental | None |
+| str | deprecated | None |
+| str | experimental | None |
+| str | keywords | None |
+| str | value | None |
 
 ## Methods:
 
 | Return | Name |
 | --- | --- |
+| None | __init__ |  |
 | None | to_dict |  |
 | xml.etree.ElementTree.Element | to_xml_doc |  |
 
@@ -31,37 +28,40 @@ ClassDocConstant
 
 ### enum
 
-The value of the enum attribute for the constant element.
+ The value of the enum attribute for the constant element.
 ### is_bitfield
 
-The value of the is_bitfield attribute for the constant element.
+ The value of the is_bitfield attribute for the constant element.
 ### name
 
-The value of the name attribute for the constant element.
+ The value of the name attribute for the constant element.
 ### text
 
-The value of the text attribute for the constant element.
+ The value of the text attribute for the constant element.
 ### is_deprecated
 
-The value of the is_deprecated attribute for the constant element.
+ The value of the is_deprecated attribute for the constant element.
 ### is_experimental
 
-The value of the is_experimental attribute for the constant element.
+ The value of the is_experimental attribute for the constant element.
 ### deprecated
 
-The value of the deprecated attribute for the constant element.
+ The value of the deprecated attribute for the constant element.
 ### experimental
 
-The value of the experimental attribute for the constant element.
+ The value of the experimental attribute for the constant element.
 ### keywords
 
-The value of the keywords attribute for the constant element.
+ The value of the keywords attribute for the constant element.
 ### value
 
-The value of the value attribute for the constant element.
+ The value of the value attribute for the constant element.
 
 ## Method Descriptions:
 
+### __init__
+
+Not Documented Yet
 ### to_dict
 
 Returns a dictionary of the values for this constant element model instance.

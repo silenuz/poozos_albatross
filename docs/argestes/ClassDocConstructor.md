@@ -1,46 +1,46 @@
-ClassDocConstructor
-===================
-
- This class represents a model of the class docs constructor [element](#schema)
-
+# ClassDocConstructor
 
 
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | [name](#name) |  |
-| [Description](Description.md) | [description](#description) | Description() |
-| str | [qualifiers](#qualifiers) | None |
-| [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
-| [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) | None |
+| str | name |  |
+| [Description](Description.md) | description | Description() |
+| str | qualifiers | None |
+| [DocParameters](./lists/DocParameters.md) | parameters | None |
+| [ClassDocReturn](ClassDocReturn.md) | return_value | None |
 
 ## Methods:
 
 | Return | Name |
 | --- | --- |
+| None | __init__ |  |
 | xml.etree.ElementTree.Element | to_xml_doc |  |
 
 ## Attribute Descriptions:
 
 ### name
 
-The value of the name attribute for the constructor element.
+ The value of the name attribute for the constructor element.
 ### description
 
-The value of the description element for the constructor element.
+ The value of the description element for the constructor element.
 ### qualifiers
 
-The value of the qualifiers attribute for the constructor element.
+ The value of the qualifiers attribute for the constructor element.
 ### parameters
 
-The value of the parameters element for the constructor element.
+ The value of the parameters element for the constructor element.
 ### return_value
 
-The value of the return_value element for the constructor element.
+ The value of the return_value element for the constructor element.
 
 ## Method Descriptions:
 
+### __init__
+
+Not Documented Yet
 ### to_xml_doc
 
 Create a Godot class doc element for this constructor model instance.

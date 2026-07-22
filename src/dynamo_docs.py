@@ -21,7 +21,7 @@ from pathlib import Path
 # Get the absolute path to this script
 script_path = Path(__file__).resolve()
 PACKAGE_DIR = script_path.parent / 'spirare' / 'argestes'
-OUTPUT_DIR = script_path.parent.parent / 'docs' / 'argestes-test'
+OUTPUT_DIR = script_path.parent.parent / 'docs' / 'argestes'
 
 ########################################################################################################################
 ###                                          Data objects                                                            ###
@@ -53,7 +53,7 @@ class DocAttribute:
             if class_name.startswith("Doc"):
                 type_value = f'[{type}]({type}.md)'
             else:
-                type_value = f'[{type}](./custom_lists/{type}.md)'
+                type_value = f'[{type}](./lists/{type}.md)'
         else:
             type_value = type
         description = attribs[1]
@@ -85,14 +85,16 @@ class DocMethod:
     type_value: str = ""
     args: list[DocArg] = field(default_factory=list)
 
-
     @classmethod
     def from_ast(cls, ast_def: ast.FunctionDef) ->DocMethod:
         name = ast_def.name
         description = ast.get_docstring(ast_def)
+        return_type = "None"
         if description is None:
             description = "Not Documented Yet"
-        new_doc_method = cls(name=name, description=description)
+        if ast_def.returns:
+            return_type = ast.unparse(ast_def.returns)
+        new_doc_method = cls(name=name, description=description, type_value=return_type)
         args_node = ast_def.args
         arg_count = len(args_node.args)
         default_arg_start_index = arg_count - len(args_node.defaults)
@@ -107,7 +109,7 @@ class DocMethod:
             if index >= default_arg_start_index:
                 default_node = args_node.defaults[index - default_arg_start_index]
                 if isinstance(default_node, ast.Constant):
-                    arg_default = default_node.value
+                    arg_default = str(default_node.value)
                 else:
                     arg_default = ast.unparse(default_node)
             new_doc_method.args.append(DocArg(name=arg_name, type_value=arg_type, default_value=arg_default))

@@ -1,30 +1,27 @@
-ClassDocMethod
-==============
-
- This class represents a model of the class doc's method [element](#schema)
-
+# ClassDocMethod
 
 
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | [name](#name) |  |
-| [Description](Description.md) | [description](#description) | Description() |
-| str | [qualifiers](#qualifiers) | None |
-| [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
-| [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) | None |
-| str | [keywords](#keywords) | None |
-| [DocReturnErrorsList](./custom_lists/DocReturnErrorsList.md) | [returns_error](#returns_error) | None |
-| bool | [is_deprecated](#is_deprecated) | None |
-| bool | [is_experimental](#is_experimental) | None |
-| str | [deprecated](#deprecated) | None |
-| str | [experimental](#experimental) | None |
+| str | name |  |
+| [Description](Description.md) | description | Description() |
+| str | qualifiers | None |
+| [DocParameters](./lists/DocParameters.md) | parameters | None |
+| [ClassDocReturn](ClassDocReturn.md) | return_value | None |
+| str | keywords | None |
+| [DocReturnErrorsList](./lists/DocReturnErrorsList.md) | returns_error | None |
+| bool | is_deprecated | None |
+| bool | is_experimental | None |
+| str | deprecated | None |
+| str | experimental | None |
 
 ## Methods:
 
 | Return | Name |
 | --- | --- |
+| None | __init__ |  |
 | dict | to_dict |  |
 | xml.etree.ElementTree.Element | to_xml_doc |  |
 
@@ -32,40 +29,43 @@ ClassDocMethod
 
 ### name
 
-The value of the name attribute for the method element.
+ The value of the name attribute for the method element.
 ### description
 
-The value of the description element for the method element.
+ The value of the description element for the method element.
 ### qualifiers
 
-The value of the qualifiers attribute for the method element.
+ The value of the qualifiers attribute for the method element.
 ### parameters
 
-The value of the parameters element for the method element.
+ The value of the parameters element for the method element.
 ### return_value
 
-The value of the return_value element for the method element.
+ The value of the return_value element for the method element.
 ### keywords
 
-The value of the keywords attribute for the method element.
+ The value of the keywords attribute for the method element.
 ### returns_error
 
-The value of the returns_error element for the method element.
+ The value of the returns_error element for the method element.
 ### is_deprecated
 
-The value of the is_deprecated attribute for the method element.
+ The value of the is_deprecated attribute for the method element.
 ### is_experimental
 
-The value of the is_experimental attribute for the method element.
+ The value of the is_experimental attribute for the method element.
 ### deprecated
 
-The value of the deprecated attribute for the method element.
+ The value of the deprecated attribute for the method element.
 ### experimental
 
-The value of the experimental attribute for the method element.
+ The value of the experimental attribute for the method element.
 
 ## Method Descriptions:
 
+### __init__
+
+Not Documented Yet
 ### to_dict
 
 Returns a dictionary of the values for this method element model instance.

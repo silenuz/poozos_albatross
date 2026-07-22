@@ -436,7 +436,7 @@ class ClassDocReturn(QualifierBase, Zucaritas):
     :param bool is_bitfield: The value of the is_bitfield attribute for return element.
     :param str type_value: The value of the type attribute for return element.
 
-
+    "My taste in reading falls somewhere between Spiderman comics and the back of a Cheerios box."
     """
     __slots__ = 'type_value'
     type_value: str
@@ -568,6 +568,7 @@ class ClassDocTutorialLink(Zucaritas):
     :param str text: The value of the text attribute for this element, in this case a tutorial link..
     :param str title: The value of the title attribute for this element.
 
+    “Join me, Rosencrantz! I am your FATHER!”
     """
     __slots__ = ('text', 'title')
     text: str
