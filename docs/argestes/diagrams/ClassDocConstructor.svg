@@ -22,9 +22,6 @@
         <path d="M273 -77 L273 -49 L410 -49 L410 -77 Z"/>
       </clipPath>
     </defs>
-    <g fill="white" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" transform="translate(15,121)" stroke="white">
-      <rect x="-15" width="441" height="116" y="-121" clip-path="url(#clipPath2)" stroke="none"/>
-    </g>
     <g fill="rgb(242,242,242)" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" transform="matrix(1,0,0,1,15,121)" stroke="rgb(242,242,242)">
       <rect x="0" width="87.1758" height="28" y="-48" clip-path="url(#clipPath2)" stroke="none"/>
     </g>
@@ -64,10 +61,10 @@
     <g fill="rgb(89,89,89)" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" transform="matrix(1,0,0,1,15,121)" stroke-linecap="butt" stroke="rgb(89,89,89)">
       <path fill="none" d="M106.1465 -34 L87.205 -34" clip-path="url(#clipPath2)"/>
       <path d="M117.1465 -34 L105.1465 -40 L105.1465 -28 Z" clip-path="url(#clipPath2)" stroke="none"/>
-      <path fill="none" d="M262.2295 -70 L259.9946 -70 L258.3185 -72.5 L257.7598 -80 L257.7598 -82 L257.1348 -86.375 L255.2598 -89.5 L252.1348 -91.375 L247.7598 -92 L213.9762 -92" clip-path="url(#clipPath2)"/>
-      <path d="M273.2295 -70 L261.2295 -76 L261.2295 -64 Z" clip-path="url(#clipPath2)" stroke="none"/>
       <path fill="none" d="M262.2295 -56 L259.9946 -56 L258.3185 -53.5 L257.7598 -46 L257.7598 -44 L257.2763 -39.625 L255.826 -36.5 L253.4089 -34.625 L250.0249 -34 L242.29 -34" clip-path="url(#clipPath2)"/>
       <path d="M273.2295 -56 L261.2295 -62 L261.2295 -50 Z" clip-path="url(#clipPath2)" stroke="none"/>
+      <path fill="none" d="M262.2295 -70 L259.9946 -70 L258.3185 -72.5 L257.7598 -80 L257.7598 -82 L257.1348 -86.375 L255.2598 -89.5 L252.1348 -91.375 L247.7598 -92 L213.9762 -92" clip-path="url(#clipPath2)"/>
+      <path d="M273.2295 -70 L261.2295 -76 L261.2295 -64 Z" clip-path="url(#clipPath2)" stroke="none"/>
     </g>
   </g>
 </svg>
