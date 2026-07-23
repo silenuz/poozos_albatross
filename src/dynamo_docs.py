@@ -53,7 +53,7 @@ class DocAttribute:
             if class_name.startswith("Doc"):
                 type_value = f'[{type}]({type}.md)'
             else:
-                type_value = f'[{type}](./lists/{type}.md)'
+                type_value = f'[{type}](./custom_lists/{type}.md)'
         else:
             type_value = type
         description = attribs[1]
@@ -84,6 +84,10 @@ class DocMethod:
     description: str = ""
     type_value: str = ""
     args: list[DocArg] = field(default_factory=list)
+
+    @property
+    def title(self):
+        return self.name
 
     @classmethod
     def from_ast(cls, ast_def: ast.FunctionDef) ->DocMethod:
@@ -151,12 +155,15 @@ class DocClass:
     def has_attributes(self) -> bool:
         return len(self.doc_attributes) > 0
 
+    @property
+    def is_top_level(self):
+        return self.name.startswith(('Class','Description','Brief','Doc'))
 
     def file_path(self,output_directory:Path) -> Path:
         if self.name.startswith(('Class','Description','Brief')):
             return output_directory / f'{self.name}.md'
         elif self.name.startswith('Doc'):
-            return  output_directory / 'lists' / f'{self.name}.md'
+            return  output_directory / 'custom_lists' / f'{self.name}.md'
         else:
             return output_directory / 'base' / f'{self.name}.md'
 
@@ -191,10 +198,10 @@ def make_markdown_table(columns, rows)->str:
     for row in rows:
         param = row
         if hasattr(param,'default_value'):
-            i = [param.type_value, param.name, param.default_value]
+            i = [param.type_value, param.title, param.default_value]
             items.append(i)
         else:
-            i = [param.type_value, param.name,""]
+            i = [param.type_value, param.title,""]
             items.append(i)
 
     body_lines = ["| " + " | ".join(map(str, item)) + " |" for item in items]
@@ -204,6 +211,8 @@ def make_markdown_table(columns, rows)->str:
 
 
 def insert_schema(class_item: DocClass, doc_content):
+    if not class_item.is_top_level:
+        return
     section_title = '## Schema'
     doc_content.append(f'\n{section_title}\n\n')
     stub_folder = OUTPUT_DIR / 'schema'
@@ -238,7 +247,7 @@ def extract_docs_from_file(filepath: Path, rel_path: Path):
 def generate_output():
     for class_item in classes:
         doc_content = [f'# {class_item.name}\n']
-        if 'description' in class_item.description:
+        if class_item.description:
             doc_content.append(f"\n\n {class_item.description}")
         if class_item.has_attributes:
             section_title = '## Attributes / Parameters:'

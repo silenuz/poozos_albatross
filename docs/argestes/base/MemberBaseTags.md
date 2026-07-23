@@ -1,18 +1,23 @@
 # MemberBaseTags
 
 
+ 
+Base class extending MemberBase
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | enum | None |
-| bool | is_bitfield | False |
-| str | name |  |
-| str | text | None |
-| bool | is_deprecated | False |
-| bool | is_experimental | False |
-| str | deprecated | None |
-| str | experimental | None |
+| str | [enum](#enum) | None |
+| bool | [is_bitfield](#is_bitfield) | False |
+| str | [name](#name) |  |
+| str | [text](#text) | None |
+| bool | [is_deprecated](#is_deprecated) | False |
+| bool | [is_experimental](#is_experimental) | False |
+| str | [deprecated](#deprecated) | None |
+| str | [experimental](#experimental) | None |
 
 ## Methods:
 
@@ -58,5 +63,3 @@ Not Documented Yet
 Returns a dictionary representation of this object.
 
 :return: a dictionary of values for this object
-## Schema
-

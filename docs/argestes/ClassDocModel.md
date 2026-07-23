@@ -1,30 +1,35 @@
 # ClassDocModel
 
 
+ 
+This class represents a model of the root class element of the Godot doc xml.
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | name |  |
-| [BriefDescription](BriefDescription.md) | brief_description | BriefDescription() |
-| [Description](Description.md) | description | Description() |
-| [DocAnnotations](./lists/DocAnnotations.md) | annotations | None |
-| [DocConstants](./lists/DocConstants.md) | constants | None |
-| [DocConstructors](./lists/DocConstructors.md) | constructors | None |
-| [DocMembers](./lists/DocMembers.md) | members | None |
-| [DocMethods](./lists/DocMethods.md) | methods | None |
-| [DocOperators](./lists/DocOperators.md) | operators | None |
-| [DocSignals](./lists/DocSignals.md) | signals | None |
-| [DocThemeItems](./lists/DocThemeItems.md) | theme_items | None |
-| [DocTutorials](./lists/DocTutorials.md) | tutorials | DocTutorials() |
-| str | inherits | None |
-| str | api_type | None |
-| float | version | None |
-| bool | is_deprecated | None |
-| bool | is_experimental | None |
-| str | deprecated | None |
-| str | experimental | None |
-| str | keywords | None |
+| str | [name](#name) |  |
+| [BriefDescription](BriefDescription.md) | [brief_description](#brief_description) | BriefDescription() |
+| [Description](Description.md) | [description](#description) | Description() |
+| [DocAnnotations](./custom_lists/DocAnnotations.md) | [annotations](#annotations) | None |
+| [DocConstants](./custom_lists/DocConstants.md) | [constants](#constants) | None |
+| [DocConstructors](./custom_lists/DocConstructors.md) | [constructors](#constructors) | None |
+| [DocMembers](./custom_lists/DocMembers.md) | [members](#members) | None |
+| [DocMethods](./custom_lists/DocMethods.md) | [methods](#methods) | None |
+| [DocOperators](./custom_lists/DocOperators.md) | [operators](#operators) | None |
+| [DocSignals](./custom_lists/DocSignals.md) | [signals](#signals) | None |
+| [DocThemeItems](./custom_lists/DocThemeItems.md) | [theme_items](#theme_items) | None |
+| [DocTutorials](./custom_lists/DocTutorials.md) | [tutorials](#tutorials) | DocTutorials() |
+| str | [inherits](#inherits) | None |
+| str | [api_type](#api_type) | None |
+| float | [version](#version) | None |
+| bool | [is_deprecated](#is_deprecated) | None |
+| bool | [is_experimental](#is_experimental) | None |
+| str | [deprecated](#deprecated) | None |
+| str | [experimental](#experimental) | None |
+| str | [keywords](#keywords) | None |
 
 ## Methods:
 

@@ -12,5 +12,3 @@
 ### __init__
 
 Not Documented Yet
-## Schema
-

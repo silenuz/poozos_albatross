@@ -14,10 +14,9 @@ from xml.etree import ElementTree as Et
 
 from .class_doc_annotation import ClassDocAnnotation
 from .doc_base import DocReturnErrorsList, ModelCollection, DocParameters, Description, ClassDocReturn
-from .zucaritas import Zucaritas
 
 
-class ClassDocMethod(ClassDocAnnotation,Zucaritas):
+class ClassDocMethod(ClassDocAnnotation):
     """
     This class represents a model of the class doc's method element
     

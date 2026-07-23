@@ -1,15 +1,20 @@
 # ClassDocOperator
 
 
+ 
+This class represents a model of the class doc's operator element
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | name |  |
-| [Description](Description.md) | description | Description() |
-| str | qualifiers | None |
-| [DocParameters](./lists/DocParameters.md) | parameters | None |
-| [ClassDocReturn](ClassDocReturn.md) | return_value | None |
+| str | [name](#name) |  |
+| [Description](Description.md) | [description](#description) | Description() |
+| str | [qualifiers](#qualifiers) | None |
+| [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
+| [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) | None |
 
 ## Methods:
 

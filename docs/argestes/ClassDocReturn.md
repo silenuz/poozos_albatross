@@ -1,13 +1,19 @@
 # ClassDocReturn
 
 
+ 
+This class represents a model of the method return element of the class docs
+Note: type_value is used as the attribute here because type is a soft keyword in python.
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | enum | None |
-| bool | is_bitfield | None |
-| str | type_value | None |
+| str | [enum](#enum) | None |
+| bool | [is_bitfield](#is_bitfield) | None |
+| str | [type_value](#type_value) | None |
 
 ## Methods:
 

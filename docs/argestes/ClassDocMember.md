@@ -1,24 +1,29 @@
 # ClassDocMember
 
 
+ 
+This class represents a model of the class doc's member element
+    
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | enum | None |
-| bool | is_bitfield | None |
-| str | name |  |
-| str | text | None |
-| bool | is_deprecated | None |
-| bool | is_experimental | None |
-| str | deprecated | None |
-| str | experimental | None |
-| str | keywords | None |
-| str | type_value | None |
-| str | getter | None |
-| str | setter | None |
-| str | overrides | None |
-| str | default | None |
+| str | [enum](#enum) | None |
+| bool | [is_bitfield](#is_bitfield) | None |
+| str | [name](#name) |  |
+| str | [text](#text) | None |
+| bool | [is_deprecated](#is_deprecated) | None |
+| bool | [is_experimental](#is_experimental) | None |
+| str | [deprecated](#deprecated) | None |
+| str | [experimental](#experimental) | None |
+| str | [keywords](#keywords) | None |
+| str | [type_value](#type_value) | None |
+| str | [getter](#getter) | None |
+| str | [setter](#setter) | None |
+| str | [overrides](#overrides) | None |
+| str | [default](#default) | None |
 
 ## Methods:
 

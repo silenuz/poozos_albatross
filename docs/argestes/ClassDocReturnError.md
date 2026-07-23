@@ -1,11 +1,15 @@
 # ClassDocReturnError
 
 
+ 
+This class represents a model of the return error element of the class docs
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| int | number |  |
+| int | [number](#number) |  |
 
 ## Methods:
 

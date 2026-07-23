@@ -1,14 +1,19 @@
 # MethodBase
 
 
+ 
+Base class for method and method like elements
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | name |  |
-| [Description](Description.md) | description | None |
-| str | qualifiers | None |
-| [DocParameters](./lists/DocParameters.md) | parameters | None |
+| str | [name](#name) |  |
+| [Description](Description.md) | [description](#description) | None |
+| str | [qualifiers](#qualifiers) | None |
+| [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
 
 ## Methods:
 
@@ -46,5 +51,3 @@ Not Documented Yet
 Returns a dictionary representation of this object.
 
 :return: a dictionary of values for this object
-## Schema
-

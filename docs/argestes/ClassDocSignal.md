@@ -1,18 +1,23 @@
 # ClassDocSignal
 
 
+ 
+This class represents a model of the class doc's signal element
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | name |  |
-| [Description](Description.md) | description | Description() |
-| str | qualifiers | None |
-| [DocParameters](./lists/DocParameters.md) | parameters | None |
-| bool | is_deprecated | None |
-| str | deprecated | None |
-| bool | is_experimental | None |
-| str | experimental | None |
+| str | [name](#name) |  |
+| [Description](Description.md) | [description](#description) | Description() |
+| str | [qualifiers](#qualifiers) | None |
+| [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
+| bool | [is_deprecated](#is_deprecated) | None |
+| str | [deprecated](#deprecated) | None |
+| bool | [is_experimental](#is_experimental) | None |
+| str | [experimental](#experimental) | None |
 
 ## Methods:
 

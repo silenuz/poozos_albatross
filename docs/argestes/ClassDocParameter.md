@@ -1,16 +1,20 @@
 # ClassDocParameter
 
 
+ 
+This class represents a model of the class doc's parameter element, used in signals, methods, etc...
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | enum | None |
-| bool | is_bitfield | None |
-| str | type_value | None |
-| str | index | None |
-| str | name |  |
-| str | default | None |
+| str | [enum](#enum) | None |
+| bool | [is_bitfield](#is_bitfield) | None |
+| str | [type_value](#type_value) | None |
+| str | [index](#index) | None |
+| str | [name](#name) |  |
+| str | [default](#default) | None |
 
 ## Methods:
 

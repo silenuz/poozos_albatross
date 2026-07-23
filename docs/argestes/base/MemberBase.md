@@ -1,14 +1,19 @@
 # MemberBase
 
 
+ 
+Base class extending qualifiers
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | enum | None |
-| bool | is_bitfield | False |
-| str | name |  |
-| str | text | None |
+| str | [enum](#enum) | None |
+| bool | [is_bitfield](#is_bitfield) | False |
+| str | [name](#name) |  |
+| str | [text](#text) | None |
 
 ## Methods:
 
@@ -42,5 +47,3 @@ Not Documented Yet
 Returns a dictionary representation of this object.
 
 :return: a dictionary of values for this object
-## Schema
-

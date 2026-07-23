@@ -1,18 +1,23 @@
 # ClassDocThemeItem
 
 
+ 
+This class represents a model of the class doc's theme_item element
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | name |  |
-| str | text | None |
-| str | data_type | None |
-| str | type_value | None |
-| str | default | None |
-| str | keywords | None |
-| str | deprecated | None |
-| str | experimental | None |
+| str | [name](#name) |  |
+| str | [text](#text) | None |
+| str | [data_type](#data_type) | None |
+| str | [type_value](#type_value) | None |
+| str | [default](#default) | None |
+| str | [keywords](#keywords) | None |
+| str | [deprecated](#deprecated) | None |
+| str | [experimental](#experimental) | None |
 
 ## Methods:
 

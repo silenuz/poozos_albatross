@@ -1,12 +1,18 @@
 # ClassDocTutorialLink
 
 
+ 
+This class represents a model of the class doc's tutorial link element
+
+
+“Join me, Rosencrantz! I am your FATHER!”
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | text | None |
-| str | title | None |
+| str | [text](#text) | None |
+| str | [title](#title) | None |
 
 ## Methods:
 

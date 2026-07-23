@@ -1,21 +1,26 @@
 # ClassDocMethod
 
 
+ 
+This class represents a model of the class doc's method element
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | name |  |
-| [Description](Description.md) | description | Description() |
-| str | qualifiers | None |
-| [DocParameters](./lists/DocParameters.md) | parameters | None |
-| [ClassDocReturn](ClassDocReturn.md) | return_value | None |
-| str | keywords | None |
-| [DocReturnErrorsList](./lists/DocReturnErrorsList.md) | returns_error | None |
-| bool | is_deprecated | None |
-| bool | is_experimental | None |
-| str | deprecated | None |
-| str | experimental | None |
+| str | [name](#name) |  |
+| [Description](Description.md) | [description](#description) | Description() |
+| str | [qualifiers](#qualifiers) | None |
+| [DocParameters](./custom_lists/DocParameters.md) | [parameters](#parameters) | None |
+| [ClassDocReturn](ClassDocReturn.md) | [return_value](#return_value) | None |
+| str | [keywords](#keywords) | None |
+| [DocReturnErrorsList](./custom_lists/DocReturnErrorsList.md) | [returns_error](#returns_error) | None |
+| bool | [is_deprecated](#is_deprecated) | None |
+| bool | [is_experimental](#is_experimental) | None |
+| str | [deprecated](#deprecated) | None |
+| str | [experimental](#experimental) | None |
 
 ## Methods:
 

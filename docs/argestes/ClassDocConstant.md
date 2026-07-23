@@ -1,20 +1,25 @@
 # ClassDocConstant
 
 
+ 
+This class represents a model of the godot docs constant element
+
+
+
 ## Attributes / Parameters:
 
 | Type | Name | Default |
 | --- | --- | --- |
-| str | enum | None |
-| bool | is_bitfield | None |
-| str | name |  |
-| str | text | None |
-| bool | is_deprecated | None |
-| bool | is_experimental | None |
-| str | deprecated | None |
-| str | experimental | None |
-| str | keywords | None |
-| str | value | None |
+| str | [enum](#enum) | None |
+| bool | [is_bitfield](#is_bitfield) | None |
+| str | [name](#name) |  |
+| str | [text](#text) | None |
+| bool | [is_deprecated](#is_deprecated) | None |
+| bool | [is_experimental](#is_experimental) | None |
+| str | [deprecated](#deprecated) | None |
+| str | [experimental](#experimental) | None |
+| str | [keywords](#keywords) | None |
+| str | [value](#value) | None |
 
 ## Methods:
 

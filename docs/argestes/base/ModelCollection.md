@@ -1,6 +1,12 @@
 # ModelCollection
 
 
+ 
+A generic, reusable list that enforces types.  DO NOT USE DIRECTLY
+if your expecting from_json to work as it's meant to return a subclass
+of this class
+
+
 ## Methods:
 
 | Return | Name |
@@ -40,5 +46,3 @@ Not Documented Yet
 ### from_json
 
 Not Documented Yet
-## Schema
-
