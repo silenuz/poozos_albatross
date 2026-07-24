@@ -1,7 +1,8 @@
 # ClassDocMember
+Module: argestes.class_doc_member
 
+![Alt class_diagram](diagrams/ClassDocMember.svg)
 
- 
 This class represents a model of the class doc's member element
     
 

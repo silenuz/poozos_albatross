@@ -1,7 +1,8 @@
 # ClassDocSignal
+Module: argestes.class_doc_signal
 
+![Alt class_diagram](diagrams/ClassDocSignal.svg)
 
- 
 This class represents a model of the class doc's signal element
 
 

@@ -1,7 +1,7 @@
 # ConstantMemberBase
+Module: argestes.doc_base
 
 
- 
 Base class extending MemberBaseTags
 
 

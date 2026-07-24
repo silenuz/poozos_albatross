@@ -1,7 +1,8 @@
 # ClassDocMethod
+Module: argestes.class_doc_method
 
+![Alt class_diagram](diagrams/ClassDocMethod.svg)
 
- 
 This class represents a model of the class doc's method element
 
 

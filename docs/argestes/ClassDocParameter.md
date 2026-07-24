@@ -1,7 +1,7 @@
 # ClassDocParameter
+Module: argestes.doc_base
 
 
- 
 This class represents a model of the class doc's parameter element, used in signals, methods, etc...
 
 

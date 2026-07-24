@@ -247,8 +247,13 @@ def extract_docs_from_file(filepath: Path, rel_path: Path):
 def generate_output():
     for class_item in classes:
         doc_content = [f'# {class_item.name}\n']
+        doc_content.append(f'Module: {class_item.module_name}\n')
+        if class_item.is_top_level:
+            diagram_path = OUTPUT_DIR / 'diagrams' / f'{class_item.name}.svg'
+            if diagram_path.exists():
+                doc_content.append(f'\n![Alt class_diagram](diagrams/{class_item.name}.svg)')
         if class_item.description:
-            doc_content.append(f"\n\n {class_item.description}")
+            doc_content.append(f"\n{class_item.description}")
         if class_item.has_attributes:
             section_title = '## Attributes / Parameters:'
             doc_content.append(f'\n\n{section_title}\n')

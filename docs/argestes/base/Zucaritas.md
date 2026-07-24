@@ -1,7 +1,7 @@
 # Zucaritas
+Module: argestes.zucaritas
 
 
- 
 Cereal base for top level objects, providing serialization and deserialization between XML and JSON,
 for Godot documentation elements.
 

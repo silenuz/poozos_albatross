@@ -1,7 +1,8 @@
 # ClassDocOperator
+Module: argestes.class_doc_operator
 
+![Alt class_diagram](diagrams/ClassDocOperator.svg)
 
- 
 This class represents a model of the class doc's operator element
 
 

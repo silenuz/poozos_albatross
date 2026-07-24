@@ -1,7 +1,8 @@
 # ClassDocConstructor
+Module: argestes.class_doc_constructor
 
+![Alt class_diagram](diagrams/ClassDocConstructor.svg)
 
- 
 This class represents a model of the class docs constructor element
 
 

@@ -1,4 +1,5 @@
 # ExtensionDocModel
+Module: argestes.class_doc
 
 
 ## Methods:

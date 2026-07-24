@@ -1,7 +1,8 @@
 # ClassDocModel
+Module: argestes.class_doc
 
+![Alt class_diagram](diagrams/ClassDocModel.svg)
 
- 
 This class represents a model of the root class element of the Godot doc xml.
 
 

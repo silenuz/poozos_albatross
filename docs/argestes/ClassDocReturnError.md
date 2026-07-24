@@ -1,7 +1,7 @@
 # ClassDocReturnError
+Module: argestes.doc_base
 
 
- 
 This class represents a model of the return error element of the class docs
 
 

@@ -1,7 +1,8 @@
 # ClassDocThemeItem
+Module: argestes.class_doc_theme_item
 
+![Alt class_diagram](diagrams/ClassDocThemeItem.svg)
 
- 
 This class represents a model of the class doc's theme_item element
 
 

@@ -1,7 +1,7 @@
 # MethodReturnBase
+Module: argestes.doc_base
 
 
- 
 Base class extending MethodBase with a return element
 
 

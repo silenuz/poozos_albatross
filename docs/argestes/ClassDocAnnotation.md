@@ -1,7 +1,8 @@
 # ClassDocAnnotation
+Module: argestes.class_doc_annotation
 
 ![Alt class_diagram](diagrams/ClassDocAnnotation.svg)
- 
+
 This class represents a model of the class docs annotation element
 
 

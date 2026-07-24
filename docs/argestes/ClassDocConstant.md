@@ -1,7 +1,8 @@
 # ClassDocConstant
+Module: argestes.class_doc_constant
 
+![Alt class_diagram](diagrams/ClassDocConstant.svg)
 
- 
 This class represents a model of the godot docs constant element
 
 

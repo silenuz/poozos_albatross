@@ -1,7 +1,7 @@
 # MethodBase
+Module: argestes.doc_base
 
 
- 
 Base class for method and method like elements
 
 
