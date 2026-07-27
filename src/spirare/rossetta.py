@@ -64,14 +64,14 @@ class Rosetta(metaclass=SingletonMeta):
 
 
     def get_tag_text(self,element: xml.etree.ElementTree.Element,output_format: OutputTypes = OutputTypes.BBCode):
-        print("getting tag text")
+        #print("getting tag text")
         format_map = self.output_markup_map[output_format.value]
         parts = []
         if element.text:
             parts.append(element.text.strip())
         para_nodes = element.findall('para')
         count = len(para_nodes)
-        print("count")
+        #print("count")
         for paragraph_index in range(count):
             paragraph = para_nodes[paragraph_index]
             empty_element = True
@@ -88,7 +88,7 @@ class Rosetta(metaclass=SingletonMeta):
         return text
 
     def parse_xml_text(self, element: xml.etree.ElementTree.Element, format_map: dict) -> str:
-        print("Parsing xml text")
+        #print("Parsing xml text")
         parts = []
         has_existing_codeblock = False
 

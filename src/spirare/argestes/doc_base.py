@@ -160,11 +160,12 @@ class MemberBase(QualifierBase):
 
     "Oh, people can come up with statistics to prove anything, Kent. 14% of people know that."
     """
-    __slots__ = ('name', 'text')
+    __slots__ = ('name', 'text','_rosetta')
     name: str
     """The value of the name attribute for this element."""
     text: str
     """The text value for this element"""
+    _rosetta: Rosetta
 
     def __init__(self, name: str, text: str = None, enum: str = None,
                  is_bitfield: bool = False) -> None:
@@ -173,6 +174,7 @@ class MemberBase(QualifierBase):
         """The value of the name attribute for this element."""
         self.text = text
         """The text value for this element"""
+        self._rosetta = Rosetta()
 
     def to_dict(self) -> dict:
         """
@@ -184,7 +186,7 @@ class MemberBase(QualifierBase):
         if self.name is not None:
             values['name'] = self.name
         if self.text is not None:
-            values['text'] = self.text
+            values['text'] = self._rosetta.text_to_bbcode(self.text)
         values.update(super().to_dict())
         return values
 
