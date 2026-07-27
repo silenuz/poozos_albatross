@@ -15,6 +15,8 @@ import json
 import xml
 
 from .zucaritas import Zucaritas
+from ..rossetta import Rosetta
+
 
 class QualifierBase:
     """
@@ -61,13 +63,15 @@ class DescriptionBase:
      2. Oh, good idea boss!
      3. It was like that when I got here."
     """
-    __slots__ = ('text', '_element_name')
+    __slots__ = ('text', '_element_name','_rosetta')
     text: str
     """The text value of the element"""
     _element_name: str
     """The name of the element, used by child class to set element tag"""
+    _rosetta : Rosetta
 
     def __init__(self, text: str = '') -> None:
+        self._rosetta = Rosetta()
         self.text = text
         """The text value of the element"""
 
@@ -81,6 +85,7 @@ class DescriptionBase:
 
         :return: a dictionary of values for this object
         """
+        #print("Before: ", self.text)
         return {self._element_name: self.text}
 
     def to_xml_doc(self)->xml.etree.ElementTree.Element:
