@@ -70,6 +70,10 @@ class DescriptionBase:
     """The name of the element, used by child class to set element tag"""
     _rosetta : Rosetta
 
+    def text_as_rst(self,underline_is_bold=True,remove_strike_entirely=True):
+        return self._rosetta.bbcode_to_rst(text=self.text,underline_is_bold=underline_is_bold,remove_strike_entirely=remove_strike_entirely)
+
+
     def __init__(self, text: str = '') -> None:
         self._rosetta = Rosetta()
         self.text = text
@@ -166,6 +170,10 @@ class MemberBase(QualifierBase):
     text: str
     """The text value for this element"""
     _rosetta: Rosetta
+
+    def text_as_rst(self,underline_is_bold=True,remove_strike_entirely=True):
+        return self._rosetta.bbcode_to_rst(text=self.text,underline_is_bold=underline_is_bold,remove_strike_entirely=remove_strike_entirely)
+
 
     def __init__(self, name: str, text: str = None, enum: str = None,
                  is_bitfield: bool = False) -> None:
