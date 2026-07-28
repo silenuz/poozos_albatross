@@ -15,7 +15,7 @@ from xml.etree.ElementTree import ElementTree
 from enum import Enum
 
 
-class OutputTypes(Enum):
+class DoxygenOutputTypes(Enum):
     BBCode = "bbcode"
 
 class BoreasRosetta:
@@ -51,11 +51,11 @@ class BoreasRosetta:
     def doxygen_to_bbcode(self, element: str | xml.etree.ElementTree.Element):
         if isinstance(element, str):
             element = xml.etree.ElementTree.fromstring(f'<myelement>{element}</myelement>')
-        return self.get_tag_text(element,OutputTypes.BBCode)
+        return self.get_tag_text(element, DoxygenOutputTypes.BBCode)
 
 
-    def get_tag_text(self,element: xml.etree.ElementTree.Element,output_format: OutputTypes = OutputTypes.BBCode):
-        print("getting tag text")
+    def get_tag_text(self, element: xml.etree.ElementTree.Element, output_format: DoxygenOutputTypes = DoxygenOutputTypes.BBCode):
+        #print("getting tag text")
         format_map = self.output_markup_map[output_format.value]
         parts = []
         if element.text:

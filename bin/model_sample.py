@@ -40,6 +40,7 @@ for file in files:
     tree = Et.parse(str(file))
     root = tree.getroot()
     class_doc_three = ClassDocModel.from_xml(root)
+    print(class_doc_three.description.text_as_rst())
     file_name = file.stem + '.json'
     file_path = output_folder / file_name
     with open(file_path, "w", encoding="utf-8") as json_file:
@@ -79,3 +80,5 @@ tree = Et.ElementTree(xml_element)
 file_name = 'TrafficLightMergedContent.xml'
 file_path = output_folder / file_name
 tree.write(str(file_path), encoding="utf-8", short_empty_elements=False, xml_declaration=True)
+
+print(new_model.description.text_as_rst())

@@ -16,6 +16,8 @@ from enum import Enum
 
 from .boreas_rosetta import BoreasRosetta
 
+class OutputTypes(Enum):
+    RST = "rst"
 
 class SingletonMeta(type):
     _instances = {}
@@ -28,30 +30,55 @@ class SingletonMeta(type):
 
 class Rosetta(metaclass=SingletonMeta):
     doxygen_rosetta: BoreasRosetta
+    output_markup_map = dict()
 
     def __init__(self):
         self.doxygen_rosetta = BoreasRosetta()
+        self.__init_rst_mappings()
+
+    def __init_rst_mappings(self):
+        values = dict()
+        values['bold'] = '**'
+        values['italic'] = '*'
+        values['code'] = '``'
+        values['br'] = '\n'
+        self.output_markup_map[OutputTypes.RST.value] = values
+
 
     def bbcode_to_rst(self,text:str,underline_is_bold:bool=True,remove_strike_entirely:bool=True)->str:
-        # Convert standard tags using regex replacements for reST syntax
+       return self._text_to_output_format(text=text,output_format=OutputTypes.RST,
+                                          underline_is_bold=underline_is_bold,
+                                          remove_strike_entirely=remove_strike_entirely)
+
+    def _text_to_output_format(self,text:str,output_format:OutputTypes,underline_is_bold:bool=True,remove_strike_entirely:bool=True)->str:
+        output_elements = self.output_markup_map[output_format.value]
+
         # Bold
-        text = re.sub(r'\[b\](.*?)\[/b\]', r'**\1**', text, flags=re.DOTALL)
+        bold = output_elements['bold']
+        text = re.sub(r'\[b\](.*?)\[/b\]', rf'{bold}\1{bold}', text, flags=re.DOTALL)
         # Italic
-        text = re.sub(r'\[i\](.*?)\[/i\]', r'*\1*', text, flags=re.DOTALL)
+        italic = output_elements['italic']
+        text = re.sub(r'\[i\](.*?)\[/i\]', rf'{italic}\1{italic}', text, flags=re.DOTALL)
         # Inline code
-        text = re.sub(r'\[code\](.*?)\[/code\]', r'``\1``', text, flags=re.DOTALL)
-        # Links: [url=url_target]link_text[/url] -> `link_text <url_target>`_
+        code = output_elements['code']
+        text = re.sub(r'\[code\](.*?)\[/code\]', rf'{code}\1{code}', text, flags=re.DOTALL)
+        # Links: todo: figure this out, probably best to do it like the codeblocks specific to each format?
         text = re.sub(r'\[url=(.*?)\](.*?)\[/url\]', r'`\2 <\1>`_', text, flags=re.DOTALL)
+        # Linebreaks
+        br = output_elements['br']
+        text = re.sub(r'\[br\]', rf'{br}', text, flags=re.DOTALL)
 
-        text = re.sub(r'\[br\]', r'\n', text, flags=re.DOTALL)
-
+        # Underline
         if underline_is_bold:
-            text = re.sub(r'\[u\](.*?)\[/u\]', r'**\1**', text, flags=re.DOTALL)
+            text = re.sub(r'\[u\](.*?)\[/u\]', rf'{bold}\1{bold}', text, flags=re.DOTALL)
         else:
             text = re.sub(r'\[u\](.*?)\[/u\]', r'\1', text, flags=re.DOTALL)
 
-        if remove_strike_entirely:
-            text = re.sub(r'\[s\](.*?)\[/s\]', '', text, flags=re.DOTALL)
-        else:
-            text = re.sub(r'\[s\](.*?)\[/s\]', r'\1', text, flags=re.DOTALL)
+        # Strikethrough
+        if not 'strike' in output_elements:
+            if remove_strike_entirely:
+                text = re.sub(r'\[s\](.*?)\[/s\]', '', text, flags=re.DOTALL)
+            else:
+                text = re.sub(r'\[s\](.*?)\[/s\]', r'\1', text, flags=re.DOTALL)
+
         return text
