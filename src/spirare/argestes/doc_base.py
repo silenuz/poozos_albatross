@@ -186,7 +186,7 @@ class MemberBase(QualifierBase):
         if self.name is not None:
             values['name'] = self.name
         if self.text is not None:
-            values['text'] = self._rosetta.text_to_bbcode(self.text)
+            values['text'] = self.text
         values.update(super().to_dict())
         return values
 

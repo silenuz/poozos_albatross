@@ -23,12 +23,15 @@ from .argestes import ClassDocModel, ClassDocConstant, ClassDocMethod, ClassDocM
 from .argestes.class_doc import ExtensionDocModel # todo: add this to init imports for package
 from .luckys_zephyr import LuckyZephyr, EnumValueModel, XRefSectionModel
 from .poozos_notus import PoozoNotus, PropertyInfoModel
+from .rossetta import Rosetta
 
 
 class Eurus:
     lz: LuckyZephyr = None
     poozo: PoozoNotus = None
     class_model: ClassDocModel = None
+    rosetta: Rosetta
+
     # track methods that are getters and setters as they should be part of the members output
     # and not the methods output
     property_methods_set = set()
@@ -56,8 +59,9 @@ class Eurus:
                 self.__doxy_map_class()
                 return self.class_model
 
-    def __init__(self, source_directory: Path) -> Eurus:
+    def __init__(self, source_directory: Path):
         self.source_directory = source_directory
+        self.rosetta = Rosetta()
 
     ################################################################################################
     ###                       Doxygen + Source code to model                                     ###
@@ -67,9 +71,11 @@ class Eurus:
         self.property_methods_set.clear()
         description = self.lz.get_class_detail()
         brief = self.lz.get_class_brief()
+        description_bbcode = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(description)
+        brief_bbcode = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(brief)
         # Note a string passed as brief or detailed description to init should work.  On post init the model will convert
         # the string to the appropriate description object
-        self.class_model = ClassDocModel(brief_description=brief, description=description, name=self.lz.class_name)
+        self.class_model = ClassDocModel(brief_description=brief_bbcode, description=description_bbcode, name=self.lz.class_name)
         self.__doxy_map_properties()
         self.__doxy_map_methods()
         self.__doxy_map_integer_constants()
@@ -97,7 +103,7 @@ class Eurus:
                     index = int(initial_value)
                 constant.value = str(index)
                 if enumerator_value.detaileddescription is not None:
-                    constant.text = enumerator_value.detaileddescription
+                    constant.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(enumerator_value.detaileddescription)
                 self.class_model.constants.append(constant)
                 index += 1
 
@@ -112,7 +118,7 @@ class Eurus:
                 if bound_constant.p_enum:
                     constant.enum = bound_constant.p_enum
                 constant.value = member_definition.initializer_value
-                constant.text = member_definition.detaileddescription
+                constant.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
                 constants.append(constant)
         self.class_model.constants = constants
 
@@ -125,7 +131,8 @@ class Eurus:
                 method = ClassDocMethod(name=bound_method.name)
                 if member_definition is not None:
                     method.return_value = ClassDocReturn(type_value=member_definition.type)
-                    method.description = Description(text=member_definition.detaileddescription)
+                    description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
+                    method.description = Description(text=description)
                     methods.append(method)
         self.class_model.methods = methods
 
@@ -136,7 +143,7 @@ class Eurus:
             member_definition = self.lz.get_definition_by_name(bound_property.field)
             member = ClassDocMember(member_definition.name)
             if member_definition.detaileddescription is not None:
-                member.text = member_definition.detaileddescription
+                member.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
             member.getter = bound_property.getter
             member.setter = bound_property.setter
             assign_value(bound_property.info,member_definition.type,member)
@@ -160,7 +167,7 @@ class Eurus:
         for bound_signal in bound_signals:
             signal = ClassDocSignal(bound_signal.name)
             data = signal_data[bound_signal.name]
-            signal.description = Description(data.description)
+            signal.description = Description(self.rosetta.doxygen_rosetta.doxygen_to_bbcode(data.description))
             signal_parameters = bound_signal.argument_info
             if len(signal_parameters) > 0:
                 signal.parameters = DocParameters()
