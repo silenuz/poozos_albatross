@@ -32,7 +32,6 @@ if not output_folder.exists():
 
 # set extension directory so that eurus can find the necessary source code to parse for bindings.
 eurus = Eurus(extension_example_directory)
-
 files = list(Path(xml_folder).rglob('class*.xml'))
 
 for file in files:
