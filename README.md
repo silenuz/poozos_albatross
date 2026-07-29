@@ -1,10 +1,8 @@
-IMPORTANT
-=========
+# IMPORTANT
+If any human beings actually visit this repo, I'm aiming for an RC by September.
 
-Update:
--------
-Model merge still needs testing, but while testing found bug in original doc generator that tagged param elements in 
-signals as parameter instead, this is now remedied.
+## Update:
+Model merge works AFAICT, just have to add logic, so it does not overwrite any existing text with an empty string.
 
 Eurus is now capable of building the model with the same information as the original aerify script.  
 
@@ -19,13 +17,12 @@ Same for [PoozosNotus](docs/poozo.md) which now handles all the source code pars
 
 “That fact is well established and adds nothing to the plot.”
 
-Current Known Bugs:
--------------------
-Code blocks are currently formatted incorrectly if they contain tabs as someone ignored white space markup when
-writing the parser for code blocks. 
+## Current Known Bugs:
+Code blocks are currently formatted incorrectly when parsed from Doxygen XML if they contain tabs as someone ignored 
+white space markup when writing the parser for code blocks.  This affects both the original and new version of 
+the scripts as they both use the same parser.  
 
-Description:
-============
+# Description:
 Some python scripts based off the Godot GDExtension cpp [template](https://github.com/godotengine/godot-cpp-template)
 structure and build system to generate Godot class documentation from Doxygen generated XML.
 
@@ -37,30 +34,62 @@ The project now includes portions of the class.xsd file in the class reference d
 These portions are derived from Godot's main source repository and are distributed under the MIT license, 
 and attributed to "Juan Linietsky, Ariel Manzur and the Godot community".
 
-Current Status: BETA
-===================================
+## Current Status: BETA
+
+### Orignal Script:
+
 Currently, the source code parser [PoozoNotus](docs/poozo.md) can extract methods, enum constants, integer constants, properties
 and signals.
-AFAIK these all now export properly to the Godot documentation format.  
+AFAIK these all now export properly to the Godot documentation format using the original aerify_didi.py script.  
 
 In some cases the source code parser may fail, or may encounter something it doesn't recognize yet like GDVirtual.  
 If this happens, instructions to merge missing elements can be found [here](docs/merge_missing.md).
 
 Processing of code blocks in description fields almost working (see bug above), see [Codeblocks](#codeblocks).
 
-Contents:
-=========
-This repository contains 4 python modules:
 
-- luckys_zephyr.py : contains LuckyZephyr class that parses and searches the Doxygen XML, this class is used by the above to parse the source XML
-- poozos_notus.py contains [PoozosNotus](docs/poozo.md) class to parse cpp source code containing binding declarations for a GDExtension 
-- aerify_did.py : script to generate Godot class documentation using LuckyZephyr to query the Doxygen XML and PoozosNotus to scrape the source code.
-- waft_gogo.py : script to generate a build profile based on include statements, using LuckyZephyr to parse the Doxygen XML
+## Contents:
 
+This repository contains the following:
+
+### spirare
+
+- aerify_didi.py: 
+  - original script to generate gdextension class documentation from doxygen XML
+  - suitable for quick generation of extension documentation
+  - only requirements are luckys_zephyr to parse the Doxygen XML, and [PoozosNotus](docs/poozo.md)  to parse the source code files
+- luckys_zephyr.py : 
+  - contains LuckyZephyr class that parses and searches the Doxygen XML, this class is used by aerify_didi and Eurus 
+    to parse the Doxygen generated XML
+- poozos_notus.py :
+  - contains the [PoozosNotus](docs/poozo.md) class to parse cpp source code containing binding declarations for a GDExtension 
+  - this class is used by aeirfy_didi script, and the Eurus class.
+- waft_gogo.py : 
+  - script to generate a build profile based on include statements, using LuckyZephyr to parse the Doxygen XML
+
+### spirare.argestes
+
+This package contains the documentation model and related classes for the functionality of the [model](./docs/doc_model.md).
+
+### bin directory
+
+Contains executable scripts and sample files for the demonstration of model functionality to generate documentation
+for a GD extension.
+
+### docs directory
+
+Contains documentation for the code in this repository.
+
+### example directory
 The example directory has a self-contained example to represent parts of a GDExtension cpp template project.  It has
-no requirement other than python, and contains command line scripts that demonstrate usage.
-
+no requirement other than python, and contains command line scripts that demonstrate usage of the original aerify_didi.py script.
 The example directory has a README with more information.
+
+### git content
+
+Content for inclusion in the documentation for the code for this repository.
+
+### support_files directory
 
 The support_files directory contains a sample cmake file for configuring Doxygen
 and running the scripts as part of a cmake target.
@@ -84,8 +113,12 @@ This section contains notes pertaining to how the Doxygen XML is parsed into the
 
 Signals:
 --------
-Signal information is now output to the class documentation and the Doxygen XML parser expects the information to be part of the
-detailed description for the class.  If it can find signal reference items in the class' detailed description, it will output 
+Signal information is now output to the class documentation and ~~the Doxygen XML parser expects the information to be part of the
+detailed description for the class~~, with a recent fix to the parser it should be acceptable to place signal information 
+wherever a paragraph description is acceptable to Doxygen.  For example, see [traffic_light.cpp](example/src/traffic_light.cpp) 
+where the signal description is above the bind_methods function.
+
+If it can find signal reference items ~~in the class' detailed description,~~ it will output 
 those descriptions, otherwise it will simply generate the signal content with an empty description much the same as doctool would.
 
 Unlike properties which have a backing field to parse content for, signals don't necessarily have a physical presence in the file,
@@ -98,8 +131,7 @@ here is what shows up in the other output formats, so if your generating html or
 using the full signature is recommended.  
 
 The description contains the description and any notes and or warnings using the standard @note and @warning Doxygen commands.
-Currently, there is a bug in the xml parser where it will only read 1 paragraph for the description.  So only the first paragraph of the 
-second argument will be read into the description, however it is fine to have a paragraph break between the description and any note or warning.
+
 
 Sample:
 
