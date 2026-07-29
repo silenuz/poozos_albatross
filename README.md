@@ -47,6 +47,9 @@ If this happens, instructions to merge missing elements can be found [here](docs
 
 Processing of code blocks in description fields almost working (see bug above), see [Codeblocks](#codeblocks).
 
+### Eurus:
+
+New version that uses the model instead of raw XML.  More soon.
 
 ## Contents:
 
@@ -101,9 +104,10 @@ Doxygen XML so that the scripts can be used manually, or integrated into the sco
 To see an example project using cmake with the scripts to generate Godot class documentation see 
 [doxy_demo](https://github.com/silenuz/doxy_demo)
 
-The Scripts:
-============
-Information about how the scripts work will eventually be here.  
+# The Scripts:
+
+![Alt script_flowchart](docs/argestes/diagrams/script-flow.svg)
+  
 
 Information about basic usage of the poozo_notus module can be found [here](docs/poozo.md).
 
