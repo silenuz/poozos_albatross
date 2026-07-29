@@ -21,8 +21,8 @@ script_path = Path(__file__).resolve()
 spirare_script_dir = script_path.parent.parent / 'src' / 'spirare'
 sys.path.append(str(spirare_script_dir))
 
-input_folder =  script_path.parent / 'samples'
-output_folder = script_path.parent / 'samples' / 'output'
+input_folder =  script_path.parent / 'model_samples'
+output_folder = script_path.parent / 'model_samples' / 'output'
 
 if not output_folder.exists():
     output_folder.mkdir()
@@ -33,14 +33,13 @@ if not output_folder.exists():
 ## can't find annotations anywhere ?
 files = input_folder.glob('*.xml')
 
-# create model from xml for all xml files in the samples directory,
+# create model from xml for all xml files in the model_samples directory,
 # and then dump the model to json
 for file in files:
     ### note the xml file can also be directly loaded using ClassDocModel.from_file(path)
     tree = Et.parse(str(file))
     root = tree.getroot()
     class_doc_three = ClassDocModel.from_xml(root)
-    print(class_doc_three.description.text_as_rst())
     file_name = file.stem + '.json'
     file_path = output_folder / file_name
     with open(file_path, "w", encoding="utf-8") as json_file:
