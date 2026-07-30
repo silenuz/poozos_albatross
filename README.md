@@ -1,6 +1,9 @@
 # IMPORTANT
 If any human beings actually visit this repo, I'm aiming for an RC by September.
 
+By mid August, I should have things mostly working, but it will take a while to get docstrings and 
+actual documentation up to date.
+
 ## Update:
 Model merge works AFAICT, just have to add logic, so it does not overwrite any existing text with an empty string.
 

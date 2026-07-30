@@ -298,3 +298,15 @@ class ExtensionDocModel:
 
     def __init__(self) -> None:
         self.class_doc = []
+
+    @classmethod
+    def from_directory(cls, directory_path: Path) -> 'ExtensionDocModel':
+        if isinstance(directory_path, str):
+            directory_path = Path(directory_path)
+        files = list(Path(directory_path).glob('**/*'))
+        extension_docs = cls()
+        for file in files:
+            if file.suffix == '.xml' or file.suffix == '.json':
+                class_doc = ClassDocModel.from_file(file)
+                extension_docs.class_doc.append(class_doc)
+        return extension_docs

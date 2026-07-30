@@ -11,7 +11,9 @@
 import sys
 from pathlib import Path
 
-from spirare.argestes.class_doc import ClassDocModel
+from rich.json import JSON
+
+from spirare.argestes.class_doc import ClassDocModel, ExtensionDocModel
 import xml.etree.ElementTree as Et
 
 # Get the absolute path to this script
@@ -33,6 +35,10 @@ if not output_folder.exists():
 ## can't find annotations anywhere ?
 files = input_folder.glob('*.xml')
 
+#######################################
+#        XML TO JSON
+#######################################
+
 # create model from xml for all xml files in the model_samples directory,
 # and then dump the model to json
 for file in files:
@@ -46,6 +52,10 @@ for file in files:
        json_file.write(class_doc_three.to_json())
 
 files = output_folder.glob('*.json')
+
+#######################################
+#        JSON TO XML
+#######################################
 
 ## create model from json for all the json files created above
 ## dump the model back to xml
@@ -65,6 +75,9 @@ for file in files:
     file_path = output_folder / file_name
     tree.write(str(file_path),encoding="utf-8",short_empty_elements=False,xml_declaration=True)
 
+#######################################
+#        MERGE MODELS
+#######################################
 
 merge_file_incomplete = script_path.parent.parent / 'example' / 'doc_classes_generated' / 'TrafficLight.xml'
 merge_file_new_information = input_folder / 'TrafficLight.xml'
@@ -80,4 +93,19 @@ file_name = 'TrafficLightMergedContent.xml'
 file_path = output_folder / file_name
 tree.write(str(file_path), encoding="utf-8", short_empty_elements=False, xml_declaration=True)
 
-print(new_model.description.text_as_rst())
+#######################################
+#        LOAD DIRECTORY OF DOCS
+#######################################
+# in case anyone is wondering running the following on the class docs directory
+# of the Godot engine takes approximately 7 seconds on my computer (high middle end) an eats about 60MB of mem.
+# While memory usage is fairly moderate it shows the significant bottle-necking impact of getting the type hint
+# to determine how to create each model.  Once I have a RC I will have to do some heavy profiling to see where I can
+# tidy things up
+extension_docs = ExtensionDocModel.from_directory(input_folder)
+
+# loop through models and print description as rst text (Note to_rst is not even alpha yet,
+# just using it here to test general concept, and have something
+# to do in the loop):
+for class_doc in extension_docs.class_doc:
+    print(f'{class_doc.name}:\n')
+    print(class_doc.description.text_as_rst())
