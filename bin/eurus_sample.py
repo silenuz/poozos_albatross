@@ -10,7 +10,6 @@
 """
 import sys
 from pathlib import Path
-import xml.etree.ElementTree as Et
 
 from spirare.eurus import Eurus
 
@@ -31,12 +30,17 @@ if not output_folder.exists():
     output_folder.mkdir()
 
 # set extension directory so that eurus can find the necessary source code to parse for bindings.
+# use the same source code and generated doxygen xml as aerify does, (The example directory)
 eurus = Eurus(extension_example_directory)
+## get list of doxygen class xml files
 files = list(Path(xml_folder).rglob('class*.xml'))
 
+## for each doxygen class XML file, create a model and from the model create a class doc XML file.
 for file in files:
+    # create model using doxygen XML
     class_doc = eurus.load_doxy_class_xml(file)
-    file_name = file.stem + '.xml'
-    file_path = output_folder / file_name
-    class_doc.to_file(file_path)
+    output_file_name = file.stem + '.xml'
+    output_file = output_folder / output_file_name
+    # create gd extension class doc XML from the model
+    class_doc.to_file(output_file)
 
