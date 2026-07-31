@@ -11,8 +11,6 @@
 import sys
 from pathlib import Path
 
-from rich.json import JSON
-
 from spirare.argestes.class_doc import ClassDocModel, ExtensionDocModel
 import xml.etree.ElementTree as Et
 
@@ -103,5 +101,5 @@ extension_docs = ExtensionDocModel.from_directory(input_folder)
 # just using it here to test general concept, and have something
 # to do in the loop):
 for class_doc in extension_docs.class_doc:
-    print(f'{class_doc.name}:\n')
+    print(f'{class_doc.name}:')
     print(class_doc.description.text_as_rst())

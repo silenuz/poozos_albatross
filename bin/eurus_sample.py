@@ -36,8 +36,7 @@ files = list(Path(xml_folder).rglob('class*.xml'))
 
 for file in files:
     class_doc = eurus.load_doxy_class_xml(file)
-    xml_element = class_doc.to_xml_doc()
-    tree = Et.ElementTree(xml_element)
     file_name = file.stem + '.xml'
     file_path = output_folder / file_name
-    tree.write(str(file_path), encoding="utf-8", short_empty_elements=False, xml_declaration=True)
+    class_doc.to_file(file_path)
+
