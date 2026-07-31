@@ -45,11 +45,12 @@ for file in files:
     ### note the xml file can also be directly loaded using ClassDocModel.from_file(path)
     tree = Et.parse(str(file))
     root = tree.getroot()
-    class_doc_three = ClassDocModel.from_xml(root)
+    class_doc = ClassDocModel.from_xml(root)
     file_name = file.stem + '.json'
     file_path = output_folder / file_name
-    with open(file_path, "w", encoding="utf-8") as json_file:
-       json_file.write(class_doc_three.to_json())
+    ### XML and JSON files can be created directly from the model
+    class_doc.to_file(file_path)
+
 
 files = output_folder.glob('*.json')
 
@@ -64,12 +65,8 @@ for file in files:
     ### in this instance the model will be created directly from the file
     ### the same can be done with xml files.
     class_doc = ClassDocModel.from_file(file)
+    ### instead of dumping model directly to a file do it the long way:
     xml_element = class_doc.to_xml_doc()
-    Et.indent(xml_element,"    ")
-    Et.register_namespace('xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-    xsi_namespace = "{http://www.w3.org/2001/XMLSchema-instance}"
-    xml_element.set(xsi_namespace + "noNamespaceSchemaLocation",
-             "https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd")
     tree = Et.ElementTree(xml_element)
     file_name = file.stem + '.xml'
     file_path = output_folder / file_name
@@ -86,18 +83,17 @@ merge_file_new_information = input_folder / 'TrafficLight.xml'
 class_doc_incomplete = ClassDocModel.from_file(merge_file_incomplete)
 class_doc_new_information = ClassDocModel.from_file(merge_file_new_information)
 new_model = class_doc_incomplete.merge(class_doc_new_information)
-xml_element = new_model.to_xml_doc()
-Et.indent(xml_element, "    ")
-tree = Et.ElementTree(xml_element)
 file_name = 'TrafficLightMergedContent.xml'
 file_path = output_folder / file_name
-tree.write(str(file_path), encoding="utf-8", short_empty_elements=False, xml_declaration=True)
+### save xml directly to file
+new_model.to_file(file_path)
+
 
 #######################################
 #        LOAD DIRECTORY OF DOCS
 #######################################
 # in case anyone is wondering running the following on the class docs directory
-# of the Godot engine takes approximately 7 seconds on my computer (high middle end) an eats about 60MB of mem.
+# of the Godot engine takes approximately 7 seconds on my computer (high middle end) and eats about 60MB of mem.
 # While memory usage is fairly moderate it shows the significant bottle-necking impact of getting the type hint
 # to determine how to create each model.  Once I have a RC I will have to do some heavy profiling to see where I can
 # tidy things up

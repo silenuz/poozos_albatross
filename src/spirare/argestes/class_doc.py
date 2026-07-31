@@ -261,7 +261,24 @@ class ClassDocModel(Zucaritas):
         """
         base_element = self._to_xml()
         base_element.tag = 'class'
+        Et.indent(base_element, "    ")
+        Et.register_namespace('xsi', 'http://www.w3.org/2001/XMLSchema-instance')
+        xsi_namespace = "{http://www.w3.org/2001/XMLSchema-instance}"
+        base_element.set(xsi_namespace + "noNamespaceSchemaLocation",
+                        "https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd")
         return base_element
+
+    def to_file(self, file_path: Path) -> None:
+        ext = file_path.suffix
+        if ext == ".xml":
+            xml_element = self.to_xml_doc()
+            tree = Et.ElementTree(xml_element)
+            tree.write(str(file_path), encoding="utf-8", short_empty_elements=False, xml_declaration=True)
+        elif ext == ".json":
+            with open(file_path, "w", encoding="utf-8") as json_file:
+                json_file.write(self.to_json())
+        else:
+            raise TypeError(f'Unsupported file extension: {ext}')
 
     def merge(self, new_content_model: ClassDocModel) -> ClassDocModel:
         """

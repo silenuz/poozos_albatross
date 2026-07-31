@@ -6,7 +6,7 @@
 @Date: 7/27/26
 @File: rossetta
 
-@Author: Phosphor (horuuendillus@gmail.com)
+@Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 import re
 import xml
