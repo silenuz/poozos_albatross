@@ -7,6 +7,10 @@
 @File: eurus_sample
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
+
+Basically does the same as the aerify script only using the doc model instead of XML to XML.  It finds
+all doxygen class xml files in the specified xml_folder, creates a model based on the doxygen xml content and
+then saves the model as a gdextension class doc xml file.
 """
 import sys
 from pathlib import Path
@@ -17,7 +21,6 @@ from spirare.eurus import Eurus
 script_path = Path(__file__).resolve()
 
 main_directory = script_path.parent.parent
-
 # Get the absolute path to the directory containing the python scripts
 spirare_script_dir = main_directory / 'src' / 'spirare'
 sys.path.append(str(spirare_script_dir))
