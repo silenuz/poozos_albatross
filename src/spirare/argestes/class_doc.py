@@ -268,15 +268,31 @@ class ClassDocModel(Zucaritas):
                         "https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd")
         return base_element
 
-    def to_file(self, file_path: Path) -> None:
+    def to_file(self, file_path: Path,merge:bool=True) -> None:
+        """
+        Creates a JSON or XML file from the model instance
+
+        :param file_path: The file path for the file to be created
+        :param merge: if true and the output file already exists then content will be merged, if false the existing
+        file is overwritten
+        :return: None
+        """
+        if isinstance(file_path, str):
+            file_path = Path(file_path)
         ext = file_path.suffix
+        new_doc: ClassDocModel = self
+
+        if merge and file_path.exists():
+            old_doc = ClassDocModel.from_file(file_path)
+            new_doc = old_doc.merge(self)
+
         if ext == ".xml":
-            xml_element = self.to_xml_doc()
+            xml_element = new_doc.to_xml_doc()
             tree = Et.ElementTree(xml_element)
             tree.write(str(file_path), encoding="utf-8", short_empty_elements=False, xml_declaration=True)
         elif ext == ".json":
             with open(file_path, "w", encoding="utf-8") as json_file:
-                json_file.write(self.to_json())
+                json_file.write(new_doc.to_json())
         else:
             raise TypeError(f'Unsupported file extension: {ext}')
 
