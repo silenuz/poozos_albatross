@@ -128,6 +128,7 @@ class Eurus:
         class_model.constants = constants
 
     def __doxy_map_methods(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
+        # todo: test method parameters to method output
         bound_methods = poozo.get_bound_methods()
         methods: DocMethods = DocMethods()
         for bound_method in bound_methods:
@@ -138,6 +139,12 @@ class Eurus:
                     method.return_value = ClassDocReturn(type_value=member_definition.type)
                     description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
                     method.description = Description(text=description)
+                    if member_definition.parameters is not None:
+                        method.parameters = DocParameters()
+                        index = 0
+                        for parameter in member_definition.parameters:
+                            method.parameters.new(name=bound_method.args[index],type_value=parameter.type,index=str(index))
+                            index += 1
                     methods.append(method)
         class_model.methods = methods
 
@@ -159,6 +166,8 @@ class Eurus:
         class_model.members = members
 
     def __doxy_map_signals(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
+
+        # todo: add headlines (warnings and notes) to signal output
         bound_signals = poozo.get_bound_signals()
         if len(bound_signals) < 0:
             return

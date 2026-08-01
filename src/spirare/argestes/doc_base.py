@@ -646,8 +646,8 @@ class DocReturnErrorsList(ModelCollection):
 
     def to_xml_doc(self) -> list[xml.etree.ElementTree.Element]:
         """
-        todo: fix missing implementation for this method
-        :return:
+        Converts this list of returns_error items into a list of returns_error elements
+        :return: a list of returns_error elements
         """
         elements = []
         for return_error in self.data:

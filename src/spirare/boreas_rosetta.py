@@ -122,6 +122,7 @@ class BoreasRosetta:
                 else:
                     parts.append(content + node_tail)
             elif mixed_element_node.tag == "programlisting":
+                # todo: fix code block generation so that proper indentation is preserved
                 insert_index = len(parts) - 1
                 existing_is_godot = True
                 if has_existing_codeblock:
