@@ -27,9 +27,7 @@ from .rossetta import Rosetta
 
 
 class Eurus:
-    lz: LuckyZephyr = None
-    poozo: PoozoNotus = None
-    class_model: ClassDocModel = None
+    # used to convert the doxygen xml text content to bbcode
     rosetta: Rosetta
 
     # track methods that are getters and setters as they should be part of the members output
@@ -45,8 +43,8 @@ class Eurus:
         return result
 
     def load_doxy_class_xml(self, class_xml: Path) -> ClassDocModel:
-        self.lz = LuckyZephyr(class_xml)
-        bind_methods_definition = self.lz.get_definition_by_tag('name', "_bind_methods")
+        lz = LuckyZephyr(class_xml)
+        bind_methods_definition = lz.get_definition_by_tag('name', "_bind_methods")
         if bind_methods_definition is None:
             raise LookupError('Bind Methods not defined')
         else:
@@ -55,36 +53,43 @@ class Eurus:
                 raise FileNotFoundError(f'Unable to locate the code file for _bind_methods, '
                                         f'filename {bind_methods_definition.location.bodyfile}')
             else:
-                self.poozo = PoozoNotus(code_file)
-                self.__doxy_map_class()
-                return self.class_model
+                poozo = PoozoNotus(code_file)
+                return self.__doxy_map_class(lz=lz,poozo=poozo)
+
 
     def __init__(self, source_directory: Path):
+        """
+        Create a Eurus instance from the Path to the Gdextension top level directory
+        :param source_directory:  The Path to the top level of the GDExtension directory.
+        """
         self.source_directory = source_directory
+        """The Path to the top level directory of the GDExtension"""
         self.rosetta = Rosetta()
+        """The Rosetta instance used to convert doxygen XML to BBCode"""
 
     ################################################################################################
     ###                       Doxygen + Source code to model                                     ###
     ################################################################################################
 
-    def __doxy_map_class(self):
+    def __doxy_map_class(self,lz:LuckyZephyr,poozo:PoozoNotus)->ClassDocModel:
         self.property_methods_set.clear()
-        description = self.lz.get_class_detail()
-        brief = self.lz.get_class_brief()
+        description = lz.get_class_detail()
+        brief = lz.get_class_brief()
         description_bbcode = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(description)
         brief_bbcode = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(brief)
         # Note a string passed as brief or detailed description to init should work.  On post init the model will convert
         # the string to the appropriate description object
-        self.class_model = ClassDocModel(brief_description=brief_bbcode, description=description_bbcode, name=self.lz.class_name)
-        self.__doxy_map_properties()
-        self.__doxy_map_methods()
-        self.__doxy_map_integer_constants()
-        self.__doxy_map_enums()
-        self.__doxy_map_signals()
+        class_model = ClassDocModel(brief_description=brief_bbcode, description=description_bbcode, name=lz.class_name)
+        self.__doxy_map_properties(class_model=class_model,lz=lz,poozo=poozo)
+        self.__doxy_map_methods(class_model=class_model,lz=lz,poozo=poozo)
+        self.__doxy_map_integer_constants(class_model=class_model,lz=lz,poozo=poozo)
+        self.__doxy_map_enums(class_model=class_model,lz=lz,poozo=poozo)
+        self.__doxy_map_signals(class_model=class_model,lz=lz,poozo=poozo)
+        return class_model
 
-    def __doxy_map_enums(self):
-        enum_value_names = self.poozo.get_bound_enums()
-        enum_values_doxy = self.lz.get_enumerator_data(enum_value_names)
+    def __doxy_map_enums(self, class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus)->None:
+        enum_value_names = poozo.get_bound_enums()
+        enum_values_doxy = lz.get_enumerator_data(enum_value_names)
         ## map by enumerator
         enum_map: dict[str, list[EnumValueModel]] = {}
         for enum_value_model in enum_values_doxy:
@@ -104,14 +109,14 @@ class Eurus:
                 constant.value = str(index)
                 if enumerator_value.detaileddescription is not None:
                     constant.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(enumerator_value.detaileddescription)
-                self.class_model.constants.append(constant)
+                class_model.constants.append(constant)
                 index += 1
 
-    def __doxy_map_integer_constants(self):
-        bound_constants = self.poozo.get_bound_constants(self.lz.class_name)
+    def __doxy_map_integer_constants(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
+        bound_constants = poozo.get_bound_constants(lz.class_name)
         constants: DocConstants = DocConstants()
         for bound_constant in bound_constants:
-            member_definition = self.lz.get_definition_by_name(bound_constant.p_value)
+            member_definition = lz.get_definition_by_name(bound_constant.p_value)
             # godot docs need a value attribute for the constant
             if member_definition is not None and member_definition.initializer_value is not None:
                 constant = ClassDocConstant(name=bound_constant.p_name)
@@ -120,27 +125,27 @@ class Eurus:
                 constant.value = member_definition.initializer_value
                 constant.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
                 constants.append(constant)
-        self.class_model.constants = constants
+        class_model.constants = constants
 
-    def __doxy_map_methods(self):
-        bound_methods = self.poozo.get_bound_methods()
+    def __doxy_map_methods(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
+        bound_methods = poozo.get_bound_methods()
         methods: DocMethods = DocMethods()
         for bound_method in bound_methods:
             if bound_method.name not in self.property_methods_set:
-                member_definition = self.lz.get_definition_by_qualified(bound_method.qualified_method_name)
+                member_definition = lz.get_definition_by_qualified(bound_method.qualified_method_name)
                 method = ClassDocMethod(name=bound_method.name)
                 if member_definition is not None:
                     method.return_value = ClassDocReturn(type_value=member_definition.type)
                     description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
                     method.description = Description(text=description)
                     methods.append(method)
-        self.class_model.methods = methods
+        class_model.methods = methods
 
-    def __doxy_map_properties(self):
-        bound_properties = self.poozo.get_bound_properties()
+    def __doxy_map_properties(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
+        bound_properties = poozo.get_bound_properties()
         members: DocMembers = DocMembers()
         for bound_property in bound_properties:
-            member_definition = self.lz.get_definition_by_name(bound_property.field)
+            member_definition = lz.get_definition_by_name(bound_property.field)
             member = ClassDocMember(member_definition.name)
             if member_definition.detaileddescription is not None:
                 member.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
@@ -151,14 +156,14 @@ class Eurus:
             self.property_methods_set.add(bound_property.setter)
             members.append(member)
 
-        self.class_model.members = members
+        class_model.members = members
 
-    def __doxy_map_signals(self):
-        bound_signals = self.poozo.get_bound_signals()
+    def __doxy_map_signals(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
+        bound_signals = poozo.get_bound_signals()
         if len(bound_signals) < 0:
             return
         signal_data: dict[str, SignalXRefDataModel] = {}
-        signals_ref = self.lz.get_xref_items('Signal')
+        signals_ref = lz.get_xref_items('Signal')
         for signal_ref in signals_ref:
             data = SignalXRefDataModel.from_reference_item(signal_ref)
             signal_data[data.name] = data
@@ -182,7 +187,7 @@ class Eurus:
                     signal.parameters.append(parameter)
             signals.append(signal)
             if len(signals) >0:
-                self.class_model.signals = signals
+                class_model.signals = signals
 
 
 #########################################################################################################
