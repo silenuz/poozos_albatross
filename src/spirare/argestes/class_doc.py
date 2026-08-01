@@ -195,13 +195,18 @@ class ClassDocModel(Zucaritas):
             return original_dict
 
         for key, value in dict_with_updates.items():
+            #print("KEY:: ", key)
             if key in original_dict:
                 if isinstance(original_dict[key], dict) and isinstance(value, dict):
                     original_dict[key] = self.__merge_dict(original_dict[key], value)
                 elif isinstance(original_dict[key], list) and isinstance(value, list):
                     original_dict[key] = self.__merge_lists(original_dict[key], value)
                 else:
-                    original_dict[key] = value
+                    if key in ('text','description','brief_description'):
+                        if value:
+                            original_dict[key] = value
+                    else:
+                        original_dict[key] = value
             else:
                 original_dict[key] = value
 
@@ -312,6 +317,12 @@ class ClassDocModel(Zucaritas):
 
     @classmethod
     def from_file(cls, file_path: Path) -> 'ClassDocModel':
+        """
+        Creates the model from a JSON or XML file containing the gdextension class documentation
+
+        :param file_path: the path to the file containing the class documentation
+        :return: a new ClassDocModel instance created from the file
+        """
         if isinstance(file_path, str):
             file_path = Path(file_path)
         ext = file_path.suffix
