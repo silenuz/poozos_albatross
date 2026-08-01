@@ -5,14 +5,17 @@ By mid August, I should have things mostly working, but it will take a while to 
 actual documentation up to date.
 
 ## Update:
-Model merge works AFAICT, just have to add logic, so it does not overwrite any existing text with an empty string.
+Model merge works AFAICT.  ```ClassDocModel.to_file(file_path,merge)``` now merges by default, with option to overwrite.
 
-Eurus is now capable of building the model with the same information as the original aerify script.  
+Eurus is now capable of building the model with the same information as the original aerify script, almost I see I forgot headlines
+(Notes and Warnings) this should be remedied Monday.  
 
-This week will be split between getting the model docs up to date, working on the merge capability, and flushing out
+This week will be split between getting the model docs up to date, and flushing out
 Eurus so the model also includes the information missing in the original scripts.
 
 Sample model usage can be found [here](./docs/doc_model.md)
+
+Sample Eurus script [here](bin/eurus_sample.py) , usage docs coming soon.
 
 Same for [PoozosNotus](docs/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
 
@@ -108,6 +111,7 @@ To see an example project using cmake with the scripts to generate Godot class d
 [doxy_demo](https://github.com/silenuz/doxy_demo)
 
 # The Scripts:
+Coming Soon.  
 
 ![Alt script_flowchart](docs/argestes/diagrams/script-flow.svg)
   
