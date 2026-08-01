@@ -15,6 +15,7 @@ then saves the model as a gdextension class doc xml file.
 import sys
 from pathlib import Path
 
+from spirare.argestes import BriefDescription
 from spirare.eurus import Eurus
 
 # Get the absolute path to this script
@@ -45,5 +46,7 @@ for file in files:
     output_file_name = file.stem + '.xml'
     output_file = output_folder / output_file_name
     # create gd extension class doc XML from the model
-    class_doc.to_file(output_file)
+    # if the file exists it will merge by default pass merge = false to overwrite existing class doc
+    # class_doc.to_file(file_path=output_file,merge=False)
+    class_doc.to_file(file_path=output_file)
 
