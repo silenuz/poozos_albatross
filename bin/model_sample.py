@@ -93,8 +93,8 @@ new_model.to_file(file_path)
 #######################################
 #        LOAD DIRECTORY OF DOCS
 #######################################
-# in case anyone is wondering running the following on the class docs directory
-# of the Godot engine takes approximately 7 seconds on my computer (high middle end) and eats about 60MB of mem.
+# in case anyone is wondering, running the following on the class docs directory
+# of the Godot engine (812 classes in my test) takes approximately 7 seconds on my computer (high middle end) and eats about 60MB of mem.
 # While memory usage is fairly moderate it shows the significant bottle-necking impact of getting the type hint
 # to determine how to create each model.  Once I have a RC I will have to do some heavy profiling to see where I can
 # tidy things up
