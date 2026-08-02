@@ -78,8 +78,11 @@ merge_file_incomplete = script_path.parent.parent / 'example' / 'doc_classes_gen
 merge_file_new_information = input_folder / 'TrafficLight.xml'
 
 ### to merge models simply use the models merge method
+### load the aerify generated class with the incomplete information from the example directory
 class_doc_incomplete = ClassDocModel.from_file(merge_file_incomplete)
+### load the version with the extra information used in above samples
 class_doc_new_information = ClassDocModel.from_file(merge_file_new_information)
+### merge the new complete information with the original, which creates a new model
 new_model = class_doc_incomplete.merge(class_doc_new_information)
 file_name = 'TrafficLightMergedContent.xml'
 file_path = output_folder / file_name
