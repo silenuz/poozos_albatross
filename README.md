@@ -7,11 +7,11 @@ actual documentation up to date.
 ## Update:
 Model merge works AFAICT.  ```ClassDocModel.to_file(file_path,merge)``` now merges by default, with option to overwrite.
 
-Eurus is now capable of building the model with the same information as the original aerify script, almost I see I forgot headlines
-(Notes and Warnings) this should be remedied Monday.  
+Eurus is now capable of building the model with the same information as the original aerify script, as well it outputs 
+method parameters, which never made it into the original aerify script (though it will be coming soon).
 
 This week will be split between getting the model docs up to date, and flushing out
-Eurus so the model also includes the information missing in the original scripts.
+Eurus and the class doc models.   
 
 Sample model usage can be found [here](./docs/doc_model.md)
 

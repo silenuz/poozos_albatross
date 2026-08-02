@@ -89,6 +89,8 @@ class Eurus:
 
     def __doxy_map_enums(self, class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus)->None:
         enum_value_names = poozo.get_bound_enums()
+        if len(enum_value_names) <= 0:
+            return
         enum_values_doxy = lz.get_enumerator_data(enum_value_names)
         ## map by enumerator
         enum_map: dict[str, list[EnumValueModel]] = {}
@@ -96,7 +98,8 @@ class Eurus:
             if not enum_value_model.enum in enum_map:
                 enum_map[enum_value_model.enum] = []
             enum_map[enum_value_model.enum].append(enum_value_model)
-
+        if class_model.constants is None:
+            class_model.constants = DocConstants()
         for enumerator in enum_map:
             enumerator_values = enum_map[enumerator]
             index = 0
@@ -114,7 +117,10 @@ class Eurus:
 
     def __doxy_map_integer_constants(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
         bound_constants = poozo.get_bound_constants(lz.class_name)
-        constants: DocConstants = DocConstants()
+        if len(bound_constants) <= 0:
+            return
+        if class_model.constants is None:
+            class_model.constants = DocConstants()
         for bound_constant in bound_constants:
             member_definition = lz.get_definition_by_name(bound_constant.p_value)
             # godot docs need a value attribute for the constant
@@ -124,8 +130,8 @@ class Eurus:
                     constant.enum = bound_constant.p_enum
                 constant.value = member_definition.initializer_value
                 constant.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
-                constants.append(constant)
-        class_model.constants = constants
+                class_model.constants.append(constant)
+
 
     def __doxy_map_methods(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
         # todo: test method parameters to method output
@@ -167,7 +173,7 @@ class Eurus:
 
     def __doxy_map_signals(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
         bound_signals = poozo.get_bound_signals()
-        if len(bound_signals) < 0:
+        if len(bound_signals) <= 0:
             return
         signal_data: dict[str, SignalXRefDataModel] = {}
         signals_ref = lz.get_xref_items('Signal')
