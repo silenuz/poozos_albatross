@@ -47,6 +47,6 @@ for file in files:
     output_file = output_folder / output_file_name
     # create gd extension class doc XML from the model
     # if the file exists it will merge by default pass merge = false to overwrite existing class doc like:
-    # class_doc.to_file(file_path=output_file,merge=False)
+    #class_doc.to_file(file_path=output_file,merge=False)
     class_doc.to_file(file_path=output_file)
 

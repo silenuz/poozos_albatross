@@ -166,8 +166,6 @@ class Eurus:
         class_model.members = members
 
     def __doxy_map_signals(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
-
-        # todo: add headlines (warnings and notes) to signal output
         bound_signals = poozo.get_bound_signals()
         if len(bound_signals) < 0:
             return
@@ -181,7 +179,6 @@ class Eurus:
         for bound_signal in bound_signals:
             signal = ClassDocSignal(bound_signal.name)
             data = signal_data[bound_signal.name]
-            signal.description = Description(self.rosetta.doxygen_rosetta.doxygen_to_bbcode(data.description))
             signal_parameters = bound_signal.argument_info
             if len(signal_parameters) > 0:
                 signal.parameters = DocParameters()
@@ -194,6 +191,20 @@ class Eurus:
                     if specified_type is not None:
                         assign_value(signal_parameter_info,signal_parameter_info.class_name,parameter)
                     signal.parameters.append(parameter)
+            if data is not None:
+                description_parts = []
+                description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(data.description)
+                description_parts.append(description)
+                headlines = lz.get_headlines_for_xrefitem(data.reference_item)
+                bbcode_format_map = self.rosetta.doxygen_rosetta.output_markup_map['bbcode']
+                for headline in headlines:
+                    if headline.kind == 'warning' and headline.content is not None:
+                        warning = self.rosetta.doxygen_rosetta.parse_xml_text(headline.node_content, bbcode_format_map)
+                        description_parts.append('[br][br][b]Warning:[/b]' + ' ' + warning)
+                    elif headline.kind == 'note':
+                        note = self.rosetta.doxygen_rosetta.parse_xml_text(headline.node_content, bbcode_format_map)
+                        description_parts.append('[br][br][b]Note:[/b]' + ' ' + note)
+                signal.description = Description("".join(description_parts))
             signals.append(signal)
             if len(signals) >0:
                 class_model.signals = signals
