@@ -338,10 +338,24 @@ class ClassDocModel(Zucaritas):
             raise TypeError(f'Unsupported file extension: {ext}')
 
 class ExtensionDocModel:
-    class_doc: list[ClassDocModel]
+    class_docs: list[ClassDocModel]
 
     def __init__(self) -> None:
-        self.class_doc = []
+        self.class_docs = []
+
+    def save(self,target_directory:Path,merge:bool=True) -> None:
+        if isinstance(target_directory, str):
+            target_directory = Path(target_directory)
+        if target_directory.parent.exists() and not target_directory.exists():
+            target_directory.mkdir()
+        elif not target_directory.parent.exists():
+            raise FileNotFoundError(f'The directory path {str(target_directory.parent)} does not exist')
+
+        for class_doc in self.class_docs:
+            file_name = class_doc.name + ".xml"
+            file_path = target_directory / file_name
+            class_doc.save(file_path=file_path,merge=merge)
+
 
     @classmethod
     def from_directory(cls, directory_path: Path) -> 'ExtensionDocModel':
@@ -352,5 +366,5 @@ class ExtensionDocModel:
         for file in files:
             if file.suffix == '.xml' or file.suffix == '.json':
                 class_doc = ClassDocModel.from_file(file)
-                extension_docs.class_doc.append(class_doc)
+                extension_docs.class_docs.append(class_doc)
         return extension_docs

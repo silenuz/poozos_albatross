@@ -103,6 +103,6 @@ extension_docs = ExtensionDocModel.from_directory(input_folder)
 # loop through models and print description as rst text (Note to_rst is not even alpha yet,
 # just using it here to test general concept, and have something
 # to do in the loop):
-for class_doc in extension_docs.class_doc:
+for class_doc in extension_docs.class_docs:
     print(f'{class_doc.name}:')
     print(class_doc.brief_description.text_as_rst())

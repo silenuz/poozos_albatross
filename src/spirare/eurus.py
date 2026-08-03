@@ -35,15 +35,15 @@ class Eurus:
     # and not the methods output
     property_methods_set = set()
 
-    def load_doxy_all_xml(self, source_directory: Path) -> ExtensionDocModel:
+    def load_doxy_all(self, xml_directory: Path) -> ExtensionDocModel:
         result = ExtensionDocModel()
-        files = list(source_directory.rglob('class*.xml'))
+        files = list(xml_directory.rglob('class*.xml'))
         for file in files:
-            model = self.load_doxy_class_xml(file)
-            result.class_doc.append(model)
+            model = self.load_doxy(file)
+            result.class_docs.append(model)
         return result
 
-    def load_doxy_class_xml(self, class_xml: Path) -> ClassDocModel:
+    def load_doxy(self, class_xml: Path) -> ClassDocModel:
         lz = LuckyZephyr(class_xml)
         bind_methods_definition = lz.get_definition_by_tag('name', "_bind_methods")
         if bind_methods_definition is None:
@@ -203,7 +203,7 @@ class Eurus:
                 description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(data.description)
                 description_parts.append(description)
                 headlines = lz.get_headlines_for_xrefitem(data.reference_item)
-                bbcode_format_map = self.rosetta.doxygen_rosetta.output_markup_map[DoxygenOutputTypes.BBCode.value]
+                bbcode_format_map = self.rosetta.doxygen_rosetta.output_markup_map[DoxygenOutputTypes.BBCode]
                 for headline in headlines:
                     if headline.kind == 'warning' and headline.content is not None:
                         warning = self.rosetta.doxygen_rosetta.parse_xml_text(headline.node_content, bbcode_format_map)

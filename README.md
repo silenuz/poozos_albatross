@@ -15,7 +15,7 @@ Eurus and the class doc models.
 
 Sample model usage can be found [here](./docs/doc_model.md)
 
-Sample Eurus script [here](bin/eurus_sample.py) , usage docs coming soon.
+Sample Eurus usage [here](docs/eurus_usage.md) 
 
 Same for [PoozosNotus](docs/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
 
