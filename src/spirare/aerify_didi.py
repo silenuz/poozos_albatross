@@ -28,9 +28,9 @@ from pathlib import Path
 from xml.etree import ElementTree as et
 import luckys_zephyr as lz
 from luckys_zephyr import LuckyZephyr, XRefSectionModel
-from poozos_notus import PropertyInfoModel, PropertyModel, MethodInfoModel, IntegerConstantModel, \
-    PoozoNotus, \
-    DMethodModel
+from poozos_notus import PropertyModel, MethodInfoModel, IntegerConstantModel, \
+    PoozoNotus, DMethodModel
+from .boreas_rosetta import DoxygenOutputTypes,BoreasRosetta
 
 xml_input_folder = sys.argv[1]
 dest_folder = sys.argv[2]
@@ -39,7 +39,8 @@ template_methods_path = next(src_folder.rglob("methods.py"), None)
 module_name = "template_methods"
 template_methods_found = False
 methods_module = None
-
+rosetta = BoreasRosetta()
+format_map = rosetta.output_markup_map[DoxygenOutputTypes.BBCode]
 if template_methods_path is not None:
     try:
         # try importing methods.py from the template build process so we can use colored printing
