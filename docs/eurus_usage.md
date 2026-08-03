@@ -46,8 +46,7 @@ files = list(Path(xml_folder).rglob('class*.xml'))
 ## for each doxygen class XML file, create a model and from the model create a class doc XML file.
 for file in files:
     # create model using doxygen XML
-    class_doc = eurus.load_doxy(file)
-    ## misname file so that it is not merged with in the later example.
+    class_doc = eurus.load_doxy(file)    
     output_file_name = class_doc.name + '.xml'
     output_file = output_folder / output_file_name
     # create gd extension class doc XML from the model
