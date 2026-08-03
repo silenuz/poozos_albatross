@@ -273,7 +273,7 @@ class ClassDocModel(Zucaritas):
                         "https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd")
         return base_element
 
-    def to_file(self, file_path: Path,merge:bool=True) -> None:
+    def save(self, file_path: Path, merge:bool=True) -> None:
         """
         Creates a JSON or XML file from the model instance
 
