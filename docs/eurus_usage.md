@@ -20,7 +20,9 @@ XML file.
 
 When using Eurus to build the ExtensionDocModel, a GDExtension's class documentation can
 be generated from the Doxygen XML in three lines of code.  Instantiate Eurus,
-pass the directory path containing the Doxygen XML to Eurus' ```load_doxy_all``` method.
+pass the directory path containing the Doxygen XML to Eurus' ```load_doxy_all``` method,
+and then passing the path to the output directory to the ExtensionDocModel's instance 
+```save``` method.
 
 ```python
 eurus = Eurus('somepath/poozos_albatross/example')
@@ -35,7 +37,11 @@ extension_docs.save(target_directory=output_folder)
 
 When using Eurus to build individual ClassDocModel objects from each Doxygen class XML 
 file, instantiate Eurus, and then get a list of Doxygen XML files, and pass the Doxygen XML
-file path to Eurus' ```load_doxy``` method.
+file path to Eurus' ```load_doxy``` method, and then call the ClassDocModel instance's 
+```save``` method with the output file path.
+
+So when using this method there is control over each output file name, whereas the
+extension doc model always saves the class doc file as ```ClassName.xml```.
 
 ```python
 eurus = Eurus('somepath/poozos_albatross/example')
