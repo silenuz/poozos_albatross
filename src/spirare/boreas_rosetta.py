@@ -14,12 +14,13 @@ from collections import namedtuple
 from xml.etree.ElementTree import ElementTree
 from enum import Enum
 
+MarkupElement = namedtuple('MarkupElement',['open','close'])
 
 class DoxygenOutputTypes(Enum):
     BBCode = "bbcode"
 
 class BoreasRosetta:
-    MarkupElement = namedtuple('MarkupElement',['open','close'])
+
     output_markup_map = dict()
 
     # track xml tags that should not be parsed, such as htmlonly
@@ -30,14 +31,14 @@ class BoreasRosetta:
     element_black_list_set.add("xrefsect")
 
     def __init__(self):
-        bbc_bold = self.MarkupElement(open="[b]", close=r"[/b]")
-        bbc_italic = self.MarkupElement(open="[i]", close=r"[/i]")
-        bbc_underline = self.MarkupElement(open="[u]", close=r"[/u]")
-        bbc_strikethrough = self.MarkupElement(open="[s]", close=r"[/s]")
-        bbc_code = self.MarkupElement(open="[code]", close=r"[/code]")
-        bbc_keyboard = self.MarkupElement(open="[kbd]", close=r"[/kbd]")
-        bbc_linebreak = self.MarkupElement(open="[br]", close=r"")
-        bbc_link = self.MarkupElement(open="[url]", close=r"[/url]")
+        bbc_bold = MarkupElement(open="[b]", close=r"[/b]")
+        bbc_italic = MarkupElement(open="[i]", close=r"[/i]")
+        bbc_underline = MarkupElement(open="[u]", close=r"[/u]")
+        bbc_strikethrough = MarkupElement(open="[s]", close=r"[/s]")
+        bbc_code = MarkupElement(open="[code]", close=r"[/code]")
+        bbc_keyboard = MarkupElement(open="[kbd]", close=r"[/kbd]")
+        bbc_linebreak = MarkupElement(open="[br]", close=r"")
+        bbc_link = MarkupElement(open="[url]", close=r"[/url]")
         self.output_markup_map['bbcode'] = dict()
         self.output_markup_map['bbcode']['bold'] = bbc_bold
         self.output_markup_map['bbcode']['emphasis'] = bbc_italic

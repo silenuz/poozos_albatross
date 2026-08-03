@@ -24,6 +24,7 @@ from .argestes.class_doc import ExtensionDocModel # todo: add this to init impor
 from .luckys_zephyr import LuckyZephyr, EnumValueModel, XRefSectionModel
 from .poozos_notus import PoozoNotus, PropertyInfoModel
 from .rossetta import Rosetta
+from .boreas_rosetta import DoxygenOutputTypes
 
 
 class Eurus:
@@ -202,7 +203,7 @@ class Eurus:
                 description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(data.description)
                 description_parts.append(description)
                 headlines = lz.get_headlines_for_xrefitem(data.reference_item)
-                bbcode_format_map = self.rosetta.doxygen_rosetta.output_markup_map['bbcode']
+                bbcode_format_map = self.rosetta.doxygen_rosetta.output_markup_map[DoxygenOutputTypes.BBCode.value]
                 for headline in headlines:
                     if headline.kind == 'warning' and headline.content is not None:
                         warning = self.rosetta.doxygen_rosetta.parse_xml_text(headline.node_content, bbcode_format_map)

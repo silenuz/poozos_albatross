@@ -47,7 +47,7 @@ for file in files:
     file_name = file.stem + '.json'
     file_path = output_folder / file_name
     ### XML and JSON files can be created directly from the model
-    class_doc.to_file(file_path)
+    class_doc.save(file_path)
 
 
 files = output_folder.glob('*.json')
@@ -87,7 +87,7 @@ new_model = class_doc_incomplete.merge(class_doc_new_information)
 file_name = 'TrafficLightMergedContent.xml'
 file_path = output_folder / file_name
 ### save xml directly to file
-new_model.to_file(file_path)
+new_model.save(file_path)
 
 
 #######################################
@@ -105,4 +105,4 @@ extension_docs = ExtensionDocModel.from_directory(input_folder)
 # to do in the loop):
 for class_doc in extension_docs.class_doc:
     print(f'{class_doc.name}:')
-    print(class_doc.description.text_as_rst())
+    print(class_doc.brief_description.text_as_rst())

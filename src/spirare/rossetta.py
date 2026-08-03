@@ -9,12 +9,10 @@
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 """
 import re
-import xml
-from collections import namedtuple
-from xml.etree.ElementTree import ElementTree
 from enum import Enum
 
 from .boreas_rosetta import BoreasRosetta
+from .boreas_rosetta import MarkupElement
 
 class OutputTypes(Enum):
     RST = "rst"
@@ -37,11 +35,15 @@ class Rosetta(metaclass=SingletonMeta):
         self.__init_rst_mappings()
 
     def __init_rst_mappings(self):
+        bold = MarkupElement(open="**", close="**")
+        italic = MarkupElement(open="*", close="*")
+        code = MarkupElement(open="``", close="``")
+        br = MarkupElement(open="\n", close="")
         values = dict()
-        values['bold'] = '**'
-        values['italic'] = '*'
-        values['code'] = '``'
-        values['br'] = '\n'
+        values['bold'] = bold
+        values['italic'] = italic
+        values['code'] = code
+        values['br'] = br
         self.output_markup_map[OutputTypes.RST.value] = values
 
 
@@ -55,22 +57,22 @@ class Rosetta(metaclass=SingletonMeta):
 
         # Bold
         bold = output_elements['bold']
-        text = re.sub(r'\[b\](.*?)\[/b\]', rf'{bold}\1{bold}', text, flags=re.DOTALL)
+        text = re.sub(r'\[b\](.*?)\[/b\]', rf'{bold.open}\1{bold.close}', text, flags=re.DOTALL)
         # Italic
         italic = output_elements['italic']
-        text = re.sub(r'\[i\](.*?)\[/i\]', rf'{italic}\1{italic}', text, flags=re.DOTALL)
+        text = re.sub(r'\[i\](.*?)\[/i\]', rf'{italic.open}\1{italic.close}', text, flags=re.DOTALL)
         # Inline code
         code = output_elements['code']
-        text = re.sub(r'\[code\](.*?)\[/code\]', rf'{code}\1{code}', text, flags=re.DOTALL)
+        text = re.sub(r'\[code\](.*?)\[/code\]', rf'{code.open}\1{code.close}', text, flags=re.DOTALL)
         # Links: todo: figure this out, probably best to do it like the codeblocks specific to each format?
         text = re.sub(r'\[url=(.*?)\](.*?)\[/url\]', r'`\2 <\1>`_', text, flags=re.DOTALL)
         # Linebreaks
         br = output_elements['br']
-        text = re.sub(r'\[br\]', rf'{br}', text, flags=re.DOTALL)
+        text = re.sub(r'\[br\]', rf'{br.open}', text, flags=re.DOTALL)
 
         # Underline
         if underline_is_bold:
-            text = re.sub(r'\[u\](.*?)\[/u\]', rf'{bold}\1{bold}', text, flags=re.DOTALL)
+            text = re.sub(r'\[u\](.*?)\[/u\]', rf'{bold.open}\1{bold.close}', text, flags=re.DOTALL)
         else:
             text = re.sub(r'\[u\](.*?)\[/u\]', r'\1', text, flags=re.DOTALL)
 
