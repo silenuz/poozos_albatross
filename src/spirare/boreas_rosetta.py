@@ -31,23 +31,19 @@ class BoreasRosetta:
     element_black_list_set.add("xrefsect")
 
     def __init__(self):
-        bbc_bold = MarkupElement(open="[b]", close=r"[/b]")
-        bbc_italic = MarkupElement(open="[i]", close=r"[/i]")
-        bbc_underline = MarkupElement(open="[u]", close=r"[/u]")
-        bbc_strikethrough = MarkupElement(open="[s]", close=r"[/s]")
-        bbc_code = MarkupElement(open="[code]", close=r"[/code]")
-        bbc_keyboard = MarkupElement(open="[kbd]", close=r"[/kbd]")
-        bbc_linebreak = MarkupElement(open="[br]", close=r"")
-        bbc_link = MarkupElement(open="[url]", close=r"[/url]")
-        self.output_markup_map['bbcode'] = dict()
-        self.output_markup_map['bbcode']['bold'] = bbc_bold
-        self.output_markup_map['bbcode']['emphasis'] = bbc_italic
-        self.output_markup_map['bbcode']['underline'] = bbc_underline
-        self.output_markup_map['bbcode']['strike'] = bbc_strikethrough
-        #self.output_markup_map['bbcode']['code'] = bbc_code
-        #self.output_markup_map['bbcode']['keyboard'] = bbc_keyboard
-        self.output_markup_map['bbcode']['linebreak'] = bbc_linebreak
-        #self.output_markup_map['bbcode']['link'] = bbc_link
+        self.output_markup_map[DoxygenOutputTypes.BBCode] = self.__create_bbcode_format_map()
+        
+    def __create_bbcode_format_map(self)->dict:
+        values = dict()
+        values['bold'] = MarkupElement(open="[b]", close=r"[/b]")
+        values['italic'] = MarkupElement(open="[i]", close=r"[/i]")
+        values['underline'] = MarkupElement(open="[u]", close=r"[/u]")
+        values['strikethrough'] = MarkupElement(open="[s]", close=r"[/s]")
+        values['code'] = MarkupElement(open="[code]", close=r"[/code]")
+        values['keyboard'] = MarkupElement(open="[kbd]", close=r"[/kbd]")
+        values['linebreak'] = MarkupElement(open="[br]", close=r"")
+        values['link'] = MarkupElement(open="[url]", close=r"[/url]")
+        return values
 
     def doxygen_to_bbcode(self, element: str | xml.etree.ElementTree.Element):
         if isinstance(element, str):
@@ -57,7 +53,7 @@ class BoreasRosetta:
 
     def get_tag_text(self, element: xml.etree.ElementTree.Element, output_format: DoxygenOutputTypes = DoxygenOutputTypes.BBCode):
         #print("getting tag text")
-        format_map = self.output_markup_map[output_format.value]
+        format_map = self.output_markup_map[output_format]
         parts = []
         if element.text:
             parts.append(element.text.strip())
