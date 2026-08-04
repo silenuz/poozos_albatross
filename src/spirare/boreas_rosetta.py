@@ -52,27 +52,21 @@ class BoreasRosetta:
 
 
     def get_tag_text(self, element: xml.etree.ElementTree.Element, output_format: DoxygenOutputTypes = DoxygenOutputTypes.BBCode):
-        #print("getting tag text")
+
         format_map = self.output_markup_map[output_format]
         parts = []
         if element.text:
             parts.append(element.text.strip())
         para_nodes = element.findall('para')
         count = len(para_nodes)
-        #print("count")
+
         for paragraph_index in range(count):
             paragraph = para_nodes[paragraph_index]
-            empty_element = True
             element_text = self.parse_xml_text(paragraph,format_map)
-            if element_text:
-                parts.append(element_text)
-                empty_element = False
-            if not empty_element and paragraph_index != count - 1:
-                parts.append(format_map['linebreak'].open)
-                parts.append(format_map['linebreak'].open)
+            if element_text.strip():
+                parts.append(element_text.strip())
 
-        text = " ".join(parts)
-
+        text = "[br][br]".join(parts)
         return text
 
     def parse_xml_text(self, element: xml.etree.ElementTree.Element, format_map: dict) -> str:

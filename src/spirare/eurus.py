@@ -137,6 +137,8 @@ class Eurus:
     def __doxy_map_methods(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
         # todo: test method parameters to method output
         bound_methods = poozo.get_bound_methods()
+        if len(bound_methods) <= 0:
+            return
         methods: DocMethods = DocMethods()
         for bound_method in bound_methods:
             if bound_method.name not in self.property_methods_set:
@@ -144,7 +146,7 @@ class Eurus:
                 method = ClassDocMethod(name=bound_method.name)
                 if member_definition is not None:
                     method.return_value = ClassDocReturn(type_value=member_definition.type)
-                    description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
+                    description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.node_detailed_description)
                     method.description = Description(text=description)
                     if member_definition.parameters is not None:
                         method.parameters = DocParameters()
