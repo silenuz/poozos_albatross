@@ -159,6 +159,8 @@ class Eurus:
 
     def __doxy_map_properties(self,class_model:ClassDocModel,lz:LuckyZephyr,poozo:PoozoNotus):
         bound_properties = poozo.get_bound_properties()
+        if len(bound_properties) <= 0:
+            return
         members: DocMembers = DocMembers()
         for bound_property in bound_properties:
             member_definition = lz.get_definition_by_name(bound_property.field)
