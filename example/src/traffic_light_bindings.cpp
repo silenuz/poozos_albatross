@@ -75,8 +75,3 @@ void TrafficLight::_bind_methods()
 
 	GDVIRTUAL_BIND(_get_next_light,"previous_light")
 }
-
-void _bind_methods()
-{
-
-}
