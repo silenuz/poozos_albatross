@@ -3,11 +3,6 @@
 //
 
 #include "traffic_light.h"
-//
-// Created by jordan on 4/1/26.
-//
-
-#include "traffic_light.h"
 
 void TrafficLight::_notification(int p_what)
 {
