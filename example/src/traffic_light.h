@@ -8,6 +8,8 @@
 #define GODOT_CPP_TEMPLATE_TRAFFIC_LIGHT_H
 #pragma once
 
+#include "godot_cpp/core/gdvirtual.gen.inc"
+
 #include <godot_cpp/classes/control.hpp>
 #include <godot_cpp/classes/texture2d.hpp>
 #include <godot_cpp/classes/texture_rect.hpp>
@@ -19,10 +21,12 @@ using namespace godot;
  * the traffic light enumerator is used to track the current state of the light (Go,Caution,Stop)
  */
 enum TrafficLightType {
-	TRAFFIC_LIGHT_GO , /**< Represents a light indicating Go*/
-	TRAFFIC_LIGHT_CAUTION = 500, /**< Represents a light indicating Caution*/
-	TRAFFIC_LIGHT_STOP /**< Represents a light indicating Stop*/
+	TRAFFIC_LIGHT_GO = 5 , /**< Represents a light indicating Go*/
+	TRAFFIC_LIGHT_CAUTION = 50, /**< Represents a light indicating Caution*/
+	TRAFFIC_LIGHT_STOP = 500/**< Represents a light indicating Stop*/
 };
+
+VARIANT_ENUM_CAST(TrafficLightType);
 
 /**
  * @class TrafficLight
@@ -60,6 +64,12 @@ public:
 	 * constructor
 	 */
 	TrafficLight();
+
+	/**
+	 * Function used by the GDVirtual method _get_next_light.  Used to set the next state of the TrafficLight.
+	 */
+	void show_next_light();
+	GDVIRTUAL1RC(TrafficLightType,_get_next_light,TrafficLightType)
 
 	/**
 	 * Sets the @glnk{Texture2D} to be used when the light is in a (Go state
@@ -110,5 +120,5 @@ public:
 	TrafficLightType get_light_type() const;
 };
 
-VARIANT_ENUM_CAST(TrafficLightType);
+
 #endif //GODOT_CPP_TEMPLATE_TRAFFIC_LIGHT_H
