@@ -5,6 +5,9 @@ By mid August, I should have things mostly working, but it will take a while to 
 actual documentation up to date.
 
 ## Update:
+Had an unexpected chance at a vacation and took it.  Will be back to work on this on the 24th.  Still hoping for RC  just after
+Labour day.
+
 Model merge works AFAICT.  ```ClassDocModel.to_file(file_path,merge)``` now merges by default, with option to overwrite.
 
 Eurus is now capable of building the model with the same information as the original aerify script, as well it outputs 
