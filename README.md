@@ -8,7 +8,7 @@ actual documentation up to date.
 Had an unexpected chance at a vacation and took it.  Will be back to work on this on the 24th.  Still hoping for RC  just after
 Labour day.
 
-Model merge works AFAICT.  ```ClassDocModel.to_file(file_path,merge)``` now merges by default, with option to overwrite.
+Model merge works AFAICT.  ```ClassDocModel.save(file_path,merge)``` now merges by default, with option to overwrite.
 
 Eurus is now capable of building the model with the same information as the original aerify script, as well it outputs 
 method parameters, which never made it into the original aerify script (though it will be coming soon).
@@ -27,9 +27,9 @@ Same for [PoozosNotus](docs/poozo.md) which now handles all the source code pars
 “That fact is well established and adds nothing to the plot.”
 
 ## Current Known Bugs:
-Code blocks are currently formatted incorrectly when parsed from Doxygen XML if they contain tabs as someone ignored 
-white space markup when writing the parser for code blocks.  This affects both the original and new version of 
-the scripts as they both use the same parser.  
+Code blocks should now be formatted correctly when parsed from Doxygen XML if they contain tabs when using Eurus.  
+Original script has not yet been switched to the new parser so code blocks are still formatted incorrectly when using the 
+original script.
 
 # Description:
 Some python scripts based off the Godot GDExtension cpp [template](https://github.com/godotengine/godot-cpp-template)
