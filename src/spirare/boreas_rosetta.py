@@ -69,6 +69,17 @@ class BoreasRosetta:
         text = "[br][br]".join(parts)
         return text
 
+    def parse_code_line(self,element: xml.etree.ElementTree.Element):
+        if element.tag == 'sp':
+            yield ' '
+        if element.text:
+            yield element.text
+        for child in element:
+            yield from self.parse_code_line(child)
+            if child.tail:
+                yield child.tail
+
+
     def parse_xml_text(self, element: xml.etree.ElementTree.Element, format_map: dict) -> str:
         #print("Parsing xml text")
         parts = []
@@ -113,7 +124,6 @@ class BoreasRosetta:
                 else:
                     parts.append(content + node_tail)
             elif mixed_element_node.tag == "programlisting":
-                # todo: fix code block generation so that proper indentation is preserved
                 insert_index = len(parts) - 1
                 existing_is_godot = True
                 if has_existing_codeblock:
@@ -136,7 +146,8 @@ class BoreasRosetta:
                 block_text = []
                 line_nodes = mixed_element_node.findall('codeline')
                 for line_node in line_nodes:
-                    line = " ".join(line_node.itertext()) + "\n"
+                    raw_line = "".join(self.parse_code_line(line_node)) + "\n"
+                    line = re.sub(r' {4}', '\t', raw_line)
                     block_text.append(line)
 
                 if has_existing_codeblock:
