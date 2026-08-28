@@ -475,8 +475,8 @@ def set_constants_data(godot_root: et.Element, lucky_data: LuckyZephyr) -> None:
             output_node.set('enum', constant_value.p_enum)
         member_def = lucky_data.get_definition_by_tag('name', constant_value.p_value)
         if member_def is not None:
-            if member_def.node_detailed_description is not None:
-                output_node.text = get_tag_text(member_def.node_detailed_description)
+            if member_def.node_description is not None:
+                output_node.text = get_tag_text(member_def.node_description)
                 output_node.set('value', member_def.initializer_value)
 
 
@@ -495,8 +495,8 @@ def set_enumerator_data(godot_root: et.Element, lz_data: LuckyZephyr) -> None:
     # track index, Godot will pick up the values after the last initialized value based on index.
     index_value = 0
     for enumerator_value in enumerator_value_data:
-        if enumerator_value.node_detailed_description is not None:
-            description = get_tag_text(enumerator_value.node_detailed_description)
+        if enumerator_value.node_description is not None:
+            description = get_tag_text(enumerator_value.node_description)
         output_node = et.SubElement(constants_node, "constant")
         output_node.set("name", enumerator_value.name)
         output_node.set("enum", enumerator_value.enum)
@@ -536,7 +536,7 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
                 output_member_node.set(hint_type[0], hint_type[1])
 
         if member.description is not None:
-            output_member_node.text = get_tag_text(member.node_detailed_description)
+            output_member_node.text = get_tag_text(member.node_description)
 
 
 def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
@@ -553,9 +553,9 @@ def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     for method in method_data:
         output_method_node = et.SubElement(methods_node, "method")
         output_method_node.set("name", method.name)
-        if method.node_detailed_description is not None:
+        if method.node_description is not None:
             output_method_node_description = et.SubElement(output_method_node, "description")
-            output_method_node_description.text = get_tag_text(method.node_detailed_description)
+            output_method_node_description.text = get_tag_text(method.node_description)
         output_method_node_return = et.SubElement(output_method_node, "return")
         output_method_node_return.set("type", method.type)
 

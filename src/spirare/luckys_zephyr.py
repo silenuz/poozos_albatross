@@ -222,6 +222,8 @@ class LuckyZephyr:
         enum_values: List[EnumValueModel] = list()
         param_values: List[ParameterTypeModel] = list()
         param_description_node : et.Element = None
+        return_description_node: et.Element = None
+
         for node in member_node:
             if node.tag == 'detaileddescription':
                 if node.text is not None:
@@ -230,8 +232,13 @@ class LuckyZephyr:
                         param_list_para = self.data_xml_map[paramlist]
                         param_description_node = copy.deepcopy(paramlist)
                         node.remove(param_list_para)
+                    return_node = node.find('.//simplesect[@kind="return"]')
+                    if return_node is not None:
+                        return_node_para = self.data_xml_map[return_node]
+                        return_description_node = copy.deepcopy(return_node)
+                        node.remove(return_node_para)
                     detailed_description = get_inner_markup(node)
-                    args[node.tag] = detailed_description
+                    args['description'] = detailed_description
             elif node.tag == 'briefdescription':
                 if node.text is not None:
                     brief_description = get_inner_markup(node)
@@ -252,6 +259,8 @@ class LuckyZephyr:
             member_definition.enum_values = enum_values
         if len(param_values) > 0:
             member_definition.parameters = param_values
+        if return_description_node is not None:
+            member_definition.returns = ReturnDescriptionModel.from_xml_element(return_description_node)
         return member_definition
 
     def model_param_definition(self,node)->ParameterTypeModel:
@@ -429,7 +438,7 @@ class DetailedDescriptionModel:
     """detailed description of the method or member"""
 
     @property
-    def text_detailed_description(self) -> str:
+    def text_description(self) -> str:
         """
         Get the plain text (removes html markup) from the detaileddescription field
         :return:
@@ -440,7 +449,7 @@ class DetailedDescriptionModel:
             return None
 
     @property
-    def node_detailed_description(self) -> et.Element:
+    def node_description(self) -> et.Element:
         """
         Get the detailed description html and creates a node from it
         :return: The node with the detailed description markup as the text
@@ -623,6 +632,12 @@ class MemberDefinitionLocation:
 
         return cls(**kwargs)
 
+@dataclass(slots=True,kw_only=True)
+class ReturnDescriptionModel(DetailedDescriptionModel):
+    @classmethod
+    def from_xml_element(cls, member_element: et.Element) -> "ReturnDescriptionModel":
+        content = get_inner_markup(member_element)
+        return cls(description=content)
 
 @dataclass(slots=True, kw_only=True)
 class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
@@ -663,7 +678,7 @@ class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
     qualifier: str | None = None
     enum_values: List[EnumValueModel] = field(default_factory=list)
     parameters: List[ParameterTypeModel] = field(default_factory=list)
-    return_value_description: str | None = None
+    returns: ReturnDescriptionModel | None = None
 
     @property
     def initializer_value(self) -> str:
