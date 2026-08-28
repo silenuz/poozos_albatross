@@ -473,14 +473,20 @@ class EnumValueModel(BriefDescriptionModel,DetailedDescriptionModel):
     name: str
     """simple name portion of the method or member name"""
     initializer: str | None = None
-    """for constants and enumerators this indicates the initial value """
+    """for constants and enumerators this indicates the initial value (includes the (equal) = sign. """
     enum: str | None = None
     """Used to store parent enumerator name, not part of doxygen xsd"""
 
     @property
     def initializer_value(self) -> str:
+        """
+        Get the content of the initializer after the equals sign.
+
+        :return: initializer value without the preceding equal sign
+        """
         if self.initializer is not None:
-            return self.initializer.split(" ")[1].strip()
+            result = re.sub(r"= ", "", self.initializer)
+            return result
         else:
             return None
 
@@ -641,7 +647,7 @@ class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
     # detaileddescription: str | None = None
     """detailed description of the method or member"""
     initializer: str | None = None
-    """for constants and enumerators this indicates the initial value """
+    """the initialization value of a variable, macro, or property definition. It captures the = sign and everything after it (within the initialization syntax) in the source code. """
     argsstring: str | None = None
     """If applicable contains the argument string for the member"""
     inbodydescription: str | None = None
@@ -655,8 +661,14 @@ class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
 
     @property
     def initializer_value(self) -> str:
+        """
+        Get the content of the initializer after the equals sign.
+
+        :return: initializer value without the preceding equal sign
+        """
         if self.initializer is not None:
-            return self.initializer.split(" ")[1].strip()
+            result = re.sub(r"= ", "", self.initializer)
+            return result
         else:
             return None
 
