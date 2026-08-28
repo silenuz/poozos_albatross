@@ -70,4 +70,5 @@ member_definition = lz.get_definition_by_qualified('Summator::add')
 print(f'\nadd Method Details:')
 print(f'Brief: {member_definition.text_brief_description}')
 print(f'Description: {member_definition.text_description}')
-print(f'Return Type: {member_definition.type}')
+for parameter in member_definition.parameters:
+    print(f'\tParameter: {parameter.declname}')

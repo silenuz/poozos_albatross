@@ -146,7 +146,7 @@ class Eurus:
                 method = ClassDocMethod(name=bound_method.name)
                 if member_definition is not None:
                     method.return_value = ClassDocReturn(type_value=member_definition.type)
-                    description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.node_detailed_description)
+                    description = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.node_description)
                     method.description = Description(text=description)
                     if member_definition.parameters is not None:
                         method.parameters = DocParameters()
