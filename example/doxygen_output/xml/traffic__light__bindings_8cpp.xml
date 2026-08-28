@@ -35,21 +35,6 @@
         <label>godot_cpp/core/gdvirtual.gen.inc</label>
       </node>
     </incdepgraph>
-    <sectiondef kind="func">
-      <memberdef kind="function" id="traffic__light__bindings_8cpp_1aebcb05f2b63810ba3d5380e1dae11164" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>void</type>
-        <definition>void _bind_methods</definition>
-        <argsstring>()</argsstring>
-        <name>_bind_methods</name>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="src/traffic_light_bindings.cpp" line="79" column="6" bodyfile="src/traffic_light_bindings.cpp" bodystart="79" bodyend="82"/>
-      </memberdef>
-    </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -124,11 +109,6 @@
 <codeline lineno="75"><highlight class="normal"></highlight></codeline>
 <codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>GDVIRTUAL_BIND(_get_next_light,</highlight><highlight class="stringliteral">&quot;previous_light&quot;</highlight><highlight class="normal">)</highlight></codeline>
 <codeline lineno="77"><highlight class="normal">}</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"></highlight></codeline>
-<codeline lineno="79"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>_bind_methods()</highlight></codeline>
-<codeline lineno="80"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="81"><highlight class="normal"></highlight></codeline>
-<codeline lineno="82"><highlight class="normal">}</highlight></codeline>
     </programlisting>
     <location file="src/traffic_light_bindings.cpp"/>
   </compounddef>

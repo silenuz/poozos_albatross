@@ -155,7 +155,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="60" column="6" bodyfile="src/traffic_light.cpp" bodystart="12" bodyend="20"/>
+        <location file="src/traffic_light.h" line="60" column="6" bodyfile="src/traffic_light.cpp" bodystart="7" bodyend="15"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -172,7 +172,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="66" column="1" bodyfile="src/traffic_light.cpp" bodystart="84" bodyend="91"/>
+        <location file="src/traffic_light.h" line="66" column="1" bodyfile="src/traffic_light.cpp" bodystart="79" bodyend="86"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a8e56f74ce53b30ca871ad374fa8b7da6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -187,7 +187,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="71" column="6" bodyfile="src/traffic_light.cpp" bodystart="22" bodyend="28"/>
+        <location file="src/traffic_light.h" line="71" column="6" bodyfile="src/traffic_light.cpp" bodystart="17" bodyend="23"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a5a989d55646c3a11ca807f9b91c42047" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -215,7 +215,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="78" column="6" bodyfile="src/traffic_light.cpp" bodystart="74" bodyend="77"/>
+        <location file="src/traffic_light.h" line="78" column="6" bodyfile="src/traffic_light.cpp" bodystart="69" bodyend="72"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a1373c1648395d3dd59356aa63c8b7e25" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>Ref&lt; Texture2D &gt;</type>
@@ -232,7 +232,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="84" column="5" bodyfile="src/traffic_light.cpp" bodystart="54" bodyend="57"/>
+        <location file="src/traffic_light.h" line="84" column="5" bodyfile="src/traffic_light.cpp" bodystart="49" bodyend="52"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a8f335d111cadd57b3692b535dca13285" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -260,7 +260,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="90" column="6" bodyfile="src/traffic_light.cpp" bodystart="69" bodyend="72"/>
+        <location file="src/traffic_light.h" line="90" column="6" bodyfile="src/traffic_light.cpp" bodystart="64" bodyend="67"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a08cdb36fc55b968affa3c1faafb5d942" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>Ref&lt; Texture2D &gt;</type>
@@ -277,7 +277,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="96" column="5" bodyfile="src/traffic_light.cpp" bodystart="64" bodyend="67"/>
+        <location file="src/traffic_light.h" line="96" column="5" bodyfile="src/traffic_light.cpp" bodystart="59" bodyend="62"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1ae60ebb2e9f1706657b1c6b6e75727bfc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -305,7 +305,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="102" column="6" bodyfile="src/traffic_light.cpp" bodystart="79" bodyend="82"/>
+        <location file="src/traffic_light.h" line="102" column="6" bodyfile="src/traffic_light.cpp" bodystart="74" bodyend="77"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1acd8c1bc62d2b82e0a3173063d599a5fc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>Ref&lt; Texture2D &gt;</type>
@@ -322,7 +322,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="108" column="5" bodyfile="src/traffic_light.cpp" bodystart="59" bodyend="62"/>
+        <location file="src/traffic_light.h" line="108" column="5" bodyfile="src/traffic_light.cpp" bodystart="54" bodyend="57"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a0be77a799e6abd426a80939eeee2215e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -350,7 +350,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="114" column="6" bodyfile="src/traffic_light.cpp" bodystart="34" bodyend="52"/>
+        <location file="src/traffic_light.h" line="114" column="6" bodyfile="src/traffic_light.cpp" bodystart="29" bodyend="47"/>
       </memberdef>
       <memberdef kind="function" id="classTrafficLight_1a846f87f93fae05fa00ba2d014a57ae23" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>TrafficLightType</type>
@@ -367,7 +367,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="src/traffic_light.h" line="120" column="18" bodyfile="src/traffic_light.cpp" bodystart="29" bodyend="32"/>
+        <location file="src/traffic_light.h" line="120" column="18" bodyfile="src/traffic_light.cpp" bodystart="24" bodyend="27"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

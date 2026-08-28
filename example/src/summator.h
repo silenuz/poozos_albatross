@@ -93,6 +93,7 @@ public:
 	 * This function simply adds the integer value of the argument to the current total
 	 *
 	 * @param p_value integer value to be added to the current total
+	 *
 	 * */
 	void add(int p_value);
 

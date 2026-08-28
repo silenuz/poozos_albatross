@@ -14,6 +14,8 @@ Didi: "Tomorrow when I wake or think I do, what shall I say of today?
        That with Estragon my friend, at this place, until the fall of night, I waited for Godot? "
 """
 from __future__ import annotations
+
+import copy
 import re
 from dataclasses import dataclass, fields, field
 from pathlib import Path
@@ -192,8 +194,8 @@ class LuckyZephyr:
         else:
             return None
 
-    @staticmethod
-    def model_enumvalue_definition(enum_value_node: et.Element) -> EnumValueModel:
+
+    def model_enumvalue_definition(self,enum_value_node: et.Element) -> EnumValueModel:
         attributes = EnumValueAttributes.from_xml_element(enum_value_node)
         name = enum_value_node.find('name').text
         enum_value_definition = EnumValueModel(name=name, attributes=attributes)
@@ -210,8 +212,8 @@ class LuckyZephyr:
             enum_value_definition.detaileddescription = content
         return enum_value_definition
 
-    @staticmethod
-    def model_member_definition(member_node: et.Element) -> MemberDefinitionModel:
+
+    def model_member_definition(self,member_node: et.Element) -> MemberDefinitionModel:
         attribute_values = MemberDefinitionAttributes.from_xml_element(member_node)
         name_node = member_node.find("name")
         name = name_node.text
@@ -219,10 +221,15 @@ class LuckyZephyr:
         args['attributes'] = attribute_values
         enum_values: List[EnumValueModel] = list()
         param_values: List[ParameterTypeModel] = list()
-
+        param_description_node : et.Element = None
         for node in member_node:
             if node.tag == 'detaileddescription':
                 if node.text is not None:
+                    paramlist = node.find('.//parameterlist')
+                    if paramlist is not None:
+                        param_list_para = self.data_xml_map[paramlist]
+                        param_description_node = copy.deepcopy(paramlist)
+                        node.remove(param_list_para)
                     detailed_description = get_inner_markup(node)
                     args[node.tag] = detailed_description
             elif node.tag == 'briefdescription':
@@ -232,10 +239,10 @@ class LuckyZephyr:
             elif node.tag == 'location':
                 args[node.tag] = MemberDefinitionLocation.from_xml_element(node)
             elif node.tag == 'enumvalue':
-                enum_value = LuckyZephyr.model_enumvalue_definition(node)
+                enum_value = self.model_enumvalue_definition(node)
                 enum_values.append(enum_value)
             elif node.tag == 'param':
-                parameter = LuckyZephyr.model_param_definition(node)
+                parameter = self.model_param_definition(node)
                 param_values.append(parameter)
             elif node.text is not None:
                 args[node.tag] = node.text
@@ -247,9 +254,7 @@ class LuckyZephyr:
             member_definition.parameters = param_values
         return member_definition
 
-
-    @staticmethod
-    def model_param_definition(node)->ParameterTypeModel:
+    def model_param_definition(self,node)->ParameterTypeModel:
         values = dict()
         for element in node:
             if element.text is not None:

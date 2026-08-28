@@ -50,7 +50,6 @@
     <member refid="traffic__light_8h_1a83c5ec5d8090d2657fff44dce46b68ca" kind="function"><name>VARIANT_ENUM_CAST</name></member>
   </compound>
   <compound refid="traffic__light__bindings_8cpp" kind="file"><name>traffic_light_bindings.cpp</name>
-    <member refid="traffic__light__bindings_8cpp_1aebcb05f2b63810ba3d5380e1dae11164" kind="function"><name>_bind_methods</name></member>
   </compound>
   <compound refid="md_README" kind="page"><name>md_README</name>
   </compound>
