@@ -209,7 +209,7 @@ class LuckyZephyr:
         detail_node = enum_value_node.find('detaileddescription')
         if detail_node is not None and detail_node.text is not None:
             content = get_inner_markup(detail_node)
-            enum_value_definition.detaileddescription = content
+            enum_value_definition.description = content
         return enum_value_definition
 
 
@@ -425,7 +425,7 @@ class DetailedDescriptionModel:
     Model to hold description information, with convenience properties to get the content as an element
     or as plain text without html markup
     """
-    detaileddescription: str = None
+    description: str = None
     """detailed description of the method or member"""
 
     @property
@@ -434,8 +434,8 @@ class DetailedDescriptionModel:
         Get the plain text (removes html markup) from the detaileddescription field
         :return:
         """
-        if self.detaileddescription:
-            return re.sub(r"<.*?>", "", self.detaileddescription)
+        if self.description:
+            return re.sub(r"<.*?>", "", self.description)
         else:
             return None
 
@@ -445,8 +445,8 @@ class DetailedDescriptionModel:
         Get the detailed description html and creates a node from it
         :return: The node with the detailed description markup as the text
         """
-        if self.detaileddescription:
-            return et.fromstring(f"<detaileddescription>{self.detaileddescription}</detaileddescription>")
+        if self.description:
+            return et.fromstring(f"<detaileddescription>{self.description}</detaileddescription>")
         else:
             return None
 
@@ -663,6 +663,7 @@ class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
     qualifier: str | None = None
     enum_values: List[EnumValueModel] = field(default_factory=list)
     parameters: List[ParameterTypeModel] = field(default_factory=list)
+    return_value_description: str | None = None
 
     @property
     def initializer_value(self) -> str:

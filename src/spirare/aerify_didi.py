@@ -535,7 +535,7 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
             else:
                 output_member_node.set(hint_type[0], hint_type[1])
 
-        if member.detaileddescription is not None:
+        if member.description is not None:
             output_member_node.text = get_tag_text(member.node_detailed_description)
 
 

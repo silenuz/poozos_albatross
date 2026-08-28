@@ -111,8 +111,8 @@ class Eurus:
                     initial_value = enumerator_value.initializer_value
                     index = int(initial_value)
                 constant.value = str(index)
-                if enumerator_value.detaileddescription is not None:
-                    constant.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(enumerator_value.detaileddescription)
+                if enumerator_value.description is not None:
+                    constant.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(enumerator_value.description)
                 class_model.constants.append(constant)
                 index += 1
 
@@ -130,7 +130,7 @@ class Eurus:
                 if bound_constant.p_enum:
                     constant.enum = bound_constant.p_enum
                 constant.value = member_definition.initializer_value
-                constant.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
+                constant.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.description)
                 class_model.constants.append(constant)
 
 
@@ -165,8 +165,8 @@ class Eurus:
         for bound_property in bound_properties:
             member_definition = lz.get_definition_by_name(bound_property.field)
             member = ClassDocMember(member_definition.name)
-            if member_definition.detaileddescription is not None:
-                member.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.detaileddescription)
+            if member_definition.description is not None:
+                member.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.description)
             member.getter = bound_property.getter
             member.setter = bound_property.setter
             assign_value(bound_property.info,member_definition.type,member)
