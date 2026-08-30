@@ -194,6 +194,17 @@ class LuckyZephyr:
         else:
             return None
 
+    def map_parameter_descriptions(self, param_values: list[ParameterTypeModel], param_description_node:et.Element):
+        node_map = {child: parent for parent in param_description_node.iter() for child in parent}
+        for value in param_values:
+            param_item = param_description_node.find(f".//parametername[.='{value.declname}']")
+            if param_item is not None:
+                parent_node = node_map[param_item]
+                if parent_node is not None:
+                    list_node = node_map[parent_node]
+                    description_node = list_node.find('parameterdescription')
+                    if description_node is not None:
+                        value.description = get_inner_markup(description_node)
 
     def model_enumvalue_definition(self,enum_value_node: et.Element) -> EnumValueModel:
         attributes = EnumValueAttributes.from_xml_element(enum_value_node)
@@ -258,14 +269,16 @@ class LuckyZephyr:
         if len(enum_values) > 0:
             member_definition.enum_values = enum_values
         if len(param_values) > 0:
+            if param_description_node is not None:
+                self.map_parameter_descriptions(param_values, param_description_node)
             member_definition.parameters = param_values
         if return_description_node is not None:
             member_definition.returns = ReturnDescriptionModel.from_xml_element(return_description_node)
         return member_definition
 
-    def model_param_definition(self,node)->ParameterTypeModel:
+    def model_param_definition(self, parameter_node: et.Element)->ParameterTypeModel:
         values = dict()
-        for element in node:
+        for element in parameter_node:
             if element.text is not None:
                 values[element.tag] = element.text
         model = ParameterTypeModel(**values)
@@ -482,7 +495,7 @@ class EnumValueModel(BriefDescriptionModel,DetailedDescriptionModel):
     """
     Data model for enumvalue tag elements
     """
-    attributes: MemberDefinitionAttributes
+    attributes: EnumValueAttributes
     """Attributes for the tag"""
     name: str
     """simple name portion of the method or member name"""
@@ -702,11 +715,9 @@ class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
         return cls(**filtered_data)
 
 @dataclass(slots=True,kw_only=True)
-class ParameterTypeModel(BriefDescriptionModel):
+class ParameterTypeModel(DetailedDescriptionModel):
     """
     Used to model data from the Doxygen XML ParameterType elements
-    because it inherits DescriptionModel it will have a detailed and brief description field,
-    however only the brief is ever used in a parameter type.
     """
     attributes: str | None = None
     type: str | None = None

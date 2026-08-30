@@ -60,7 +60,7 @@ print(f'Return Type: {member_definition.type}')
 print(f'return description: {member_definition.returns.description}')
 # plain text
 print(f'return description plain text: {member_definition.returns.text_description}')
-# get the file that contains the description
+# get the file that contains the definition
 print(f'File: {member_definition.location.file}')
 # get the file contains the implementation
 print(f'Implementation: {member_definition.location.bodyfile}')
@@ -70,5 +70,10 @@ member_definition = lz.get_definition_by_qualified('Summator::add')
 print(f'\nadd Method Details:')
 print(f'Brief: {member_definition.text_brief_description}')
 print(f'Description: {member_definition.text_description}')
+
+# handling arg string and parameters
+print(f'args: {member_definition.argsstring}')
 for parameter in member_definition.parameters:
     print(f'\tParameter: {parameter.declname}')
+    print(f'\tType: {parameter.type}')
+    print(f'\tDescription: {parameter.description}')
