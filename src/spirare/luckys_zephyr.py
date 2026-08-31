@@ -61,7 +61,17 @@ class LuckyZephyr:
         data_xml_map (dict) : Map of each node to it's parent in the form of a dictionary.
         xml_root_node (et.Element): The root node of the Doxygen XML file
     """
+
+
     def find_node_by_search_value(self,search: str)->et.Element:
+        """
+        Searches the Doxygen class XML for the first node meeting the XPath search criteria.
+        If found it returns the parent node of the found node, else it returns None.
+
+        :param search: the XPath search criteria
+
+        :return:  the parent node of the found node or None
+        """
         node = self.data_node.find(search)
         if node is not None:
             return self.data_xml_map[node]
@@ -72,15 +82,42 @@ class LuckyZephyr:
             else:
                 return None
 
+
     def find_by_child_attr(self, attribute_name: str, value: str) -> et.Element:
+        """
+        Searches the Doxygen class XML for the first node that has a specific attribute value.
+        If found it returns the parent node of the found node, else it returns None.
+
+        :param attribute_name: the name of the attribute to search the value for
+        :param value: the value to look for in the named attribute
+
+        :return: the parent node of the found node or None
+        """
         return self.find_node_by_search_value(f".//*[@{attribute_name}='{value}']")
 
 
     def find_by_child_tag(self, tag: str, value: str) -> et.Element:
+        """
+        Searches the Doxygen class XML for the first node that has a specific tag value.
+        If found it returns the parent node of the found node, else it returns None.
+
+        :param tag: the name of the tag to search for the value in
+        :param value: the value of the tag being searched
+
+        :return: the parent node of the found node or None
+        """
         return self.find_node_by_search_value(f".//{tag}[.='{value}']")
 
 
     def get_class_description(self, node_name: str) -> str:
+        """
+        Gets either the class brief or detailed description depending on which node name is passed as an argument
+        Used by get_class_brief and get_class_detail.
+
+        :param node_name: the name of the node to get the description for (briefdescription or detaileddescription).
+
+        :return: The inner XML content of the requested node
+        """
         node = self.data_node.find(node_name)
         if node.text is not None:
             brief_description = get_inner_markup(node)
@@ -123,7 +160,6 @@ class LuckyZephyr:
                 value_definition = self.get_enumerator_value(enumerator_value)
                 result.append(value_definition)
         return result
-        # return self.get_member_definitions(enumerator_value_name_list,'name')
 
 
     def get_enumerator_value(self, enumerator_value_name: str)->EnumValueModel:
