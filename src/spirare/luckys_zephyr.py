@@ -125,21 +125,24 @@ class LuckyZephyr:
         else:
             return None
 
+
     def get_class_brief(self) -> str:
         """
-        Creates a brief_description tag with the text content from the Doxygen class documentation's briefdescription
-        tag for the class.
-        :return: The brief_description tag that was created so it can be added to the Godot XML output
+        Gets the brief description of the class from the Doxygen class XML
+
+        :return: The inner XML content of the class's briefdescription node
         """
         return self.get_class_description("briefdescription")
 
+
     def get_class_detail(self) -> str:
         """
-        Creates a description tag with the text content from the Doxygen class documentation's detaileddescription
-        tag for the class.
-        :return: The description tag that was created so it can be added to the Godot XML output
+        Gets the detailed description of the class from the Doxygen class XML
+
+        :return: The inner XML content of the class's detaileddescription node
         """
         return self.get_class_description("detaileddescription")
+
 
     def get_enumerator_data(self, enumerator_value_name_list: list) -> list[EnumValueModel]:
         """
@@ -148,13 +151,13 @@ class LuckyZephyr:
         enumerator value name in the reference file XML tree, it then uses the parent child
         XML map to get the enumerator-value element, and then the enumerator element from that.
         Lastly it extracts the enumerator information to return to the calling function.
+
         :param enumerator_value_name_list: List of enumerator value names to search for
-        :return: A list of dictionary item containing the extracted information for each enumerator value
+
+        :return: A list of EnumValueModel containing the extracted information for each enumerator value
         """
         result = []
-
         doxygen_node = self.reference_node
-
         if doxygen_node:
             for enumerator_value in enumerator_value_name_list:
                 value_definition = self.get_enumerator_value(enumerator_value)
@@ -163,6 +166,14 @@ class LuckyZephyr:
 
 
     def get_enumerator_value(self, enumerator_value_name: str)->EnumValueModel:
+        """
+        Finds an enumerator value definition based on the name of the enumerator value
+
+        :param enumerator_value_name: the name of the enumerator value to search for
+
+        :return: an EnumValueModel containing the extracted information
+        todo: check and see if logic error exists here (aug31)
+        """
         enumerator_node_xml_map = self.reference_data_map
         value_node = self.find_by_child_tag('name', enumerator_value_name)
         value_definition = self.model_enumvalue_definition(value_node)
@@ -173,6 +184,10 @@ class LuckyZephyr:
 
 
     def get_include_values(self) -> list[str]:
+        """
+
+        :return:
+        """
         result = []
         xml_reference_node = self.reference_node
         if xml_reference_node:
@@ -189,12 +204,14 @@ class LuckyZephyr:
 
     def get_method_data(self, method_list: set) -> list[MemberDefinitionModel]:
         """
-        Iterates over the list of method names passed as an argument,
+        Iterates over the list of qualified names passed as an argument,
         finding each in the current Doxygen XML tree, it then uses the parent child
-        XML map to get the parent node which is the main method node, it then extracts method information
+        XML map to get the parent node which is the member definition node, it then extracts member information
         to return to the calling function.
-        :param method_list: List of method names to search for
-        :return: A list of dictionary item containing the extracted information for each method
+
+        :param method_list: List of qualified names to search for
+
+        :return: A list of MemoryDefinitionModel containing the extracted information for each member
         """
         return self.get_member_definitions(method_list, 'qualifiedname')
 
@@ -202,14 +219,27 @@ class LuckyZephyr:
         """
         Iterates over the list of member names passed as an argument,
         finding each in the current Doxygen XML tree, it then uses the parent child
-        XML map to get the parent node which is the main member node, it then extracts member information
+        XML map to get the parent node which is the member definition node, it then extracts member information
         to return to the calling function.
+
         :param member_list: List of member names to search for
-        :return: A list of dictionary item containing the extracted information for each member
+
+        :return: A list of MemberDefinitionModel containing the extracted information for each member
         """
         return self.get_member_definitions(member_list, 'name')
 
     def get_member_definitions(self, member_list: list, tag_name: str) -> list[MemberDefinitionModel]:
+        """
+        Iterates over the list of member's values passed as an argument,
+        finding each in the current Doxygen XML tree based on the tag vale specified in the tag_name
+        argument, it then uses the parent child XML map to get the parent node which is the member definition node, it then extracts member information
+        to return to the calling function.
+
+        :param member_list: list of member values to be looked up
+        :param tag_name: the name of the tag that should contain each member value
+
+        :return: A list of MemberDefinitionModel containing the extracted information for each member
+        """
         result = []
         for member in member_list:
             memberdef = self.get_definition_by_tag(tag_name, member)
@@ -218,12 +248,34 @@ class LuckyZephyr:
         return result
 
     def get_definition_by_name(self,name:str)->MemberDefinitionModel:
+        """
+        Get a member definition based on the name of the member
+
+        :param name: the name of the member
+
+        :return: a MemberDefinitionModel containing the extracted information
+        """
         return self.get_definition_by_tag('name', name)
 
     def get_definition_by_qualified(self, qualified_name:str)->MemberDefinitionModel:
+        """
+        Get a member definition based on the qualified name of the member
+
+        :param qualified_name: qualified name of the member
+
+        :return: a MemberDefinitionModel containing the extracted information
+        """
         return self.get_definition_by_tag('qualifiedname', qualified_name)
 
     def get_definition_by_tag(self, tag: str, value: str) -> MemberDefinitionModel:
+        """
+        Get a member definition based on a specific tag value
+
+        :param tag: the name of the tag that contains the search value
+        :param value: the value being searched
+
+        :return: a MemberDefinitionModel containing the extracted information
+        """
         member_def_node = self.find_by_child_tag(tag, value)
         if member_def_node is not None:
             return self.model_member_definition(member_def_node)
