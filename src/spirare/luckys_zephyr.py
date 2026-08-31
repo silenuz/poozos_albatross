@@ -282,7 +282,18 @@ class LuckyZephyr:
         else:
             return None
 
-    def map_parameter_descriptions(self, param_values: list[ParameterTypeModel], param_description_node:et.Element):
+    def map_parameter_descriptions(self, param_values: list[ParameterTypeModel], param_description_node:et.Element)->None:
+        """
+        Doxygen stores the parameter list for relevant members in two places.  Each parameter is a param element of the
+        member node, with the descriptions for each parameter as part of a parameterlist node within the detaileddescritpion
+        node.  This method takes the descriptive content of the parameter values in the parameter list, and writes it to the
+        description value of the matching ParameterTypeModel.
+
+        :param param_values: a list of ParameterTypeModel objects that need a description
+        :param param_description_node: the parameterlist node from the detaileddescritpion node
+
+        :return: None
+        """
         node_map = {child: parent for parent in param_description_node.iter() for child in parent}
         for value in param_values:
             param_item = param_description_node.find(f".//parametername[.='{value.declname}']")
@@ -294,7 +305,13 @@ class LuckyZephyr:
                     if description_node is not None:
                         value.description = get_inner_markup(description_node)
 
+
     def model_enumvalue_definition(self,enum_value_node: et.Element) -> EnumValueModel:
+        """
+
+        :param enum_value_node:
+        :return:
+        """
         attributes = EnumValueAttributes.from_xml_element(enum_value_node)
         name = enum_value_node.find('name').text
         enum_value_definition = EnumValueModel(name=name, attributes=attributes)
