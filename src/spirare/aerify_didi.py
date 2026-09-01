@@ -175,7 +175,7 @@ def catalog_bindings(lz_data: LuckyZephyr) -> bool:
     :param lz_data: instance of LuckyZephyr containing the current Doxygen class XML file
     :return: Success or failure
     """
-    bind_methods_definition = lz_data.get_definition_by_tag('name', "_bind_methods")
+    bind_methods_definition = lz_data.find_by_tag('name', "_bind_methods")
 
     if bind_methods_definition is None:
         print_message("Unable to determine code implementation file for " + lz_data.class_name, MESSAGE_TYPE_WARNING)
@@ -473,7 +473,7 @@ def set_constants_data(godot_root: et.Element, lucky_data: LuckyZephyr) -> None:
         output_node.set("name", constant_value.p_name)
         if constant_value.p_enum:
             output_node.set('enum', constant_value.p_enum)
-        member_def = lucky_data.get_definition_by_tag('name', constant_value.p_value)
+        member_def = lucky_data.find_by_tag('name', constant_value.p_value)
         if member_def is not None:
             if member_def.node_description is not None:
                 output_node.text = get_tag_text(member_def.node_description)
@@ -518,7 +518,7 @@ def set_member_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     :return: None    """
 
     properties = list(bound_properties)
-    member_data = lz_data.get_field_data(properties)
+    member_data = lz_data.get_fields(properties)
     members_node = et.SubElement(godot_root_node, "members")
 
     for member in member_data:
@@ -548,7 +548,7 @@ def set_method_data(godot_root_node: et.Element, lz_data: LuckyZephyr) -> None:
     :return: None
     """
     methods = list(dict.fromkeys(bound_methods_set))
-    method_data = lz_data.get_method_data(methods)
+    method_data = lz_data.get_methods(methods)
     methods_node = et.SubElement(godot_root_node, "methods")
     for method in method_data:
         output_method_node = et.SubElement(methods_node, "method")

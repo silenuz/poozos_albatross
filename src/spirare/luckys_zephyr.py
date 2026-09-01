@@ -69,7 +69,6 @@ class LuckyZephyr:
         If found it returns the parent node of the found node, else it returns None.
 
         :param search: the XPath search criteria
-
         :return:  the parent node of the found node or None
         """
         node = self.data_node.find(search)
@@ -90,7 +89,6 @@ class LuckyZephyr:
 
         :param attribute_name: the name of the attribute to search the value for
         :param value: the value to look for in the named attribute
-
         :return: the parent node of the found node or None
         """
         return self.find_node_by_search_value(f".//*[@{attribute_name}='{value}']")
@@ -103,7 +101,6 @@ class LuckyZephyr:
 
         :param tag: the name of the tag to search for the value in
         :param value: the value of the tag being searched
-
         :return: the parent node of the found node or None
         """
         return self.find_node_by_search_value(f".//{tag}[.='{value}']")
@@ -153,24 +150,22 @@ class LuckyZephyr:
         Lastly it extracts the enumerator information to return to the calling function.
 
         :param enumerator_value_name_list: List of enumerator value names to search for
-
         :return: A list of EnumValueModel containing the extracted information for each enumerator value
         """
         result = []
         doxygen_node = self.reference_node
         if doxygen_node:
             for enumerator_value in enumerator_value_name_list:
-                value_definition = self.get_enumerator_value(enumerator_value)
+                value_definition = self.find_enumerator_value(enumerator_value)
                 result.append(value_definition)
         return result
 
 
-    def get_enumerator_value(self, enumerator_value_name: str)->EnumValueModel:
+    def find_enumerator_value(self, enumerator_value_name: str)->EnumValueModel:
         """
         Finds an enumerator value definition based on the name of the enumerator value
 
         :param enumerator_value_name: the name of the enumerator value to search for
-
         :return: an EnumValueModel containing the extracted information
         todo: check and see if logic error exists here (aug31)
         """
@@ -187,6 +182,7 @@ class LuckyZephyr:
         """
 
         :return:
+        todo: this still has Godot specific code, needs to be removed for RC
         """
         result = []
         xml_reference_node = self.reference_node
@@ -202,7 +198,7 @@ class LuckyZephyr:
         return result
 
 
-    def get_method_data(self, method_list: set) -> list[MemberDefinitionModel]:
+    def get_methods(self, method_list: list) -> list[MemberDefinitionModel]:
         """
         Iterates over the list of qualified names passed as an argument,
         finding each in the current Doxygen XML tree, it then uses the parent child
@@ -210,12 +206,11 @@ class LuckyZephyr:
         to return to the calling function.
 
         :param method_list: List of qualified names to search for
-
         :return: A list of MemoryDefinitionModel containing the extracted information for each member
         """
-        return self.get_member_definitions(method_list, 'qualifiedname')
+        return self.get_definitions(method_list, 'qualifiedname')
 
-    def get_field_data(self, member_list: list) -> list[MemberDefinitionModel]:
+    def get_fields(self, member_list: list) -> list[MemberDefinitionModel]:
         """
         Iterates over the list of member names passed as an argument,
         finding each in the current Doxygen XML tree, it then uses the parent child
@@ -223,12 +218,11 @@ class LuckyZephyr:
         to return to the calling function.
 
         :param member_list: List of member names to search for
-
         :return: A list of MemberDefinitionModel containing the extracted information for each member
         """
-        return self.get_member_definitions(member_list, 'name')
+        return self.get_definitions(member_list, 'name')
 
-    def get_member_definitions(self, member_list: list, tag_name: str) -> list[MemberDefinitionModel]:
+    def get_definitions(self, member_list: list, tag_name: str) -> list[MemberDefinitionModel]:
         """
         Iterates over the list of member's values passed as an argument,
         finding each in the current Doxygen XML tree based on the tag vale specified in the tag_name
@@ -237,43 +231,39 @@ class LuckyZephyr:
 
         :param member_list: list of member values to be looked up
         :param tag_name: the name of the tag that should contain each member value
-
         :return: A list of MemberDefinitionModel containing the extracted information for each member
         """
         result = []
         for member in member_list:
-            memberdef = self.get_definition_by_tag(tag_name, member)
+            memberdef = self.find_by_tag(tag_name, member)
             if memberdef is not None:
                 result.append(memberdef)
         return result
 
-    def get_definition_by_name(self,name:str)->MemberDefinitionModel:
+    def find_by_name(self, name:str)->MemberDefinitionModel:
         """
         Get a member definition based on the name of the member
 
         :param name: the name of the member
-
         :return: a MemberDefinitionModel containing the extracted information
         """
-        return self.get_definition_by_tag('name', name)
+        return self.find_by_tag('name', name)
 
-    def get_definition_by_qualified(self, qualified_name:str)->MemberDefinitionModel:
+    def find_by_qualified(self, qualified_name:str)->MemberDefinitionModel:
         """
         Get a member definition based on the qualified name of the member
 
         :param qualified_name: qualified name of the member
-
         :return: a MemberDefinitionModel containing the extracted information
         """
-        return self.get_definition_by_tag('qualifiedname', qualified_name)
+        return self.find_by_tag('qualifiedname', qualified_name)
 
-    def get_definition_by_tag(self, tag: str, value: str) -> MemberDefinitionModel:
+    def find_by_tag(self, tag: str, value: str) -> MemberDefinitionModel:
         """
         Get a member definition based on a specific tag value
 
         :param tag: the name of the tag that contains the search value
         :param value: the value being searched
-
         :return: a MemberDefinitionModel containing the extracted information
         """
         member_def_node = self.find_by_child_tag(tag, value)
@@ -291,7 +281,6 @@ class LuckyZephyr:
 
         :param param_values: a list of ParameterTypeModel objects that need a description
         :param param_description_node: the parameterlist node from the detaileddescritpion node
-
         :return: None
         """
         node_map = {child: parent for parent in param_description_node.iter() for child in parent}
@@ -428,6 +417,7 @@ class LuckyZephyr:
         is a signal it extracts the information for the signal inserting it in a nested dictionary
         for return to the calling function.  The signal name is the top level key
         :return: a dictionary containing the extracted information for each signal
+        todo: dead code I think, have to check, and remove if needed for RC
         """
         reference_nodes = self.data_node.findall(".//xrefsect/..")
         signal_data = dict()

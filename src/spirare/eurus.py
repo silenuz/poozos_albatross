@@ -45,7 +45,7 @@ class Eurus:
 
     def load_doxy(self, class_xml: Path) -> ClassDocModel:
         lz = LuckyZephyr(class_xml)
-        bind_methods_definition = lz.get_definition_by_tag('name', "_bind_methods")
+        bind_methods_definition = lz.find_by_tag('name', "_bind_methods")
         if bind_methods_definition is None:
             raise LookupError('Bind Methods not defined')
         else:
@@ -123,7 +123,7 @@ class Eurus:
         if class_model.constants is None:
             class_model.constants = DocConstants()
         for bound_constant in bound_constants:
-            member_definition = lz.get_definition_by_name(bound_constant.p_value)
+            member_definition = lz.find_by_name(bound_constant.p_value)
             # godot docs need a value attribute for the constant
             if member_definition is not None and member_definition.initializer_value is not None:
                 constant = ClassDocConstant(name=bound_constant.p_name)
@@ -142,7 +142,7 @@ class Eurus:
         methods: DocMethods = DocMethods()
         for bound_method in bound_methods:
             if bound_method.name not in self.property_methods_set:
-                member_definition = lz.get_definition_by_qualified(bound_method.qualified_method_name)
+                member_definition = lz.find_by_qualified(bound_method.qualified_method_name)
                 method = ClassDocMethod(name=bound_method.name)
                 if member_definition is not None:
                     method.return_value = ClassDocReturn(type_value=member_definition.type)
@@ -163,7 +163,7 @@ class Eurus:
             return
         members: DocMembers = DocMembers()
         for bound_property in bound_properties:
-            member_definition = lz.get_definition_by_name(bound_property.field)
+            member_definition = lz.find_by_name(bound_property.field)
             member = ClassDocMember(member_definition.name)
             if member_definition.description is not None:
                 member.text = self.rosetta.doxygen_rosetta.doxygen_to_bbcode(member_definition.description)
