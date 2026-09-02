@@ -297,9 +297,10 @@ class LuckyZephyr:
 
     def model_enumvalue_definition(self,enum_value_node: et.Element) -> EnumValueModel:
         """
+        Takes an enumvalue element from the Doxygen XML as an argument and creates an EnumValueModel from it
 
-        :param enum_value_node:
-        :return:
+        :param enum_value_node: the element to be modeled
+        :return: an EnumValueModel object
         """
         attributes = EnumValueAttributes.from_xml_element(enum_value_node)
         name = enum_value_node.find('name').text
@@ -319,6 +320,12 @@ class LuckyZephyr:
 
 
     def model_member_definition(self,member_node: et.Element) -> MemberDefinitionModel:
+        """
+        Takes a memberdef Doxygen XML element as an argument and creates an MemberDefinitionModel from it
+
+        :param member_node: the element to be modeled
+        :return: a MemberDefinitionModel object
+        """
         attribute_values = MemberDefinitionAttributes.from_xml_element(member_node)
         name_node = member_node.find("name")
         name = name_node.text
@@ -371,6 +378,12 @@ class LuckyZephyr:
         return member_definition
 
     def model_param_definition(self, parameter_node: et.Element)->ParameterTypeModel:
+        """
+        Takes a param node from a memberdef element of the Doxygen XML and creates a ParameterTypeModel from it
+
+        :param parameter_node:
+        :return:
+        """
         values = dict()
         for element in parameter_node:
             if element.text is not None:

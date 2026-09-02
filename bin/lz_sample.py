@@ -36,23 +36,24 @@ print(f'Detailed Description:\n {detailed_description}')
 # look up constant value 'MINIMUM_REQUIRED_AMOUNT':
 # field can be looked up by name:
 member_definition = lz.find_by_name('MINMUM_REQUIRED_AMOUNT')
-print(f'\nConstant Details:')
+print(f'\nConstant Details: "{member_definition.name}"')
+print(f'Definition Kind: {member_definition.attributes.kind}')
 print(f'Description: {member_definition.description}')
 print(f'Type: {member_definition.type}')
 print(f'Initial Value: {member_definition.initializer_value}')
 
 # fields can also be looked up by qualified name:
 member_definition = lz.find_by_qualified('Summator::DOING_OKAY_AMOUNT')
-print(f'\nConstant Details:')
+print(f'\nConstant Details: "{member_definition.name}"')
+print(f'Definition Kind: {member_definition.attributes.kind}')
 print(f'Description: {member_definition.description}')
 print(f'Type: {member_definition.type}')
 print(f'Initial Value: {member_definition.initializer_value}')
 
 # lookup method by name and print some attributes
 member_definition = lz.find_by_name('get_total')
-print(f'\nget_total Method Details:')
-# print the member definition type:
-print(f'Member Type: {member_definition.attributes.kind}')
+print(f'\nMethod Details: "{member_definition.name}"')
+print(f'Definition Kind: {member_definition.attributes.kind}')
 print(f'Brief: {member_definition.briefdescription}')
 print(f'Description: {member_definition.description}')
 # print return type and description
@@ -68,7 +69,8 @@ print(f'Implementation: {member_definition.location.bodyfile}')
 
 # use qualified name to look up method, but print descriptions in plain text
 member_definition = lz.find_by_qualified('Summator::add')
-print(f'\nadd Method Details:')
+print(f'\nMethod Details: "{member_definition.name}"')
+print(f'Definition Kind: {member_definition.attributes.kind}')
 print(f'Brief: {member_definition.text_brief_description}')
 print(f'Description: {member_definition.text_description}')
 
@@ -93,10 +95,26 @@ print(f'Enum Value Initializer Value: {enum_value.initializer_value}')
 enum_definition = lz.find_by_name(enum_value.enum)
 print(f'\nEnum Details:')
 print(f'Name:{enum_definition.name}')
-print(f'Type: {enum_definition.attributes.kind}')
+print(f'Definition Kind: {enum_definition.attributes.kind}')
 print(f'Description: {enum_definition.description}\nValues:')
 for enum_value in enum_definition.enum_values:
     print(f'\tValue Name: {enum_value.name}')
     print(f'\tIntial Value: {enum_value.initializer_value}')
     print(f'\tDescription: {enum_value.description}\n')
 
+# working with xrefitems
+# to get xrefitems pass the name of the title to the get_xref_items method
+# traffic light signals have no notes or warnings, so switch back to summator
+lz = LuckyZephyr(summator_doxy_class_xml)
+signals = lz.get_xref_items('Signal')
+for signal in signals:
+    print(signal.xrefdescription)
+    ## in the case of signals the custom alias may have notes and or warnings
+    ## use the xrefitem to get the headlines
+    headlines = lz.get_headlines_for_xrefitem(signal)
+    if len(headlines) > 0:
+        print('Headlines:')
+    for headline in headlines:
+        print(f'\tType: {headline.kind}')
+        print(f'\tHeadline: {headline.content}')
+    print('\n')
