@@ -407,6 +407,12 @@ class LuckyZephyr:
 
 
     def get_xref_items(self,title: str)->list[XRefSectionModel]:
+        """
+        Gets all the xrefsections that match the title passed as an argument
+
+        :param title:  The heading or list title assigned to the cross-reference type to be retrieved.
+        :return: a list of XRefSectionModel objects
+        """
         reference_nodes = self.data_node.findall(f".//xrefsect/[xreftitle='{title}']")
         result: list[XRefSectionModel] = []
         for reference_node in reference_nodes:
@@ -415,6 +421,13 @@ class LuckyZephyr:
         return result
 
     def get_headlines_for_xrefitem(self,refitem: XRefSectionModel)->list[SimpleSectionModel]:
+        """
+        This method is specifically for use where a xrefitem uses a parblock container (like the custom Signal alias).
+        It can be used to get the parblock content that is not part of the xrefitem itself.
+
+        :param refitem: The reference item to get the outer paragraphs for
+        :return: a list of SimpleSectionModel objects
+        """
         result: list[SimpleSectionModel] = []
         parent_node = self.find_by_child_attr('id',refitem.id)
         if parent_node is not None and parent_node.tag == 'para':
