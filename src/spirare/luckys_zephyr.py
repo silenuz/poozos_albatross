@@ -788,6 +788,7 @@ class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
       <xsd:element name="referencedby" type="referenceType" minOccurs="0" maxOccurs="unbounded" />
     """
     attributes: MemberDefinitionAttributes
+    """Doxygen element attributes for this member definition"""
     name: str
     """simple name portion of the method or member name"""
     qualifiedname: str | None = None
@@ -805,14 +806,23 @@ class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
     argsstring: str | None = None
     """If applicable contains the argument string for the member"""
     inbodydescription: str | None = None
+    """Houses any documentation or comment text blocks found physically embedded inside the body implementation of a function or method block."""
     location: MemberDefinitionLocation | None = None
+    """ File path, line start, line end, and column information where the symbol is defined."""
     read: str | None = None
+    """ Used for language properties (like C# properties) to identify the specific getter implementation or evaluation context."""
     write: str | None = None
+    """ Used for language properties (like C# properties) to identify the specific setter implementation or evaluation context."""
     bitfield: str | None = None
+    """The bit-width allocation layout expression string if the variable is declared as a C/C++ struct or class bit-field."""
     qualifier: str | None = None
+    """Contains custom string labels or modifiers applied to the code member via the \qualifier command. """
     enum_values: List[EnumValueModel] = field(default_factory=list)
+    """if the member definition is an enumerator this list will contain the list of enumerator values"""
     parameters: List[ParameterTypeModel] = field(default_factory=list)
+    """if the member has parameters this this list will contain a list of parameter values"""
     returns: ReturnDescriptionModel | None = None
+    """if applicable a description of the return value for the member"""
 
     @property
     def initializer_value(self) -> str:
