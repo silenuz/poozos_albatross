@@ -24,6 +24,10 @@ summator_doxy_class_xml =  script_path.parent.parent / 'example' / 'doxygen_outp
 traffic_doxy_class_xml =  script_path.parent.parent / 'example' / 'doxygen_output' / 'xml' / 'classTrafficLight.xml'
 lz = LuckyZephyr(summator_doxy_class_xml)
 
+############################################
+###          Using Models                ###
+############################################
+
 # get and print class brief
 brief_description = lz.get_class_brief()
 print(f'Brief Description:\n {brief_description}')
@@ -118,3 +122,8 @@ for signal in signals:
         print(f'\tType: {headline.kind}')
         print(f'\tHeadline: {headline.content}')
     print('\n')
+
+############################################
+###          Using XM Nodes              ###
+############################################
+
