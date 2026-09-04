@@ -1,26 +1,18 @@
 # IMPORTANT
-If any human beings actually visit this repo, I'm aiming for an RC by September.
+If any human beings actually visit this repo, I'm aiming for an RC in September.
 
-By mid August, I should have things mostly working, but it will take a while to get docstrings and 
-actual documentation up to date.
 
 ## Update:
-Had an unexpected chance at a vacation and took it.  Will be back to work on this on the 24th.  Still hoping for RC  just after
-Labour day.
+sept 04/2026 - I'm a little behind schedule.  
 
-Model merge works AFAICT.  ```ClassDocModel.save(file_path,merge)``` now merges by default, with option to overwrite.
+Docstrings in LZ where in worse shape than I remembered, however now almost everything in LZ has a docstring,
+and while there is still no basic usage doc for LZ there is a script in bin [lz_sample.py](bin/lz_sample.py)
+that has the start of the sample code that will be part of the usage doc descriptions.
 
 Eurus is now capable of building the model with the same information as the original aerify script, as well it outputs 
 method parameters, which never made it into the original aerify script (though it will be coming soon).
 
-This week will be split between getting the model docs up to date, and flushing out
-Eurus and the class doc models.   
-
-Sample model usage can be found [here](./docs/doc_model.md)
-
 Sample Eurus usage [here](docs/eurus_usage.md) 
-
-Same for [PoozosNotus](docs/poozo.md) which now handles all the source code parsing.  At this point it is almost finished but still has some quirks.
 
 “Idiot.”
 
@@ -56,10 +48,6 @@ If this happens, instructions to merge missing elements can be found [here](docs
 
 Processing of code blocks in description fields almost working (see bug above), see [Codeblocks](#codeblocks).
 
-### Eurus:
-
-New version that uses the model instead of raw XML.  More soon.
-
 ## Contents:
 
 This repository contains the following:
@@ -82,6 +70,8 @@ This repository contains the following:
 ### spirare.argestes
 
 This package contains the documentation model and related classes for the functionality of the [model](./docs/doc_model.md).
+
+Sample model usage can be found [here](./docs/doc_model.md)
 
 ### bin directory
 
@@ -114,7 +104,14 @@ To see an example project using cmake with the scripts to generate Godot class d
 [doxy_demo](https://github.com/silenuz/doxy_demo)
 
 # The Scripts:
-Coming Soon.  
+
+The two main ways to generate Godot class documentation, are using Eurus or using aerify 
+
+Alternately LuckZephyr and PozzoNotus can be combined to create custom output.  Both Eurus and aerify take the same approach
+to parsing the Doxygen generated XML as they both use LuckyZephyr.  Both also use PoozoNotus to parse the source code
+to find the Godot bindings.
+
+The following diagram illustrates this approach:
 
 ![Alt script_flowchart](docs/argestes/diagrams/script-flow.svg)
   
