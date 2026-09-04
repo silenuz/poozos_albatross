@@ -62,8 +62,40 @@ class LuckyZephyr:
         xml_root_node (et.Element): The root node of the Doxygen XML file
     """
 
+    def find_by_query(self,search_criteria: str) -> et.Element| None:
+        """
+        Searches the Doxygen class XML for the first node meeting the XPath search criteria.
+        If found it returns the found node, else it returns None.
 
-    def find_node_by_search_value(self,search: str)->et.Element:
+        :param search_criteria: the XPath search criteria
+        :return:  the found node or None
+        """
+        node = self.data_node.find(search_criteria)
+        return node
+
+    def find_by_attr(self, attribute_name: str, value: str) -> et.Element|None:
+        """
+        Searches the Doxygen class XML for the first node that has a specific attribute value.
+        If found it returns the found node, else it returns None.
+
+        :param attribute_name: the name of the attribute to search the value for
+        :param value: the value to look for in the named attribute
+        :return:the found node or None
+        """
+        return self.find_by_query(f".//*[@{attribute_name}='{value}']")
+
+    def find_by_tag(self,tag_name: str, value: str) -> et.Element| None:
+        """
+        Searches the Doxygen class XML for the first node that has a specific tag value.
+        If found it returns the node, else it returns None.
+
+        :param tag_name: the name of the tag to search for the value in
+        :param value: the value of the tag being searched
+        :return: the found node or None
+        """
+        return self.find_by_query(f".//{tag_name}[.='{value}']")
+
+    def find_by_child_query(self, search: str)-> et.Element | None:
         """
         Searches the Doxygen class XML for the first node meeting the XPath search criteria.
         If found it returns the parent node of the found node, else it returns None.
@@ -82,7 +114,7 @@ class LuckyZephyr:
                 return None
 
 
-    def find_by_child_attr(self, attribute_name: str, value: str) -> et.Element:
+    def find_by_child_attr(self, attribute_name: str, value: str) -> et.Element|None:
         """
         Searches the Doxygen class XML for the first node that has a specific attribute value.
         If found it returns the parent node of the found node, else it returns None.
@@ -91,10 +123,10 @@ class LuckyZephyr:
         :param value: the value to look for in the named attribute
         :return: the parent node of the found node or None
         """
-        return self.find_node_by_search_value(f".//*[@{attribute_name}='{value}']")
+        return self.find_by_child_query(f".//*[@{attribute_name}='{value}']")
 
 
-    def find_by_child_tag(self, tag: str, value: str) -> et.Element:
+    def find_by_child_tag(self, tag: str, value: str) -> et.Element|None:
         """
         Searches the Doxygen class XML for the first node that has a specific tag value.
         If found it returns the parent node of the found node, else it returns None.
@@ -103,7 +135,7 @@ class LuckyZephyr:
         :param value: the value of the tag being searched
         :return: the parent node of the found node or None
         """
-        return self.find_node_by_search_value(f".//{tag}[.='{value}']")
+        return self.find_by_child_query(f".//{tag}[.='{value}']")
 
 
     def get_class_description(self, node_name: str) -> str:
@@ -848,15 +880,24 @@ class MemberDefinitionModel(BriefDescriptionModel,DetailedDescriptionModel):
 @dataclass(slots=True,kw_only=True)
 class ParameterTypeModel(DetailedDescriptionModel):
     """
-    Used to model data from the Doxygen XML ParameterType elements
+    Used to model data from the Doxygen XML param elements of the memberdef element
+    todo: make type an object so it can store refid child element if present (If the type references a known class or struct documented by Doxygen, it will include a <ref> child element
+    with a refid attribute pointing to that specific object's documentation.)
     """
     attributes: str | None = None
+    """ Captures any language-specific parameter attributes or modifiers, such as the keyword restrict in C or custom macro qualifiers"""
     type: str | None = None
+    """ Contains the data type of the parameter (e.g., int, const char *). """
     declname: str | None = None
+    """ The parameter's name as found in the declaration (e.g., in a header .h file)."""
     defname: str | None = None
+    """ The parameter's name as found in the definition (e.g., in a source .cpp file). This may differ or be identical to <declname>"""
     array: str | None = None
+    """If the parameter is a fixed-size or C-style array, this element captures the array dimensions (e.g., [3] or [])."""
     defval: str | None = None
+    """Contains the default value assigned to the parameter if it is an optional parameter (e.g., = 0 or = nullptr)."""
     typeconstraint: str | None = None
+    """It captures language-specific restrictions, interfaces, or constraints enforced on generic parameters or template types."""
 
 @dataclass(slots=True,kw_only=True)
 class SimpleSectionModel:
