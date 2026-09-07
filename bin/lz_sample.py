@@ -71,12 +71,15 @@ print(f'File: {member_definition.location.file}')
 # get the file contains the implementation
 print(f'Implementation: {member_definition.location.bodyfile}')
 
-# use qualified name to look up method, but print descriptions in plain text
+# use qualified name to look up method and print some attributes:
 member_definition = lz.find_by_qualified('Summator::add')
 print(f'\nMethod Details: "{member_definition.name}"')
-print(f'Definition Kind: {member_definition.attributes.kind}')
-print(f'Brief: {member_definition.text_brief_description}')
-print(f'Description: {member_definition.text_description}')
+print(f'Kind: {member_definition.attributes.kind}')
+print(f'Protection: {member_definition.attributes.prot}')
+print(f'ID: {member_definition.attributes.id}')
+# plain text
+print(f'Brief (Plain): {member_definition.text_brief_description}')
+print(f'Description (Plain): {member_definition.text_description}')
 
 # handling arg string and parameters
 print(f'args: {member_definition.argsstring}')
