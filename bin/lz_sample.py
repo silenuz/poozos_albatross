@@ -10,6 +10,9 @@
 """
 import sys
 from pathlib import Path
+from xml.etree import ElementTree as Et
+from xml.etree.ElementTree import indent
+
 from spirare.luckys_zephyr import LuckyZephyr
 
 # Get the absolute path to this script
@@ -129,4 +132,25 @@ for signal in signals:
 ############################################
 ###          XML Nodes                   ###
 ############################################
+
+## Look up member definition based on child tag value
+xml_element:Et.Element = lz.node_from_child_tag('name','MINMUM_REQUIRED_AMOUNT')
+Et.indent(xml_element,"    ")
+print(Et.tostring(xml_element,encoding="unicode"))
+
+## look up memberdef element based on a unique attribute like id
+## in this case lookup the reset method:
+xml_element:Et.Element = lz.node_from_attr('id','classSummator_1a6e8d85e71fc296888b14ca72fa5fe4de')
+Et.indent(xml_element,"    ")
+print(Et.tostring(xml_element,encoding="unicode"))
+# if the returned element is a memberdef element it can be modeled when necessary:
+member_definition = lz.model_member_definition(xml_element)
+print(f'\nMember Name: "{member_definition.name}"\n')
+
+## elements can also be searched by common attributes
+## for example to get all functions from the Doxygen XML
+methods_list = lz.search_by_attribute('kind','function')
+for method in methods_list:
+    definition = lz.model_member_definition(method)
+    print(f'\tMethod Name: {definition.name}')
 

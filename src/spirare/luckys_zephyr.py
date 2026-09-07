@@ -62,7 +62,7 @@ class LuckyZephyr:
         xml_root_node (et.Element): The root node of the Doxygen XML file
     """
 
-    def search_by_query(self, search_criteria: str) -> et.Element | None:
+    def node_from_query(self, search_criteria: str) -> et.Element | None:
         """
         Searches the Doxygen class XML for the first node meeting the XPath search criteria.
         If found it returns the found node, else it returns None.
@@ -73,7 +73,7 @@ class LuckyZephyr:
         node = self.data_node.find(search_criteria)
         return node
 
-    def search_by_attr(self, attribute_name: str, value: str) -> et.Element|None:
+    def node_from_attr(self, attribute_name: str, value: str) -> et.Element | None:
         """
         Searches the Doxygen class XML for the first node that has a specific attribute value.
         If found it returns the found node, else it returns None.
@@ -82,9 +82,9 @@ class LuckyZephyr:
         :param value: the value to look for in the named attribute
         :return:the found node or None
         """
-        return self.search_by_query(f".//*[@{attribute_name}='{value}']")
+        return self.node_from_query(f".//*[@{attribute_name}='{value}']")
 
-    def search_by_tag(self,tag_name: str, value: str) -> et.Element| None:
+    def node_from_tag(self, tag_name: str, value: str) -> et.Element | None:
         """
         Searches the Doxygen class XML for the first node that has a specific tag value.
         If found it returns the node, else it returns None.
@@ -93,9 +93,9 @@ class LuckyZephyr:
         :param value: the value of the tag being searched
         :return: the found node or None
         """
-        return self.search_by_query(f".//{tag_name}[.='{value}']")
+        return self.node_from_query(f".//{tag_name}[.='{value}']")
 
-    def search_by_child_query(self, search: str)-> et.Element | None:
+    def node_from_child_query(self, search: str)-> et.Element | None:
         """
         Searches the Doxygen class XML for the first node meeting the XPath search criteria.
         If found it returns the parent node of the found node, else it returns None.
@@ -114,7 +114,7 @@ class LuckyZephyr:
                 return None
 
 
-    def search_by_child_attr(self, attribute_name: str, value: str) -> et.Element | None:
+    def node_from__child_attr(self, attribute_name: str, value: str) -> et.Element | None:
         """
         Searches the Doxygen class XML for the first node that has a specific attribute value.
         If found it returns the parent node of the found node, else it returns None.
@@ -123,10 +123,10 @@ class LuckyZephyr:
         :param value: the value to look for in the named attribute
         :return: the parent node of the found node or None
         """
-        return self.search_by_child_query(f".//*[@{attribute_name}='{value}']")
+        return self.node_from_child_query(f".//*[@{attribute_name}='{value}']")
 
 
-    def search_by_child_tag(self, tag: str, value: str) -> et.Element | None:
+    def node_from_child_tag(self, tag: str, value: str) -> et.Element | None:
         """
         Searches the Doxygen class XML for the first node that has a specific tag value.
         If found it returns the parent node of the found node, else it returns None.
@@ -135,8 +135,13 @@ class LuckyZephyr:
         :param value: the value of the tag being searched
         :return: the parent node of the found node or None
         """
-        return self.search_by_child_query(f".//{tag}[.='{value}']")
+        return self.node_from_child_query(f".//{tag}[.='{value}']")
 
+    def search_by_attribute(self,attribute_name: str, value: str) -> et.Element | None:
+        return self.search_by_criteria(f".//*[@{attribute_name}='{value}']")
+
+    def search_by_criteria(self,criteria:str) -> list[et.Element] | None:
+        return self.data_node.findall(criteria)
 
     def get_class_description(self, node_name: str) -> str:
         """
@@ -202,7 +207,7 @@ class LuckyZephyr:
         todo: check and see if logic error exists here (aug31)
         """
         enumerator_node_xml_map = self.reference_data_map
-        value_node = self.search_by_child_tag('name', enumerator_value_name)
+        value_node = self.node_from_child_tag('name', enumerator_value_name)
         value_definition = self.model_enumvalue_definition(value_node)
         enumerator_node = enumerator_node_xml_map[value_node]
         name_node = enumerator_node.find('name')
@@ -298,7 +303,7 @@ class LuckyZephyr:
         :param value: the value being searched
         :return: a MemberDefinitionModel containing the extracted information
         """
-        member_def_node = self.search_by_child_tag(tag, value)
+        member_def_node = self.node_from_child_tag(tag, value)
         if member_def_node is not None:
             return self.model_member_definition(member_def_node)
         else:
@@ -461,7 +466,7 @@ class LuckyZephyr:
         :return: a list of SimpleSectionModel objects
         """
         result: list[SimpleSectionModel] = []
-        parent_node = self.search_by_child_attr('id', refitem.id)
+        parent_node = self.node_from__child_attr('id', refitem.id)
         if parent_node is not None and parent_node.tag == 'para':
             headline_nodes = parent_node.findall("simplesect")
             for headline_node in headline_nodes:
