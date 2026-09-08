@@ -6,14 +6,7 @@ To query variables or methods, on can use the find methods in the LuckyZephyr cl
 child elements and return the model of the parent node.  To help clarify this concept, here's the sample source code from the [Summator.h](../example/src/summator.h) file,
 and the generated [XML](../example/doxygen_output/xml/classSummator.xml) for the first variable defined in the source code.
 
-<table>
-<tr>
-<td><b>Summator Fields</b></td>
-<td><b>Doxygen XML</b></td>
-</tr>
-<tr>
-<td>
-
+Summator Code:
 ```cpp
 /** The minimum total that is required to meet expenses */
 static constexpr int MINMUM_REQUIRED_AMOUNT = 50;
@@ -23,8 +16,7 @@ static const int DOING_OKAY_AMOUNT = 100;
 static const int DOING_NOTHING_AMOUNT = 200;
 ```
 
-</td>
-<td>
+Generated XML:
 
 ```xml
       <memberdef kind="variable" id="classSummator_1aa29ddd006b86446f127b8351be81a38b" prot="public" static="yes" constexpr="yes" mutable="no">
@@ -44,10 +36,6 @@ static const int DOING_NOTHING_AMOUNT = 200;
         <location file="src/summator.h" line="84" column="22" bodyfile="src/summator.h" bodystart="84" bodyend="-1"/>
       </memberdef>
 ```
-
-</td>
-</tr>
-</table>
 
 For example if one wished to retrieve the model for the memberdef element of ```MINMUM_REQUIRED_AMOUNT```, based on the name
 value:
@@ -75,15 +63,15 @@ Initial Value: 50
 
 ## Methods
 
+Like variables methods can be found using the name, or qualified name, of the method.  
+
 ### Method Return Value
 
-<table>
-<tr>
-<td><b>Summator Method</b></td>
-<td><b>Doxygen XML</b></td>
-</tr>
-<tr>
-<td>
+In many instances it may be desirable to have information about a methods's return value.
+To demonstrate this concept, in the next example the method name is used to retrieve data about the ```get_total()``` method in the Summator class.
+Some of the attributes are then printed out, including the return value type and description of the return value.
+
+Summator Source:
 
 ```cpp
 	/**
@@ -97,8 +85,7 @@ Initial Value: 50
 	int get_total() const;
 ```
 
-</td>
-<td>
+Generated XML:
 
 ```xml
       <memberdef kind="function" id="classSummator_1a1c3b1b74ac163588a654900ec500685c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
@@ -123,10 +110,6 @@ Initial Value: 50
         <location file="src/summator.h" line="115" column="5" bodyfile="src/summator.cpp" bodystart="38" bodyend="40"/>
       </memberdef>
 ```
-
-</td>
-</tr>
-</table>
 
 Sample:
 
@@ -165,13 +148,12 @@ Implementation: src/summator.cpp
 
 ### Method Args
 
-<table>
-<tr>
-<td><b>Summator Method</b></td>
-<td><b>Doxygen XML</b></td>
-</tr>
-<tr>
-<td>
+In many instances it may be desirable to have information about a methods's parameters.
+To demonstrate this concept, in the next example the method's qualified name is used to retrieve data about 
+the ```add()``` method in the Summator class.
+Some of the attributes are then printed out, including parameter types and descriptions.
+
+Summator Code:
 
 ```cpp
 	/**
@@ -185,8 +167,7 @@ Implementation: src/summator.cpp
 	void add(int p_value);
 ```
 
-</td>
-<td>
+Generated XML:
 
 ```xml
 <memberdef kind="function" id="classSummator_1a6294425c68c6937d4de8cc2334069b00" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
@@ -220,10 +201,6 @@ Implementation: src/summator.cpp
     <location file="src/summator.h" line="98" column="6" bodyfile="src/summator.cpp" bodystart="29" bodyend="32"/>
 </memberdef>
 ```
-
-</td>
-</tr>
-</table>
 
 Sample:
 
