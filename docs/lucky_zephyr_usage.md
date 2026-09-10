@@ -1,13 +1,23 @@
+# LuckyZephyr Usage:
+
 The LuckyZephyr class can be used as a helper in querying the Doxygen XML for information regarding the project's source code.
 
 The usage examples can be found in the [lz_sample.py](../bin/lz_sample.py) script and includes the following:
 
-1. [Variable Information](#variables)
-2. [Method Return Value](#method-return-value)
-3. [Method Arguments](#method-args)
-4. [Enumerators](#enumerators)
+1. [Modeled Response Query](#modeled-query)
+   1. [Variable Information](#variables)
+   2. [Method Return Value](#method-return-value)
+   3. [Method Arguments](#method-args)
+   4. [Enumerators](#enumerators)
+   5. 
+2. Raw Element Query
 
-## Variables
+## Modeled Query:
+
+The memberdef data model is fairly complete, and should provide a convenient way to access most of the generated Doxygen XML
+content.
+
+### Variables
 
 To query variables or methods, on can use the find methods in the LuckyZephyr class, these search for tag or attribute values in the
 child elements and return the model of the parent node.  To help clarify this concept, here's the sample source code from the [Summator.h](../example/src/summator.h) file,
@@ -68,11 +78,11 @@ Type: int
 Initial Value: 50
 ```
 
-## Methods
+### Methods
 
-Like variables methods can be found using the name, or qualified name, of the method.  
+Like variables methods can be found using the name, or qualified name of the method.  
 
-### Method Return Value
+#### Method Return Value
 
 In many instances it may be desirable to have information about a methods's return value.
 To demonstrate this concept, in the next example the method name is used to retrieve data about the ```get_total()``` method in the Summator class.
@@ -153,7 +163,7 @@ File: src/summator.h
 Implementation: src/summator.cpp
 ```
 
-### Method Args
+#### Method Args
 
 In many instances it may be desirable to have information about a methods's parameters.
 To demonstrate this concept, in the next example the method's qualified name is used to retrieve data about 
@@ -244,7 +254,7 @@ args: (int p_value)
 	Type: int
 	Description: <para>integer value to be added to the current total </para>
 ```
-## Enumerators
+### Enumerators
 
 Enumerators like methods and variables can be found using the name or qualified name of the enumerator.  
 It is also possible to get information about a specific enumerator value.  For this example the source code
@@ -314,7 +324,7 @@ using the value name.  In the second sample the enumerator name is retrieved fro
 get the enumerator definition.
 
 ```python
-## Always use the class xml don't load reference file directly
+### Always use the class xml don't load reference file directly
 traffic_doxy_class_xml =  script_path.parent.parent / 'example' / 'doxygen_output' / 'xml' / 'classTrafficLight.xml'
 # enumerators and enumerator values
 # no enums in summator so load traffic light class XML
@@ -364,4 +374,31 @@ Values:
 	Value Name: TRAFFIC_LIGHT_STOP
 	Intial Value: 500
 	Description: <para>Represents a light indicating Stop </para>
+```
+
+### Signals
+
+If the custom signal alias is being used it creates a standard Doxygen [xrefitem](https://www.doxygen.nl/manual/commands.html#cmdxrefitem)
+that is wrapped in a [parblock](https://www.doxygen.nl/manual/commands.html#cmdparblock) to also group any notes 
+and or warnings with the item.
+
+For this example the source code from the [Summator.h](../example/src/summator.h) file is used,
+along with the generated [XML](../example/doxygen_output/xml/classSummator.xml) file.
+
+Summator Source (part of main class description):
+
+```cpp
+ * @signal{sum_changed(int: sum)|
+ * This **signal**, is _emitted_ when the sum changes whether
+ * after adding a new integer or when resetting the total back to zero.
+ *
+ * @note “You're on Earth. There's no cure for that.” ― Samuel Beckett  }
+ *
+ * @signal{sum_reset()| This signal is emitted when the total is reset to zero
+ * @note Gogo: 'We always find something, eh Didi, to give us the impression we exist?"
+ * @warning I'm making this up as I go along }
+ *
+ * @signal{doesnt_exist|This is just a plain description, no warning or note for parser testing.  This signal
+ * doesn't actually exist, so don't try to use it.  This should only output to html as the signal is not actually registered
+ * with ClassDB.}
 ```

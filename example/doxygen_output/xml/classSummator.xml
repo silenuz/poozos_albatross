@@ -210,14 +210,14 @@
 <codeline><highlight class="normal"><sp/>#<sp/>prints<sp/>12</highlight></codeline>
 <codeline><highlight class="normal"><sp/>print(total)</highlight></codeline>
 </programlisting></para>
-<para><xrefsect id="signal_1_signal000001"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="sum_changed(int: sum)"/><parblock><para><bold>sum_changed(int: sum):</bold></para>
+<para><xrefsect id="signal_1_signal000001"><xreftitle>Signal</xreftitle><xrefdescription><para><parblock><para><bold>sum_changed(int: sum):</bold></para>
 <para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero.</para>
 <para></para>
 </parblock></para>
 </xrefdescription></xrefsect><simplesect kind="note"><para>“You&apos;re on Earth. There&apos;s no cure for that.” ― Samuel Beckett</para>
 </simplesect>
 </para>
-<para><xrefsect id="signal_1_signal000002"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="sum_reset()"/><parblock><para><bold>sum_reset():</bold></para>
+<para><xrefsect id="signal_1_signal000002"><xreftitle>Signal</xreftitle><xrefdescription><para><parblock><para><bold>sum_reset():</bold></para>
 <para>This signal is emitted when the total is reset to zero </para>
 </parblock></para>
 </xrefdescription></xrefsect><simplesect kind="note"><para>Gogo: &apos;We always find something, eh Didi, to give us the impression we exist?" </para>
@@ -225,7 +225,7 @@
 <simplesect kind="warning"><para>I&apos;m making this up as I go along</para>
 </simplesect>
 </para>
-<para><xrefsect id="signal_1_signal000003"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="doesnt_exist"/><parblock><para><bold>doesnt_exist:</bold></para>
+<para><xrefsect id="signal_1_signal000003"><xreftitle>Signal</xreftitle><xrefdescription><para><parblock><para><bold>doesnt_exist:</bold></para>
 <para>This is just a plain description, no warning or note for parser testing. This signal doesn&apos;t actually exist, so don&apos;t try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
 </parblock></para>
 </xrefdescription></xrefsect></para>

@@ -113,12 +113,12 @@
         </briefdescription>
         <detaileddescription>
 <para>You must declare a protected static void <computeroutput><ref refid="classTrafficLight_1a3949215d0fbb8273e1602abaabba8c41" kindref="member">_bind_methods()</ref></computeroutput> function in your class header.</para>
-<para><xrefsect id="signal_1_signal000004"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="light_changed(TrafficLightType new_state)"/><parblock><para><bold>light_changed(TrafficLightType new_state):</bold></para>
+<para><xrefsect id="signal_1_signal000004"><xreftitle>Signal</xreftitle><xrefdescription><para><parblock><para><bold>light_changed(TrafficLightType new_state):</bold></para>
 <para>This signal is emitted when the state of the Traffic Light changes.</para>
 <para>Test to make sure this second paragraph is read as part of the signal description</para>
 </parblock></para>
 </xrefdescription></xrefsect></para>
-<para><xrefsect id="signal_1_signal000005"><xreftitle>Signal</xreftitle><xrefdescription><para> <godotonly kind="signal" name="light_changing(TrafficLightType old_state,TrafficLightType new_state)"/><parblock><para><bold>light_changing(TrafficLightType old_state,TrafficLightType new_state):</bold></para>
+<para><xrefsect id="signal_1_signal000005"><xreftitle>Signal</xreftitle><xrefdescription><para><parblock><para><bold>light_changing(TrafficLightType old_state,TrafficLightType new_state):</bold></para>
 <para>this signal is emitted when the light is about to change. The signal parameter indicate the current state and what the new state will be</para>
 </parblock></para>
 </xrefdescription></xrefsect></para>
