@@ -129,6 +129,23 @@ for signal in signals:
         print(f'\tHeadline: {headline.content}')
     print('\n')
 
+## there's also a XRefData model in Eurus
+## that can be used to model xref items into name and description
+from spirare.eurus import SignalXRefDataModel
+for signal in signals:
+    signal_data = SignalXRefDataModel.from_reference_item(signal)
+    print(f'"Name:"{signal_data.name}')
+    print(f'"Description:"\n\t{signal_data.description}')
+    # data model also contains original reference item so that notes and warnings can be retrieved
+    headlines = lz.get_headlines_for_xrefitem(signal_data.reference_item)
+    if len(headlines) > 0:
+        print('Headlines:')
+    for headline in headlines:
+        print(f'\tType: {headline.kind}')
+        print(f'\tHeadline: {headline.content}')
+    print('\n')
+
+
 ############################################
 ###          XML Nodes                   ###
 ############################################

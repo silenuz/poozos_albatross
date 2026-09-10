@@ -9,7 +9,7 @@ The usage examples can be found in the [lz_sample.py](../bin/lz_sample.py) scrip
    2. [Method Return Value](#method-return-value)
    3. [Method Arguments](#method-args)
    4. [Enumerators](#enumerators)
-   5. 
+   5. [Signals (xref items)](#signals)
 2. Raw Element Query
 
 ## Modeled Query:
@@ -401,4 +401,117 @@ Summator Source (part of main class description):
  * @signal{doesnt_exist|This is just a plain description, no warning or note for parser testing.  This signal
  * doesn't actually exist, so don't try to use it.  This should only output to html as the signal is not actually registered
  * with ClassDB.}
+```
+
+Doxygen XML:
+```xml
+<para><xrefsect id="signal_1_signal000001"><xreftitle>Signal</xreftitle><xrefdescription><para><parblock><para><bold>sum_changed(int: sum):</bold></para>
+<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero.</para>
+<para></para>
+</parblock></para>
+</xrefdescription></xrefsect><simplesect kind="note"><para>“You&apos;re on Earth. There&apos;s no cure for that.” ― Samuel Beckett</para>
+</simplesect>
+</para>
+<para><xrefsect id="signal_1_signal000002"><xreftitle>Signal</xreftitle><xrefdescription><para><parblock><para><bold>sum_reset():</bold></para>
+<para>This signal is emitted when the total is reset to zero </para>
+</parblock></para>
+</xrefdescription></xrefsect><simplesect kind="note"><para>Gogo: &apos;We always find something, eh Didi, to give us the impression we exist?" </para>
+</simplesect>
+<simplesect kind="warning"><para>I&apos;m making this up as I go along</para>
+</simplesect>
+</para>
+<para><xrefsect id="signal_1_signal000003"><xreftitle>Signal</xreftitle><xrefdescription><para><parblock><para><bold>doesnt_exist:</bold></para>
+<para>This is just a plain description, no warning or note for parser testing. This signal doesn&apos;t actually exist, so don&apos;t try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
+</parblock></para>
+</xrefdescription></xrefsect></para>
+```
+Example Code:
+```python
+# working with xrefitems
+# to get xrefitems pass the name of the title to the get_xref_items method
+# traffic light signals have no notes or warnings, so switch back to summator
+lz = LuckyZephyr(summator_doxy_class_xml)
+signals = lz.get_xref_items('Signal')
+for signal in signals:
+    print(signal.xrefdescription)
+    ## in the case of signals the custom alias may have notes and or warnings
+    ## use the xrefitem to get the headlines
+    headlines = lz.get_headlines_for_xrefitem(signal)
+    if len(headlines) > 0:
+        print('Headlines:')
+    for headline in headlines:
+        print(f'\tType: {headline.kind}')
+        print(f'\tHeadline: {headline.content}')
+    print('\n')
+```
+
+Output:
+```shell
+<para><parblock><para><bold>sum_changed(int: sum):</bold></para>
+<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero.</para>
+<para />
+</parblock></para>
+Headlines:
+	Type: note
+	Headline: <para>“You're on Earth. There's no cure for that.” ― Samuel Beckett</para>
+	
+<para><parblock><para><bold>sum_reset():</bold></para>
+<para>This signal is emitted when the total is reset to zero </para>
+</parblock></para>
+Headlines:
+	Type: note
+	Headline: <para>Gogo: 'We always find something, eh Didi, to give us the impression we exist?" </para>
+	Type: warning
+	Headline: <para>I'm making this up as I go along</para>
+
+<para><parblock><para><bold>doesnt_exist:</bold></para>
+<para>This is just a plain description, no warning or note for parser testing. This signal doesn't actually exist, so don't try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
+</parblock></para>
+
+```
+As can be seen from the output, the XRefSectionmodel is fairly basic, and the xrefdescrition attribute is the full Doxygen XML
+content.  There is a model that can be used to simplify the output into signal name and description.  
+It is currently in the eurus module but was originally in the luckys_zephyr module, and is likely to change again because I'm
+not sure if I like it where it is.  
+
+```python
+## there's also a XRefData model in Eurus
+## that can be used to model xref items into name and description
+from spirare.eurus import SignalXRefDataModel
+for signal in signals:
+    signal_data = SignalXRefDataModel.from_reference_item(signal)
+    print(f'"Name:"{signal_data.name}')
+    print(f'"Description:"\n\t{signal_data.description}')
+    # data model also contains original reference item so that notes and warnings can be retrieved
+    headlines = lz.get_headlines_for_xrefitem(signal_data.reference_item)
+    if len(headlines) > 0:
+        print('Headlines:')
+    for headline in headlines:
+        print(f'\tType: {headline.kind}')
+        print(f'\tHeadline: {headline.content}')
+    print('\n')
+```
+Output:
+
+```shell
+"Name:"sum_changed
+"Description:"
+	<para>This <bold>signal</bold>, is <emphasis>emitted</emphasis> when the sum changes whether after adding a new integer or when resetting the total back to zero.</para>
+Headlines:
+	Type: note
+	Headline: <para>“You're on Earth. There's no cure for that.” ― Samuel Beckett</para>
+
+"Name:"sum_reset
+"Description:"
+	<para>This signal is emitted when the total is reset to zero</para>
+Headlines:
+	Type: note
+	Headline: <para>Gogo: 'We always find something, eh Didi, to give us the impression we exist?" </para>
+	Type: warning
+	Headline: <para>I'm making this up as I go along</para>
+
+"Name:"doesnt_exist:
+"Description:"
+	<para>This is just a plain description, no warning or note for parser testing. This signal doesn't actually exist, so don't try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
+
 ```
