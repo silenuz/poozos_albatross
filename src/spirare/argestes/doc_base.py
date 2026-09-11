@@ -638,10 +638,13 @@ class DocReturnErrorsList(ModelCollection):
         """
         result = dict()
         result['returns_error'] = []
+        values = set()
         for error in self.data:
-            value = error.to_dict()
+            value = error.number
+            if value not in values:
             #print("Error Value:: " , value)
-            result['returns_error'].append(error.to_dict())
+                result['returns_error'].append(error.to_dict())
+            values.add(value)
         return result
 
     def to_xml_doc(self) -> list[xml.etree.ElementTree.Element]:
