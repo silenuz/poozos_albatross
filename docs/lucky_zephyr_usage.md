@@ -4,13 +4,13 @@ The LuckyZephyr class can be used as a helper in querying the Doxygen XML for in
 
 The usage examples can be found in the [lz_sample.py](../bin/lz_sample.py) script and includes the following:
 
-1. [Modeled Response Query](#modeled-query)
+1. [Modeled Response](#modeled-query)
    1. [Variable Information](#variables)
    2. [Method Return Value](#method-return-value)
    3. [Method Arguments](#method-args)
    4. [Enumerators](#enumerators)
    5. [Signals (xref items)](#signals)
-2. Raw Element Query
+2. [Raw Element Response](#raw-element-queries)
 
 ## Modeled Query:
 
@@ -515,3 +515,5 @@ Headlines:
 	<para>This is just a plain description, no warning or note for parser testing. This signal doesn't actually exist, so don't try to use it. This should only output to html as the signal is not actually registered with ClassDB.</para>
 
 ```
+
+## Raw Element Queries

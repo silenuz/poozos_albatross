@@ -3,11 +3,11 @@ If any human beings actually visit this repo, I'm aiming for an RC in September.
 
 
 ## Update:
-sept 04/2026 - I'm a little behind schedule.  
+sept 11/2026 - I'm still behind schedule.  
 
-Docstrings in LZ where in worse shape than I remembered, however now almost everything in LZ has a docstring,
-and while there is still no basic usage doc for LZ there is a script in bin [lz_sample.py](bin/lz_sample.py)
-that has the start of the sample code that will be part of the usage doc descriptions.
+LZ now has some [usage](docs/lucky_zephyr_usage.md) examples, however it currently is a very rough draft.  Docstrings for LZ are 
+still a work in progress though I hope to finish in the next couple of days, so I can start on the documentation for LZ and
+the others.
 
 Eurus is now capable of building the model with the same information as the original aerify script, as well it outputs 
 method parameters, which never made it into the original aerify script (though it will be coming soon).
