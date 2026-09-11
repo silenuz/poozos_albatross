@@ -5,6 +5,8 @@ If any human beings actually visit this repo, I'm aiming for an RC in September.
 ## Update:
 sept 11/2026 - I'm still behind schedule.  
 
+Also found bug in ClassDoc model where returns_error elements are not handled correctly, and am looking into it.
+
 LZ now has some [usage](docs/lucky_zephyr_usage.md) examples, however it currently is a very rough draft.  Docstrings for LZ are 
 still a work in progress though I hope to finish in the next couple of days, so I can start on the documentation for LZ and
 the others.
