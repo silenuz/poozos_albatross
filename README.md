@@ -1,7 +1,10 @@
 # IMPORTANT
 If any human beings actually visit this repo, I'm aiming for an RC in September.
 
-Note:  currently the doc model to xml has a single lint problem.  returns_rerror is out of sequence.  
+Note:  currently the doc model to xml has a single lint problem.  returns_rerror is out of sequence.  My gratitude to 
+whoever updated the class.xsd schema in the engine repo. 
+It seemed weird that doctool generated class doc XML that failed lint validation due to unexpected attributes 
+in signal parameters.
 
 ## Update:
 sept 11/2026 - I'm still behind schedule.  
