@@ -1,12 +1,13 @@
 # IMPORTANT
 If any human beings actually visit this repo, I'm aiming for an RC in September.
 
+Note:  currently the doc model to xml has a single lint problem.  returns_rerror is out of sequence.  
 
 ## Update:
 sept 11/2026 - I'm still behind schedule.  
 
-Also found bug in ClassDoc model where returns_error elements are not handled correctly, and am looking into it.  
-It only happens when round tripping to json and back so hopefully should be easy enough to find.  After some examination
+Also found bug in ClassDoc model where returns_error elements are not handled correctly, and am looking into it.  It only 
+happens when round tripping to json and back so hopefully should be easy enough to find.  After some examination
 the class doc to json works fine.  Problem only happens when file exists so the likely culprit is the merge function which 
 I will check on Monday.  If any human beings actually access this repo hope you have a nice weekend.
 
