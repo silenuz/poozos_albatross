@@ -4,8 +4,8 @@ If any human beings actually visit this repo, I'm aiming for an RC in September.
 ## Update:
 sept 14/2026 - I'm still behind schedule.  
 
-My gratitude to whoever updated the class.xsd schema in the engine repo. The doc model's to_xml has been fixed and 
-all lint errors have been eliminated (using xmllint).
+My gratitude to whoever updated the class.xsd schema in the engine repo. The doc model's to_xml has been fixed so that method
+information is in the proper sequence and now all lint errors have been eliminated (using xmllint).
 
 LZ now has some [usage](docs/lucky_zephyr_usage.md) examples, however it currently is a very rough draft.  Docstrings for LZ are 
 still a work in progress though I hope to finish in the next couple of days, so I can start on the documentation for LZ and
