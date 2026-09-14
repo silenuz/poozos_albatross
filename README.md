@@ -1,18 +1,11 @@
 # IMPORTANT
 If any human beings actually visit this repo, I'm aiming for an RC in September.
 
-Note:  currently the doc model to xml has a single lint problem.  returns_rerror is out of sequence.  My gratitude to 
-whoever updated the class.xsd schema in the engine repo. 
-It seemed weird that doctool generated class doc XML that failed lint validation due to unexpected attributes 
-in signal parameters.
-
 ## Update:
-sept 11/2026 - I'm still behind schedule.  
+sept 14/2026 - I'm still behind schedule.  
 
-Also found bug in ClassDoc model where returns_error elements are not handled correctly, and am looking into it.  It only 
-happens when round tripping to json and back so hopefully should be easy enough to find.  After some examination
-the class doc to json works fine.  Problem only happens when file exists so the likely culprit is the merge function which 
-I will check on Monday.  If any human beings actually access this repo hope you have a nice weekend.
+My gratitude to whoever updated the class.xsd schema in the engine repo. The doc model's to_xml has been fixed and all lint errors have
+been eliminated.
 
 LZ now has some [usage](docs/lucky_zephyr_usage.md) examples, however it currently is a very rough draft.  Docstrings for LZ are 
 still a work in progress though I hope to finish in the next couple of days, so I can start on the documentation for LZ and
