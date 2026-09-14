@@ -58,9 +58,19 @@ class ClassDocMethod(ClassDocAnnotation):
 
        :return: a dictionary of values for this method model instance.
        """
-        values = super().to_dict()
         if self.returns_error is not None:
-            values.update(self.returns_error.to_dict())
+            super_values = super().to_dict()
+            # Convert parent items to a list
+            items = list(super_values.items())
+            # Convert error items to a list
+            error_items = list(self.returns_error.to_dict().items())
+
+            # Slice and sandwich the error items after the 1st parent element (index 1)
+            # This handles single or multiple key-value pairs safely
+            items[1:1] = error_items
+            values = dict(items)
+        else:
+            values = super().to_dict()
         if self.is_deprecated is not None:
             values['is_deprecated'] = self.is_deprecated
         if self.is_experimental is not None:
