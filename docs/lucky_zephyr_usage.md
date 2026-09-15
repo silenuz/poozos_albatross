@@ -1,6 +1,6 @@
 # LuckyZephyr Usage:
 
-The LuckyZephyr class can be used as a helper in querying the Doxygen XML for information regarding the project's source code.
+The [LuckyZephyr](lz/lucky_zephyr.md) class can be used as a helper in querying the Doxygen XML for information regarding the project's source code.
 
 The usage examples can be found in the [lz_sample.py](../bin/lz_sample.py) script and includes the following:
 

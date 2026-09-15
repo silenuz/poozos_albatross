@@ -61,8 +61,9 @@ This repository contains the following:
   - suitable for quick generation of extension documentation
   - only requirements are luckys_zephyr to parse the Doxygen XML, and [PoozosNotus](docs/poozo.md)  to parse the source code files
 - luckys_zephyr.py : 
-  - contains LuckyZephyr class that parses and searches the Doxygen XML, this class is used by aerify_didi and Eurus 
-    to parse the Doxygen generated XML
+  - contains [LuckyZephyr](docs/lz/lucky_zephyr.md) class that parses and searches the Doxygen XML, this class is used by aerify_didi and Eurus 
+    to parse the Doxygen generated XML. 
+  - [Usage Samples](docs/lucky_zephyr_usage.md) 
 - poozos_notus.py :
   - contains the [PoozosNotus](docs/poozo.md) class to parse cpp source code containing binding declarations for a GDExtension 
   - this class is used by aeirfy_didi script, and the Eurus class.
