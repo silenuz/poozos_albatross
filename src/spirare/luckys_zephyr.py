@@ -20,15 +20,15 @@ import re
 from dataclasses import dataclass, fields, field
 from pathlib import Path
 from typing import List
-from xml.etree import ElementTree as et
+from xml.etree import ElementTree
 
 
-def get_inner_markup(element: et.Element) -> str:
+def get_inner_markup(element: ElementTree.Element) -> str:
     # 1. Grab the initial text chunk before any child tag
     parts = [element.text or ""]
     for child in element:
         # encoding="unicode" returns a standard python string instead of bytes
-        parts.append(et.tostring(child, encoding="unicode"))
+        parts.append(ElementTree.tostring(child, encoding="unicode"))
     return "".join(parts).strip()
 
 
@@ -56,13 +56,13 @@ class LuckyZephyr:
     Attributes:
         class_name (str): The name of the class currently loaded
         class_xml (Path): The path to the Doxygen XML file
-        data_node (et.Element): The class node of the Doxygen XML file
+        data_node (ElementTree.Element): The class node of the Doxygen XML file
         reference_file (str): The path to the reference XML file that contains extra information from the header file
         data_xml_map (dict) : Map of each node to it's parent in the form of a dictionary.
-        xml_root_node (et.Element): The root node of the Doxygen XML file
+        xml_root_node (ElementTree.Element): The root node of the Doxygen XML file
     """
 
-    def node_from_query(self, search_criteria: str) -> et.Element | None:
+    def node_from_query(self, search_criteria: str) -> ElementTree.Element | None:
         """
         Searches the Doxygen class XML for the first node meeting the XPath search criteria.
         If found it returns the found node, else it returns None.
@@ -73,7 +73,7 @@ class LuckyZephyr:
         node = self.data_node.find(search_criteria)
         return node
 
-    def node_from_attr(self, attribute_name: str, value: str) -> et.Element | None:
+    def node_from_attr(self, attribute_name: str, value: str) -> ElementTree.Element | None:
         """
         Searches the Doxygen class XML for the first node that has a specific attribute value.
         If found it returns the found node, else it returns None.
@@ -84,7 +84,7 @@ class LuckyZephyr:
         """
         return self.node_from_query(f".//*[@{attribute_name}='{value}']")
 
-    def node_from_tag(self, tag_name: str, value: str) -> et.Element | None:
+    def node_from_tag(self, tag_name: str, value: str) -> ElementTree.Element | None:
         """
         Searches the Doxygen class XML for the first node that has a specific tag value.
         If found it returns the node, else it returns None.
@@ -95,7 +95,7 @@ class LuckyZephyr:
         """
         return self.node_from_query(f".//{tag_name}[.='{value}']")
 
-    def node_from_child_query(self, search: str)-> et.Element | None:
+    def node_from_child_query(self, search: str)-> ElementTree.Element | None:
         """
         Searches the Doxygen class XML for the first node meeting the XPath search criteria.
         If found it returns the parent node of the found node, else it returns None.
@@ -114,7 +114,7 @@ class LuckyZephyr:
                 return None
 
 
-    def node_from__child_attr(self, attribute_name: str, value: str) -> et.Element | None:
+    def node_from__child_attr(self, attribute_name: str, value: str) -> ElementTree.Element | None:
         """
         Searches the Doxygen class XML for the first node that has a specific attribute value.
         If found it returns the parent node of the found node, else it returns None.
@@ -126,7 +126,7 @@ class LuckyZephyr:
         return self.node_from_child_query(f".//*[@{attribute_name}='{value}']")
 
 
-    def node_from_child_tag(self, tag: str, value: str) -> et.Element | None:
+    def node_from_child_tag(self, tag: str, value: str) -> ElementTree.Element | None:
         """
         Searches the Doxygen class XML for the first node that has a specific tag value.
         If found it returns the parent node of the found node, else it returns None.
@@ -137,10 +137,10 @@ class LuckyZephyr:
         """
         return self.node_from_child_query(f".//{tag}[.='{value}']")
 
-    def search_by_attribute(self,attribute_name: str, value: str) -> et.Element | None:
+    def search_by_attribute(self,attribute_name: str, value: str) -> ElementTree.Element | None:
         return self.search_by_criteria(f".//*[@{attribute_name}='{value}']")
 
-    def search_by_criteria(self,criteria:str) -> list[et.Element] | None:
+    def search_by_criteria(self,criteria:str) -> list[ElementTree.Element] | None:
         return self.data_node.findall(criteria)
 
     def get_class_description(self, node_name: str) -> str:
@@ -309,7 +309,7 @@ class LuckyZephyr:
         else:
             return None
 
-    def map_parameter_descriptions(self, param_values: list[ParameterTypeModel], param_description_node:et.Element)->None:
+    def map_parameter_descriptions(self, param_values: list[ParameterTypeModel], param_description_node:ElementTree.Element)->None:
         """
         Doxygen stores the parameter list for relevant members in two places.  Each parameter is a param element of the
         member node, with the descriptions for each parameter as part of a parameterlist node within the detaileddescritpion
@@ -332,7 +332,7 @@ class LuckyZephyr:
                         value.description = get_inner_markup(description_node)
 
 
-    def model_enumvalue_definition(self,enum_value_node: et.Element) -> EnumValueModel:
+    def model_enumvalue_definition(self,enum_value_node: ElementTree.Element) -> EnumValueModel:
         """
         Takes an enumvalue element from the Doxygen XML as an argument and creates an EnumValueModel from it
 
@@ -356,7 +356,7 @@ class LuckyZephyr:
         return enum_value_definition
 
 
-    def model_member_definition(self,member_node: et.Element) -> MemberDefinitionModel:
+    def model_member_definition(self,member_node: ElementTree.Element) -> MemberDefinitionModel:
         """
         Takes a memberdef Doxygen XML element as an argument and creates an MemberDefinitionModel from it
 
@@ -370,8 +370,8 @@ class LuckyZephyr:
         args['attributes'] = attribute_values
         enum_values: List[EnumValueModel] = list()
         param_values: List[ParameterTypeModel] = list()
-        param_description_node : et.Element = None
-        return_description_node: et.Element = None
+        param_description_node : ElementTree.Element = None
+        return_description_node: ElementTree.Element = None
 
         for node in member_node:
             if node.tag == 'detaileddescription':
@@ -414,7 +414,7 @@ class LuckyZephyr:
             member_definition.returns = ReturnDescriptionModel.from_xml_element(return_description_node)
         return member_definition
 
-    def model_param_definition(self, parameter_node: et.Element)->ParameterTypeModel:
+    def model_param_definition(self, parameter_node: ElementTree.Element)->ParameterTypeModel:
         """
         Takes a param node from a memberdef element of the Doxygen XML and creates a ParameterTypeModel from it
 
@@ -536,11 +536,11 @@ class LuckyZephyr:
         containing a map of nodes where each Doxygen node is mapped to it's parent node
         Why?  That's good question todo: refactor this and just set map here
         """
-        tree = et.parse(self.class_xml)
+        tree = ElementTree.parse(self.class_xml)
         self.xml_root_node = tree.getroot()
-        """et.Element: The root node of the Doxygen XML file"""
+        """ElementTree.Element: The root node of the Doxygen XML file"""
         self.data_node = self.xml_root_node[0]
-        """et.Element: The class node of the Doxygen XML file"""
+        """ElementTree.Element: The class node of the Doxygen XML file"""
         xml_map = {child: parent for parent in self.xml_root_node.iter() for child in parent}
         return xml_map
 
@@ -559,7 +559,7 @@ class LuckyZephyr:
     def __load_reference_file(self):
         reference_file_path = self.get_reference_file_path()
         if reference_file_path:
-            tree = et.parse(reference_file_path)
+            tree = ElementTree.parse(reference_file_path)
             root = tree.getroot()
             self.reference_node = root[0]
             self.reference_data_map = {child: parent for parent in root.iter() for child in parent}
@@ -588,7 +588,7 @@ class BriefDescriptionModel:
             return None
 
     @property
-    def node_brief_description(self) -> et.Element:
+    def node_brief_description(self) -> ElementTree.Element:
         """
         Get the brief description html and creates a node from it
         :return: The node with the briefdescription markup as the text
@@ -605,7 +605,7 @@ class DetailedDescriptionModel:
     Model to hold description information, with convenience properties to get the content as an element
     or as plain text without html markup
     """
-    description: str = None
+    description: str | None = None
     """detailed description of the method or member"""
 
     @property
@@ -620,7 +620,7 @@ class DetailedDescriptionModel:
             return None
 
     @property
-    def node_description(self) -> et.Element:
+    def node_description(self) -> ElementTree.Element:
         """
         Get the detailed description html and creates a node from it
         :return: The node with the detailed description markup as the text
@@ -642,7 +642,7 @@ class EnumValueAttributes:
     """The access protection/visibility level in the source code. Possible values: public, protected, private, """
 
     @classmethod
-    def from_xml_element(cls, member_element: et.Element) -> "EnumValueAttributes":
+    def from_xml_element(cls, member_element: ElementTree.Element) -> "EnumValueAttributes":
         attrs = member_element.attrib
         kwargs = {"id": attrs["id"], "prot": attrs["prot"]}
         return cls(**kwargs)
@@ -756,7 +756,7 @@ class MemberDefinitionAttributes:
 
 
     @classmethod
-    def from_xml_element(cls, member_element: et.Element) -> "MemberDefinitionAttributes":
+    def from_xml_element(cls, member_element: ElementTree.Element) -> "MemberDefinitionAttributes":
         attrs = member_element.attrib
         # id is always present
         kwargs = {"id": attrs["id"]}
@@ -792,7 +792,7 @@ class MemberDefinitionLocation:
     """The line number where the implementation of the member ends (e.g., the closing brace of a function)."""
 
     @classmethod
-    def from_xml_element(cls, location_element: et.Element) -> "MemberDefinitionLocation":
+    def from_xml_element(cls, location_element: ElementTree.Element) -> "MemberDefinitionLocation":
         attrs = location_element.attrib
         kwargs = {"file": attrs["file"]}
         # 2. Map everything else dynamically if it exists in the XML
@@ -806,7 +806,7 @@ class MemberDefinitionLocation:
 @dataclass(slots=True,kw_only=True)
 class ReturnDescriptionModel(DetailedDescriptionModel):
     @classmethod
-    def from_xml_element(cls, member_element: et.Element) -> "ReturnDescriptionModel":
+    def from_xml_element(cls, member_element: ElementTree.Element) -> "ReturnDescriptionModel":
         content = get_inner_markup(member_element)
         return cls(description=content)
 
@@ -911,14 +911,14 @@ class SimpleSectionModel:
     content: str | None = None
 
     @property
-    def node_content(self) -> et.Element:
+    def node_content(self) -> ElementTree.Element:
         if self.content is not None:
             return et.fromstring(f'<content>{self.content}</content>')
         else:
             return None
 
     @classmethod
-    def from_xml(cls, element: et.Element) -> SimpleSectionModel:
+    def from_xml(cls, element: ElementTree.Element) -> SimpleSectionModel:
         kind = element.attrib["kind"]
         if element.find("title") is not None:
             title = element.find("title").text
@@ -945,18 +945,18 @@ class XRefSectionModel:
             return None
 
     @property
-    def node_description(self) -> et.Element:
+    def node_description(self) -> ElementTree.Element:
         """
         Get the detailed description html and creates a node from it
         :return: The node with the detailed description markup as the text
         """
         if self.xrefdescription:
-            return et.fromstring(f"<xrefdescription>{self.xrefdescription}</xrefdescription>")
+            return ElementTree.fromstring(f"<xrefdescription>{self.xrefdescription}</xrefdescription>")
         else:
             return None
 
     @classmethod
-    def from_xml(cls,xref_element:et.Element)->"XRefSectionModel":
+    def from_xml(cls,xref_element:ElementTree.Element)->"XRefSectionModel":
         id = xref_element.attrib["id"]
         title_node = xref_element.find("xreftitle")
         description_node = xref_element.find("xrefdescription")
