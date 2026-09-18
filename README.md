@@ -2,7 +2,8 @@
 If any human beings actually visit this repo, I'm aiming for an RC in September.
 
 ## Update:
-sept 14/2026 - I'm still behind schedule.  
+sept 18/2026 - I'm still behind schedule.  Since fixing up the lint errors in the xml output, the only progress made has 
+been with the docs.  lz now has some class [reference](docs/lz/lucky_zephyr.md) documentation, and poozo should follow soon.
 
 My gratitude to whoever updated the class.xsd schema in the engine repo. The doc model's to_xml has been fixed so that method
 information is in the proper sequence and now all lint errors have been eliminated (using xmllint).
