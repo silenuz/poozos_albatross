@@ -4,7 +4,7 @@
 """
 @Project: poozos_albatross
 @Date: 5/27/26
-@File: luckys_zephyr
+@File: luckys_zephyr.md
 
 @Author: Silenuz Nowan (silenuznowan@yahoo.com)
 
@@ -24,6 +24,13 @@ from xml.etree import ElementTree
 
 
 def get_inner_markup(element: ElementTree.Element) -> str:
+    """
+    Gets the inner markup for the given element's text value, by concatenating the mixed element content into a single
+    XML string
+
+    :param element: the element to get the inner markup for
+    :return: the full XML content of the text value of the element passed as an argument.
+    """
     # 1. Grab the initial text chunk before any child tag
     parts = [element.text or ""]
     for child in element:
