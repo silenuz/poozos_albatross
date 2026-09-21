@@ -1,23 +1,32 @@
 
 <a id="luckys_zephyr.MemberDefinitionModel"></a>
 
-## MemberDefinitionModel Objects
+# MemberDefinitionModel
+Module: spirare.luckys_zepyr.MemberDefinitionModel
+
+![Alt class_diagram](diagrams/memberdef.svg)
+
+Inherits from [BriefDescriptionModel](brief_description_model.md) and [DetailedDescriptionModel](detailed_description_model.md)
+
+## Description:
+
+This dataclass is used to model data from the Doxygen XML Memberdef elements
+
+todo: add missing elements, already have more than needed might as well complete it
+  - <xsd:element name="templateparamlist" type="templateparamlistType" minOccurs="0" />
+  - <xsd:element name="reimplements" type="reimplementType" minOccurs="0" maxOccurs="unbounded" />
+  - <xsd:element name="reimplementedby" type="reimplementType" minOccurs="0" maxOccurs="unbounded" />  
+  - <xsd:element name="requiresclause" type="linkedTextType" minOccurs="0" />
+  - <xsd:element name="exceptions" type="linkedTextType" minOccurs="0" />
+  - <xsd:element name="references" type="referenceType" minOccurs="0" maxOccurs="unbounded" />
+  - <xsd:element name="referencedby" type="referenceType" minOccurs="0" maxOccurs="unbounded" />
 
 ```python
 @dataclass(slots=True, kw_only=True)
 class MemberDefinitionModel(BriefDescriptionModel, DetailedDescriptionModel)
 ```
 
-Used to model data from the Doxygen XML Memberdef elements
-todo: add missing elements, already have more than needed might as well complete it
-  <xsd:element name="templateparamlist" type="templateparamlistType" minOccurs="0" />
-  <xsd:element name="reimplements" type="reimplementType" minOccurs="0" maxOccurs="unbounded" />
-  <xsd:element name="reimplementedby" type="reimplementType" minOccurs="0" maxOccurs="unbounded" />
-  <xsd:element name="param" type="paramType" minOccurs="0" maxOccurs="unbounded" />
-  <xsd:element name="requiresclause" type="linkedTextType" minOccurs="0" />
-  <xsd:element name="exceptions" type="linkedTextType" minOccurs="0" />
-  <xsd:element name="references" type="referenceType" minOccurs="0" maxOccurs="unbounded" />
-  <xsd:element name="referencedby" type="referenceType" minOccurs="0" maxOccurs="unbounded" />
+## Attribute Descriptions:
 
 <a id="luckys_zephyr.MemberDefinitionModel.attributes"></a>
 

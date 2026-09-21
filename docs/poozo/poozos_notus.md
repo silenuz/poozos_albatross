@@ -14,7 +14,7 @@ class PoozoNotus()
 
 Class for parsing cpp source code to catalog any bindings.
 
-"A boy's best friend is his mother"
+`"A boy's best friend is his mother"`
 
 <a id="poozos_notus.PoozoNotus.get_bound_enums"></a>
 
