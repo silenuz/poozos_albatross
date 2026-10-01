@@ -1,8 +1,17 @@
 # IMPORTANT
-If any human beings actually visit this repo, I'm aiming for an RC in September.
+If any human beings actually visit this repo, I'm aiming for an RC in October.
+Also if you are an actual person:
+    - and have noticed something that should be fixed for the RC please let me know
+    - also am open to suggestions and feedback for future development beyond getting the rosetta modules finished.
+If it's just one or two people who have any interest I'll just use issues, but if there is actual interest in this
+project I could enable discussions.
 
 ## Update:
-sept 18/2026 - I'm still behind schedule.  Since fixing up the lint errors in the xml output, the only progress made has 
+oct 1 / 2026 - I'm still behind schedule.  Been one of those weeks at work, so wasn't able to get much done other than more
+bug hunting.  Couldn't find anything new.  Will add some new docs tomorrow, but it looks like that's 
+it for this week's updates.
+
+Since fixing up the lint errors in the xml output, the only progress made has 
 been with the docs.  lz now has some class [reference](docs/lz/lucky_zephyr.md) documentation, and poozo should follow soon.
 
 My gratitude to whoever updated the class.xsd schema in the engine repo. The doc model's to_xml has been fixed so that method
