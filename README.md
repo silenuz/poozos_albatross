@@ -1,8 +1,10 @@
 # IMPORTANT
 If any human beings actually visit this repo, I'm aiming for an RC in October.
-Also if you are an actual person:
-    - and have noticed something that should be fixed for the RC please let me know
-    - also am open to suggestions and feedback for future development beyond getting the rosetta modules finished.
+Also if you are an actual person
+
+- and have noticed something that should be fixed for the RC please let me know
+- also am open to suggestions and feedback for future development beyond getting the rosetta modules finished.
+
 If it's just one or two people who have any interest I'll just use issues, but if there is actual interest in this
 project I could enable discussions.
 
